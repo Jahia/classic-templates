@@ -1,0 +1,210 @@
+/*
+ * Design tokens: the ONLY file of the module that holds literal colours, font stacks and shadows.
+ * Components read the semantic roles (tier 2) and never a primitive (tier 1).
+ *
+ * Tier 1  primitives      --ctpl-<hue>-<step>, raw values
+ * Tier 2  semantic roles  --ctpl-color-*, --ctpl-font-*, --ctpl-space-*, ...
+ * Tier 3  component-local declared in each component's CSS module, falling back to tier 2
+ *
+ * Light and dark: every colour role is a light-dark() pair. Which half applies follows the used
+ * `color-scheme`: the visitor's system preference by default, or the site's choice stamped on
+ * <html data-ctpl-scheme="light|dark"> by the Layout. So dark mode is never written twice.
+ *
+ * Themes: <html data-ctpl-theme="ocean|terracotta"> (from the site settings) overrides tier 2 only.
+ * Contrast of every theme x scheme pair is checked by `yarn check:contrast`.
+ *
+ * Breakpoints cannot be custom properties (they are not allowed in @media). The module uses two:
+ *   40rem  small screens -> tablets      64rem  tablets -> desktop
+ */
+
+:root {
+  color-scheme: light dark;
+
+  /* ---- Tier 1: primitives ----------------------------------------------------------------- */
+  --ctpl-white: #ffffff;
+  --ctpl-black: #000000;
+  --ctpl-slate-50: #f6f7f9;
+  --ctpl-slate-100: #eceef2;
+  --ctpl-slate-200: #dadee6;
+  --ctpl-slate-300: #bfc5d0;
+  --ctpl-slate-400: #8b94a5;
+  --ctpl-slate-500: #697386;
+  --ctpl-slate-600: #4b5565;
+  --ctpl-slate-700: #364152;
+  --ctpl-slate-800: #232b3a;
+  --ctpl-slate-900: #151b27;
+  --ctpl-slate-950: #0c1019;
+
+  --ctpl-navy-50: #eef3fb;
+  --ctpl-navy-100: #d9e3f5;
+  --ctpl-navy-200: #b6c8ea;
+  --ctpl-navy-300: #8eaadd;
+  --ctpl-navy-600: #2e5597;
+  --ctpl-navy-700: #22437d;
+  --ctpl-navy-800: #1a3563;
+  --ctpl-navy-900: #142849;
+
+  --ctpl-teal-50: #ecf8f7;
+  --ctpl-teal-100: #cdeeeb;
+  --ctpl-teal-200: #9fded8;
+  --ctpl-teal-300: #6ccac1;
+  --ctpl-teal-600: #0f766e;
+  --ctpl-teal-700: #0b5f59;
+  --ctpl-teal-800: #0a4b47;
+  --ctpl-teal-900: #083a37;
+
+  --ctpl-clay-50: #fbf1ec;
+  --ctpl-clay-100: #f5ddd1;
+  --ctpl-clay-200: #ecbda7;
+  --ctpl-clay-300: #e39c7d;
+  --ctpl-clay-600: #a8431f;
+  --ctpl-clay-700: #8a3518;
+  --ctpl-clay-800: #6e2b15;
+  --ctpl-clay-900: #532112;
+
+  --ctpl-green-50: #eaf7ef;
+  --ctpl-green-300: #74cf98;
+  --ctpl-green-700: #1d6b3a;
+  --ctpl-green-900: #0f3b20;
+  --ctpl-amber-50: #fdf5e2;
+  --ctpl-amber-300: #f1c35a;
+  --ctpl-amber-700: #7d5200;
+  --ctpl-amber-900: #432c00;
+  --ctpl-red-50: #fdeeec;
+  --ctpl-red-300: #f19a91;
+  --ctpl-red-700: #a92a1f;
+  --ctpl-red-900: #571510;
+
+  --ctpl-stack-sans:
+    system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --ctpl-stack-serif:
+    "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman",
+    serif;
+  --ctpl-stack-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* ---- Tier 2: colour roles --------------------------------------------------------------- */
+  --ctpl-color-surface-page: light-dark(var(--ctpl-white), var(--ctpl-slate-950));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-slate-900));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-slate-50), var(--ctpl-slate-900));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-slate-900), var(--ctpl-slate-100));
+
+  --ctpl-color-text: light-dark(var(--ctpl-slate-900), var(--ctpl-slate-50));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-slate-600), var(--ctpl-slate-300));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-slate-50), var(--ctpl-slate-900));
+
+  --ctpl-color-border: light-dark(var(--ctpl-slate-200), var(--ctpl-slate-700));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-slate-500), var(--ctpl-slate-400));
+
+  --ctpl-color-accent: light-dark(var(--ctpl-navy-700), var(--ctpl-navy-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-navy-800), var(--ctpl-navy-200));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-navy-50), var(--ctpl-navy-900));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-slate-950));
+  --ctpl-color-link: var(--ctpl-color-accent);
+  --ctpl-color-link-hover: var(--ctpl-color-accent-hover);
+  --ctpl-color-focus: light-dark(var(--ctpl-navy-600), var(--ctpl-navy-300));
+
+  --ctpl-color-success: light-dark(var(--ctpl-green-700), var(--ctpl-green-300));
+  --ctpl-color-success-surface: light-dark(var(--ctpl-green-50), var(--ctpl-green-900));
+  --ctpl-color-warning: light-dark(var(--ctpl-amber-700), var(--ctpl-amber-300));
+  --ctpl-color-warning-surface: light-dark(var(--ctpl-amber-50), var(--ctpl-amber-900));
+  --ctpl-color-danger: light-dark(var(--ctpl-red-700), var(--ctpl-red-300));
+  --ctpl-color-danger-surface: light-dark(var(--ctpl-red-50), var(--ctpl-red-900));
+
+  /* Text over a photo (hero banners): always light text on a darkened image, in both schemes. */
+  --ctpl-color-overlay: light-dark(#0c1019a6, #000000b3);
+  --ctpl-color-text-on-overlay: var(--ctpl-white);
+  --ctpl-color-shadow: light-dark(var(--ctpl-slate-900), var(--ctpl-black));
+
+  /* ---- Tier 2: typography ----------------------------------------------------------------- */
+  --ctpl-font-body: var(--ctpl-stack-sans);
+  --ctpl-font-heading: var(--ctpl-stack-serif);
+  --ctpl-font-mono: var(--ctpl-stack-mono);
+  --ctpl-font-weight-normal: 400;
+  --ctpl-font-weight-medium: 500;
+  --ctpl-font-weight-bold: 700;
+  --ctpl-heading-weight: 600;
+  --ctpl-heading-tracking: -0.01em;
+
+  --ctpl-text-xs: 0.75rem;
+  --ctpl-text-sm: 0.875rem;
+  --ctpl-text-base: 1rem;
+  --ctpl-text-lg: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --ctpl-text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --ctpl-text-2xl: clamp(1.5rem, 1.25rem + 1vw, 2rem);
+  --ctpl-text-3xl: clamp(1.875rem, 1.45rem + 1.8vw, 2.75rem);
+  --ctpl-text-4xl: clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);
+  --ctpl-leading-tight: 1.2;
+  --ctpl-leading-snug: 1.35;
+  --ctpl-leading-normal: 1.6;
+
+  /* ---- Tier 2: space, shape, elevation, layout, motion ------------------------------------ */
+  --ctpl-space-1: 0.25rem;
+  --ctpl-space-2: 0.5rem;
+  --ctpl-space-3: 0.75rem;
+  --ctpl-space-4: 1rem;
+  --ctpl-space-5: 1.5rem;
+  --ctpl-space-6: 2rem;
+  --ctpl-space-7: 3rem;
+  --ctpl-space-8: 4rem;
+  --ctpl-space-9: 6rem;
+  --ctpl-section-gap: clamp(var(--ctpl-space-7), 6vw, var(--ctpl-space-9));
+
+  --ctpl-radius-sm: 0.25rem;
+  --ctpl-radius-md: 0.5rem;
+  --ctpl-radius-lg: 1rem;
+  --ctpl-radius-pill: 999px;
+  --ctpl-border-width: 1px;
+
+  --ctpl-shadow-sm: 0 1px 2px color-mix(in srgb, var(--ctpl-color-shadow) 10%, transparent);
+  --ctpl-shadow-md:
+    0 2px 4px color-mix(in srgb, var(--ctpl-color-shadow) 8%, transparent),
+    0 8px 20px color-mix(in srgb, var(--ctpl-color-shadow) 10%, transparent);
+  --ctpl-shadow-lg: 0 16px 40px color-mix(in srgb, var(--ctpl-color-shadow) 18%, transparent);
+
+  --ctpl-container: 72rem;
+  --ctpl-measure: 42rem;
+  --ctpl-gutter: clamp(1rem, 4vw, 2rem);
+
+  --ctpl-duration-fast: 120ms;
+  --ctpl-duration-base: 200ms;
+  --ctpl-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  --ctpl-focus-ring: 3px solid var(--ctpl-color-focus);
+  --ctpl-focus-offset: 2px;
+}
+
+/* ---- Colour scheme chosen on the site (auto = no attribute = follow the visitor) -------------- */
+:root[data-ctpl-scheme="light"] {
+  color-scheme: light;
+}
+:root[data-ctpl-scheme="dark"] {
+  color-scheme: dark;
+}
+
+/* ---- Theme: ocean (teal accent, sans-serif headings) --------------------------------------- */
+:root[data-ctpl-theme="ocean"] {
+  --ctpl-color-accent: light-dark(var(--ctpl-teal-700), var(--ctpl-teal-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-teal-800), var(--ctpl-teal-200));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-teal-50), var(--ctpl-teal-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-teal-600), var(--ctpl-teal-300));
+  --ctpl-font-heading: var(--ctpl-stack-sans);
+  --ctpl-heading-weight: 700;
+  --ctpl-radius-md: 0.75rem;
+}
+
+/* ---- Theme: terracotta (warm accent, serif headings, squarer shapes) ----------------------- */
+:root[data-ctpl-theme="terracotta"] {
+  --ctpl-color-accent: light-dark(var(--ctpl-clay-700), var(--ctpl-clay-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-clay-800), var(--ctpl-clay-200));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-clay-50), var(--ctpl-clay-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-clay-600), var(--ctpl-clay-300));
+  --ctpl-radius-md: 0.125rem;
+  --ctpl-radius-lg: 0.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --ctpl-duration-fast: 0ms;
+    --ctpl-duration-base: 0ms;
+  }
+}

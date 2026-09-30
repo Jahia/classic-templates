@@ -1,0 +1,22 @@
+/* Footer stays at the bottom of short pages. */
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ctpl-section-gap);
+  padding-block-end: var(--ctpl-section-gap);
+}
+.main:focus {
+  outline: none;
+}
+
+.heading {
+  margin: var(--ctpl-space-7) 0 0;
+}

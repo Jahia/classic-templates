@@ -26,13 +26,13 @@
 
 ## Planned type inventory
 
-| Group                                      | Types                                                                                                                                                                                                     |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shared mixins (`settings/definitions.cnd`) | `ctplmix:component`, `ctplmix:pageComponent`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:seo`, `ctplmix:siteTheme` (on `jnt:virtualsite`), `ctplmix:pageOptions` (on `jnt:page`: hide from nav, hide title) |
-| Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                           |
-| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`                                                                                      |
-| Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                |
-| Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                               |
+| Group                                      | Types                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
+| Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
+| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`                                                                                                                                                                                                                                                                                                                                            |
+| Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
+| Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
 ## Layout
 
@@ -43,15 +43,33 @@
     utility link list (right-aligned, above)
     logo · main navigation (3 levels, from the home page's children)
   <main id="main-content">
-    <h1> page title (visually hidden when the page hides its title)
-    Areas of the template
+    home:      <h1> (hidden) · hero area · main area
+    content:   hero area · <h1> · main area
+    fullWidth: <h1> · main area
+    main resource: the item's fullPage view (it renders its own <h1>)
   AbsoluteArea siteFooter  (parent = home page, readOnly="children")
 ```
 
 ## Theming
 
-See the AIStartupKit context doc `jahia-theming-tokens.md`. Tokens are prefixed `--ctpl-`. The site
-mixin carries `ctplTheme` (default, plus two samples) and `ctplColorScheme` (auto, light, dark).
+See the AIStartupKit context doc `jahia-theming-tokens.md`. Tokens are prefixed `--ctpl-`, in
+`src/templates/tokens.css`. The site mixin `ctplmix:siteSettings` carries `ctplTheme` (`default`,
+`ocean`, `terracotta`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
+Layout (only known values; the default look stamps nothing).
+
+- **Light and dark without duplication:** every colour role is a `light-dark()` pair and
+  `:root { color-scheme: light dark }`; `data-ctpl-scheme` only forces `color-scheme`. Jahia's CSS
+  aggregation/minification keeps `light-dark()`, `color-mix()` and `clamp()` intact (checked on
+  8.2.3.2). Browser support: Baseline 2024.
+- **Contrast** is checked by `yarn check:contrast` for every theme × scheme (22 pairs each), and
+  literal colours outside `tokens.css` by `yarn check:tokens`. Both were shown to fail on a
+  deliberately broken token before being trusted.
+- **Cache:** the Layout declares a cache dependency on the site node
+  (`server.render.addCacheDependency({ node: site }, renderContext)`). Without it, publishing a new
+  theme left cached live pages on the old one; with it, they switch on the first request after the
+  publish.
+- **Fonts** are system stacks (no web-font download, nothing to host or consent to). A theme can
+  point `--ctpl-font-*` at self-hosted fonts in `static/`.
 
 ## Security notes (jahia-security-scan)
 
@@ -100,7 +118,17 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
 - `settings/definitions.cnd` declares every prefix the module uses (`jnt`, `jmix`, `mix`, `j`,
   `jcr`, `ctpl`, `ctplmix`). Component CNDs carry the same header.
 
+## Editor UI notes
+
+- **Template names are not translatable:** the page editor's template picker shows the
+  `displayName` of `jahiaComponent`. Core looks up
+  `jmix_hasTemplateNode.j_templateName.<name>` in the module bundle, but with the JS engine 1.2.0
+  those keys are ignored (tested). The names stay in English.
+- **Empty shared areas are blank in the edit canvas:** an AbsoluteArea shows in Page Builder only
+  once its node has a child. `import.xml` therefore seeds the header and footer singletons (phase 5),
+  which also keeps the `<footer>` landmark from ever being empty.
+- Header and footer are locked (`readOnly="children"`) on every page except home.
+
 ## Open questions
 
-- **Theme change and cache:** confirm that publishing the site node after a theme change refreshes
-  cached pages.
+None at the end of phase 4.

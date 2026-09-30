@@ -1,0 +1,12 @@
+mutation setSiteLook($sitePath: String!, $theme: String!, $scheme: String!) {
+    jcr {
+        mutateNode(pathOrId: $sitePath) {
+            addMixins(mixins: ["ctplmix:siteSettings"])
+            setPropertiesBatch(
+                properties: [{ name: "ctplTheme", value: $theme }, { name: "ctplColorScheme", value: $scheme }]
+            ) {
+                path
+            }
+        }
+    }
+}

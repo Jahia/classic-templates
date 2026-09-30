@@ -6,6 +6,6 @@
         "noEmit": false,
         "isolatedModules": false,
         "types": ["cypress", "node", "@jahia/cypress"],
-        "lib": ["es2015"]
+        "lib": ["es2019", "dom"]
     }
 }

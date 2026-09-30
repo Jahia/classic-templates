@@ -1,12 +1,147 @@
-* {
-  max-width: 100%;
-}
+/*
+ * Base element styles and the few global helpers shared by every component. Everything reads the
+ * tokens of tokens.css; nothing here holds a literal colour.
+ */
 
 body {
-  background: #fff;
-  line-height: 1.5;
+  margin: 0;
+  background: var(--ctpl-color-surface-page);
+  color: var(--ctpl-color-text);
+  font-family: var(--ctpl-font-body);
+  font-size: var(--ctpl-text-base);
+  line-height: var(--ctpl-leading-normal);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0 0 var(--ctpl-space-4);
+  font-family: var(--ctpl-font-heading);
+  font-weight: var(--ctpl-heading-weight);
+  letter-spacing: var(--ctpl-heading-tracking);
+  line-height: var(--ctpl-leading-tight);
+  text-wrap: balance;
+}
+h1 {
+  font-size: var(--ctpl-text-4xl);
+}
+h2 {
+  font-size: var(--ctpl-text-3xl);
+}
+h3 {
+  font-size: var(--ctpl-text-xl);
+}
+h4 {
+  font-size: var(--ctpl-text-lg);
+}
+
+p {
+  margin: 0 0 var(--ctpl-space-4);
 }
 
 a {
-  color: #06a;
+  color: var(--ctpl-color-link);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  color: var(--ctpl-color-link-hover);
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+
+/* ---- Helpers ------------------------------------------------------------------------------- */
+
+/* Horizontal container: every section that is not full-bleed centres its content with this. */
+.ctpl-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--ctpl-container) + 2 * var(--ctpl-gutter));
+  margin-inline: auto;
+  padding-inline: var(--ctpl-gutter);
+}
+
+/* Hidden on screen, still read by screen readers and search engines. */
+.ctpl-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ctpl-skip-link {
+  position: absolute;
+  z-index: 100;
+  top: var(--ctpl-space-2);
+  left: var(--ctpl-space-2);
+  padding: var(--ctpl-space-2) var(--ctpl-space-4);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+  transform: translateY(-200%);
+  transition: transform var(--ctpl-duration-fast) var(--ctpl-ease);
+}
+.ctpl-skip-link:focus {
+  transform: none;
+  color: var(--ctpl-color-text-on-accent);
+}
+
+/* Rich text written by editors (see src/lib/RichText.tsx). */
+.ctpl-prose {
+  max-width: var(--ctpl-measure);
+}
+.ctpl-prose > :last-child {
+  margin-bottom: 0;
+}
+.ctpl-prose h2 {
+  font-size: var(--ctpl-text-2xl);
+  margin-top: var(--ctpl-space-6);
+}
+.ctpl-prose h3 {
+  margin-top: var(--ctpl-space-5);
+}
+.ctpl-prose ul,
+.ctpl-prose ol {
+  margin: 0 0 var(--ctpl-space-4);
+  padding-left: var(--ctpl-space-5);
+}
+.ctpl-prose blockquote {
+  margin: var(--ctpl-space-5) 0;
+  padding-left: var(--ctpl-space-4);
+  border-left: 3px solid var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-muted);
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-lg);
+}
+.ctpl-prose img {
+  border-radius: var(--ctpl-radius-md);
+}
+.ctpl-prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.ctpl-prose th,
+.ctpl-prose td {
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  text-align: left;
 }

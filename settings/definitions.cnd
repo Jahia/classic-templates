@@ -1,14 +1,74 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
 <ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
 <ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
 
-// Defining the content types is similar to defining a data model: once deployed, you cannot change the type of a property.
-// If you need to do changes during the development phase, it is possible to remove the definitions from the tools:
-// http://localhost:8080/cms/login?redirect=/modules/tools/definitionsBrowser.jsp however that will remove content created with this type.
-// Learn more about content types definitions here:
-// https://github.com/Jahia/javascript-modules/tree/main/docs/3-reference/1-cnd-format/
+// Namespaces, base mixins and the mixins shared by several types. Each content type lives next to
+// its view in src/components/<Category>/<Name>/definition.cnd, with exactly this header: the
+// engine merges every CND of the module at install time, and a prefix bound to two URIs fails the
+// install.
 
-// This mixin creates a category to regroup types in the content type selector UI. Apply it to any definition you want
-// to see in this category.
+// ---- Component tiers ----------------------------------------------------------------------------
+
+// Groups every classic-templates type in the content type selector.
 [ctplmix:component] > jmix:droppableContent, jmix:accessControllableContent mixin
+
+// Can be dropped in a page's main area.
+[ctplmix:pageComponent] > ctplmix:component mixin
+
+// Can be dropped in a page's hero area (one banner at the top of the page).
+[ctplmix:heroComponent] > ctplmix:component mixin
+
+// The singleton that fills the shared header area, and the one that fills the shared footer area.
+[ctplmix:headerComponent] > ctplmix:component mixin
+[ctplmix:footerComponent] > ctplmix:component mixin
+
+// ---- Areas --------------------------------------------------------------------------------------
+// One area type per region, so an editor only ever sees the types that belong there.
+
+[ctpl:heroArea] > jnt:content, jmix:list, jmix:hiddenType orderable
+ + * (ctplmix:heroComponent)
+
+[ctpl:pageArea] > jnt:content, jmix:list, jmix:hiddenType orderable
+ + * (ctplmix:pageComponent)
+
+[ctpl:headerArea] > jnt:content, jmix:list, jmix:hiddenType orderable
+ + * (ctplmix:headerComponent)
+
+[ctpl:footerArea] > jnt:content, jmix:list, jmix:hiddenType orderable
+ + * (ctplmix:footerComponent)
+
+// ---- Shared property groups ---------------------------------------------------------------------
+
+// A link picked with Jahia's native link selector: "internal" adds jmix:internalLink (page picker,
+// j:linknode), "external" adds jmix:externalLink (j:url, j:linkTitle). Both targets are i18n, so a
+// link is set per language. Never declare j:linknode or j:url here. Views resolve it with
+// src/lib/resolveLink.ts, which also allow-lists URL schemes.
+[ctplmix:linkTo] mixin
+ - j:linkType (string, choicelist[linkTypeInitializer,resourceBundle]) = 'none' autocreated indexed=no
+
+// A single call to action: a link plus its visible label. A component with several actions models
+// them as child ctpl:link nodes instead.
+[ctplmix:cta] > ctplmix:linkTo mixin
+ - ctaLabel (string) i18n
+
+// An image from the media library. Its alt text is the image's own jcr:title.
+[ctplmix:media] mixin
+ - image (weakreference, picker[type='image']) < jmix:image
+
+// ---- Page and site options ----------------------------------------------------------------------
+
+// Optional page settings, offered on every page's edit form.
+[ctplmix:pageOptions] mixin
+ extends = jnt:page
+ - ctplHideFromNav (boolean) = false autocreated
+ - ctplHideTitle (boolean) = false autocreated
+
+// Look of the whole site, set on the site node in jContent: no deploy needed to change it.
+[ctplmix:siteSettings] mixin
+ extends = jnt:virtualsite
+ - ctplTheme (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'ocean', 'terracotta'
+ - ctplColorScheme (string, choicelist[resourceBundle]) = 'auto' autocreated < 'auto', 'light', 'dark'

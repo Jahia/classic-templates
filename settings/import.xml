@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Seeded into every site created on this template set.
+
+  The shared header and footer areas live UNDER the home page: that is the node their
+  AbsoluteAreas are parented on, and the only place Page Builder lets an editor change them.
+  Area node types match the nodeType each template declares, otherwise the area renders nothing.
+-->
 <content
   xmlns:j="http://www.jahia.org/jahia/1.0"
   xmlns:jcr="http://www.jcp.org/jcr/1.0"
+  xmlns:jnt="http://www.jahia.org/jahia/nt/1.0"
+  xmlns:ctpl="http://www.jahia.org/classic-templates/nt/1.0"
+  xmlns:ctplmix="http://www.jahia.org/classic-templates/mix/1.0"
   >
   <modules jcr:primaryType="jnt:modules">
     <classic-templates>
       <home
         j:isHomePage="true"
-        j:templateName="basic"
+        j:templateName="home"
         jcr:primaryType="jnt:page"
+        jcr:mixinTypes="ctplmix:pageOptions"
+        ctplHideTitle="true"
+        ctplHideFromNav="false"
         >
         <j:translation_en
           jcr:language="en"
@@ -22,7 +35,12 @@
           jcr:primaryType="jnt:translation"
           jcr:title="Accueil"
           />
+        <hero jcr:primaryType="ctpl:heroArea" />
+        <main jcr:primaryType="ctpl:pageArea" />
+        <siteHeader jcr:primaryType="ctpl:headerArea" />
+        <siteFooter jcr:primaryType="ctpl:footerArea" />
       </home>
+      <contents jcr:primaryType="jnt:contentFolder" />
     </classic-templates>
   </modules>
 </content>

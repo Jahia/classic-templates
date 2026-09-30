@@ -1,0 +1,9 @@
+mutation setSiteDescription($sitePath: String!, $description: String!) {
+    jcr {
+        mutateNode(pathOrId: $sitePath) {
+            mutateProperty(name: "j:description") {
+                setValue(value: $description)
+            }
+        }
+    }
+}

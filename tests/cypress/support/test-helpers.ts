@@ -13,14 +13,31 @@ export const createTestSite = (siteKey: string): void => {
     publishAndWaitJobEnding(`/sites/${siteKey}`, LANGUAGES)
 }
 
-/** Adds a page under `parentPath` with an EN title and the given template. */
-export const addPage = (parentPath: string, name: string, title: string, template: string) =>
+export interface PageSpec {
+    name: string
+    template: string
+    title: { en: string; fr: string }
+    description?: { en: string; fr: string }
+}
+
+/** Adds a page under `parentPath` with EN and FR titles (and descriptions) and the given template. */
+export const addPage = (parentPath: string, page: PageSpec) =>
     addNode({
         parentPathOrId: parentPath,
-        name,
+        name: page.name,
         primaryNodeType: 'jnt:page',
         properties: [
-            { name: 'jcr:title', value: title, language: 'en' },
-            { name: 'j:templateName', type: 'STRING', value: template },
+            { name: 'jcr:title', value: page.title.en, language: 'en' },
+            { name: 'jcr:title', value: page.title.fr, language: 'fr' },
+            ...(page.description
+                ? [
+                      { name: 'jcr:description', value: page.description.en, language: 'en' },
+                      { name: 'jcr:description', value: page.description.fr, language: 'fr' },
+                  ]
+                : []),
+            { name: 'j:templateName', type: 'STRING', value: page.template },
         ],
     })
+
+/** The page's `<h1>` elements (the template must render exactly one). */
+export const pageHeadings = () => cy.get('h1')

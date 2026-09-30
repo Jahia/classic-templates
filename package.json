@@ -12,6 +12,8 @@
   ],
   "scripts": {
     "build": "tsc --noEmit && vite build && run package",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
     "clean": "rm -rf dist/",
     "deploy": "jahia-deploy",
     "dev": "vite build --watch",

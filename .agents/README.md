@@ -31,7 +31,7 @@ holds what is specific to this module: its decisions, its conventions and its ga
 
 1. Namespaces are `ctpl` (types) and `ctplmix` (mixins). Never rename them once content exists.
 2. Every visible string is contributed content or a locale key, in EN and FR.
-3. No literal colour, font stack or shadow outside `src/templates/tokens.css`.
+3. No literal colour, font stack or shadow outside `src/templates/tokens.css` (`yarn check:tokens`).
 4. The page template renders the page's only `<h1>`. Components start at `<h2>`.
 5. Header and footer are owned by the home page (`AbsoluteArea parent={home}`, `readOnly="children"`).
 6. Every component ships with `data-testid` on its root and Cypress specs under `tests/cypress/e2e/<component>/`.
