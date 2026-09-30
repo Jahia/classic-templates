@@ -1,0 +1,9 @@
+# This file inherits .gitignore, there is no need to copy its content here
+LICENSE
+.yarn/
+# Managed globally at https://github.com/Jahia/.github - DO NOT EDIT
+.github/release.yml
+.github/instructions/
+.github/workflows/chachalog-*.yml
+.github/workflows/delivery-*.yml
+tests/results/

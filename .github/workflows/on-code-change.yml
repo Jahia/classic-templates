@@ -1,0 +1,62 @@
+# Runs on every pull request: signature, Maven build (wraps yarn build), Sonar, integration tests.
+name: On Code Change (PR)
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  update-signature:
+    name: Update module signature
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: jahia/jahia-modules-action/update-signature@v2
+        with:
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+
+  build:
+    name: Build Module
+    needs: update-signature
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: jahia/jahia-modules-action/build@v2
+        with:
+          mvn_settings_filepath: ".github/maven.settings.xml"
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+
+  sonar-analysis:
+    name: Sonar Analysis
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      NEXUS_INTERNAL_URL: ${{ secrets.NEXUS_INTERNAL_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jahia/jahia-modules-action/sonar-analysis@v2
+        with:
+          primary_release_branch: main
+          github_slug: jahia/classic-templates
+          github_pr_id: ${{ github.event.number }}
+          sonar_url: ${{ secrets.SONAR_URL }}
+          sonar_token: ${{ secrets.SONAR_TOKEN }}
+          nexus_username: ${{ secrets.NEXUS_USERNAME }}
+          nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+
+  integration-tests:
+    uses: Jahia/jahia-modules-action/.github/workflows/reusable-integration-tests.yml@v2
+    secrets: inherit
+    needs: build
+    with:
+      jahia_image: ghcr.io/jahia/jahia-ee-dev:8-SNAPSHOT
+      module_id: classic-templates
+      should_skip_testrail: true
+      pagerduty_skip_notification: true
+      provisioning_manifest: provisioning-manifest-build.yml
+      artifact_prefix: classic-templates
+      module_branch: ${{ github.ref }}
