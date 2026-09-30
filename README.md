@@ -21,6 +21,9 @@ settings, with no code change.
 - For the Maven build: Java 17 and Maven 3.9
 - Recommended on sites: Jahia's `sitemap` module for `sitemap.xml` (search engines). The template
   set's own site map component is the page visitors read.
+- Optional add-ons, dropped in a **Free zone** section and themed by `src/templates/addons.css`:
+  Formidable (forms), jsfaq, js-media-gallery, js-store-locator. `python3 scripts/seed-addons.py`
+  builds a local demo site with all four.
 
 ## Getting started
 

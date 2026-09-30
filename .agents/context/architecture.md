@@ -30,7 +30,7 @@
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`                                                                                                                                                                                                                  |
+| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`                                                                                                                                                                                                 |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -281,6 +281,31 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
 - Pages with an add-on that emits its own JSON-LD (jsfaq's `FAQPage`) carry both blocks, which is
   valid.
 
+## Add-on modules (free zone and token bridge)
+
+- **`ctpl:freeZone`** (`+ * (jmix:droppableContent)`, heading, page / reading / full width): the
+  one place where components of other modules go. Only core types are referenced, so the template
+  set installs and runs without any add-on; page areas keep accepting `ctplmix:pageComponent` only.
+- **`templates/addons.css`**, loaded with the global styles: maps the add-ons' CSS variables onto
+  the theme's tokens (light-dark pairs, so dark mode follows), scoped to `.ctpl-addon` (a class
+  beats their `:root` defaults), except Formidable's button variables, set on `:root` because its
+  message button renders beside the form. Where an add-on paints outside its variables, the rule
+  matches its CSS-module class on the stable local name (`[class*="_jsfaq-item_"]`), tied to the
+  element, never on the hash. Measured, not guessed: every override answers an element found with
+  a computed-style sweep in dark mode.
+- Verified on the local `classic-addons` demo site (`scripts/seed-addons.py`: FAQ, gallery, store
+  locator, contact form), axe + Lighthouse clean in light and dark, EN and FR:
+  - **Formidable** (`formidable-elements`): fields, labels, help, messages styled by the template
+    set as its docs intend (visible labels, `border-strong` 3:1 borders, the site focus ring);
+    forms placed with a Form reference in a free zone.
+  - **jsfaq**: variables mapped; its 30% focus tint replaced by the site ring (RGAA 10.7); three
+    white surfaces (wrapper, search field, item) repainted.
+  - **js-media-gallery**: accent from `--primary`; its hard-coded dark title repainted.
+  - **js-store-locator**: no variables; keeps its own light panel, readable in dark mode. Its
+    Leaflet tiles and stylesheet come from OpenStreetMap and unpkg (a CSP must allow them).
+- jsfaq and js-media-gallery depend on jExperience, which a site enabling them gets too: that is
+  why the add-ons have their own demo site. None of them is covered by the site's RGAA statement.
+
 ## Accessibility (RGAA 4.1.2)
 
 A manual RGAA audit (2026-09-30, twelve pages, six looks) found 11 template defects, all fixed:
@@ -311,5 +336,5 @@ of both, linked from the footer.
 
 ## Open questions
 
-None after Tier 1. Next: a free-zone section and a CSS token bridge so the jsfaq, js-media-gallery,
-js-store-locator and formidable add-ons can be dropped into ctpl pages without a hard dependency.
+None open. Possible next steps: screen-reader testing (NVDA + Firefox, VoiceOver + Safari), a
+contact form on classic-dev (Formidable, which does not bring jExperience).

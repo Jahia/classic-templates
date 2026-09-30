@@ -82,6 +82,14 @@ describe('Sections - card grid, key figures, quote', () => {
                                 label: { en: 'support', fr: 'assistance' },
                             })
                         })
+                        // A free zone holding core content, as it would hold another module's component.
+                        addContent(`${page}/main`, 'zone', 'ctpl:freeZone', {
+                            'jcr:title': { en: 'From elsewhere', fr: "D'ailleurs" },
+                        }).then(() =>
+                            addContent(`${page}/main/zone`, 'text', 'jnt:bigText', {
+                                text: { en: '<p>Core rich text</p>', fr: '<p>Texte riche standard</p>' },
+                            }),
+                        )
                         addContent(
                             `${page}/main`,
                             'quote',
@@ -185,5 +193,15 @@ describe('Sections - card grid, key figures, quote', () => {
                 const style = $p[0].ownerDocument.defaultView?.getComputedStyle($p[0])
                 expect(style?.getPropertyValue('quotes')).to.contain('«')
             })
+    })
+
+    it('renders a free zone with its heading and any droppable content, inside the add-on scope', () => {
+        cy.visit(live)
+        cy.get('[data-testid="ctpl-free-zone"]').within(() => {
+            cy.get('h2').should('have.text', 'From elsewhere')
+            cy.get('.ctpl-addon').should('contain.text', 'Core rich text')
+        })
+        cy.visit(`/fr${live}`)
+        cy.get('[data-testid="ctpl-free-zone"] .ctpl-addon').should('contain.text', 'Texte riche standard')
     })
 })

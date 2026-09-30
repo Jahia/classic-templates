@@ -3,9 +3,19 @@
  * Their own stylesheets expose CSS variables with neutral defaults; these rules point them at the
  * site's semantic tokens, so an add-on follows the theme and the colour scheme. Tokens are
  * light-dark() pairs resolved where they are used, so the mapping holds in dark mode too.
- * Only variables and documented class hooks are used: the add-ons' hashed CSS-module classes are
- * never targeted. Components without variables (js-store-locator) keep their own light look.
+ * Variables and documented class hooks first; where an add-on paints outside its variables, its
+ * CSS-module class is matched on its stable local name, never on the hash. Components without
+ * variables (js-store-locator, js-media-gallery beyond its accent) keep their own light look.
  */
+
+/* ---- js-media-gallery: its title is hard-coded dark (#1a1a1a) and disappears in dark mode. Its
+   classes are generic ("_root_", "_title_"), so the rule is tied to its structure: the title h2
+   right under the gallery root. Not a rule for every add-on heading: js-store-locator keeps a light
+   panel of its own, where the theme's text colour would be light on light. -------------------- */
+.ctpl-addon [class*="_root_"] > h2[class*="_title_"] {
+  color: var(--ctpl-color-text);
+  font-family: var(--ctpl-font-heading);
+}
 
 /* ---- Formidable (formidable-elements): buttons are styled unscoped, because the message's button
    ("new form", "try again") sits beside the form, so their variables go on :root. ------------- */
@@ -121,19 +131,21 @@
   /* ---- js-media-gallery reads the host's --primary as its accent. ---- */
   --primary: var(--ctpl-color-accent);
 }
-/* jsfaq paints some surfaces white outside its variables (its public, unhashed class names). */
-.ctpl-addon .jsfaq-ssr-wrapper {
+/* jsfaq paints three surfaces white outside its variables (measured: the wrapper, the search
+   field, each item). Its classes are CSS-module hashed ("_jsfaq-item_rhlsc_285"): the local name
+   is stable across its builds, the hash is not, so the rules match on the name, tied to the
+   element so that "_jsfaq-item__toggle_..." children are left alone. */
+.ctpl-addon section[class*="_jsfaq-ssr-wrapper_"] {
   max-width: none;
   padding-inline: 0;
   background: transparent;
 }
-.ctpl-addon .jsfaq__search-input,
-.ctpl-addon .jsfaq-search__field input[type="search"],
-.ctpl-addon .jsfaq-item {
+.ctpl-addon input[class*="_jsfaq__search-input_"],
+.ctpl-addon article[class*="_jsfaq-item_"] {
   background: var(--ctpl-color-surface-raised);
 }
-.ctpl-addon .jsfaq-tag--active,
-.ctpl-addon .jsfaq-tag--active:hover {
+.ctpl-addon [class*="_jsfaq-tag--active_"],
+.ctpl-addon [class*="_jsfaq-tag--active_"]:hover {
   border-color: var(--ctpl-color-accent);
   color: var(--ctpl-color-text-on-accent);
 }

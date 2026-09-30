@@ -14,5 +14,7 @@
   "http://localhost:8080/sites/classic-dev/home/services.html",
   "http://localhost:8080/fr/sites/classic-dev/home/about.html",
   "http://localhost:8080/sites/classic-dev/home/sitemap.html",
-  "http://localhost:8080/fr/sites/classic-dev/home/accessibility.html"
+  "http://localhost:8080/fr/sites/classic-dev/home/accessibility.html",
+  "http://localhost:8080/sites/classic-dev/home/contact.html",
+  "http://localhost:8080/fr/sites/classic-dev/home/contact.html"
 ]
