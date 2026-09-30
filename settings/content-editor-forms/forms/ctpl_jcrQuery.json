@@ -1,0 +1,15 @@
+{
+  "nodeType": "ctpl:jcrQuery",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "layout",
+      "fieldSets": [
+        {
+          "name": "jmix:renderableList",
+          "hide": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A page section that lists news items or articles automatically, newest first by default. Its
+// heading is the optional jcr:title (an h2), the cta is the "see all" link. type offers the
+// subtypes of ctplmix:listable; startNode is the folder or page to look under (empty = the whole
+// site, no picker restriction so both folders and pages can be picked); excludeNodes are items
+// never listed here. layout "grid" renders cards, "list" renders compact rows.
+[ctpl:jcrQuery] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, ctplmix:cta, jmix:list, jmix:renderableList, jmix:cache
+ - type (string, choicelist[nodetypes='ctplmix:listable']) = 'ctpl:news' autocreated
+ // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
+ - startNode (weakreference)
+ - criteria (string, choicelist[resourceBundle]) = 'publicationDate' autocreated < 'publicationDate', 'jcr:created', 'jcr:lastModified', 'jcr:title'
+ - sortDirection (string, choicelist[resourceBundle]) = 'desc' autocreated < 'desc', 'asc'
+ - maxItems (long) = 6 autocreated < '[1,50]'
+ - layout (string, choicelist[resourceBundle]) = 'grid' autocreated < 'grid', 'list'
+ - excludeNodes (weakreference) multiple < ctplmix:listable
+ - noResultText (string) i18n

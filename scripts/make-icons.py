@@ -93,7 +93,32 @@ def column(d, p):
     d.line(p(13, 16, 19, 16), fill=INK, width=w(2))
 
 
+def news(d, p):
+    d.rectangle(p(4, 5, 28, 27), outline=INK, width=w(2))
+    d.rectangle(p(8, 9, 16, 16), fill=INK)
+    for y in (10, 14):
+        d.line(p(19, y, 24, y), fill=INK, width=w(2))
+    for y in (20, 24):
+        d.line(p(8, y, 24, y), fill=INK, width=w(2))
+
+
+def article(d, p):
+    d.rectangle(p(7, 4, 25, 28), outline=INK, width=w(2))
+    d.line(p(11, 10, 21, 10), fill=INK, width=w(3))
+    for y in (15, 19, 23):
+        d.line(p(11, y, 21, y), fill=INK, width=w(2))
+
+
+def jcr_query(d, p):
+    for y in (6, 14, 22):
+        d.rectangle(p(4, y, 10, y + 5), fill=INK)
+        d.line(p(13, y + 2, 28, y + 2), fill=INK, width=w(2))
+
+
 ICONS = {
+    "ctpl_news": news,
+    "ctpl_article": article,
+    "ctpl_jcrQuery": jcr_query,
     "ctpl_heroBanner": hero_banner,
     "ctpl_imageText": image_text,
     "ctpl_richText": rich_text,

@@ -1,4 +1,4 @@
-import { addNode, createSite, deleteSite, publishAndWaitJobEnding } from '@jahia/cypress'
+import { addNode, createSite, deleteSite, getNodeByPath, publishAndWaitJobEnding } from '@jahia/cypress'
 import { LANGUAGES, TEMPLATE_SET } from './constants'
 
 /** Creates a site on the classic-templates template set, with EN and FR, and publishes it. */
@@ -139,3 +139,69 @@ export const ctaTo = (target: string) => ({
     ],
     mixins: ['jmix:internalLink'],
 })
+
+export interface EditorialSpec {
+    name: string
+    title: { en: string; fr?: string }
+    teaser?: { en: string; fr?: string }
+    /** YYYY-MM-DD */
+    date: string
+    author?: string
+    tags?: string[]
+}
+
+/** Adds a ctpl:news or ctpl:article to a content folder; French is set only when given. */
+export const addEditorial = (folder: string, type: 'ctpl:news' | 'ctpl:article', item: EditorialSpec) => {
+    const i18nValue = (name: string, v?: { en: string; fr?: string }) =>
+        v ? [{ name, value: v.en, language: 'en' }, ...(v.fr ? [{ name, value: v.fr, language: 'fr' }] : [])] : []
+    return addNode({
+        parentPathOrId: folder,
+        name: item.name,
+        primaryNodeType: type,
+        mixins: item.tags ? ['jmix:tagged'] : [],
+        properties: [
+            ...i18nValue('jcr:title', item.title),
+            ...i18nValue('teaser', item.teaser),
+            { name: 'publicationDate', type: 'DATE', value: `${item.date}T09:00:00.000+02:00` },
+            ...(item.author ? [{ name: 'author', value: item.author }] : []),
+            ...(item.tags ? [{ name: 'j:tagList', values: item.tags }] : []),
+        ],
+    })
+}
+
+/** Adds a ctpl:jcrQuery listing `type` under `startUuid`. */
+export const addList = (
+    parent: string,
+    name: string,
+    options: {
+        type: string
+        startUuid: string
+        title?: { en: string; fr: string }
+        layout?: 'grid' | 'list'
+        max?: number
+        direction?: 'asc' | 'desc'
+        exclude?: string[]
+        noResult?: { en: string; fr: string }
+    },
+) =>
+    addContent(
+        parent,
+        name,
+        'ctpl:jcrQuery',
+        {
+            ...(options.title ? { 'jcr:title': options.title } : {}),
+            ...(options.noResult ? { noResultText: options.noResult } : {}),
+        },
+        [
+            { name: 'type', value: options.type },
+            { name: 'startNode', type: 'WEAKREFERENCE', value: options.startUuid },
+            { name: 'layout', value: options.layout ?? 'grid' },
+            { name: 'maxItems', value: String(options.max ?? 6) },
+            { name: 'sortDirection', value: options.direction ?? 'desc' },
+            ...(options.exclude ? [{ name: 'excludeNodes', type: 'WEAKREFERENCE', values: options.exclude }] : []),
+        ] as { name: string; value: string; type?: string }[],
+    )
+
+/** The uuid of the node at `path`. */
+export const uuidAt = (path: string) =>
+    getNodeByPath(path).then((res: { data: { jcr: { nodeByPath: { uuid: string } } } }) => res.data.jcr.nodeByPath.uuid)

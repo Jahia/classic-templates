@@ -13,6 +13,9 @@
   - uploads three generated abstract images (Pillow) to files/demo, with titles as alt text;
   - fills the home, about and landing pages with sections (hero banners, image and text, columns,
     rich text);
+  - creates the news and articles folders with six news items and three articles (EN + FR, dates,
+    images, tags), and content lists on home (latest news as cards, articles as a list) and on the
+    news page;
   - publishes the site in both languages, files included (publishing content never publishes the
     images it references).
 
@@ -361,6 +364,80 @@ def main():
         i18n("jcr:title", {"en": "A landing page, full width", "fr": "Une page d'atterrissage pleine largeur"})
         + i18n("subtitle", {"en": "A plain banner: no photo, a tint of the theme's accent.", "fr": "Une bannière simple : pas de photo, une teinte de l'accent du thème."})
         + [{"name": "variant", "value": "plain"}, {"name": "height", "value": "compact"}])
+
+    # ---- News and articles (main resources in content folders) + content lists ---------------
+    contents = f"{site}/contents"
+    for folder, typ, en, fr in (("news", "ctpl:news", "News", "Actualités"), ("articles", "ctpl:article", "Articles", "Articles")):
+        if not exists(f"{contents}/{folder}"):
+            add_content(contents, folder, "jnt:contentFolder",
+                        i18n("jcr:title", {"en": en, "fr": fr}) + [{"name": "j:contributeTypes", "values": [typ]}],
+                        ["jmix:contributeMode"])
+    news_items = [
+        ("launch", "2026-09-28", "Classic templates is out", "Classic templates est disponible",
+         "A themeable template set with header, footer and reusable sections.", "Un jeu de gabarits personnalisable avec en-tête, pied de page et sections réutilisables.",
+         "wide", ["release", "templates"]),
+        ("dark-mode", "2026-09-21", "Dark mode for every theme", "Le mode sombre pour chaque thème",
+         "Visitors get light or dark automatically; administrators can force one.", "Les visiteurs ont le clair ou le sombre automatiquement ; les administrateurs peuvent en imposer un.",
+         "square", ["design"]),
+        ("accessibility", "2026-09-14", "Accessibility checked on every page", "L'accessibilité vérifiée sur chaque page",
+         "Every page passes the full axe rule set in each theme.", "Chaque page passe l'ensemble des règles axe dans chaque thème.",
+         "tall", ["accessibility"]),
+        ("french", "2026-09-07", "Fully bilingual", "Entièrement bilingue",
+         "Every label, link and page exists in English and French.", "Chaque libellé, lien et page existe en anglais et en français.",
+         None, ["i18n"]),
+        ("columns", "2026-08-31", "Columns that keep your content", "Des colonnes qui gardent votre contenu",
+         "Switch from four columns to two and back without losing anything.", "Passez de quatre colonnes à deux et revenez sans rien perdre.",
+         "wide", ["editing"]),
+        ("workshop", "2026-08-24", "Autumn editor workshop", "Atelier rédacteurs d'automne",
+         "Two hours to master Page Builder with the classic templates.", "Deux heures pour maîtriser Page Builder avec les classic templates.",
+         "square", ["training"]),
+    ]
+    for name, day, en_t, fr_t, en_s, fr_s, image, tags in news_items:
+        props = (i18n("jcr:title", {"en": en_t, "fr": fr_t}) + i18n("teaser", {"en": en_s, "fr": fr_s})
+                 + i18n("body", {"en": f"<p>{en_s}</p><p>This demonstration item is part of the classic-templates demo site.</p>",
+                                 "fr": f"<p>{fr_s}</p><p>Cet élément de démonstration fait partie du site de démonstration classic-templates.</p>"})
+                 + [{"name": "publicationDate", "type": "DATE", "value": f"{day}T09:00:00.000+02:00"},
+                    {"name": "j:tagList", "values": tags}])
+        if image:
+            props.append({"name": "image", "type": "WEAKREFERENCE", "value": img[image]})
+        add_content(f"{contents}/news", name, "ctpl:news", props, ["jmix:tagged"])
+    long_body = {
+        "en": "".join(f"<p>{s}</p>" for s in [
+            "A template set is a contract between developers and editors.",
+            "Developers promise that every visible string is content and every colour is a token; editors get pages they can assemble and restyle without asking for a deploy.",
+            "The classic templates keep that promise with a small vocabulary: a hero banner, image and text, rich text, columns and content lists. " * 6]),
+        "fr": "".join(f"<p>{s}</p>" for s in [
+            "Un jeu de gabarits est un contrat entre développeurs et rédacteurs.",
+            "Les développeurs promettent que chaque texte visible est du contenu et chaque couleur un jeton ; les rédacteurs obtiennent des pages qu'ils assemblent et restylent sans attendre un déploiement.",
+            "Les classic templates tiennent cette promesse avec un petit vocabulaire : bannière, image et texte, texte riche, colonnes et listes de contenus. " * 6]),
+    }
+    for name, day, author, en_t, fr_t, en_s, fr_s, image in [
+        ("contract", "2026-09-25", "Ada Martin", "The template set as a contract", "Le jeu de gabarits comme contrat",
+         "Why every visible string is content and every colour a token.", "Pourquoi chaque texte visible est du contenu et chaque couleur un jeton.", "tall"),
+        ("tokens", "2026-09-10", "Louis Bernard", "Three tiers of design tokens", "Trois niveaux de jetons de design",
+         "Primitives, semantic roles and component knobs, and why components only read the middle one.", "Primitives, rôles sémantiques et réglages de composant, et pourquoi les composants ne lisent que le niveau du milieu.", "wide"),
+        ("navigation", "2026-08-20", "Ada Martin", "A menu that works without JavaScript", "Un menu qui fonctionne sans JavaScript",
+         "Server-rendered first, enhanced second: the disclosure pattern in practice.", "Rendu serveur d'abord, amélioré ensuite : le motif disclosure en pratique.", None),
+    ]:
+        props = (i18n("jcr:title", {"en": en_t, "fr": fr_t}) + i18n("teaser", {"en": en_s, "fr": fr_s}) + i18n("body", long_body)
+                 + [{"name": "publicationDate", "type": "DATE", "value": f"{day}T09:00:00.000+02:00"}, {"name": "author", "value": author}])
+        if image:
+            props.append({"name": "image", "type": "WEAKREFERENCE", "value": img[image]})
+        add_content(f"{contents}/articles", name, "ctpl:article", props)
+
+    news_folder = gql("query($p:String!){jcr{nodeByPath(path:$p){uuid}}}", {"p": f"{contents}/news"})["jcr"]["nodeByPath"]["uuid"]
+    articles_folder = gql("query($p:String!){jcr{nodeByPath(path:$p){uuid}}}", {"p": f"{contents}/articles"})["jcr"]["nodeByPath"]["uuid"]
+    props, mixins = cta(p["news"], {"en": "All news", "fr": "Toutes les actualités"})
+    add_content(main, "latest", "ctpl:jcrQuery", i18n("jcr:title", {"en": "Latest news", "fr": "Dernières actualités"})
+        + [{"name": "type", "value": "ctpl:news"}, {"name": "startNode", "type": "WEAKREFERENCE", "value": news_folder},
+           {"name": "maxItems", "value": "3"}, {"name": "layout", "value": "grid"}] + props, mixins)
+    add_content(main, "reading", "ctpl:jcrQuery", i18n("jcr:title", {"en": "Articles", "fr": "Articles"})
+        + [{"name": "type", "value": "ctpl:article"}, {"name": "startNode", "type": "WEAKREFERENCE", "value": articles_folder},
+           {"name": "maxItems", "value": "3"}, {"name": "layout", "value": "list"}, {"name": "ctplSurface", "value": "sunken"}])
+    add_content(ensure_area(f"{home}/news", "main", "ctpl:pageArea"), "all", "ctpl:jcrQuery",
+        i18n("noResultText", {"en": "No news yet.", "fr": "Pas encore d'actualités."})
+        + [{"name": "type", "value": "ctpl:news"}, {"name": "startNode", "type": "WEAKREFERENCE", "value": news_folder},
+           {"name": "maxItems", "value": "24"}, {"name": "layout", "value": "grid"}])
 
     for root in (site, f"{site}/files"):
         gql(

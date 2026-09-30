@@ -64,6 +64,19 @@
 [ctplmix:sectionStyle] mixin
  - ctplSurface (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'sunken', 'accent'
 
+// ---- Editorial content (news, articles) -----------------------------------------------------------
+
+// Marker of the content types a ctpl:jcrQuery can list (its type picker offers the subtypes of this
+// mixin, so a new listable type only has to extend it).
+[ctplmix:listable] mixin
+
+// What a news item and an article share: the teaser shown on cards, the body of the full page, the
+// publication date used for sorting and display, and an image.
+[ctplmix:editorialItem] > ctplmix:listable, ctplmix:media mixin
+ - teaser (string, textarea) i18n
+ - body (string, richtext) i18n
+ - publicationDate (date, datepicker)
+
 // ---- Page and site options ----------------------------------------------------------------------
 
 // Optional page settings, offered on every page's edit form.

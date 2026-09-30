@@ -23,5 +23,19 @@
   },
   "cta": {
     "noLabel": "Libellé du bouton manquant"
+  },
+  "editorial": {
+    "news": "Actualité",
+    "article": "Article",
+    "by": "Par {{author}}",
+    "readingTime_one": "{{count}} min de lecture",
+    "readingTime_other": "{{count}} min de lecture",
+    "topics": "Thèmes"
+  },
+  "query": {
+    "summary": "Liste {{type}} sous {{start}}, {{order}}, {{max}} au plus.",
+    "newest": "du plus récent au plus ancien",
+    "oldest": "du plus ancien au plus récent",
+    "empty": "Rien à afficher pour le moment."
   }
 }

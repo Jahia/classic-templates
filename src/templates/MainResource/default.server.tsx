@@ -19,10 +19,12 @@ jahiaComponent(
     {
       "jcr:title": title,
       "jcr:description": description,
-    }: { "jcr:title"?: string; "jcr:description"?: string },
+      teaser,
+    }: { "jcr:title"?: string; "jcr:description"?: string; "teaser"?: string },
     { currentNode },
   ) => (
-    <PageShell title={title} description={description}>
+    // News and articles have a teaser: the natural meta description when none is set.
+    <PageShell title={title} description={description || teaser}>
       <Render node={currentNode} view="fullPage" />
     </PageShell>
   ),

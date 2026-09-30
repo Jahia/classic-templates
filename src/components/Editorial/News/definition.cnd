@@ -1,0 +1,12 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A news item, stored in a content folder. It is shown in content lists (card and compact views)
+// and at its own URL (fullPage view). Its teaser, body, publication date and image come from
+// ctplmix:editorialItem; being listable, a ctpl:jcrQuery can list it.
+[ctpl:news] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctplmix:component, ctplmix:editorialItem

@@ -1,0 +1,13 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A longer article, stored in a content folder, shown in content lists (card and compact views)
+// and at its own URL (fullPage view). Same editorial fields as a news item, plus the author's name
+// as displayed. The name is not i18n: it is the same in every language.
+[ctpl:article] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctplmix:component, ctplmix:editorialItem
+ - author (string)

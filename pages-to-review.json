@@ -5,5 +5,9 @@
   "http://localhost:8080/sites/classic-dev/home/about/team.html",
   "http://localhost:8080/fr/sites/classic-dev/home/about/team.html",
   "http://localhost:8080/sites/classic-dev/home/services/consulting/strategy.html",
-  "http://localhost:8080/sites/classic-dev/home/landing.html"
+  "http://localhost:8080/sites/classic-dev/home/landing.html",
+  "http://localhost:8080/sites/classic-dev/home/news.html",
+  "http://localhost:8080/sites/classic-dev/contents/news/launch.html",
+  "http://localhost:8080/fr/sites/classic-dev/contents/news/launch.html",
+  "http://localhost:8080/sites/classic-dev/contents/articles/contract.html"
 ]

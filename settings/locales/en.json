@@ -23,5 +23,19 @@
   },
   "cta": {
     "noLabel": "Button label missing"
+  },
+  "editorial": {
+    "news": "News",
+    "article": "Article",
+    "by": "By {{author}}",
+    "readingTime_one": "{{count}} min read",
+    "readingTime_other": "{{count}} min read",
+    "topics": "Topics"
+  },
+  "query": {
+    "summary": "Lists {{type}} under {{start}}, {{order}}, up to {{max}}.",
+    "newest": "newest first",
+    "oldest": "oldest first",
+    "empty": "Nothing to show yet."
   }
 }

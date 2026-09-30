@@ -1,0 +1,150 @@
+/* ---- Meta line (kind, date, author, reading time) --------------------------------------------- */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-1) var(--ctpl-space-3);
+  margin: 0 0 var(--ctpl-space-3);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.kind {
+  color: var(--ctpl-color-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ---- Full page ---------------------------------------------------------------------------- */
+.full {
+  display: grid;
+  gap: var(--ctpl-space-6);
+  padding-top: var(--ctpl-space-7);
+}
+.head {
+  max-width: calc(var(--ctpl-measure) + 2 * var(--ctpl-gutter));
+}
+.fullTitle {
+  margin-bottom: var(--ctpl-space-4);
+}
+.lead {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-xl);
+  line-height: var(--ctpl-leading-snug);
+}
+.figure {
+  margin-block: 0;
+}
+.figure img {
+  width: 100%;
+  max-height: 34rem;
+  object-fit: cover;
+  border-radius: var(--ctpl-radius-lg);
+}
+.body {
+  margin-inline: auto;
+  font-size: var(--ctpl-text-lg);
+}
+.topics {
+  max-width: var(--ctpl-measure);
+  margin: var(--ctpl-space-6) auto 0;
+  padding-top: var(--ctpl-space-4);
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.topicsTitle {
+  margin-bottom: var(--ctpl-space-2);
+  font-family: var(--ctpl-font-body);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+  color: var(--ctpl-color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.topicList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.topicList li {
+  padding: var(--ctpl-space-1) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-pill);
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-accent);
+  font-size: var(--ctpl-text-sm);
+}
+
+/* ---- Card --------------------------------------------------------------------------------- */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  box-shadow: var(--ctpl-shadow-sm);
+  transition: box-shadow var(--ctpl-duration-base) var(--ctpl-ease);
+}
+.card:hover {
+  box-shadow: var(--ctpl-shadow-md);
+}
+.card:focus-within {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.cardMedia img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: var(--ctpl-space-5);
+}
+.cardTitle {
+  margin-bottom: var(--ctpl-space-2);
+  font-size: var(--ctpl-text-xl);
+}
+.cardTitle a {
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+}
+.card:hover .cardTitle a {
+  color: var(--ctpl-color-link-hover);
+  text-decoration: underline;
+}
+/* The title link covers the whole card; its own focus ring is drawn by the card. */
+.stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.stretched:focus-visible {
+  outline: none;
+}
+.teaser {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---- Compact row -------------------------------------------------------------------------- */
+.compact {
+  padding-block: var(--ctpl-space-4);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.compactTitle {
+  margin-bottom: var(--ctpl-space-1);
+  font-size: var(--ctpl-text-lg);
+}
+.compact .meta {
+  margin: 0;
+}

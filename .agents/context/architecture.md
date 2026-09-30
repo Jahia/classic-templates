@@ -162,8 +162,37 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
   child lists, not AbsoluteAreas: each column shows up in Page Builder as a list restricted to
   `ctplmix:pageComponent` with its own add button (checked in the edit frame). Sections inside a
   column drop their own container gutter and step their heading down to h3.
-- **JCR query** is built right after the news and article types (phase 7): its card views and its
-  tests need a real main-resource type to list.
+- **JCR query**: see phase 7.
+
+## News, articles and content lists (phase 7)
+
+- **Types:** `ctpl:news` and `ctpl:article` (`jmix:mainResource`, `jmix:editorialContent`,
+  `ctplmix:editorialItem` = teaser, body, publication date, image; articles add `author`). No tag or
+  category field: Jahia offers both on every node, and the full page shows `j:tagList` and
+  `j:defaultCategory` titles as "Topics" when present. Stored in `contents/news` and
+  `contents/articles` (seeded by `import.xml`, `jmix:contributeMode` restricted to their type).
+- **Views:** `fullPage` (meta line, the page's h1, lead, image, body, topics; used by the
+  main-resource template, which falls back to the teaser for the meta description), `card` (the
+  default view too) and `compact`. Dates in the page's language (`Intl.DateTimeFormat`, available
+  in GraalJS); reading time for articles.
+- **Content list** (`ctpl:jcrQuery`): type picked among the subtypes of `ctplmix:listable`
+  (`choicelist[nodetypes='ctplmix:listable']`: news, article, or both via the shared mixin; this
+  self-referencing initializer installs fine, unlike the `subnodetypes` fault in the harness notes),
+  start folder or page, sort field and direction (allow-listed), 1-50 items, grid of cards or
+  compact list, excluded items, "no result" text, "see all" call to action. Edit mode shows a summary
+  ("Lists News item under contents/news, newest first, up to 3").
+  - Card heading level is passed with `Render parameters={{ headingLevel }}` and read with
+    `currentResource.getModuleParams()`: h3 under a titled list, h2 under an untitled one.
+  - Items not translated into the page's language are skipped.
+  - **Excluded items are filtered in code, not in the query:** on 8.2.3.2 `NOT ISSAMENODE(...)` in
+    JCR-SQL2 is unreliable (GraphQL `nodesByQuery`: excluded nothing even with one condition;
+    `getNodesByJCRQuery`: only the first of two). The Cypress regression test excludes two items.
+  - `jmix:renderableList` (harness rule 11) brings an empty "Sub content view" field; a Content
+    Editor form override (`settings/content-editor-forms/forms/ctpl_jcrQuery.json`) hides it.
+  - Type labels for the summary come from Jahia's `NodeTypeRegistry` (via `Java.type`): the JCR
+    type manager's node types carry no label.
+  - No category filter: the user's rule is that no category field is ever declared. Ask before
+    adding one as a query criterion.
 
 ## Editor UI notes
 

@@ -65,7 +65,18 @@
           </footer>
         </siteFooter>
       </home>
-      <contents jcr:primaryType="jnt:contentFolder" />
+      <contents jcr:primaryType="jnt:contentFolder">
+        <!-- News and articles are main resources: they live in folders, get their own URL, and
+             pages show them through content lists (ctpl:jcrQuery). Each folder only offers its type. -->
+        <news jcr:primaryType="jnt:contentFolder" jcr:mixinTypes="jmix:contributeMode" j:contributeTypes="ctpl:news">
+          <j:translation_en jcr:language="en" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="News" />
+          <j:translation_fr jcr:language="fr" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Actualités" />
+        </news>
+        <articles jcr:primaryType="jnt:contentFolder" jcr:mixinTypes="jmix:contributeMode" j:contributeTypes="ctpl:article">
+          <j:translation_en jcr:language="en" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Articles" />
+          <j:translation_fr jcr:language="fr" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Articles" />
+        </articles>
+      </contents>
     </classic-templates>
   </modules>
 </content>
