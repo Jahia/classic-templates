@@ -1,0 +1,100 @@
+/* Card grid: cards of equal height on a responsive grid (1, 2, then the chosen column count). */
+.intro {
+  max-width: var(--ctpl-measure);
+  margin: 0 0 var(--ctpl-space-6);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--ctpl-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 40rem) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .cols3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .cols4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* The item stretches its card (written or teaser) to the row's height. */
+.item {
+  display: flex;
+  min-width: 0;
+}
+.item > * {
+  flex: 1;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  box-shadow: var(--ctpl-shadow-sm);
+  transition: box-shadow var(--ctpl-duration-base) var(--ctpl-ease);
+}
+.card:hover {
+  box-shadow: var(--ctpl-shadow-md);
+}
+.card:focus-within {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--ctpl-space-2);
+  padding: var(--ctpl-space-5);
+}
+.title {
+  margin: 0;
+  font-size: var(--ctpl-text-xl);
+}
+.title a {
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+}
+.card:hover .title a {
+  color: var(--ctpl-color-link-hover);
+  text-decoration: underline;
+}
+/* The title link covers the whole card; its own focus ring is drawn by the card. */
+.stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.stretched:focus-visible {
+  outline: none;
+}
+.text {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+}
+.more {
+  margin-top: auto;
+  padding-top: var(--ctpl-space-2);
+  color: var(--ctpl-color-link);
+  font-weight: var(--ctpl-font-weight-bold);
+}

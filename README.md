@@ -11,14 +11,16 @@ settings, with no code change.
 
 > Status: 0.1.0 in development, not released. Site chrome (header with logo, three-level menu,
 > utility links and language switcher; footer), hero banner, image and text, rich text, columns,
-> news and articles with their own pages, and content lists are done. Any section can end with a
-> call to action.
+> news and articles with their own pages, content lists, card grids, key figures, quotes, a site
+> map and a breadcrumb trail are done. Any section can end with a call to action.
 
 ## Requirements
 
 - Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later
 - Node.js 22 and Yarn 4 (Yarn is pinned in `.yarn/releases`, enable it with `corepack enable`)
 - For the Maven build: Java 17 and Maven 3.9
+- Recommended on sites: Jahia's `sitemap` module for `sitemap.xml` (search engines). The template
+  set's own site map component is the page visitors read.
 
 ## Getting started
 

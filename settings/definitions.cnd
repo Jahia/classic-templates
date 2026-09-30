@@ -83,14 +83,18 @@
 
 // ---- Page and site options ----------------------------------------------------------------------
 
-// Optional page settings, offered on every page's edit form.
+// Optional page settings, offered on every page's edit form. ctplHideBreadcrumb removes the
+// breadcrumb trail from this page only, when the site shows one.
 [ctplmix:pageOptions] mixin
  extends = jnt:page
  - ctplHideFromNav (boolean) = false autocreated
  - ctplHideTitle (boolean) = false autocreated
+ - ctplHideBreadcrumb (boolean) = false autocreated
 
 // Look of the whole site, set on the site node in jContent: no deploy needed to change it.
+// ctplShowBreadcrumb shows the breadcrumb trail above the content of every page except home.
 [ctplmix:siteSettings] mixin
  extends = jnt:virtualsite
  - ctplTheme (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'ocean', 'terracotta'
  - ctplColorScheme (string, choicelist[resourceBundle]) = 'auto' autocreated < 'auto', 'light', 'dark'
+ - ctplShowBreadcrumb (boolean) = true autocreated

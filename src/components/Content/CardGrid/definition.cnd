@@ -1,0 +1,31 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// One hand-written card of a ctpl:cardGrid: heading (jcr:title), short teaser text, image and a
+// link target (internal page, web address or none). The whole card is clickable; linkLabel is an
+// optional visible link text, nothing by default. An internal link without a title shows the
+// target page's title. Never hidden: editors select each card in Page Builder.
+[ctpl:card] > jnt:content, mix:title, ctplmix:media, ctplmix:linkTo
+ - text (string, textarea) i18n
+ - linkLabel (string) i18n
+
+// A card that points at an existing news item or article and renders it with that item's own card
+// view, so the teaser follows the item when it is edited. The editorial picker only accepts
+// listable content (ctplmix:listable). Never hidden, like ctpl:card.
+[ctpl:contentTeaser] > jnt:content, jmix:nodeReference
+ - j:node (weakreference, picker[type='editorial']) < 'ctplmix:listable'
+
+// A page section of hand-picked cards with an optional h2 heading (jcr:title) and a lead text
+// under it. Editors mix written cards (ctpl:card) and teasers of existing content
+// (ctpl:contentTeaser), in any order. columns sets how many cards sit on a row on large screens;
+// the grid wraps to fewer columns on small ones.
+[ctpl:cardGrid] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ - columns (string, choicelist[resourceBundle]) = '3' autocreated < '2', '3', '4'
+ - introText (string, textarea) i18n
+ + * (ctpl:card)
+ + * (ctpl:contentTeaser)

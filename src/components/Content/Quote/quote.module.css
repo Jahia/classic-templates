@@ -1,0 +1,63 @@
+/* Quote: the quotation in the heading font, marks from the page language, caption with portrait. */
+.quote {
+  max-width: var(--ctpl-measure);
+  margin: 0;
+  padding-left: var(--ctpl-space-5);
+  border-left: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+}
+.text {
+  margin: 0 0 var(--ctpl-space-4);
+}
+.text p {
+  margin: 0;
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-xl);
+  line-height: var(--ctpl-leading-snug);
+  quotes: auto;
+}
+/* French puts a non-breaking space inside the guillemets, which quotes: auto leaves out. */
+.text p:lang(fr) {
+  quotes: "\00ab\00a0" "\00a0\00bb";
+}
+.text p::before {
+  content: open-quote;
+}
+.text p::after {
+  content: close-quote;
+}
+
+.large {
+  max-width: none;
+  padding-left: 0;
+  border-left: 0;
+  text-align: center;
+}
+.large .text p {
+  font-size: var(--ctpl-text-3xl);
+  text-wrap: balance;
+}
+.large .caption {
+  justify-content: center;
+}
+
+.caption {
+  display: flex;
+  align-items: center;
+  gap: var(--ctpl-space-3);
+  text-align: left;
+}
+.portrait img {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.author {
+  display: block;
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.role {
+  display: block;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}

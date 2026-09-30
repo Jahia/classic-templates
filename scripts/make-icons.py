@@ -115,6 +115,50 @@ def jcr_query(d, p):
         d.line(p(13, y + 2, 28, y + 2), fill=INK, width=w(2))
 
 
+def card_grid(d, p):
+    for x in (3, 12, 21):
+        d.rectangle(p(x, 8, x + 8, 24), outline=INK, width=w(2))
+        d.rectangle(p(x, 8, x + 8, 13), fill=INK)
+
+
+def card(d, p):
+    d.rectangle(p(8, 4, 24, 28), outline=INK, width=w(2))
+    d.rectangle(p(8, 4, 24, 13), fill=INK)
+    d.line(p(11, 18, 21, 18), fill=INK, width=w(2))
+    d.line(p(11, 23, 18, 23), fill=INK, width=w(2))
+
+
+def content_teaser(d, p):
+    card(d, p)
+    d.polygon(p(20, 26, 28, 18, 28, 26), fill=INK)
+
+
+def key_figures(d, p):
+    for x, h in ((5, 10), (14, 16), (23, 22)):
+        d.rectangle(p(x, 27 - h, x + 5, 27), fill=INK)
+
+
+def key_figure(d, p):
+    d.ellipse(p(5, 5, 27, 27), outline=INK, width=w(3))
+    d.line(p(12, 16, 20, 16), fill=INK, width=w(3))
+    d.line(p(16, 12, 16, 20), fill=INK, width=w(3))
+
+
+def quote(d, p):
+    for x in (6, 17):
+        d.ellipse(p(x, 9, x + 8, 17), fill=INK)
+        d.polygon(p(x, 14, x + 8, 14, x + 2, 24), fill=INK)
+
+
+def site_map(d, p):
+    d.rectangle(p(12, 4, 20, 10), fill=INK)
+    d.line(p(16, 10, 16, 15), fill=INK, width=w(2))
+    d.line(p(7, 15, 25, 15), fill=INK, width=w(2))
+    for x in (4, 13, 22):
+        d.line(p(x + 3, 15, x + 3, 20), fill=INK, width=w(2))
+        d.rectangle(p(x, 20, x + 6, 26), outline=INK, width=w(2))
+
+
 ICONS = {
     "ctpl_news": news,
     "ctpl_article": article,
@@ -131,6 +175,13 @@ ICONS = {
     "ctpl_siteHeader": site_header,
     "ctpl_siteFooter": site_footer,
     "ctpl_footerColumns": footer_columns,
+    "ctpl_cardGrid": card_grid,
+    "ctpl_card": card,
+    "ctpl_contentTeaser": content_teaser,
+    "ctpl_keyFigures": key_figures,
+    "ctpl_keyFigure": key_figure,
+    "ctpl_quote": quote,
+    "ctpl_siteMap": site_map,
 }
 
 if __name__ == "__main__":

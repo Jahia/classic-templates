@@ -1,6 +1,6 @@
-import { addNode, deleteSite, publishAndWaitJobEnding, setNodeProperty } from '@jahia/cypress'
+import { addMixins, addNode, deleteSite, publishAndWaitJobEnding, setNodeProperty } from '@jahia/cypress'
 import { siteKeyFor } from '../../support/constants'
-import { addLink, addPage, chromeOf, createTestSite, uuidOf } from '../../support/test-helpers'
+import { addContent, addLink, addPage, chromeOf, createTestSite, uuidOf } from '../../support/test-helpers'
 
 const siteKey = siteKeyFor('chrome-edge')
 const chrome = chromeOf(siteKey)
@@ -44,6 +44,15 @@ describe('Chrome - empty lists, hidden pages, unsafe and untranslated links', ()
                     { name: 'j:url', value: target },
                 ],
             }),
+        )
+        addPage(chrome.home, {
+            name: 'plan',
+            template: 'content',
+            title: { en: 'Site map', fr: 'Plan du site' },
+            hiddenFromNav: true,
+        })
+        addContent(`${chrome.home}/plan`, 'main', 'ctpl:pageArea', {}).then(() =>
+            addContent(`${chrome.home}/plan/main`, 'map', 'ctpl:siteMap', {}),
         )
         publishAndWaitJobEnding(`/sites/${siteKey}`, ['en', 'fr'])
         cy.logout()
@@ -100,5 +109,46 @@ describe('Chrome - empty lists, hidden pages, unsafe and untranslated links', ()
         cy.get('[data-testid="ctpl-main-navigation"]').contains('a', 'About')
         cy.get('[data-testid="ctpl-main-navigation"]').should('not.contain.text', 'Team')
         cy.get('[data-ctpl-subnav-toggle]').should('not.exist')
+    })
+
+    it('hides the breadcrumb on a page that asks for it, and keeps it on the others', () => {
+        cy.login()
+        addMixins(`${chrome.home}/about`, ['ctplmix:pageOptions'])
+        setNodeProperty(`${chrome.home}/about`, 'ctplHideBreadcrumb', 'true', 'en')
+        publishAndWaitJobEnding(`${chrome.home}/about`, ['en', 'fr'])
+        cy.logout()
+        cy.visit(url('about'))
+        cy.get('[data-testid="ctpl-breadcrumb"]').should('not.exist')
+        cy.visit(url('about/team'))
+        cy.get('[data-testid="ctpl-breadcrumb"]').should('contain.text', 'About')
+    })
+
+    it('turns breadcrumbs off for the whole site from its settings', () => {
+        cy.login()
+        addMixins(`/sites/${siteKey}`, ['ctplmix:siteSettings'])
+        setNodeProperty(`/sites/${siteKey}`, 'ctplShowBreadcrumb', 'false', 'en')
+        publishAndWaitJobEnding(`/sites/${siteKey}`, ['en', 'fr'])
+        cy.logout()
+        cy.visit(url('about/team'))
+        cy.get('[data-testid="ctpl-breadcrumb"]').should('not.exist')
+        cy.login()
+        setNodeProperty(`/sites/${siteKey}`, 'ctplShowBreadcrumb', 'true', 'en')
+        publishAndWaitJobEnding(`/sites/${siteKey}`, ['en', 'fr'])
+        cy.logout()
+        cy.visit(url('about/team'))
+        cy.get('[data-testid="ctpl-breadcrumb"]').should('exist')
+    })
+
+    it('lists every page in the site map as nested lists, pages hidden from the menu included', () => {
+        cy.visit(url('plan'))
+        cy.get('[data-testid="ctpl-site-map"]').within(() => {
+            cy.get('ul').first().children('li').should('have.length', 1).and('contain.text', 'Home')
+            cy.contains('li', 'About').find('ul a').should('contain.text', 'Team')
+            cy.contains('a', 'Legal notice').should('have.attr', 'href', url('legal'))
+            cy.contains('a', 'Site map')
+            cy.get('a[href^="javascript:"]').should('not.exist')
+        })
+        cy.visit(`/fr${url('plan')}`)
+        cy.get('[data-testid="ctpl-site-map"]').should('contain.text', 'Mentions légales').and('contain.text', 'Équipe')
     })
 })

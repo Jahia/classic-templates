@@ -135,4 +135,29 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
             cy.get('[data-testid="ctpl-copyright"]').should('contain.text', String(new Date().getFullYear()))
         })
     })
+
+    it('shows the breadcrumb trail from home to the current page, before the main content', () => {
+        cy.visit(page('services/consulting/strategy'))
+        cy.get('[data-testid="ctpl-breadcrumb"]').within(() => {
+            cy.get('li').should('have.length', 4)
+            cy.get('li a').then(($a) => {
+                expect([...$a].map((a) => a.textContent)).to.deep.equal(['Home', 'Services', 'Consulting'])
+            })
+            cy.contains('li a', 'Consulting').should('have.attr', 'href', page('services/consulting'))
+            cy.get('[aria-current="page"]').should('have.text', 'Strategy')
+            cy.get('ol').should('have.attr', 'itemtype', 'https://schema.org/BreadcrumbList')
+        })
+        cy.get('[data-testid="ctpl-breadcrumb"] + main#main-content').should('exist')
+    })
+
+    it('renders no breadcrumb on the home page, and French labels on French pages', () => {
+        cy.visit(`/sites/${siteKey}/home.html`)
+        cy.get('[data-testid="ctpl-breadcrumb"]').should('not.exist')
+        cy.visit(`/fr${page('services/consulting')}`)
+        cy.get('[data-testid="ctpl-breadcrumb"]')
+            .should('have.attr', 'aria-label', "Fil d'Ariane")
+            .and('contain.text', 'Accueil')
+            .find('[aria-current="page"]')
+            .should('have.text', 'Conseil')
+    })
 })

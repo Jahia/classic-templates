@@ -1,0 +1,21 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// One figure of a ctpl:keyFigures section: the figure itself as the visitor reads it ("98%",
+// "12 000", "24/7", so a string, never a number), what it counts, and an optional line of detail
+// under the label. Never hidden: editors select each figure in Page Builder.
+[ctpl:keyFigure] > jnt:content
+ - value (string) i18n
+ - label (string) i18n
+ - detail (string, textarea) i18n
+
+// A page section of key figures in a row, with an optional h2 heading (jcr:title) and a lead text
+// under it. The figures are ordered children.
+[ctpl:keyFigures] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ - introText (string, textarea) i18n
+ + * (ctpl:keyFigure)

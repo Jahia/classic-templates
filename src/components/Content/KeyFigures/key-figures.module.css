@@ -1,0 +1,43 @@
+/* Key figures: large accent numbers over their labels, 1 to 4 per row. */
+.intro {
+  max-width: var(--ctpl-measure);
+  margin: 0 0 var(--ctpl-space-6);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-lg);
+}
+.figures {
+  display: grid;
+  /* As many 12rem columns as fit, never more than four (each at least a quarter of the row). */
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(max(min(100%, 12rem), calc((100% - 3 * var(--ctpl-space-6)) / 4)), 1fr)
+  );
+  gap: var(--ctpl-space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.figure {
+  padding-top: var(--ctpl-space-4);
+  border-top: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+}
+.phrase {
+  margin: 0;
+  font-size: var(--ctpl-text-lg);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.value {
+  display: block;
+  margin-bottom: var(--ctpl-space-1);
+  color: var(--ctpl-color-accent);
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-4xl);
+  line-height: var(--ctpl-leading-tight);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.detail {
+  margin: var(--ctpl-space-2) 0 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}

@@ -1,0 +1,34 @@
+/* Breadcrumb trail: small text, a drawn chevron between crumbs (no separator text to read out). */
+.trail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ctpl-space-1) var(--ctpl-space-2);
+  margin: 0;
+  padding: var(--ctpl-space-4) 0 0;
+  list-style: none;
+  font-size: var(--ctpl-text-sm);
+  color: var(--ctpl-color-text-muted);
+}
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.crumb + .crumb::before {
+  content: "";
+  width: 0.4em;
+  height: 0.4em;
+  border-top: var(--ctpl-border-width) solid currentColor;
+  border-right: var(--ctpl-border-width) solid currentColor;
+  transform: rotate(45deg);
+}
+.crumb a {
+  color: var(--ctpl-color-link);
+}
+.crumb [aria-current="page"] {
+  color: var(--ctpl-color-text);
+  font-weight: var(--ctpl-font-weight-bold);
+}

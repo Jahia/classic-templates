@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Seeds a demonstration site on the classic-templates template set (EN + FR).
 
-    python3 scripts/seed-demo.py [--site classic-dev] [--recreate]
+    python3 scripts/seed-demo.py [--site classic-dev] [--recreate | --sections-only]
 
 --recreate deletes the site first, then creates it from the template set, so import.xml runs again
 (home page, areas, header and footer singletons). Then the script:
@@ -18,8 +18,17 @@
   - creates the news and articles folders with six news items and three articles (EN + FR, dates,
     images, tags), and content lists on home (latest news as cards, articles as a list) and on the
     news page;
+  - fills the landing page with a card grid (written cards and a news teaser), key figures and a
+    quote, and adds example sections to the home, about, services and team pages;
+  - adds a site map page and an accessibility statement, linked from the footer (the statement link
+    carries the "Accessibility: partially compliant" mention);
   - publishes the site in both languages, files included (publishing content never publishes the
     images it references).
+
+--sections-only only adds the example sections to an existing site (card grids, key figures,
+quotes, a call-to-action banner, the site map and accessibility pages and their footer links;
+nodes that already exist are left alone) and publishes the pages it touched: it never changes
+existing content, so it is safe on a site editors have changed.
 
 Environment: JAHIA_URL (default http://localhost:8080), JAHIA_USER (default root:root1234).
 One HTTP session is reused for every call (fresh basic auth per call exhausts the licence's
@@ -233,13 +242,228 @@ def add_list(parent, name, title):
     return f"{parent}/{name}"
 
 
+def uuid_at(path):
+    return gql("query($p:String!){jcr{nodeByPath(path:$p){uuid}}}", {"p": path})["jcr"]["nodeByPath"]["uuid"]
+
+
+def seed_landing_sections(site):
+    """Card grid, key figures and quote on the landing page (all targets resolved by path)."""
+    home = f"{site}/home"
+    main = ensure_area(f"{home}/landing", "main", "ctpl:pageArea")
+    images = f"{site}/files/demo"
+    grid = add_content(main, "next", "ctpl:cardGrid",
+        i18n("jcr:title", {"en": "Where to go next", "fr": "Pour aller plus loin"})
+        + i18n("introText", {"en": "Written cards and a teaser of the latest news, side by side.",
+                             "fr": "Des cartes rédigées et l'aperçu de la dernière actualité, côte à côte."})
+        + [{"name": "columns", "value": "3"}])
+    for name, page, image, text, label in (
+        ("about", "about", "abstract-blue.jpg",
+         {"en": "Who we are, how we work and the people behind the site.", "fr": "Qui nous sommes, comment nous travaillons et l'équipe derrière le site."},
+         {"en": "Meet us", "fr": "Nous découvrir"}),
+        ("services", "services", "abstract-warm.jpg",
+         {"en": "Consulting, training and support, from the first workshop on.", "fr": "Conseil, formation et assistance, dès le premier atelier."},
+         {"en": "See the services", "fr": "Voir les services"}),
+    ):
+        props = i18n("text", text) + i18n("linkLabel", label) + [
+            {"name": "image", "type": "WEAKREFERENCE", "value": uuid_at(f"{images}/{image}")},
+            {"name": "j:linkType", "value": "internal"}]
+        props += [{"name": "j:linknode", "type": "WEAKREFERENCE", "value": uuid_at(f"{home}/{page}"), "language": lang}
+                  for lang in LANGS]
+        add_content(grid, name, "ctpl:card", props, ["jmix:internalLink"])
+    add_content(grid, "launch", "ctpl:contentTeaser",
+                [{"name": "j:node", "type": "WEAKREFERENCE", "value": uuid_at(f"{site}/contents/news/launch")}])
+
+    figures = add_content(main, "numbers", "ctpl:keyFigures",
+        i18n("jcr:title", {"en": "In numbers", "fr": "En chiffres"}) + [{"name": "ctplSurface", "value": "sunken"}])
+    for name, value, label, detail in (
+        ("satisfaction", {"en": "98%", "fr": "98 %"}, {"en": "of editors satisfied", "fr": "de rédacteurs satisfaits"},
+         {"en": "Survey of 2026 training sessions.", "fr": "Enquête sur les formations 2026."}),
+        ("pages", {"en": "12,000", "fr": "12 000"}, {"en": "pages published", "fr": "pages publiées"}, None),
+        ("support", {"en": "24/7", "fr": "24 h/24"}, {"en": "support", "fr": "assistance"}, None),
+        ("languages", {"en": "2", "fr": "2"}, {"en": "languages on every page", "fr": "langues sur chaque page"}, None),
+    ):
+        props = i18n("value", value) + i18n("label", label) + (i18n("detail", detail) if detail else [])
+        add_content(figures, name, "ctpl:keyFigure", props)
+
+    add_content(main, "testimonial", "ctpl:quote",
+        i18n("quote", {"en": "We rebuilt our site in three weeks, and our editors never had to wait for a deploy.",
+                       "fr": "Nous avons refait notre site en trois semaines, et nos rédacteurs n'ont jamais attendu un déploiement."})
+        + i18n("authorRole", {"en": "Head of digital, Example Company", "fr": "Responsable du numérique, Example Company"})
+        + [{"name": "author", "value": "Claire Dubois"}, {"name": "variant", "value": "large"},
+           {"name": "image", "type": "WEAKREFERENCE", "value": uuid_at(f"{images}/abstract-green.jpg")}])
+
+
+def internal_link(page_uuid):
+    """Properties + mixins of a ctplmix:linkTo pointing at a page, target set in every language."""
+    props = [{"name": "j:linkType", "value": "internal"}]
+    props += [{"name": "j:linknode", "type": "WEAKREFERENCE", "value": page_uuid, "language": lang} for lang in LANGS]
+    return props, ["jmix:internalLink"]
+
+
+def add_card(grid, name, page_uuid, image_uuid, text, label):
+    props, mixins = internal_link(page_uuid)
+    props += i18n("text", text) + i18n("linkLabel", label)
+    if image_uuid:
+        props.append({"name": "image", "type": "WEAKREFERENCE", "value": image_uuid})
+    return add_content(grid, name, "ctpl:card", props, mixins)
+
+
+def add_quote(parent, name, quote, author, role, image_uuid=None, variant="standard", surface="default"):
+    props = i18n("quote", quote) + i18n("authorRole", role) + [
+        {"name": "author", "value": author}, {"name": "variant", "value": variant},
+        {"name": "ctplSurface", "value": surface}]
+    if image_uuid:
+        props.append({"name": "image", "type": "WEAKREFERENCE", "value": image_uuid})
+    return add_content(parent, name, "ctpl:quote", props)
+
+
+def place_after(parent, name, after):
+    """Moves a freshly created child right after `after` (editors' own order is never touched)."""
+    names = [c["name"] for c in gql("query($p:String!){jcr{nodeByPath(path:$p){children{nodes{name}}}}}",
+                                    {"p": parent})["jcr"]["nodeByPath"]["children"]["nodes"]]
+    if name not in names or after not in names:
+        return
+    names.remove(name)
+    names.insert(names.index(after) + 1, name)
+    gql("mutation($p:String!,$n:[String]!){jcr{mutateNode(pathOrId:$p){reorderChildren(names:$n)}}}",
+        {"p": parent, "n": names})
+
+
+def seed_examples(site):
+    """Example content with every section type on the home, about, services and team pages, plus a
+    site map page and an accessibility statement linked from the footer. Only adds what is missing.
+    Returns (path, whole subtree?) pairs to publish: the new nodes with their subtree, and the lists
+    they were added to without theirs (for the order), so an editor's unpublished work elsewhere on
+    those pages stays unpublished."""
+    home = f"{site}/home"
+    images = f"{site}/files/demo"
+    img = {k: uuid_at(f"{images}/{v}") for k, v in
+           (("wide", "abstract-blue.jpg"), ("square", "abstract-warm.jpg"), ("tall", "abstract-green.jpg"))}
+    touched = [(f"{home}/landing/main", True)]
+
+    # ---- Home: key figures after the offer, a testimonial after the approach ------------------
+    main = f"{home}/main"
+    if not exists(f"{main}/figures"):
+        figures = add_content(main, "figures", "ctpl:keyFigures",
+            i18n("jcr:title", {"en": "Our year in numbers", "fr": "Notre année en chiffres"})
+            + [{"name": "ctplSurface", "value": "sunken"}])
+        for name, value, label in (
+            ("projects", {"en": "140", "fr": "140"}, {"en": "sites launched", "fr": "sites lancés"}),
+            ("editors", {"en": "1,200", "fr": "1 200"}, {"en": "editors trained", "fr": "rédacteurs formés"}),
+            ("uptime", {"en": "99.9%", "fr": "99,9 %"}, {"en": "availability", "fr": "de disponibilité"}),
+        ):
+            add_content(figures, name, "ctpl:keyFigure", i18n("value", value) + i18n("label", label))
+        place_after(main, "figures", "offer")
+    if not exists(f"{main}/testimonial"):
+        add_quote(main, "testimonial",
+                  {"en": "The pages look like us, and we change them ourselves, in both languages.",
+                   "fr": "Les pages nous ressemblent, et nous les modifions nous-mêmes, dans les deux langues."},
+                  "Marc Lefèvre", {"en": "Communication manager, Example Group", "fr": "Responsable communication, Example Group"},
+                  img["square"])
+        place_after(main, "testimonial", "approach")
+    touched += [(f"{main}/figures", True), (f"{main}/testimonial", True), (main, False)]
+
+    # ---- About: cards to its sub-pages and a founder quote ----------------------------------
+    about = f"{home}/about"
+    about_main = ensure_area(about, "main", "ctpl:pageArea")
+    grid = add_content(about_main, "more", "ctpl:cardGrid",
+        i18n("jcr:title", {"en": "Get to know us", "fr": "Faire connaissance"}) + [{"name": "columns", "value": "2"}])
+    add_card(grid, "team", uuid_at(f"{about}/team"), img["square"],
+             {"en": "Designers, editors and engineers who build sites that last.", "fr": "Designers, rédacteurs et ingénieurs qui construisent des sites durables."},
+             {"en": "Meet the team", "fr": "Rencontrer l'équipe"})
+    add_card(grid, "history", uuid_at(f"{about}/history"), img["tall"],
+             {"en": "From a two-person studio to a team of forty.", "fr": "D'un studio de deux personnes à une équipe de quarante."},
+             {"en": "Read our story", "fr": "Lire notre histoire"})
+    add_quote(about_main, "founder",
+              {"en": "We started with one rule: every word on a page belongs to the people who write it.",
+               "fr": "Nous sommes partis d'une règle : chaque mot d'une page appartient à ceux qui l'écrivent."},
+              "Ada Martin", {"en": "Co-founder", "fr": "Cofondatrice"}, img["tall"], variant="large", surface="sunken")
+    touched += [(f"{about_main}/more", True), (f"{about_main}/founder", True), (about_main, False)]
+
+    # ---- Services: a card per service and a call-to-action banner ----------------------------
+    services = f"{home}/services"
+    svc_main = ensure_area(services, "main", "ctpl:pageArea")
+    grid = add_content(svc_main, "all", "ctpl:cardGrid",
+        i18n("jcr:title", {"en": "What we can do for you", "fr": "Ce que nous pouvons faire pour vous"})
+        + i18n("introText", {"en": "Three ways to work together, alone or combined.", "fr": "Trois façons de travailler ensemble, seules ou combinées."})
+        + [{"name": "columns", "value": "3"}])
+    for name, image, text, label in (
+        ("consulting", "wide", {"en": "Strategy and operations, from first workshop to launch.", "fr": "Stratégie et opérations, du premier atelier au lancement."},
+         {"en": "Our consulting", "fr": "Notre conseil"}),
+        ("training", "square", {"en": "Workshops that make your team autonomous.", "fr": "Des ateliers qui rendent votre équipe autonome."},
+         {"en": "Our training", "fr": "Nos formations"}),
+        ("support", "tall", {"en": "A single contact who knows your site.", "fr": "Un interlocuteur unique qui connaît votre site."},
+         {"en": "Our support", "fr": "Notre assistance"}),
+    ):
+        add_card(grid, name, uuid_at(f"{services}/{name}"), img[image], text, label)
+    props, mixins = cta(uuid_at(f"{home}/contact"), {"en": "Book a call", "fr": "Prendre rendez-vous"})
+    add_content(svc_main, "talk", "ctpl:richText",
+        i18n("jcr:title", {"en": "Not sure where to start?", "fr": "Vous ne savez pas par où commencer ?"})
+        + i18n("body", {"en": "<p>A thirty-minute call is enough to find the right mix.</p>",
+                        "fr": "<p>Un appel de trente minutes suffit pour trouver la bonne formule.</p>"})
+        + [{"name": "ctplSurface", "value": "accent"}] + props, ["ctplmix:cta"] + mixins)
+    touched += [(svc_main, True)]
+
+    # ---- Team: two quotes side by side -----------------------------------------------------
+    team = f"{home}/about/team"
+    row = add_content(ensure_area(team, "main", "ctpl:pageArea"), "voices", "ctpl:columns",
+        i18n("jcr:title", {"en": "In their words", "fr": "Avec leurs mots"}) + [{"name": "layout", "value": "halves"}])
+    add_quote(f"{row}/col1", "quote", {"en": "I publish in French and English without asking anyone.",
+                                       "fr": "Je publie en français et en anglais sans rien demander à personne."},
+              "Louis Bernard", {"en": "Editor", "fr": "Rédacteur"})
+    add_quote(f"{row}/col2", "quote", {"en": "Changing the theme took an afternoon, not a project.",
+                                       "fr": "Changer de thème a pris un après-midi, pas un projet."},
+              "Nora Haddad", {"en": "Designer", "fr": "Designer"})
+    touched += [(row, True), (f"{team}/main", False)]
+
+    # ---- Site map and accessibility statement, linked from the footer ------------------------
+    sitemap = add_page(home, "sitemap", {"en": "Site map", "fr": "Plan du site"}, hidden=True,
+                       description={"en": "Every page of the site.", "fr": "Toutes les pages du site."})
+    add_content(ensure_area(f"{home}/sitemap", "main", "ctpl:pageArea"), "map", "ctpl:siteMap", [])
+    statement = add_page(home, "accessibility", {"en": "Accessibility", "fr": "Accessibilité"}, hidden=True,
+                         description={"en": "Accessibility statement of the site.", "fr": "Déclaration d'accessibilité du site."})
+    props, mixins = cta(uuid_at(f"{home}/contact"), {"en": "Report a problem", "fr": "Signaler un problème"})
+    add_content(ensure_area(f"{home}/accessibility", "main", "ctpl:pageArea"), "statement", "ctpl:richText",
+        i18n("body", {
+            "en": "<p>This demonstration site is <strong>partially compliant</strong> with the French accessibility "
+                  "standard RGAA 4.1.2 (an example statement: a real site publishes the results of its own audit).</p>"
+                  "<h2>Content that is not accessible</h2><ul><li>Add-on components from other modules are not covered "
+                  "by this statement.</li></ul><h2>Feedback and contact</h2><p>If you cannot reach a content or a service, "
+                  "contact us so that we send it to you in another form.</p>",
+            "fr": "<p>Ce site de démonstration est <strong>partiellement conforme</strong> au référentiel général "
+                  "d'amélioration de l'accessibilité RGAA 4.1.2 (déclaration d'exemple : un vrai site publie les résultats "
+                  "de son propre audit).</p><h2>Contenus non accessibles</h2><ul><li>Les composants d'autres modules ne sont "
+                  "pas couverts par cette déclaration.</li></ul><h2>Retour d'information et contact</h2><p>Si vous ne "
+                  "parvenez pas à accéder à un contenu ou à un service, contactez-nous pour qu'il vous soit transmis sous "
+                  "une autre forme.</p>"})
+        + props, ["ctplmix:cta"] + mixins)
+    legal = f"{home}/siteFooter/footer/legal"
+    add_link(legal, "sitemap", page=sitemap)
+    # The mention the law asks for on the home page (loi 2005-102, art. 47): the footer shows it on every page.
+    add_link(legal, "accessibility", {"en": "Accessibility: partially compliant", "fr": "Accessibilité : partiellement conforme"},
+             page=statement)
+    touched += [(f"{home}/sitemap", True), (f"{home}/accessibility", True),
+                (f"{legal}/sitemap", True), (f"{legal}/accessibility", True), (legal, False)]
+    return touched
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--site", default="classic-dev")
-    ap.add_argument("--recreate", action="store_true")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--recreate", action="store_true")
+    mode.add_argument("--sections-only", action="store_true")
     args = ap.parse_args()
     site = f"/sites/{args.site}"
     home = f"{site}/home"
+
+    if args.sections_only:
+        seed_landing_sections(site)
+        for path, subtree in seed_examples(site):
+            gql("mutation($s:String!,$t:Boolean){jcr{mutateNode(pathOrId:$s){publish(languages:[\"en\",\"fr\"],"
+                "publishSubNodes:$t,includeSubTree:$t)}}}", {"s": path, "t": subtree})
+        print(f"example sections seeded and published on {site}")
+        return
 
     if args.recreate or not exists(site):
         recreate_site(args.site)
@@ -467,6 +691,9 @@ def main():
         i18n("noResultText", {"en": "No news yet.", "fr": "Pas encore d'actualités."})
         + [{"name": "type", "value": "ctpl:news"}, {"name": "startNode", "type": "WEAKREFERENCE", "value": news_folder},
            {"name": "maxItems", "value": "24"}, {"name": "layout", "value": "grid"}])
+
+    seed_landing_sections(site)
+    seed_examples(site)
 
     for root in (site, f"{site}/files", demo_cats):
         gql(

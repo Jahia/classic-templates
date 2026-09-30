@@ -13,6 +13,15 @@ export interface NavItem {
   children: NavItem[];
 }
 
+/** Marked "noIndex" by Jahia's sitemap module; false when that module is not installed. */
+const noIndex = (node: JCRNodeWrapper): boolean => {
+  try {
+    return node.isNodeType("jseomix:noIndex");
+  } catch {
+    return false;
+  }
+};
+
 const hiddenFromNav = (node: JCRNodeWrapper): boolean =>
   node.hasProperty("ctplHideFromNav") && node.getProperty("ctplHideFromNav").getBoolean();
 
@@ -51,21 +60,33 @@ const describe = (
   return { title: title ?? node.getName() };
 };
 
-/** Children of `node` that belong in the menu, in the editor's order. */
-const menuChildren = (node: JCRNodeWrapper): JCRNodeWrapper[] =>
+/**
+ * Children of `node` that belong in the menu, in the editor's order. The site map also lists the
+ * pages hidden from the menu (legal notice, accessibility statement): it is the complete plan,
+ * minus the pages Jahia's sitemap module marks "noIndex" (jseomix:noIndex, a thank-you page), so
+ * the visitor site map and sitemap.xml agree.
+ */
+const menuChildren = (node: JCRNodeWrapper, includeHidden: boolean): JCRNodeWrapper[] =>
   getChildNodes(
     node,
     -1,
     0,
     (n: JCRNodeWrapper) =>
-      n.isNodeType("jmix:navMenuItem") && !n.isNodeType("jmix:navMenu") && !hiddenFromNav(n),
+      n.isNodeType("jmix:navMenuItem") &&
+      !n.isNodeType("jmix:navMenu") &&
+      (includeHidden ? !noIndex(n) : !hiddenFromNav(n)),
   ) as JCRNodeWrapper[];
 
-const build = (node: JCRNodeWrapper, depth: number, renderContext: RenderContext): NavItem[] =>
-  menuChildren(node).map((child) => ({
+const build = (
+  node: JCRNodeWrapper,
+  depth: number,
+  renderContext: RenderContext,
+  includeHidden = false,
+): NavItem[] =>
+  menuChildren(node, includeHidden).map((child) => ({
     id: child.getIdentifier(),
     ...describe(child, renderContext),
-    children: depth > 1 ? build(child, depth - 1, renderContext) : [],
+    children: depth > 1 ? build(child, depth - 1, renderContext, includeHidden) : [],
   }));
 
 /**
@@ -85,4 +106,20 @@ export const buildMainNavigation = (
     renderContext,
   );
   return build(home, Math.min(Math.max(Math.trunc(depth) || 3, 1), 3), renderContext);
+};
+
+/**
+ * The site map: every page under home, hidden-from-menu pages included, down to `depth` levels
+ * (1 to 10). Same item types and cache dependency as the main menu.
+ */
+export const buildSiteMap = (
+  home: JCRNodeWrapper,
+  depth: number,
+  renderContext: RenderContext,
+): NavItem[] => {
+  server.render.addCacheDependency(
+    { flushOnPathMatchingRegexp: `${pathRegex(home.getPath())}(/.*)?` },
+    renderContext,
+  );
+  return build(home, Math.min(Math.max(Math.trunc(depth) || 5, 1), 10), renderContext, true);
 };

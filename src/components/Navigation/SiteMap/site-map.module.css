@@ -1,0 +1,19 @@
+/* Site map: nested lists, each level indented under a rule so the hierarchy reads at a glance. */
+.root,
+.nested {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.root > li > a {
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.nested {
+  margin: var(--ctpl-space-2) 0 var(--ctpl-space-2) var(--ctpl-space-2);
+  padding-left: var(--ctpl-space-4);
+  border-left: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.root li {
+  padding-block: var(--ctpl-space-1);
+  overflow-wrap: anywhere;
+}

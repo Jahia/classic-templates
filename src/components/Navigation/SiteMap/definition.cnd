@@ -1,0 +1,14 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// The site map (plan du site): every page under home, pages hidden from the menu included, as
+// nested lists of links, down to depth levels. With the main menu it gives visitors the second
+// navigation system that RGAA 12.1 asks for. Built from the page tree like the menu: it stores no
+// links, editors shape it by creating and ordering pages.
+[ctpl:siteMap] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle
+ - depth (long) = 5 autocreated < '[1,10]'

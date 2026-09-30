@@ -92,6 +92,9 @@ describe('News, articles and content lists', () => {
         cy.get('[data-testid="ctpl-news-full"]')
             .should('contain.text', 'September 28, 2026')
             .and('contain.text', 'release')
+        // Outside the page tree: the trail is the home page, then the item.
+        cy.get('[data-testid="ctpl-breadcrumb"] li').should('have.length', 2).first().should('have.text', 'Home')
+        cy.get('[data-testid="ctpl-breadcrumb"] [aria-current="page"]').should('have.text', 'Newer news')
     })
 
     it('renders lists and full pages in French, with French dates', () => {

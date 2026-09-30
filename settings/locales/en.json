@@ -69,5 +69,18 @@
       "skippedValue": "{{excluded}} excluded, {{untranslated}} not translated into {{language}}",
       "query": "JCR-SQL2 query"
     }
+  },
+  "breadcrumb": {
+    "label": "Breadcrumb"
+  },
+  "cards": {
+    "teaserMissing": "Pick a news item or article to show in this card.",
+    "noTitle": "This card has no title in this language: it shows no heading."
+  },
+  "figures": {
+    "noValue": "This figure has no value in this language: it is not shown."
+  },
+  "quote": {
+    "empty": "This quote has no text in this language: it is not shown."
   }
 }

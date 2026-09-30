@@ -154,6 +154,7 @@
   --ctpl-radius-lg: 1rem;
   --ctpl-radius-pill: 999px;
   --ctpl-border-width: 1px;
+  --ctpl-border-width-accent: 3px;
 
   --ctpl-shadow-sm: 0 1px 2px color-mix(in srgb, var(--ctpl-color-shadow) 10%, transparent);
   --ctpl-shadow-md:

@@ -1,0 +1,16 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A page section with a quotation (plain text), the name of the person quoted (not translated),
+// their role and organisation, and an optional portrait from ctplmix:media. No heading: a quote
+// has none. variant "large" renders it as a pull quote.
+[ctpl:quote] > jnt:content, ctplmix:pageComponent, ctplmix:sectionStyle, ctplmix:media
+ - quote (string, textarea) i18n
+ - author (string)
+ - authorRole (string) i18n
+ - variant (string, choicelist[resourceBundle]) = 'standard' autocreated < 'standard', 'large'

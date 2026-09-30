@@ -1,11 +1,14 @@
 import { AbsoluteArea, useServerContext } from "@jahia/javascript-modules-library";
 import type { ReactNode } from "react";
 import { chromeOwner } from "../lib/site.js";
+import { Breadcrumb } from "./Breadcrumb.jsx";
 import { Layout } from "./Layout.jsx";
 import classes from "./page-shell.module.css";
 
 /**
- * Page chrome shared by every template: the site header, the main landmark, the site footer.
+ * Page chrome shared by every template: the site header, the breadcrumb trail (every page but
+ * home, see Breadcrumb), the main landmark, the site footer. The breadcrumb sits before <main>,
+ * so the skip link jumps over it.
  *
  * Header and footer are AbsoluteAreas owned by the home page (see chromeOwner): they render on
  * every page, are edited from the home page, and are read-only on every other page.
@@ -41,6 +44,7 @@ export const PageShell = ({
           nodeType="ctpl:headerArea"
           readOnly={readOnly}
         />
+        <Breadcrumb />
         <main id="main-content" className={classes.main} tabIndex={-1}>
           {children}
         </main>

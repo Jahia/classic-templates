@@ -69,5 +69,18 @@
       "skippedValue": "{{excluded}} exclus, {{untranslated}} non traduits en {{language}}",
       "query": "Requête JCR-SQL2"
     }
+  },
+  "breadcrumb": {
+    "label": "Fil d'Ariane"
+  },
+  "cards": {
+    "teaserMissing": "Choisissez une actualité ou un article à afficher dans cette carte.",
+    "noTitle": "Cette carte n'a pas de titre dans cette langue : elle n'affiche aucun intitulé."
+  },
+  "figures": {
+    "noValue": "Ce chiffre n'a pas de valeur dans cette langue : il n'est pas affiché."
+  },
+  "quote": {
+    "empty": "Cette citation n'a pas de texte dans cette langue : elle n'est pas affichée."
   }
 }

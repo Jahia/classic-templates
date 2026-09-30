@@ -30,7 +30,7 @@
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`                                                                                                                                                                                                                                                                                                                                            |
+| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`                                                                                                                                                                                                                  |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -156,6 +156,15 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   is marked in the browser because the header is one cached fragment shared by every page.
 - **Language switcher:** only languages the page exists in; `cache.mainResource` on its view so
   each page gets its own links inside the shared header (verified per page, EN and FR).
+- **Breadcrumb** (Tier 1, `src/templates/Breadcrumb.tsx`): rendered by the page shell between the
+  header and `<main>` (the skip link jumps over it), not a droppable type: it has nothing to
+  contribute but page titles. Home first, the page tree down to the current page (marked
+  `aria-current="page"`), a main resource outside the tree (a news item) gets Home > item. None on
+  home. Off for the whole site with `ctplShowBreadcrumb` (site settings, on by default - a missing
+  value on older sites counts as on) or per page with `ctplHideBreadcrumb` (page options).
+  schema.org `BreadcrumbList` microdata instead of JSON-LD, which would need an inline script (R10).
+  Separators are drawn chevrons, so screen readers read no separator text. Every ancestor is a
+  cache dependency.
 
 ## Content components (phase 6)
 
@@ -181,6 +190,38 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
   `ctplmix:pageComponent` with its own add button (checked in the edit frame). Sections inside a
   column drop their own container gutter and step their heading down to h3.
 - **JCR query**: see phase 7.
+
+## Tier 1 sections (after phase 9)
+
+- **Card grid** (`ctpl:cardGrid`, orderable list, 2/3/4 columns, optional heading and lead): mixes
+  written cards (`ctpl:card`: image, title, text, link, optional link label) and teasers of existing
+  news or articles (`ctpl:contentTeaser`: `j:node` from the editorial picker, constrained to
+  `ctplmix:listable`, rendered with the item's own `card` view). A written card is one stretched
+  title link; the link label is a visual cue with `aria-hidden` (the title is the accessible
+  name); an untitled card with an internal link takes the target page's title. Nothing live
+  without a card.
+- **Card heading levels:** `useItemHeadingLevel` (`lib/Heading.tsx`) puts items one level below
+  their section when it shows a title (h3, or h4 under a titled row), the section's level otherwise.
+  `RenderChildren` passes no parameters, so each card works its level out from its parent, which is
+  a cache dependency; a teaser passes the level on to the news card with `Render parameters`.
+- **Key figures** (`ctpl:keyFigures` of `ctpl:keyFigure`: value as a string, label, detail): value
+  and label in one paragraph, read as one phrase ("98% of editors satisfied"); auto-fit grid, 1 to 4
+  per row. A figure without a value in the page's language is left out.
+- **Quote** (`ctpl:quote`: quotation, author name, i18n role, portrait, standard or large):
+  `figure` > `blockquote` + `figcaption`; quotation marks from CSS in the page's language (`quotes:
+auto`, with the non-breaking spaces French needs inside « »), so editors type none; the portrait
+  is decorative. No heading and no `mix:title`.
+- **Site map** (`ctpl:siteMap`, `depth` 1-10): the visitor site map (plan du site), nested lists
+  of every page under home, pages hidden from the menu included, built by `buildSiteMap` in
+  `lib/navigation.ts` (same item types, scheme allow-list and tree cache dependency as the menu).
+  With the menu it is the second navigation system RGAA 12.1 asks for (a breadcrumb does not
+  count). It complements, and does not replace, **Jahia's sitemap module** (5.5.0 on the local
+  instance): that module generates `sitemap.xml` for search engines (`jseomix:sitemap` on the
+  site, `jseomix:noIndex` / `jseomix:noFollow` on pages) and has no visitor view (`jnt:sitemap` is
+  a legacy hidden type without views). Pages marked `jseomix:noIndex` are left out of the visitor
+  site map too, so both agree; the check is guarded, the module stays optional.
+- All four are `ctplmix:sectionStyle` types, so each gets the optional call to action and ends
+  with `<Cta>`. There is no call-to-action banner type (see the call-to-action decision above).
 
 ## News, articles and content lists (phase 7)
 
@@ -240,6 +281,5 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
 
 ## Open questions
 
-None at the end of phase 9. Next: the Tier 1 components (breadcrumb, card grid, key figures,
-quote), then a free-zone section and a CSS token bridge so the jsfaq, js-media-gallery,
+None after Tier 1. Next: a free-zone section and a CSS token bridge so the jsfaq, js-media-gallery,
 js-store-locator and formidable add-ons can be dropped into ctpl pages without a hard dependency.
