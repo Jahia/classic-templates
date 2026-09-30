@@ -39,10 +39,18 @@ export const Cta = ({
       </p>
     );
   }
-  if (!renderContext.isEditMode() || (!missingTarget && !ctaLabel)) return null;
+  if (!renderContext.isEditMode()) return null;
+  // Edit mode only: say which half of the button is missing. Nothing when neither is set (the
+  // editor did not ask for a button).
+  let hint: string | undefined;
+  if (missingTarget) hint = t("link.noTarget");
+  else if (link)
+    hint = t("cta.noLabel"); // a link, but no label and no title to fall back on
+  else if (ctaLabel) hint = t("cta.noLink"); // a label, but "No link"
+  if (!hint) return null;
   return (
     <p className={classes.hint} data-testid="ctpl-cta-hint">
-      {missingTarget ? t("link.noTarget") : t("cta.noLabel")}
+      {hint}
     </p>
   );
 };

@@ -30,7 +30,17 @@ export interface PanelInfo {
 export const EditPanel = ({ info }: { info: PanelInfo }) => {
   const { t } = useTranslation();
   const r = info.result;
-  const order = t(info.direction === "asc" ? "query.oldest" : "query.newest");
+  // Dates read "newest / oldest first", the title "A to Z / Z to A".
+  const alphabetical = info.criteria === "jcr:title";
+  const order = t(
+    alphabetical
+      ? info.direction === "asc"
+        ? "query.aToZ"
+        : "query.zToA"
+      : info.direction === "asc"
+        ? "query.oldest"
+        : "query.newest",
+  );
   const rows: [string, string][] = [
     [t("query.panel.type"), info.typeLabel],
     [t("query.panel.start"), info.startLabel],

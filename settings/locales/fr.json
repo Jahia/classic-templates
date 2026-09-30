@@ -23,7 +23,8 @@
     "noTitle": "Cette image n'a pas de titre dans la médiathèque, elle n'a donc pas de texte alternatif."
   },
   "cta": {
-    "noLabel": "Libellé du bouton manquant"
+    "noLabel": "Libellé du bouton manquant",
+    "noLink": "Ce bouton a un libellé mais aucun lien : choisissez une page ou une adresse web, ou videz le libellé."
   },
   "editorial": {
     "news": "Actualité",
@@ -68,7 +69,9 @@
       "skipped": "Écartés",
       "skippedValue": "{{excluded}} exclus, {{untranslated}} non traduits en {{language}}",
       "query": "Requête JCR-SQL2"
-    }
+    },
+    "aToZ": "de A à Z",
+    "zToA": "de Z à A"
   },
   "breadcrumb": {
     "label": "Fil d'Ariane"

@@ -23,7 +23,8 @@
     "noTitle": "This image has no title in the media library, so it has no alternative text."
   },
   "cta": {
-    "noLabel": "Button label missing"
+    "noLabel": "Button label missing",
+    "noLink": "This button has a label but no link: choose a page or a web address, or clear the label."
   },
   "editorial": {
     "news": "News",
@@ -68,7 +69,9 @@
       "skipped": "Left out",
       "skippedValue": "{{excluded}} excluded, {{untranslated}} not translated into {{language}}",
       "query": "JCR-SQL2 query"
-    }
+    },
+    "aToZ": "A to Z",
+    "zToA": "Z to A"
   },
   "breadcrumb": {
     "label": "Breadcrumb"

@@ -77,7 +77,10 @@ describe('Content components - missing images, missing links, layout changes', (
         cy.get('[data-testid="ctpl-cta"]').should('not.exist')
         cy.get('[data-testid="ctpl-cta-hint"]').should('not.exist')
         cy.login()
-        cy.request(editFrame).its('body').should('contain', 'data-testid="ctpl-cta-hint"')
+        cy.request(editFrame)
+            .its('body')
+            .should('contain', 'data-testid="ctpl-cta-hint"')
+            .and('contain', 'This button has a label but no link')
         cy.logout()
     })
 
