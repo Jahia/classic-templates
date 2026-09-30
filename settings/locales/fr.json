@@ -19,7 +19,8 @@
     "label": "Liens"
   },
   "image": {
-    "missing": "Aucune image sélectionnée"
+    "missing": "Aucune image sélectionnée",
+    "noTitle": "Cette image n'a pas de titre dans la médiathèque, elle n'a donc pas de texte alternatif."
   },
   "cta": {
     "noLabel": "Libellé du bouton manquant"
@@ -30,12 +31,43 @@
     "by": "Par {{author}}",
     "readingTime_one": "{{count}} min de lecture",
     "readingTime_other": "{{count}} min de lecture",
-    "topics": "Thèmes"
+    "topics": "Thèmes",
+    "noTitle": "Pas de titre dans cette langue : cet élément est écarté des listes."
   },
   "query": {
     "summary": "Liste {{type}} sous {{start}}, {{order}}, {{max}} au plus.",
     "newest": "du plus récent au plus ancien",
     "oldest": "du plus ancien au plus récent",
-    "empty": "Rien à afficher pour le moment."
+    "empty": "Rien à afficher pour le moment.",
+    "startMissing": "Le dossier de départ est renseigné mais introuvable ici (supprimé, ou pas encore publié) : la liste n'affiche rien sur le site en ligne.",
+    "invalidType": "Ce type de contenu ne peut pas être listé.",
+    "sort": {
+      "publicationDate": "date de publication",
+      "jcr_created": "date de création",
+      "jcr_lastModified": "dernière modification",
+      "jcr_title": "titre"
+    },
+    "layout": {
+      "grid": "cartes",
+      "list": "liste compacte"
+    },
+    "panel": {
+      "type": "Contenu",
+      "start": "Sous",
+      "sort": "Tri",
+      "max": "Maximum",
+      "display": "Affichage",
+      "categories": "Catégories",
+      "allCategories": "toutes les catégories",
+      "withSubcategories_one": "({{count}} catégorie avec sous-catégories)",
+      "withSubcategories_other": "({{count}} catégories avec sous-catégories)",
+      "excluded": "Exclus",
+      "none": "aucun",
+      "found": "Trouvés",
+      "foundValue": "{{shown}} affichés sur {{matching}}{{more}} correspondants",
+      "skipped": "Écartés",
+      "skippedValue": "{{excluded}} exclus, {{untranslated}} non traduits en {{language}}",
+      "query": "Requête JCR-SQL2"
+    }
   }
 }

@@ -184,7 +184,10 @@ a.link3:hover {
     display: block;
   }
   /* Without the script there is no way to open a panel, so every level is listed. */
-  :global(html:not(.ctpl-js)) .subToggle {
-    display: none;
-  }
+}
+
+/* Without the script a submenu button would do nothing: hide it at every width (panels still open on
+   hover and keyboard focus on large screens, and are always listed on small ones). */
+:global(html:not(.ctpl-js)) .subToggle {
+  display: none;
 }

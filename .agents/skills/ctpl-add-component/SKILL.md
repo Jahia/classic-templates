@@ -12,15 +12,19 @@ review). This skill adds what is specific to this module. Follow both.
 
 Write the spec block of `/jahia-dev-build-component` Step 1 and check it against
 [`../../context/architecture.md`](../../context/architecture.md): is the type in the planned
-inventory, which shared mixins does it reuse (`ctplmix:cta`, `ctplmix:media`, `ctplmix:seo`)?
+inventory, which shared mixins does it reuse (`ctplmix:cta`, `ctplmix:media`, `ctplmix:sectionStyle`)?
 
 ## 2. Content type
 
 - Folder: `src/components/<Category>/<Name>/` with `definition.cnd` and `types.ts`.
 - Droppable in page areas: `> jnt:content, ctplmix:pageComponent` (and `mix:title` when it has a
   title). Chrome singletons (header, footer) add `jmix:hiddenType`; child items of a list never do.
-- Links: `ctplmix:cta` (shape settled by the phase 3 spike, see architecture open questions). Never
-  a plain `string` URL field.
+- Links: one call to action is `ctplmix:cta`, several are child `ctpl:link` nodes. Never a plain
+  `string` URL field. A section type (`ctplmix:sectionStyle`) gets the call to action as an optional
+  mixin for free; declare `ctplmix:cta` as a supertype only when the button belongs to the
+  component's own layout (hero, image and text), and never redeclare a label or link field.
+- View: a section view ends with `<Cta node={currentNode} renderContext={renderContext} />` (it
+  renders nothing without the mixin), unless the component places it itself.
 - Images: `ctplmix:media` (weakreference to `jmix:image`); alt text comes from the image's `jcr:title`.
 - Labels in the same step: `settings/resources/classic-templates_en.properties` and `_fr.properties`,
   a label and a `ui.tooltip` for the type and every field, choicelist values keyed with `_`.

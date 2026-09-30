@@ -1,16 +1,20 @@
 /**
  * A date for visitors, in the page's language ("30 September 2026", "30 septembre 2026").
- * Accepts the ISO string Jahia returns for date properties; falls back to the date part of the
- * ISO string if the runtime cannot format it.
+ *
+ * Formats the CALENDAR day the editor picked (the date part of the ISO string), in UTC. Parsing
+ * the instant and formatting it in the server's time zone shows the day before on a UTC server
+ * for a date picked at midnight in Paris ("2026-09-30T00:00:00+02:00"), while <time dateTime>
+ * says the 30th. Falls back to the date part if the runtime cannot format it.
  */
 export const formatDate = (iso: string | undefined, language: string): string | undefined => {
   if (!iso) return undefined;
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return iso.slice(0, 10);
+  const day = iso.slice(0, 10);
+  const date = new Date(`${day}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return day;
   try {
-    return new Intl.DateTimeFormat(language, { dateStyle: "long" }).format(date);
+    return new Intl.DateTimeFormat(language, { dateStyle: "long", timeZone: "UTC" }).format(date);
   } catch {
-    return iso.slice(0, 10);
+    return day;
   }
 };
 

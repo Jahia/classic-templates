@@ -13,6 +13,8 @@
   - uploads three generated abstract images (Pillow) to files/demo, with titles as alt text;
   - fills the home, about and landing pages with sections (hero banners, image and text, columns,
     rich text);
+  - creates a small demo taxonomy (system site categories: Product > Features, Events) and files
+    the news items in it;
   - creates the news and articles folders with six news items and three articles (EN + FR, dates,
     images, tags), and content lists on home (latest news as cards, articles as a list) and on the
     news page;
@@ -364,6 +366,13 @@ def main():
         i18n("jcr:title", {"en": "A landing page, full width", "fr": "Une page d'atterrissage pleine largeur"})
         + i18n("subtitle", {"en": "A plain banner: no photo, a tint of the theme's accent.", "fr": "Une bannière simple : pas de photo, une teinte de l'accent du thème."})
         + [{"name": "variant", "value": "plain"}, {"name": "height", "value": "compact"}])
+    # A call-to-action banner: rich text on the accent surface with the optional ctplmix:cta on.
+    props, mixins = cta(p["contact"], {"en": "Talk to us", "fr": "Parlons-en"})
+    add_content(f"{home}/landing/main", "talk", "ctpl:richText",
+        i18n("jcr:title", {"en": "Ready to start?", "fr": "Prêt à commencer ?"})
+        + i18n("body", {"en": "<p>Tell us about your site: we answer within a day.</p>",
+                        "fr": "<p>Parlez-nous de votre site : nous répondons sous un jour.</p>"})
+        + [{"name": "ctplSurface", "value": "accent"}] + props, ["ctplmix:cta"] + mixins)
 
     # ---- News and articles (main resources in content folders) + content lists ---------------
     contents = f"{site}/contents"
@@ -425,6 +434,20 @@ def main():
             props.append({"name": "image", "type": "WEAKREFERENCE", "value": img[image]})
         add_content(f"{contents}/articles", name, "ctpl:article", props)
 
+    # ---- Demo categories (system site) and their use on news items ------------------------------
+    cats_root = "/sites/systemsite/categories"
+    demo_cats = add_content(cats_root, "classic-templates-demo", "jnt:category",
+                            i18n("jcr:title", {"en": "Classic templates demo", "fr": "Démo classic templates"}))
+    product = add_content(demo_cats, "product", "jnt:category", i18n("jcr:title", {"en": "Product", "fr": "Produit"}))
+    features = add_content(product, "features", "jnt:category", i18n("jcr:title", {"en": "Features", "fr": "Fonctionnalités"}))
+    events = add_content(demo_cats, "events", "jnt:category", i18n("jcr:title", {"en": "Events", "fr": "Événements"}))
+    uuid_of = lambda path: gql("query($p:String!){jcr{nodeByPath(path:$p){uuid}}}", {"p": path})["jcr"]["nodeByPath"]["uuid"]
+    for item, category in (("launch", product), ("columns", product), ("dark-mode", features),
+                           ("accessibility", features), ("workshop", events)):
+        gql('mutation($p:String!,$c:[String]){jcr{mutateNode(pathOrId:$p){addMixins(mixins:["jmix:categorized"]) '
+            'mutateProperty(name:"j:defaultCategory"){setValues(values:$c,type:WEAKREFERENCE)}}}}',
+            {"p": f"{contents}/news/{item}", "c": [uuid_of(category)]})
+
     news_folder = gql("query($p:String!){jcr{nodeByPath(path:$p){uuid}}}", {"p": f"{contents}/news"})["jcr"]["nodeByPath"]["uuid"]
     articles_folder = gql("query($p:String!){jcr{nodeByPath(path:$p){uuid}}}", {"p": f"{contents}/articles"})["jcr"]["nodeByPath"]["uuid"]
     props, mixins = cta(p["news"], {"en": "All news", "fr": "Toutes les actualités"})
@@ -434,12 +457,18 @@ def main():
     add_content(main, "reading", "ctpl:jcrQuery", i18n("jcr:title", {"en": "Articles", "fr": "Articles"})
         + [{"name": "type", "value": "ctpl:article"}, {"name": "startNode", "type": "WEAKREFERENCE", "value": articles_folder},
            {"name": "maxItems", "value": "3"}, {"name": "layout", "value": "list"}, {"name": "ctplSurface", "value": "sunken"}])
+    # "Product news": items in Product, including those filed under its subcategory Features.
+    add_content(ensure_area(f"{home}/news", "main", "ctpl:pageArea"), "product", "ctpl:jcrQuery",
+        i18n("jcr:title", {"en": "Product news", "fr": "Actualités produit"})
+        + [{"name": "type", "value": "ctpl:news"}, {"name": "startNode", "type": "WEAKREFERENCE", "value": news_folder},
+           {"name": "maxItems", "value": "6"}, {"name": "layout", "value": "list"},
+           {"name": "filterCategories", "type": "WEAKREFERENCE", "values": [uuid_of(product)]}])
     add_content(ensure_area(f"{home}/news", "main", "ctpl:pageArea"), "all", "ctpl:jcrQuery",
         i18n("noResultText", {"en": "No news yet.", "fr": "Pas encore d'actualités."})
         + [{"name": "type", "value": "ctpl:news"}, {"name": "startNode", "type": "WEAKREFERENCE", "value": news_folder},
            {"name": "maxItems", "value": "24"}, {"name": "layout", "value": "grid"}])
 
-    for root in (site, f"{site}/files"):
+    for root in (site, f"{site}/files", demo_cats):
         gql(
             "mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(languages:[\"en\",\"fr\"],publishSubNodes:true,includeSubTree:true)}}}",
             {"s": root},

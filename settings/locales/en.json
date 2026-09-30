@@ -19,7 +19,8 @@
     "label": "Links"
   },
   "image": {
-    "missing": "No image selected"
+    "missing": "No image selected",
+    "noTitle": "This image has no title in the media library, so it has no alternative text."
   },
   "cta": {
     "noLabel": "Button label missing"
@@ -30,12 +31,43 @@
     "by": "By {{author}}",
     "readingTime_one": "{{count}} min read",
     "readingTime_other": "{{count}} min read",
-    "topics": "Topics"
+    "topics": "Topics",
+    "noTitle": "No title in this language: this item is left out of lists."
   },
   "query": {
     "summary": "Lists {{type}} under {{start}}, {{order}}, up to {{max}}.",
     "newest": "newest first",
     "oldest": "oldest first",
-    "empty": "Nothing to show yet."
+    "empty": "Nothing to show yet.",
+    "startMissing": "The start folder is set but cannot be found here (deleted, or not published yet): the list shows nothing on the live site.",
+    "invalidType": "This content type cannot be listed.",
+    "sort": {
+      "publicationDate": "publication date",
+      "jcr_created": "creation date",
+      "jcr_lastModified": "last modification",
+      "jcr_title": "title"
+    },
+    "layout": {
+      "grid": "cards",
+      "list": "compact list"
+    },
+    "panel": {
+      "type": "Content",
+      "start": "Under",
+      "sort": "Sort",
+      "max": "Maximum",
+      "display": "Display",
+      "categories": "Categories",
+      "allCategories": "all categories",
+      "withSubcategories_one": "({{count}} category with subcategories)",
+      "withSubcategories_other": "({{count}} categories with subcategories)",
+      "excluded": "Excluded",
+      "none": "none",
+      "found": "Found",
+      "foundValue": "{{shown}} shown of {{matching}}{{more}} matching",
+      "skipped": "Left out",
+      "skippedValue": "{{excluded}} excluded, {{untranslated}} not translated into {{language}}",
+      "query": "JCR-SQL2 query"
+    }
   }
 }

@@ -65,6 +65,20 @@ describe('Content components - hero banner, image and text, rich text, columns',
                             'jcr:title': { en: 'Plain text', fr: 'Texte simple' },
                             body: { en: '<p>Some <em>rich</em> text</p>', fr: '<p>Du texte <em>riche</em></p>' },
                         })
+                        // A call-to-action banner: rich text on the accent surface with the optional
+                        // ctplmix:cta switched on, as an editor does from the edit form.
+                        addContent(
+                            `${page}/main`,
+                            'signup',
+                            'ctpl:richText',
+                            {
+                                'jcr:title': { en: 'Ready to start?', fr: 'Prêt à commencer ?' },
+                                body: { en: '<p>Join us today.</p>', fr: "<p>Rejoignez-nous aujourd'hui.</p>" },
+                                ctaLabel: { en: 'Sign up', fr: "S'inscrire" },
+                            },
+                            [{ name: 'ctplSurface', value: 'accent' }, ...cta.props],
+                            ['ctplmix:cta', ...cta.mixins],
+                        )
                     })
                 },
             )
@@ -119,15 +133,30 @@ describe('Content components - hero banner, image and text, rich text, columns',
         })
     })
 
-    it('renders rich text', () => {
+    it('renders rich text, with no call to action unless the editor switched it on', () => {
         cy.visit(`/sites/${siteKey}/home/showcase.html`)
-        cy.get('[data-testid="ctpl-rich-text"]').last().find('em').should('have.text', 'rich')
+        cy.contains('[data-testid="ctpl-rich-text"]', 'Plain text').within(() => {
+            cy.get('em').should('have.text', 'rich')
+            cy.get('[data-testid="ctpl-cta"]').should('not.exist')
+        })
+    })
+
+    it('renders the optional call to action on a section that does not build it in', () => {
+        cy.visit(`/sites/${siteKey}/home/showcase.html`)
+        cy.contains('[data-testid="ctpl-rich-text"]', 'Ready to start?')
+            .should('have.attr', 'data-surface', 'accent')
+            .find('[data-testid="ctpl-cta"]')
+            .should('have.text', 'Sign up')
+            .and('have.attr', 'href', `/sites/${siteKey}/home/showcase.html`)
     })
 
     it('renders every component in French', () => {
         cy.visit(`/fr/sites/${siteKey}/home/showcase.html`)
         cy.get('[data-testid="ctpl-hero-banner"] h2').should('have.text', 'Grand bienvenue')
-        cy.get('[data-testid="ctpl-cta"]').should('have.text', 'Aller')
+        cy.get('[data-testid="ctpl-hero-banner"] [data-testid="ctpl-cta"]').should('have.text', 'Aller')
+        cy.contains('[data-testid="ctpl-rich-text"]', 'Prêt à commencer')
+            .find('[data-testid="ctpl-cta"]')
+            .should('have.text', "S'inscrire")
         cy.get('[data-testid="ctpl-image-text"] strong').should('have.text', 'une')
         cy.get('[data-testid="ctpl-columns"] h3').first().should('have.text', 'Titre one')
     })

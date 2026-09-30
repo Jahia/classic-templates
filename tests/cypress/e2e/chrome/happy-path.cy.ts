@@ -53,9 +53,9 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
 
     it('renders the utility links above the main bar, with new-tab links announced', () => {
         cy.visit(page('services/consulting'))
-        cy.get('[data-testid="ctpl-site-header"] nav[aria-label="Quick links"] a').should('have.length', 2)
-        cy.get('nav[aria-label="Quick links"] a').first().should('have.text', 'Services')
-        cy.get('nav[aria-label="Quick links"] a[target="_blank"]')
+        cy.get('[data-testid="ctpl-site-header"] [data-list-name="utilityLinks"] a').should('have.length', 2)
+        cy.get('[data-list-name="utilityLinks"] a').first().should('have.text', 'Services')
+        cy.get('[data-list-name="utilityLinks"] a[target="_blank"]')
             .should('have.attr', 'rel', 'noopener noreferrer')
             .and('contain.text', 'opens in a new tab')
     })
@@ -69,7 +69,7 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
 
     it('builds the main menu three levels deep from the page tree', () => {
         cy.visit(page('contact'))
-        cy.get('nav[aria-label="Main navigation"]').within(() => {
+        cy.get('[data-testid="ctpl-main-navigation"]').within(() => {
             cy.contains('a', 'Services').should('have.attr', 'href', `/sites/${siteKey}/home/services.html`)
             cy.contains('a', 'Consulting').should('exist')
             cy.contains('a', 'Strategy').should(
@@ -83,10 +83,10 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
 
     it('marks the current page and its menu ancestors', () => {
         cy.visit(page('services/consulting/strategy'))
-        cy.get('nav[aria-label="Main navigation"] a[aria-current="page"]')
+        cy.get('[data-testid="ctpl-main-navigation"] a[aria-current="page"]')
             .should('have.length', 1)
             .and('have.text', 'Strategy')
-        cy.get('nav[aria-label="Main navigation"] [data-active] > a').first().should('have.text', 'Services')
+        cy.get('[data-testid="ctpl-main-navigation"] [data-active] > a').first().should('have.text', 'Services')
     })
 
     it('opens a submenu with its button and closes it with Escape, returning focus', () => {
@@ -119,8 +119,12 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
         )
         cy.visit(`/fr${page('services/consulting')}`)
         cy.get('[data-testid="ctpl-language-switcher"] a[aria-current="true"]').should('have.attr', 'hreflang', 'fr')
-        cy.get('nav[aria-label="Navigation principale"]').contains('a', 'Conseil')
-        cy.get('nav[aria-label="Liens rapides"]').contains('a', 'Académie')
+        cy.get('[data-testid="ctpl-main-navigation"]')
+            .should('have.attr', 'aria-label', 'Navigation principale')
+            .contains('a', 'Conseil')
+        cy.get('[data-list-name="utilityLinks"]')
+            .should('have.attr', 'aria-label', 'Liens rapides')
+            .contains('a', 'Académie')
     })
 
     it('renders the footer columns and a copyright with the current year', () => {

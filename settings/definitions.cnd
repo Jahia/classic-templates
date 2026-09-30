@@ -50,9 +50,13 @@
 [ctplmix:linkTo] mixin
  - j:linkType (string, choicelist[linkTypeInitializer,resourceBundle]) = 'none' autocreated indexed=no
 
-// A single call to action: a link plus its visible label. A component with several actions models
-// them as child ctpl:link nodes instead.
+// A single call to action: a link plus its visible label, rendered by src/lib/Cta.tsx. Reusable in
+// two ways: built into a type as a supertype (hero banner, image and text, content list place the
+// button in their own layout), or switched on by editors on any section (every ctplmix:sectionStyle
+// type: "Call to action" in the edit form), where the view renders it after the section's content.
+// A component with several actions models them as child ctpl:link nodes instead.
 [ctplmix:cta] > ctplmix:linkTo mixin
+ extends = ctplmix:sectionStyle
  - ctaLabel (string) i18n
 
 // An image from the media library. Its alt text is the image's own jcr:title.

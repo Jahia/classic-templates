@@ -2,8 +2,10 @@
 
 How to work on this module with an AI agent. The generic Jahia knowledge (CND authoring, views,
 page templates, reviews, Cypress, content via MCP) lives in the AIStartupKit harness
-(`$AISTARTUPKIT`, skills under `.claude/skills/`). This folder only
-holds what is specific to this module: its decisions, its conventions and its gates.
+(`$AISTARTUPKIT`, a checkout of AIStartupKit, skills under `.claude/skills/`). This folder only
+holds what is specific to this module: its decisions, its conventions and its gates. Commands that
+use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` and
+`JAHIA_SECURITY_SCAN` (a checkout of jahia-security-scan).
 
 ## Read first
 

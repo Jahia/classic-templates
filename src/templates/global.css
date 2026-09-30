@@ -145,3 +145,14 @@ video {
   border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
   text-align: left;
 }
+
+/* Edit-mode hints (a missing translation, label or image title): never rendered on the live site. */
+.ctpl-edit-hint {
+  display: inline-block;
+  margin: var(--ctpl-space-1) 0;
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-xs);
+}

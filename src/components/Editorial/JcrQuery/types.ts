@@ -10,6 +10,8 @@ export interface Props {
   "maxItems"?: number;
   "layout"?: "grid" | "list";
   "excludeNodes"?: JCRNodeWrapper[];
+  /** Categories an item must carry (any of them, subcategories included). */
+  "filterCategories"?: JCRNodeWrapper[];
   "noResultText"?: string;
   "ctaLabel"?: string;
   "j:linkType"?: "none" | "internal" | "external";

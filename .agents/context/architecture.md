@@ -75,7 +75,15 @@ Layout (only known values; the default look stamps nothing).
 
 - Only rule R10 (`dangerouslySetInnerHTML`) can fire on a JS module, and it flags every use, even
   sanitised. Rich text goes through a single audited `RichText` component, so there is exactly one
-  justified hit. Rich-text properties are filtered by Jahia's HTML filtering on save.
+  justified hit.
+- **Rich text is sanitised at render time, not trusted from the repository.** Platform-side HTML filtering is a site setting the template set
+  cannot count on. `src/lib/sanitize.ts` (js-xss,
+  allow-list) keeps text formatting, lists, tables, figures, links and images; drops scripts,
+  styles, frames, event handlers and `class`/`style` attributes; removes href/src/cite that is not
+  http(s), mailto, tel, relative or a Jahia `##cms-context##` placeholder (so no `javascript:`,
+  `data:` or `//host`); turns an editor `<h1>` into `<h2>` (the template owns the only h1); adds
+  `rel="noopener noreferrer"` to new-tab links. Unit tests in `sanitize.test.ts`, end-to-end in the
+  content edge-cases spec.
 - No scanner rule covers these, so review them by hand: JCR-SQL2 built by concatenation (values
   only from choicelists, paths only from nodes), contributed URLs (scheme allow-list: `http`,
   `https`, `mailto`, `tel`), any server-side fetch.
@@ -97,6 +105,15 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   GraphQL and in live rendering. The label is our own field (`ctaLabel (string) i18n` on
   `ctplmix:cta` = `linkTo` + label); `ctpl:link` (list item) = `mix:title` + `ctplmix:linkTo`, and
   an internal link without a title falls back to the target page's title.
+
+- **The call to action is one reusable mixin, used two ways.** `ctplmix:cta` is a supertype where
+  the component places the button in its own layout (hero banner, image and text, content list),
+  and an optional mixin on every other section: `extends = ctplmix:sectionStyle`, so the edit form
+  of any sectioned type (rich text, columns, and every new section) shows a "Call to action" toggle
+  with the label and the link picker; types that already have it as a supertype show no duplicate
+  toggle (checked in `forms.editForm`). Views end with `<Cta node renderContext />`, which renders
+  nothing on a node without the mixin, edit mode included. There is no call-to-action banner type:
+  a rich text on the accent surface with the call to action switched on is the banner.
 
 - **Links are per language:** `j:linknode` and `j:url` are both i18n. A link set in EN has no target
   in FR. Views render the label without a link when the current language has no target (never
@@ -155,7 +172,8 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
   variant without a photo renders plain. Overlay medium/strong, height compact/medium/tall.
 - **Image and text** (`ctpl:imageText`): image left or right, landscape/square/portrait crop,
   rich text body, optional CTA, section surface.
-- **Rich text** (`ctpl:richText`): optional heading, body at reading measure or wide.
+- **Rich text** (`ctpl:richText`): optional heading, body at reading measure or wide, optional
+  call to action (the call-to-action banner, on the accent surface).
 - **Columns** (`ctpl:columns`): halves, thirds, quarters, 2/3+1/3, 1/3+2/3; four autocreated
   `ctpl:column` child lists (each accepts page sections) of which the view renders as many as the
   layout needs, so switching layout never deletes content. Rendered with `RenderChild` of the named
@@ -179,8 +197,17 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
   (`choicelist[nodetypes='ctplmix:listable']`: news, article, or both via the shared mixin; this
   self-referencing initializer installs fine, unlike the `subnodetypes` fault in the harness notes),
   start folder or page, sort field and direction (allow-listed), 1-50 items, grid of cards or
-  compact list, excluded items, "no result" text, "see all" call to action. Edit mode shows a summary
-  ("Lists News item under contents/news, newest first, up to 3").
+  compact list, categories, excluded items, "no result" text, "see all" call to action.
+  - **Edit panel** (`EditPanel.tsx`): the summary sentence ("Lists News item under contents/news,
+    newest first, up to 3"), then every setting resolved to labels (type, start, sort, maximum,
+    display, categories with the subcategory count, excluded titles), what the query found ("3
+    shown of 6 matching", "+" when the 500-row edit count was reached), what it left out (excluded,
+    not translated into the page's language), warnings (start folder set but gone, type not
+    listable), and the JCR-SQL2 query in a `<details>`.
+  - **Category filter** (`filterCategories`, a `category[autoSelectParent=false]` picker): a query
+    criterion asked for by the user, not a category field on content. The selected categories and
+    their subcategories (up to 200) become `(item.[j:defaultCategory] = 'uuid' OR ...)`; identifiers
+    are checked against the UUID pattern before they reach the string. The OR form works on 8.2.3.2.
   - Card heading level is passed with `Render parameters={{ headingLevel }}` and read with
     `currentResource.getModuleParams()`: h3 under a titled list, h2 under an untitled one.
   - Items not translated into the page's language are skipped.
@@ -191,8 +218,8 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
     Editor form override (`settings/content-editor-forms/forms/ctpl_jcrQuery.json`) hides it.
   - Type labels for the summary come from Jahia's `NodeTypeRegistry` (via `Java.type`): the JCR
     type manager's node types carry no label.
-  - No category filter: the user's rule is that no category field is ever declared. Ask before
-    adding one as a query criterion.
+  - A start node that is set but no longer resolves renders nothing on the live site (never the
+    whole site) and a warning in edit mode.
 
 ## Editor UI notes
 
@@ -213,4 +240,6 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
 
 ## Open questions
 
-None at the end of phase 4.
+None at the end of phase 9. Next: the Tier 1 components (breadcrumb, card grid, key figures,
+quote), then a free-zone section and a CSS token bridge so the jsfaq, js-media-gallery,
+js-store-locator and formidable add-ons can be dropped into ctpl pages without a hard dependency.

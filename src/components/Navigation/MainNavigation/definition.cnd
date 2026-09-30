@@ -9,5 +9,7 @@
 // The site's main menu, built from the page tree under the home page (pages, menu labels, links to
 // other nodes, external links), down to navDepth levels. It stores no links itself: editors shape
 // the menu by creating, ordering and hiding pages ("Hide from navigation" page option).
-[ctpl:mainNavigation] > jnt:content, ctplmix:component
+// Not a ctplmix:component: an autocreated part of the header, never offered in generic content
+// lists (jmix:accessControllableContent keeps it referenceable, like every content node here).
+[ctpl:mainNavigation] > jnt:content, jmix:accessControllableContent
  - navDepth (long) = 3 autocreated < '[1,3]'

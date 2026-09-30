@@ -20,8 +20,15 @@
   function markCurrent(nav) {
     var here = window.location.pathname.replace(/\/$/, "");
     nav.querySelectorAll("a[href]").forEach(function (a) {
-      var path = new URL(a.getAttribute("href"), window.location.href).pathname.replace(/\/$/, "");
-      if (path !== here) return;
+      var url;
+      try {
+        url = new URL(a.getAttribute("href"), window.location.href);
+      } catch {
+        return; // malformed href: not the current page
+      }
+      // Same origin only: an external menu item with the same path is never "this page".
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname.replace(/\/$/, "") !== here) return;
       a.setAttribute("aria-current", "page");
       var item = a.closest("[data-ctpl-nav-item]");
       while (item) {
@@ -66,7 +73,8 @@
       if (open) {
         open.setAttribute("aria-expanded", "false");
         open.focus();
-      } else if (top) {
+      } else if (hovered && top) {
+        // A hover-opened panel was dismissed: give focus to its button, never otherwise.
         var button = top.querySelector("[data-ctpl-subnav-toggle]");
         if (button) button.focus();
       }

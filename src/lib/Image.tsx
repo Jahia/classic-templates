@@ -1,12 +1,8 @@
 import { buildNodeUrl, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
-
-const num = (node: JCRNodeWrapper, name: string): number | undefined => {
-  if (!node.hasProperty(name)) return undefined;
-  const value = Number(node.getProperty(name).getLong());
-  return value > 0 ? value : undefined;
-};
+import { useTranslation } from "react-i18next";
+import { readPositive, readString } from "./props.js";
 
 /**
  * An image from the media library.
@@ -17,6 +13,7 @@ const num = (node: JCRNodeWrapper, name: string): number | undefined => {
  * - `priority` for the banner image at the top of the page (eager, high fetch priority); every
  *   other image loads lazily.
  * The image node is declared as a cache dependency: renaming it in the library updates the alt text.
+ * A content image whose library title is empty would silently get alt="": edit mode flags it.
  */
 export const Image = ({
   node,
@@ -31,18 +28,26 @@ export const Image = ({
   priority?: boolean;
   decorative?: boolean;
 }) => {
+  const { t } = useTranslation();
   server.render.addCacheDependency({ node }, renderContext);
-  const title = node.hasProperty("jcr:title") ? node.getProperty("jcr:title").getString() : "";
-  return (
+  const title = readString(node, "jcr:title") ?? "";
+  const img = (
     <img
       className={className}
       src={buildNodeUrl(node)}
       alt={decorative ? "" : title}
-      width={num(node, "j:width")}
-      height={num(node, "j:height")}
+      width={readPositive(node, "j:width")}
+      height={readPositive(node, "j:height")}
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : undefined}
       decoding="async"
     />
+  );
+  if (decorative || title || !renderContext.isEditMode()) return img;
+  return (
+    <>
+      {img}
+      <span className="ctpl-edit-hint">{t("image.noTitle")}</span>
+    </>
   );
 };

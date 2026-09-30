@@ -1,12 +1,11 @@
 import { buildNodeUrl, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
+import { readString as read } from "./props.js";
 
-/** Schemes a contributed external URL may use. Anything else (javascript:, data:, ...) is dropped. */
-const SAFE_EXTERNAL = /^(?:https?:\/\/|mailto:|tel:)/i;
+import { isSafeExternalUrl } from "./urls.js";
 
-/** True when `url` uses a scheme a visitor may safely be sent to. */
-export const isSafeExternalUrl = (url: string): boolean => SAFE_EXTERNAL.test(url.trim());
+export { isSafeExternalUrl };
 
 export interface ResolvedLink {
   href: string;
@@ -26,9 +25,6 @@ export interface LinkState {
    */
   missingTarget: boolean;
 }
-
-const read = (node: JCRNodeWrapper, name: string): string | undefined =>
-  node.hasProperty(name) ? node.getProperty(name).getString() || undefined : undefined;
 
 /**
  * Resolves the link stored by the ctplmix:linkTo mixin (Jahia's native link picker) on `node`,

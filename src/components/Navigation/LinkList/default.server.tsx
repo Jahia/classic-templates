@@ -1,10 +1,15 @@
 import { RenderChildren, getChildNodes, jahiaComponent } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { useTranslation } from "react-i18next";
+import { SectionHeading } from "../../../lib/Heading.js";
 import type { Props } from "./types.js";
 import classes from "./link-list.module.css";
 
-/** A list with no link renders nothing on the live site (no empty <nav>), but stays in edit mode. */
+/**
+ * A list with no link renders nothing on the live site (no empty <nav>), but stays in edit mode.
+ * Every view carries the list's node name (data-list-name), a stable hook for tests and styling
+ * that does not change with the language.
+ */
 const isEmpty = (node: JCRNodeWrapper) =>
   getChildNodes(node, 1, 0, (n: JCRNodeWrapper) => n.isNodeType("ctpl:link")).length === 0;
 
@@ -14,9 +19,21 @@ jahiaComponent(
   ({ "jcr:title": title }: Props, { currentNode, renderContext }) => {
     if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
     return (
-      <section data-testid="ctpl-link-list">
+      <section
+        data-testid="ctpl-link-list"
+        data-list-name={currentNode.getName()}
+        aria-labelledby={title ? `ctpl-ll-${currentNode.getIdentifier()}` : undefined}
+      >
         <div className="ctpl-container">
-          {title && <h2 className={classes.sectionTitle}>{title}</h2>}
+          {title && (
+            <SectionHeading
+              node={currentNode}
+              id={`ctpl-ll-${currentNode.getIdentifier()}`}
+              className={classes.sectionTitle}
+            >
+              {title}
+            </SectionHeading>
+          )}
           <ul className={classes.stacked}>
             <RenderChildren />
           </ul>
@@ -33,7 +50,11 @@ jahiaComponent(
     const { t } = useTranslation();
     if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
     return (
-      <nav aria-label={title || t("links.label")} data-testid="ctpl-link-list-inline">
+      <nav
+        aria-label={title || t("links.label")}
+        data-testid="ctpl-link-list-inline"
+        data-list-name={currentNode.getName()}
+      >
         <ul className={classes.inline}>
           <RenderChildren />
         </ul>
@@ -55,6 +76,7 @@ jahiaComponent(
         aria-labelledby={title ? headingId : undefined}
         aria-label={title ? undefined : t("links.label")}
         data-testid="ctpl-link-list-column"
+        data-list-name={currentNode.getName()}
       >
         {title && (
           <h2 id={headingId} className={classes.columnTitle}>

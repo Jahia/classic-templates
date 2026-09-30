@@ -4,13 +4,10 @@ import {
   jahiaComponent,
   server,
 } from "@jahia/javascript-modules-library";
-import type { JCRNodeWrapper } from "org.jahia.services.content";
+import { readPositive } from "../../../lib/props.js";
 import { chromeOwner } from "../../../lib/site.js";
 import type { Props } from "./types.js";
 import classes from "./site-header.module.css";
-
-const title = (node: JCRNodeWrapper) =>
-  node.hasProperty("jcr:title") ? node.getProperty("jcr:title").getString() : "";
 
 /**
  * The site header: utility links and the language switcher in a bar above (right-aligned), then
@@ -24,6 +21,7 @@ jahiaComponent(
   { componentType: "view", nodeType: "ctpl:siteHeader", displayName: "Site header" },
   ({ logo, logoDark, brandName, showBrandName }: Props, { renderContext }) => {
     const site = renderContext.getSite();
+    server.render.addCacheDependency({ node: site }, renderContext); // brand falls back to the site title
     const home = chromeOwner(site);
     const brand = brandName || site.getTitle() || site.getName();
     const withText = showBrandName !== false || !logo;
@@ -45,13 +43,17 @@ jahiaComponent(
               <img
                 className={logoDark ? classes.logoLight : classes.logo}
                 src={buildNodeUrl(logo)}
-                alt={withText ? "" : brand || title(logo)}
+                width={readPositive(logo, "j:width")}
+                height={readPositive(logo, "j:height")}
+                alt={withText ? "" : brand}
               />
             )}
             {logo && logoDark && (
               <img
                 className={classes.logoDark}
                 src={buildNodeUrl(logoDark)}
+                width={readPositive(logoDark, "j:width")}
+                height={readPositive(logoDark, "j:height")}
                 alt={withText ? "" : brand}
               />
             )}

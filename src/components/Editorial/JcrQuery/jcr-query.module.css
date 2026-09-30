@@ -20,14 +20,55 @@
   border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
 }
 
-.summary {
-  margin: 0 0 var(--ctpl-space-4);
-  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+.empty {
+  color: var(--ctpl-color-text-muted);
+}
+
+/* ---- Edit-mode panel ---------------------------------------------------------------------- */
+.panel {
+  margin: 0 0 var(--ctpl-space-5);
+  padding: var(--ctpl-space-3) var(--ctpl-space-4);
   border-inline-start: 3px solid var(--ctpl-color-accent);
   background: var(--ctpl-color-surface-sunken);
   color: var(--ctpl-color-text-muted);
   font-size: var(--ctpl-text-sm);
 }
-.empty {
-  color: var(--ctpl-color-text-muted);
+.panelTitle {
+  margin: 0 0 var(--ctpl-space-2);
+  color: var(--ctpl-color-text);
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.panelList {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  margin: 0;
+}
+.panelRow {
+  display: grid;
+  grid-template-columns: minmax(8rem, max-content) 1fr;
+  gap: var(--ctpl-space-3);
+}
+.panelRow dt {
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.panelRow dd {
+  margin: 0;
+}
+.panelQuery {
+  margin-top: var(--ctpl-space-2);
+}
+.panelQuery summary {
+  cursor: pointer;
+}
+.panelQuery code {
+  display: block;
+  margin-top: var(--ctpl-space-2);
+  padding: var(--ctpl-space-2);
+  overflow-x: auto;
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-surface-raised);
+  font-family: var(--ctpl-font-mono);
+  font-size: var(--ctpl-text-xs);
+  white-space: pre-wrap;
+  word-break: break-word;
 }

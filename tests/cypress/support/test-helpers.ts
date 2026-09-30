@@ -148,7 +148,21 @@ export interface EditorialSpec {
     date: string
     author?: string
     tags?: string[]
+    /** Category identifiers (j:defaultCategory). */
+    categories?: string[]
 }
+
+/** Adds a jnt:category (EN and FR title) under `parent`; resolves to its uuid. */
+export const addCategory = (parent: string, name: string, title: string) =>
+    addNode({
+        parentPathOrId: parent,
+        name,
+        primaryNodeType: 'jnt:category',
+        properties: [
+            { name: 'jcr:title', value: title, language: 'en' },
+            { name: 'jcr:title', value: title, language: 'fr' },
+        ],
+    }).then((res: { data: { jcr: { addNode: { uuid: string } } } }) => res.data.jcr.addNode.uuid)
 
 /** Adds a ctpl:news or ctpl:article to a content folder; French is set only when given. */
 export const addEditorial = (folder: string, type: 'ctpl:news' | 'ctpl:article', item: EditorialSpec) => {
@@ -158,13 +172,14 @@ export const addEditorial = (folder: string, type: 'ctpl:news' | 'ctpl:article',
         parentPathOrId: folder,
         name: item.name,
         primaryNodeType: type,
-        mixins: item.tags ? ['jmix:tagged'] : [],
+        mixins: [...(item.tags ? ['jmix:tagged'] : []), ...(item.categories ? ['jmix:categorized'] : [])],
         properties: [
             ...i18nValue('jcr:title', item.title),
             ...i18nValue('teaser', item.teaser),
             { name: 'publicationDate', type: 'DATE', value: `${item.date}T09:00:00.000+02:00` },
             ...(item.author ? [{ name: 'author', value: item.author }] : []),
             ...(item.tags ? [{ name: 'j:tagList', values: item.tags }] : []),
+            ...(item.categories ? [{ name: 'j:defaultCategory', type: 'WEAKREFERENCE', values: item.categories }] : []),
         ],
     })
 }
@@ -181,6 +196,8 @@ export const addList = (
         max?: number
         direction?: 'asc' | 'desc'
         exclude?: string[]
+        /** Category identifiers: the list keeps items filed under any of them or their subcategories. */
+        categories?: string[]
         noResult?: { en: string; fr: string }
     },
 ) =>
@@ -199,6 +216,9 @@ export const addList = (
             { name: 'maxItems', value: String(options.max ?? 6) },
             { name: 'sortDirection', value: options.direction ?? 'desc' },
             ...(options.exclude ? [{ name: 'excludeNodes', type: 'WEAKREFERENCE', values: options.exclude }] : []),
+            ...(options.categories
+                ? [{ name: 'filterCategories', type: 'WEAKREFERENCE', values: options.categories }]
+                : []),
         ] as { name: string; value: string; type?: string }[],
     )
 

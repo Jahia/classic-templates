@@ -1,12 +1,22 @@
-import { deleteSite, publishAndWaitJobEnding } from '@jahia/cypress'
+import { addNode, deleteNode, deleteSite, publishAndWaitJobEnding } from '@jahia/cypress'
 import { siteKeyFor } from '../../support/constants'
-import { addContent, addEditorial, addList, addPage, createTestSite, uuidAt } from '../../support/test-helpers'
+import {
+    addCategory,
+    addContent,
+    addEditorial,
+    addList,
+    addPage,
+    createTestSite,
+    uuidAt,
+} from '../../support/test-helpers'
 
 const siteKey = siteKeyFor('editorial-edge')
 const site = `/sites/${siteKey}`
 const news = `${site}/contents/news`
 const page = `${site}/home/edge`
 const live = `${site}/home/edge.html`
+const topics = `${site}/contents/topics`
+const categoryRoot = `/sites/systemsite/categories/${siteKey}`
 
 describe('Content lists - sorting, exclusions, languages, limits, empty results', () => {
     before(() => {
@@ -47,12 +57,56 @@ describe('Content lists - sorting, exclusions, languages, limits, empty results'
             })
             addList(`${page}/main`, 'silent', { type: 'ctpl:article', startUuid: articles })
         })
+
+        // Categories: a list filtered on "Products" keeps items filed under Products and under its
+        // subcategory Laptops, and leaves Events out.
+        addCategory('/sites/systemsite/categories', siteKey, 'Test root').then(() => {
+            addCategory(categoryRoot, 'products', 'Products').then((products) =>
+                addCategory(`${categoryRoot}/products`, 'laptops', 'Laptops').then((laptops) =>
+                    addCategory(categoryRoot, 'events', 'Events').then((events) => {
+                        addNode({
+                            parentPathOrId: `${site}/contents`,
+                            name: 'topics',
+                            primaryNodeType: 'jnt:contentFolder',
+                        })
+                        for (const [name, category] of [
+                            ['product-launch', products],
+                            ['laptop-review', laptops],
+                            ['trade-fair', events],
+                        ]) {
+                            addEditorial(topics, 'ctpl:news', {
+                                name,
+                                title: { en: `Topic ${name}`, fr: `Sujet ${name}` },
+                                date: '2026-09-10',
+                                categories: [category],
+                            })
+                        }
+
+                        uuidAt(topics).then((topicsUuid) =>
+                            addList(`${page}/main`, 'products', {
+                                type: 'ctpl:news',
+                                startUuid: topicsUuid,
+                                categories: [products],
+                            }),
+                        )
+                    }),
+                ),
+            )
+        })
+
+        // A start folder deleted after the list was set up.
+        addNode({ parentPathOrId: `${site}/contents`, name: 'gone', primaryNodeType: 'jnt:contentFolder' })
+        uuidAt(`${site}/contents/gone`).then((gone) => {
+            addList(`${page}/main`, 'orphan', { type: 'ctpl:news', startUuid: gone })
+            deleteNode(`${site}/contents/gone`)
+        })
         publishAndWaitJobEnding(site, ['en', 'fr'])
         cy.logout()
     })
 
     after(() => {
         cy.login()
+        deleteNode(categoryRoot)
         deleteSite(siteKey)
         cy.logout()
     })
@@ -88,14 +142,48 @@ describe('Content lists - sorting, exclusions, languages, limits, empty results'
     it('shows the "no result" text when there is one, and nothing at all otherwise', () => {
         cy.visit(live)
         cy.contains('[data-testid="ctpl-jcr-query"]', 'Nothing here').should('exist')
-        cy.get('[data-testid="ctpl-jcr-query"]').should('have.length', 4)
+        // Lists asc, excluded, all, empty and products; silent (no result, no text) and orphan render nothing.
+        cy.get('[data-testid="ctpl-jcr-query"]').should('have.length', 5)
     })
 
-    it('tells editors what an empty list shows', () => {
+    it('keeps the items of the selected category and of its subcategories only', () => {
+        cy.visit(live)
+        cy.get('[data-testid="ctpl-jcr-query"]')
+            .eq(4)
+            .find('[data-testid="ctpl-news-card"] h2 a')
+            .should('have.length', 2)
+            .and('contain.text', 'Topic product-launch')
+            .and('contain.text', 'Topic laptop-review')
+            .and('not.contain.text', 'Topic trade-fair')
+    })
+
+    it('renders nothing on the live site when the start folder is gone, and says why in edit mode', () => {
+        cy.visit(live)
+        cy.get('[data-testid="ctpl-jcr-query-start-missing"]').should('not.exist')
+        cy.login()
+        cy.request(`/cms/editframe/default/en${live}`)
+            .its('body')
+            .should('contain', 'data-testid="ctpl-jcr-query-start-missing"')
+        cy.logout()
+    })
+
+    it('tells editors what every list queries, finds and leaves out', () => {
         cy.login()
         cy.request(`/cms/editframe/default/en${live}`).then(({ body }) => {
-            expect(body.match(/data-testid="ctpl-jcr-query-summary"/g)).to.have.length(5)
-            expect(body).to.contain('Lists Article under contents/articles')
+            const doc = new DOMParser().parseFromString(body, 'text/html')
+            const panels = [...doc.querySelectorAll('[data-testid="ctpl-jcr-query-summary"]')]
+            expect(panels).to.have.length(7)
+            const text = (i: number) => panels[i].textContent ?? ''
+            expect(text(3)).to.contain('Lists Article under contents/articles')
+            // The excluded list: 5 English items under news, 2 of them excluded
+            expect(text(1)).to.contain('3 shown of 3 matching').and.contain('2 excluded, 0 not translated into en')
+            expect(text(1)).to.contain('Item b').and.contain('Item c')
+            // The products list: the selected category, counted with its subcategory, and the query itself
+            expect(text(5)).to.contain('Products (2 categories with subcategories)')
+            expect(text(5)).to.contain('2 shown of 2 matching')
+            expect(panels[5].querySelector('details code')?.textContent)
+                .to.match(/^SELECT \* FROM \[ctpl:news\] AS item WHERE ISDESCENDANTNODE/)
+                .and.contain('j:defaultCategory')
         })
         cy.logout()
     })

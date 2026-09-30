@@ -9,11 +9,14 @@ Everything a visitor reads is contributed content, editable in jContent and Page
 is driven entirely by CSS design tokens, so a site switches theme (or light and dark) from its
 settings, with no code change.
 
-> Status: early development. The scaffold, build and CI are in place; components are being added.
+> Status: 0.1.0 in development, not released. Site chrome (header with logo, three-level menu,
+> utility links and language switcher; footer), hero banner, image and text, rich text, columns,
+> news and articles with their own pages, and content lists are done. Any section can end with a
+> call to action.
 
 ## Requirements
 
-- Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.1 or later
+- Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later
 - Node.js 22 and Yarn 4 (Yarn is pinned in `.yarn/releases`, enable it with `corepack enable`)
 - For the Maven build: Java 17 and Maven 3.9
 
@@ -25,7 +28,7 @@ docker compose up --wait   # or use any local Jahia on http://localhost:8080
 yarn build && yarn deploy  # build dist/package.tgz and install it on Jahia
 ```
 
-`yarn deploy` reads `JAHIA_HOST` and `JAHIA_USER` from `.env` (defaults:
+`yarn deploy` reads `JAHIA_HOST` and `JAHIA_USER` from `.env` (copy `.env.example`; defaults:
 `http://localhost:8080`, `root:root1234`).
 
 Then create a site in Jahia on the **classic-templates** template set, with English and French.
@@ -38,6 +41,7 @@ Then create a site in Jahia on the **classic-templates** template set, with Engl
 | `yarn deploy`                             | Install `dist/package.tgz` on the Jahia instance                                       |
 | `yarn dev`                                | Watch mode: rebuild and redeploy on every change (for developers, in a terminal)       |
 | `yarn lint`                               | ESLint                                                                                 |
+| `yarn test:unit`                          | Unit tests of the pure helpers (Vitest): URL checks, rich-text sanitizer, list queries |
 | `yarn format`                             | Prettier                                                                               |
 | `mvn clean package`                       | Same build through Maven, as the CI runs it (`target/classic-templates-<version>.tgz`) |
 | `yarn check:tokens`                       | Fails on any literal colour outside `src/templates/tokens.css`                         |

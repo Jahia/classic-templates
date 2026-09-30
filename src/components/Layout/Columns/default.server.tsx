@@ -1,4 +1,5 @@
 import { RenderChild, RenderChildren, jahiaComponent } from "@jahia/javascript-modules-library";
+import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading } from "../../../lib/Heading.js";
 import { Section } from "../../../lib/Section.js";
 import type { Props } from "./types.js";
@@ -15,11 +16,12 @@ const COLUMNS: Record<NonNullable<Props["layout"]>, number> = {
 /**
  * A row of columns. The four columns always exist (autocreated child lists); only as many as the
  * layout needs are rendered, so switching layout never deletes what editors put in a column.
- * Columns stack on small screens; four columns go two by two on tablets.
+ * Columns stack on small screens; four columns go two by two on tablets. The row's call to action,
+ * when switched on (ctplmix:cta), follows the columns.
  */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:columns", displayName: "Columns" },
-  ({ "jcr:title": title, layout, gap, ctplSurface }: Props, { currentNode }) => {
+  ({ "jcr:title": title, layout, gap, ctplSurface }: Props, { currentNode, renderContext }) => {
     const count = COLUMNS[layout ?? "halves"] ?? 2;
     const headingId = `ctpl-cols-${currentNode.getIdentifier()}`;
     return (
@@ -43,6 +45,7 @@ jahiaComponent(
               <RenderChild key={name} name={name} />
             ))}
           </div>
+          <Cta node={currentNode} renderContext={renderContext} />
         </div>
       </Section>
     );

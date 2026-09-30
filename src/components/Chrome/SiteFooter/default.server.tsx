@@ -1,4 +1,9 @@
-import { RenderChild, RenderChildren, jahiaComponent } from "@jahia/javascript-modules-library";
+import {
+  RenderChild,
+  RenderChildren,
+  jahiaComponent,
+  server,
+} from "@jahia/javascript-modules-library";
 import type { Props } from "./types.js";
 import classes from "./site-footer.module.css";
 
@@ -9,9 +14,16 @@ import classes from "./site-footer.module.css";
  * landmark is never empty.
  */
 jahiaComponent(
-  { componentType: "view", nodeType: "ctpl:siteFooter", displayName: "Site footer" },
+  {
+    componentType: "view",
+    nodeType: "ctpl:siteFooter",
+    displayName: "Site footer",
+    // {year} must turn over on 1 January: this small fragment re-renders at least once a day.
+    properties: { "cache.expiration": "86400" },
+  },
   ({ tagline, copyright }: Props, { renderContext }) => {
     const site = renderContext.getSite();
+    server.render.addCacheDependency({ node: site }, renderContext); // the footer shows the site title
     const siteName = site.getTitle() || site.getName();
     const year = String(new Date().getFullYear());
 

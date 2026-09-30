@@ -6,16 +6,13 @@ import {
 } from "@jahia/javascript-modules-library";
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { readString as read } from "../lib/props.js";
 import { readSiteLook } from "../lib/site.js";
 
 import "modern-normalize/modern-normalize.css";
 import "./tokens.css";
 import "./global.css";
-
-const read = (
-  node: { hasProperty(n: string): boolean; getProperty(n: string): { getString(): string } },
-  name: string,
-) => (node.hasProperty(name) ? node.getProperty(name).getString() || undefined : undefined);
+import { languageTag } from "../lib/locale.js";
 
 /**
  * The HTML document around every page: the SEO and accessibility baseline lives here so no
@@ -52,7 +49,7 @@ export const Layout = ({
 
   return (
     <html
-      lang={currentResource.getLocale().getLanguage()}
+      lang={languageTag(currentResource.getLocale())}
       data-ctpl-theme={theme}
       data-ctpl-scheme={scheme}
     >

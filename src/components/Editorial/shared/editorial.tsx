@@ -1,10 +1,13 @@
-import { buildNodeUrl, useServerContext } from "@jahia/javascript-modules-library";
+import { buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
+import type { RenderContext } from "org.jahia.services.render";
 import { useTranslation } from "react-i18next";
 import { formatDate, isoDay } from "../../../lib/dates.js";
 import { Image } from "../../../lib/Image.js";
+import { readString as str } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
 import classes from "./editorial.module.css";
+import { languageTag } from "../../../lib/locale.js";
 
 /** Props shared by ctpl:news and ctpl:article (ctplmix:editorialItem + mix:title). */
 export interface EditorialProps {
@@ -18,29 +21,44 @@ export interface EditorialProps {
 
 export type Kind = "news" | "article";
 
-const str = (node: JCRNodeWrapper, name: string) =>
-  node.hasProperty(name) ? node.getProperty(name).getString() || undefined : undefined;
-
 /** Publication date, or the creation date when the editor left it empty. */
 const dateOf = (node: JCRNodeWrapper, publicationDate?: string) =>
   publicationDate || str(node, "jcr:created");
 
+/** Text of an HTML string with its tags dropped, in one linear pass (no backtracking regex). */
+const textOf = (html: string) => {
+  let out = "";
+  let inTag = false;
+  for (const ch of html) {
+    if (ch === "<" || ch === ">") {
+      inTag = ch === "<";
+      out += " ";
+    } else if (!inTag) {
+      out += ch;
+    }
+  }
+  return out;
+};
+
 /** Minutes of reading at 200 words a minute, at least 1. */
 const readingMinutes = (html?: string) => {
-  const words = (html ?? "")
-    .replace(/<[^>]*>/g, " ")
+  const words = textOf(html ?? "")
     .split(/\s+/)
     .filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 200));
 };
 
-/** Tags (j:tagList) and category titles (j:defaultCategory), which Jahia offers on every node. */
-const topicsOf = (node: JCRNodeWrapper): string[] => {
+/**
+ * Tags (j:tagList) and category titles (j:defaultCategory), which Jahia offers on every node. Each
+ * category is a cache dependency: renaming or translating it refreshes the pages that show it.
+ */
+const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] => {
   const topics: string[] = [];
   if (node.hasProperty("j:defaultCategory")) {
     for (const value of node.getProperty("j:defaultCategory").getValues()) {
       try {
         const category = (value as unknown as { getNode(): JCRNodeWrapper }).getNode();
+        server.render.addCacheDependency({ node: category }, renderContext);
         topics.push(str(category, "jcr:title") ?? category.getName());
       } catch {
         // category deleted or not readable here
@@ -67,7 +85,7 @@ const Meta = ({
 }) => {
   const { t } = useTranslation();
   const { currentResource } = useServerContext();
-  const lang = currentResource.getLocale().getLanguage();
+  const lang = languageTag(currentResource.getLocale());
   const iso = dateOf(node, props.publicationDate);
   return (
     <p className={classes.meta}>
@@ -85,16 +103,26 @@ const Meta = ({
   );
 };
 
+/** Shown in edit mode instead of an item that has no title in this language. */
+const Untitled = () => {
+  const { t } = useTranslation();
+  const { renderContext } = useServerContext();
+  return renderContext.isEditMode() ? (
+    <p className={classes.missing}>{t("editorial.noTitle")}</p>
+  ) : null;
+};
+
 /** The item's own page (rendered inside the main-resource template, which owns header and footer). */
 export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { t } = useTranslation();
   const { currentNode, renderContext } = useServerContext();
-  const topics = topicsOf(currentNode);
+  const topics = topicsOf(currentNode, renderContext);
+  const title = props["jcr:title"];
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-full`}>
       <header className={`ctpl-container ${classes.head}`}>
         <Meta kind={kind} node={currentNode} props={props} />
-        <h1 className={classes.fullTitle}>{props["jcr:title"]}</h1>
+        {title ? <h1 className={classes.fullTitle}>{title}</h1> : <Untitled />}
         {props.teaser && <p className={classes.lead}>{props.teaser}</p>}
       </header>
       {props.image && (
@@ -124,12 +152,17 @@ export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps })
   );
 };
 
-/** Heading level asked by the list rendering the card (h3 under a titled list, else h2). */
-const useHeadingTag = (): "h2" | "h3" => {
+const TAGS = { 2: "h2", 3: "h3", 4: "h4" } as const;
+
+/**
+ * Heading level asked by the list rendering the item: one below the list's own heading, or the
+ * list's level when it has none. Clamped to h2-h4; rendered anywhere else, an item is an h3.
+ */
+const useHeadingTag = (): "h2" | "h3" | "h4" => {
   const { currentResource } = useServerContext();
   try {
-    const level = currentResource.getModuleParams().get("headingLevel");
-    return String(level) === "2" ? "h2" : "h3";
+    const level = Number(String(currentResource.getModuleParams().get("headingLevel")));
+    return TAGS[Math.min(Math.max(level || 3, 2), 4) as 2 | 3 | 4];
   } catch {
     return "h3";
   }
@@ -139,6 +172,8 @@ const useHeadingTag = (): "h2" | "h3" => {
 export const Card = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { currentNode, renderContext } = useServerContext();
   const Heading = useHeadingTag();
+  // No empty link in a list: an item untitled in this language is skipped.
+  if (!props["jcr:title"]) return <Untitled />;
   return (
     <article className={classes.card} data-testid={`ctpl-${kind}-card`}>
       {props.image && (
@@ -163,6 +198,7 @@ export const Card = ({ kind, props }: { kind: Kind; props: EditorialProps }) => 
 export const Compact = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { currentNode } = useServerContext();
   const Heading = useHeadingTag();
+  if (!props["jcr:title"]) return <Untitled />;
   return (
     <article className={classes.compact} data-testid={`ctpl-${kind}-compact`}>
       <Heading className={classes.compactTitle}>

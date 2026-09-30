@@ -9,7 +9,7 @@ const path = require('node:path')
  */
 const uploadImage = async ({ baseUrl, password, parent, name, fixture, width, height, title }) => {
     const auth = 'Basic ' + Buffer.from(`root:${password}`).toString('base64')
-    const headers = { Authorization: auth, Origin: baseUrl }
+    const headers = { Authorization: auth, Origin: new URL(baseUrl).origin }
     const query =
         'mutation($parent:String!,$name:String!,$title:String!,$w:String!,$h:String!){jcr{' +
         ' addNode(parentPathOrId:$parent,name:$name,primaryNodeType:"jnt:file",mixins:["jmix:image"]){uuid' +
@@ -34,11 +34,13 @@ const uploadImage = async ({ baseUrl, password, parent, name, fixture, width, he
         method: 'POST',
         headers: { ...headers, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            query: `{jcr{nodeByPath(path:"${parent}/${name}"){c:descendant(relPath:"jcr:content"){p:property(name:"jcr:data"){value}}}}}`,
+            query: 'query($path:String!){jcr{nodeByPath(path:$path){c:descendant(relPath:"jcr:content"){p:property(name:"jcr:data"){value}}}}}',
+            variables: { path: `${parent}/${name}` },
         }),
     }).then((r) => r.json())
     const stored = check?.data?.jcr?.nodeByPath?.c?.p?.value || ''
-    if (stored.startsWith('org.apache.')) throw new Error(`upload of ${name} stored a Java object reference`)
+    // A real upload reads back as a binary reference; nothing at all, or a Java object's name, is a failed one.
+    if (!stored || stored.startsWith('org.apache.')) throw new Error(`upload of ${name} stored no image bytes`)
     return out.data.jcr.addNode.uuid
 }
 

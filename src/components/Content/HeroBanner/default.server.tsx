@@ -5,6 +5,12 @@ import { Image } from "../../../lib/Image.js";
 import type { Props } from "./types.js";
 import classes from "./hero-banner.module.css";
 
+const MODES: Record<string, "image" | "split" | "plain"> = {
+  image: "image",
+  split: "split",
+  plain: "plain",
+};
+
 const HEIGHT = { compact: classes.heightCompact, medium: undefined, tall: classes.heightTall };
 
 /**
@@ -14,7 +20,8 @@ const HEIGHT = { compact: classes.heightCompact, medium: undefined, tall: classe
  *   the light text is guaranteed by the tokens (checked over a white photo, the worst case).
  * - "split": text on the left, photo on the right, on the sunken surface.
  * - "plain", or any variant without a photo: a tinted band.
- * The banner photo is the page's most likely LCP element, so it loads eagerly with high priority.
+ * In the page's hero area the photo is the most likely LCP element, so it loads eagerly with high
+ * priority; lower in the page it loads lazily like any other image.
  */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:heroBanner", displayName: "Hero banner" },
@@ -22,14 +29,10 @@ jahiaComponent(
     { "jcr:title": title, eyebrow, subtitle, variant, overlay, height, image, ctaLabel }: Props,
     { currentNode, renderContext },
   ) => {
-    const mode = !image
-      ? "plain"
-      : variant === "split"
-        ? "split"
-        : variant === "plain"
-          ? "plain"
-          : "image";
+    // No photo: always the plain band. Otherwise the editor's variant, "image" by default.
+    const mode = image ? (MODES[variant ?? "image"] ?? "image") : "plain";
     const headingId = `ctpl-hero-${currentNode.getIdentifier()}`;
+    const atTop = currentNode.getParent().isNodeType("ctpl:heroArea");
 
     return (
       <section
@@ -71,7 +74,7 @@ jahiaComponent(
           </div>
           {mode === "split" && image && (
             <div className={classes.media}>
-              <Image node={image} renderContext={renderContext} priority />
+              <Image node={image} renderContext={renderContext} priority={atTop} />
             </div>
           )}
         </div>
