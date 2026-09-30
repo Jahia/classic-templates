@@ -223,4 +223,4 @@ snapshot Jahia images.
 
 ## License
 
-See [LICENSE](LICENSE).
+[MIT](LICENSE), copyright Jahia.

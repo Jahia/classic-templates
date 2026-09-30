@@ -8,7 +8,7 @@
         "report:merge": "mochawesome-merge results/reports/mochawesome*.json > results/reports/report.json && rm results/reports/mochawesome*.json",
         "report:html": "marge --inline results/reports/report.json --reportDir results/reports/"
     },
-    "license": "SEE LICENSE IN ../LICENSE",
+    "license": "MIT",
     "devDependencies": {
         "@jahia/cypress": "^7.1.0",
         "@jahia/eslint-config": "^2.1.2",

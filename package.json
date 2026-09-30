@@ -2,7 +2,7 @@
   "name": "classic-templates",
   "version": "0.1.0-SNAPSHOT",
   "description": "Themeable Jahia JavaScript template set with standard reusable components",
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "type": "module",
   "files": [
     "dist",
