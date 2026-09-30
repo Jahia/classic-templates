@@ -1,7 +1,7 @@
 import { jahiaComponent } from "@jahia/javascript-modules-library";
 import { Cta } from "../../../lib/Cta.js";
 import { RichText } from "../../../lib/RichText.js";
-import { SectionHeading } from "../../../lib/Heading.js";
+import { SectionHeading, useBodyHeadingLevel } from "../../../lib/Heading.js";
 import { Section } from "../../../lib/Section.js";
 import type { Props } from "./types.js";
 import classes from "./rich-text.module.css";
@@ -15,6 +15,7 @@ jahiaComponent(
   { componentType: "view", nodeType: "ctpl:richText", displayName: "Rich text" },
   ({ "jcr:title": title, body, width, ctplSurface }: Props, { currentNode, renderContext }) => {
     const headingId = `ctpl-rt-${currentNode.getIdentifier()}`;
+    const bodyLevel = useBodyHeadingLevel(currentNode, Boolean(title));
     return (
       <Section
         surface={ctplSurface}
@@ -27,7 +28,11 @@ jahiaComponent(
               {title}
             </SectionHeading>
           )}
-          <RichText html={body} className={width === "wide" ? classes.wide : undefined} />
+          <RichText
+            html={body}
+            headingLevel={bodyLevel}
+            className={width === "wide" ? classes.wide : undefined}
+          />
           <Cta node={currentNode} renderContext={renderContext} />
         </div>
       </Section>

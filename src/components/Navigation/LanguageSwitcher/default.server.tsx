@@ -63,8 +63,10 @@ jahiaComponent(
                 lang={tag}
                 aria-current={isCurrent ? "true" : undefined}
               >
-                <span aria-hidden="true">{tag.toUpperCase()}</span>
-                <span className="ctpl-visually-hidden">{name}</span>
+                {/* The accessible name starts with the visible code ("FR - Français"), so voice
+                    control finds it (RGAA 6.1.5 / WCAG 2.5.3); lang on the link reads it right. */}
+                {tag.toUpperCase()}
+                <span className="ctpl-visually-hidden"> - {name}</span>
               </a>
             </li>
           ))}

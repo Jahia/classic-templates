@@ -78,12 +78,14 @@ Layout (only known values; the default look stamps nothing).
   justified hit.
 - **Rich text is sanitised at render time, not trusted from the repository.** Platform-side HTML filtering is a site setting the template set
   cannot count on. `src/lib/sanitize.ts` (js-xss,
-  allow-list) keeps text formatting, lists, tables, figures, links and images; drops scripts,
-  styles, frames, event handlers and `class`/`style` attributes; removes href/src/cite that is not
-  http(s), mailto, tel, relative or a Jahia `##cms-context##` placeholder (so no `javascript:`,
-  `data:` or `//host`); turns an editor `<h1>` into `<h2>` (the template owns the only h1); adds
-  `rel="noopener noreferrer"` to new-tab links. Unit tests in `sanitize.test.ts`, end-to-end in the
-  content edge-cases spec.
+  allow-list) keeps text formatting, lists (definition lists too), data tables with caption and
+  header associations, figures, links, images, and the `lang`/`dir` of any element; drops scripts,
+  styles, frames, event handlers, `class`/`style`, link `target`/`title` and image `title`;
+  removes href/src/cite that is not http(s), mailto, tel, relative or a Jahia `##cms-context##`
+  placeholder (so no `javascript:`, `data:` or `//host`); prefixes editor ids (`ctpl-rt-`) with
+  the anchors and `headers` pointing at them; renumbers headings under the section's own heading
+  (`RichText headingLevel`, from `useBodyHeadingLevel`) with no skipped level. Unit tests in
+  `sanitize.test.ts`, end-to-end in the content edge-cases spec.
 - No scanner rule covers these, so review them by hand: JCR-SQL2 built by concatenation (values
   only from choicelists, paths only from nodes), contributed URLs (scheme allow-list: `http`,
   `https`, `mailto`, `tel`), any server-side fetch.
@@ -162,7 +164,7 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   `aria-current="page"`), a main resource outside the tree (a news item) gets Home > item. None on
   home. Off for the whole site with `ctplShowBreadcrumb` (site settings, on by default - a missing
   value on older sites counts as on) or per page with `ctplHideBreadcrumb` (page options).
-  schema.org `BreadcrumbList` microdata instead of JSON-LD, which would need an inline script (R10).
+  The trail comes from `breadcrumbOf`, shared with the JSON-LD `BreadcrumbList`, so both agree.
   Separators are drawn chevrons, so screen readers read no separator text. Every ancestor is a
   cache dependency.
 
@@ -261,6 +263,34 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
     type manager's node types carry no label.
   - A start node that is set but no longer resolves renders nothing on the live site (never the
     whole site) and a warning in edit mode.
+
+## Structured data (JSON-LD)
+
+- `templates/StructuredData.tsx`, rendered by the page shell on every page and main resource: one
+  `<script type="application/ld+json">` with a schema.org `@graph` built by `lib/schema.ts` (pure,
+  unit-tested): `Organization` (header brand name and logo, one `@id` across languages),
+  `WebSite`, `WebPage` (name, description, language), `BreadcrumbList` when the trail shows, and
+  `NewsArticle` / `Article` (`mainEntity` of the page) for `ctplmix:editorialItem` types: headline
+  (110 characters), teaser, publication and modification dates, the image shown, the article's
+  author (else the Organization), tags as keywords. A main resource of another module gets the
+  page graph only.
+- Absolute URLs from the request's scheme, host and port. Only what the page shows is described.
+- No `dangerouslySetInnerHTML`: React 19 writes a `<script>`'s text unescaped (it only neutralises
+  a closing `</script>`), and `jsonForScript` writes every `<` as `\u003c`, so no value can end
+  the script. The scan still reports one sink (RichText).
+- Pages with an add-on that emits its own JSON-LD (jsfaq's `FAQPage`) carry both blocks, which is
+  valid.
+
+## Accessibility (RGAA 4.1.2)
+
+A manual RGAA audit (2026-09-30, twelve pages, six looks) found 11 template defects, all fixed:
+focus ring over the hero photo (overlay colour), small-screen menu closing on Escape and focus
+out, language links named after their visible code, page h1 before the hero, no teaser clamp
+(10.12), per-use image alternative (`imageAlt`, a documented `cnd-check-ignore` of the upstream
+`redundantImageAlt` rule) and a decorative switch, and the rich-text rules above. A site map
+component gives the second navigation system (12.1). Site content, not the template set, owns the
+accessibility statement and the "Accessibilité : ... conforme" mention: the demo seeds an example
+of both, linked from the footer.
 
 ## Editor UI notes
 

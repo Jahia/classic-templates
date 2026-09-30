@@ -1,6 +1,6 @@
 import { deleteSite, publishAndWaitJobEnding } from '@jahia/cypress'
 import { siteKeyFor } from '../../support/constants'
-import { addContent, addEditorial, addList, addPage, createTestSite, uuidAt } from '../../support/test-helpers'
+import { addContent, addEditorial, addList, addPage, createTestSite, jsonLd, uuidAt } from '../../support/test-helpers'
 
 const siteKey = siteKeyFor('editorial')
 const site = `/sites/${siteKey}`
@@ -95,6 +95,22 @@ describe('News, articles and content lists', () => {
         // Outside the page tree: the trail is the home page, then the item.
         cy.get('[data-testid="ctpl-breadcrumb"] li').should('have.length', 2).first().should('have.text', 'Home')
         cy.get('[data-testid="ctpl-breadcrumb"] [aria-current="page"]').should('have.text', 'Newer news')
+    })
+
+    it('describes a news item as a NewsArticle and an article as an Article with its author', () => {
+        cy.visit(`${site}/contents/news/newer.html`)
+        jsonLd().then((node) => {
+            const item = node('NewsArticle')
+            expect(item).to.include({ headline: 'Newer news', description: 'The latest item.', inLanguage: 'en' })
+            expect(item?.datePublished).to.match(/^2026-09-28T/)
+            expect(item?.keywords).to.deep.equal(['release'])
+            expect(node('WebPage')?.mainEntity).to.deep.equal({ '@id': item?.['@id'] })
+        })
+        cy.visit(`${site}/contents/articles/essay.html`)
+        jsonLd().then((node) => {
+            expect(node('Article')?.author).to.deep.equal({ '@type': 'Person', name: 'Ada Martin' })
+            expect(node('NewsArticle')).to.equal(undefined)
+        })
     })
 
     it('renders lists and full pages in French, with French dates', () => {

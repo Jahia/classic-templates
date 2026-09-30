@@ -225,3 +225,13 @@ export const addList = (
 /** The uuid of the node at `path`. */
 export const uuidAt = (path: string) =>
     getNodeByPath(path).then((res: { data: { jcr: { nodeByPath: { uuid: string } } } }) => res.data.jcr.nodeByPath.uuid)
+
+/** The page's schema.org JSON-LD nodes (one @graph), by @type. */
+export const jsonLd = () =>
+    cy
+        .get('script[type="application/ld+json"]')
+        .should('have.length', 1)
+        .then(($script) => {
+            const graph = JSON.parse($script.text())['@graph'] as Record<string, unknown>[]
+            return (type: string) => graph.find((node) => node['@type'] === type)
+        })

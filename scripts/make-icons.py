@@ -159,6 +159,12 @@ def site_map(d, p):
         d.rectangle(p(x, 20, x + 6, 26), outline=INK, width=w(2))
 
 
+def free_zone(d, p):
+    d.rectangle(p(4, 6, 28, 26), outline=INK, width=w(2))
+    for x, y in ((9, 11), (19, 11), (9, 20), (19, 20)):
+        d.ellipse(p(x - 2, y - 2, x + 2, y + 2), fill=INK)
+
+
 ICONS = {
     "ctpl_news": news,
     "ctpl_article": article,
@@ -182,6 +188,7 @@ ICONS = {
     "ctpl_keyFigure": key_figure,
     "ctpl_quote": quote,
     "ctpl_siteMap": site_map,
+    "ctpl_freeZone": free_zone,
 }
 
 if __name__ == "__main__":

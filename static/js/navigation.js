@@ -3,6 +3,8 @@
  * The menu works without this file; with it:
  * - html gets the "ctpl-js" class, which turns on the collapsible small-screen menu;
  * - the menu button and each submenu button toggle aria-expanded (CSS reads that state);
+ * - on small screens, Escape or focus leaving the navigation closes the open menu (Escape also
+ *   returns focus to the menu button), so the menu never covers what keyboard focus reaches next;
  * - Escape closes the open submenu (or dismisses a hover-opened one) and returns focus to its
  *   button; a click outside, or focus leaving the menu item, closes it (WCAG 1.4.13);
  * - the link to the current page gets aria-current="page", and its menu ancestors data-active.
@@ -44,11 +46,23 @@
     var toggle = nav.querySelector("[data-ctpl-nav-toggle]");
     var list = nav.querySelector("[data-ctpl-nav-list]");
 
+    function setMenu(open) {
+      if (!toggle || !list) return;
+      toggle.setAttribute("aria-expanded", String(open));
+      list.toggleAttribute("data-open", open);
+    }
+    function menuOpen() {
+      return Boolean(toggle && toggle.getAttribute("aria-expanded") === "true");
+    }
+
     if (toggle && list) {
       toggle.addEventListener("click", function () {
-        var open = toggle.getAttribute("aria-expanded") !== "true";
-        toggle.setAttribute("aria-expanded", String(open));
-        list.toggleAttribute("data-open", open);
+        setMenu(!menuOpen());
+      });
+      nav.addEventListener("focusout", function (event) {
+        if (!menuOpen()) return;
+        if (event.relatedTarget && nav.contains(event.relatedTarget)) return;
+        setMenu(false);
       });
     }
 
@@ -73,6 +87,10 @@
       if (open) {
         open.setAttribute("aria-expanded", "false");
         open.focus();
+      } else if (menuOpen()) {
+        // No submenu open: Escape closes the small-screen menu itself.
+        setMenu(false);
+        toggle.focus();
       } else if (hovered && top) {
         // A hover-opened panel was dismissed: give focus to its button, never otherwise.
         var button = top.querySelector("[data-ctpl-subnav-toggle]");

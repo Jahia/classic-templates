@@ -1,0 +1,16 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A section that accepts any droppable content, so components of other modules (a FAQ, a media
+// gallery, a store locator, a Formidable form reference) and core Jahia content go into
+// classic-templates pages without this module depending on them: only core types are referenced.
+// The zone gives them the section's surface, heading and width; templates/addons.css maps their
+// CSS variables onto the theme's tokens.
+[ctpl:freeZone] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ - width (string, choicelist[resourceBundle]) = 'container' autocreated < 'container', 'reading', 'full'
+ + * (jmix:droppableContent)

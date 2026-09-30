@@ -7,7 +7,9 @@ import { readPositive, readString } from "./props.js";
 /**
  * An image from the media library.
  *
- * - alt: the image's own title in the library (jcr:title), or "" when `decorative`.
+ * - alt: "" when `decorative` or when `owner` (the node carrying ctplmix:media) marks it decorative;
+ *   else the owner's imageAlt (what the image means there, per language); else the image's own
+ *   title in the library (jcr:title).
  * - width/height: the image's intrinsic size (j:width / j:height of jmix:image), so the browser
  *   reserves the space and the layout does not shift while it loads.
  * - `priority` for the banner image at the top of the page (eager, high fetch priority); every
@@ -21,8 +23,11 @@ export const Image = ({
   className,
   priority = false,
   decorative = false,
+  owner,
 }: {
   node: JCRNodeWrapper;
+  /** The node whose ctplmix:media points at the image, for its imageAlt / imageDecorative. */
+  owner?: JCRNodeWrapper;
   renderContext: RenderContext;
   className?: string;
   priority?: boolean;
@@ -30,12 +35,13 @@ export const Image = ({
 }) => {
   const { t } = useTranslation();
   server.render.addCacheDependency({ node }, renderContext);
-  const title = readString(node, "jcr:title") ?? "";
+  const hidden = decorative || (owner ? readString(owner, "imageDecorative") === "true" : false);
+  const title = (owner && readString(owner, "imageAlt")) || readString(node, "jcr:title") || "";
   const img = (
     <img
       className={className}
       src={buildNodeUrl(node)}
-      alt={decorative ? "" : title}
+      alt={hidden ? "" : title}
       width={readPositive(node, "j:width")}
       height={readPositive(node, "j:height")}
       loading={priority ? "eager" : "lazy"}
@@ -43,7 +49,7 @@ export const Image = ({
       decoding="async"
     />
   );
-  if (decorative || title || !renderContext.isEditMode()) return img;
+  if (hidden || title || !renderContext.isEditMode()) return img;
   return (
     <>
       {img}

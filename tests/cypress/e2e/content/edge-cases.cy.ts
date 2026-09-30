@@ -101,12 +101,14 @@ describe('Content components - missing images, missing links, layout changes', (
             .within(() => {
                 cy.contains('p', 'kept').find('strong').should('have.text', 'safe')
                 cy.get('script, style, iframe, h1, [onerror], [onclick], [class]').should('not.exist')
-                cy.contains('h2', 'Pasted title')
+                // Under the section's own h2, the editor's h1 becomes an h3 (the outline never skips).
+                cy.contains('h3', 'Pasted title')
                 cy.contains('a', 'bad link').should('not.have.attr', 'href')
                 cy.contains('a', 'off-site').should('not.have.attr', 'href')
+                // Same tab: a new window would have to be announced (RGAA 13.2).
                 cy.contains('a', 'good link')
                     .should('have.attr', 'href', 'https://example.org/')
-                    .and('have.attr', 'rel', 'noopener noreferrer')
+                    .and('not.have.attr', 'target')
             })
         cy.window().its('__ctplXss').should('be.undefined')
         cy.get('h1').should('have.length', 1)

@@ -59,9 +59,15 @@
  extends = ctplmix:sectionStyle
  - ctaLabel (string) i18n
 
-// An image from the media library. Its alt text is the image's own jcr:title.
+// An image from the media library. Its text alternative is imageAlt when set (what the image
+// means HERE, per language), else the image's own jcr:title; imageDecorative renders alt="" for an
+// image that only decorates (a backdrop). Cards and quotes always treat their image as decorative:
+// the link or the person's name says it all.
 [ctplmix:media] mixin
  - image (weakreference, picker[type='image']) < jmix:image
+ // cnd-check-ignore(redundantImageAlt): RGAA 1.3 wants the alternative that fits THIS use; the library title is the default
+ - imageAlt (string) i18n
+ - imageDecorative (boolean) = false autocreated
 
 // Background of a page section, from the theme's surfaces: plain page, sunken (a quiet grey band)
 // or accent (a tint of the theme's accent). Alternating surfaces gives long pages their rhythm.

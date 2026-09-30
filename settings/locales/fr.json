@@ -82,5 +82,8 @@
   },
   "quote": {
     "empty": "Cette citation n'a pas de texte dans cette langue : elle n'est pas affichée."
+  },
+  "richText": {
+    "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : modifiez l'image dans l'éditeur et décrivez-la, ou marquez-la décorative avec un texte vide."
   }
 }

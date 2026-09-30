@@ -14,6 +14,9 @@ export interface CardProps {
   "text"?: string;
   "linkLabel"?: string;
   "image"?: JCRNodeWrapper;
+  /** Text alternative for this use of the image (ctplmix:media); defaults to its title. */
+  "imageAlt"?: string;
+  "imageDecorative"?: boolean;
   "j:linkType"?: "none" | "internal" | "external";
 }
 

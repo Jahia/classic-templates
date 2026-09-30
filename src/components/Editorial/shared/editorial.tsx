@@ -16,6 +16,9 @@ export interface EditorialProps {
   "body"?: string;
   "publicationDate"?: string;
   "image"?: JCRNodeWrapper;
+  /** Text alternative for this use of the image (ctplmix:media); defaults to its title. */
+  "imageAlt"?: string;
+  "imageDecorative"?: boolean;
   "author"?: string;
 }
 
@@ -127,7 +130,7 @@ export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps })
       </header>
       {props.image && (
         <figure className={`ctpl-container ${classes.figure}`}>
-          <Image node={props.image} renderContext={renderContext} priority />
+          <Image node={props.image} owner={currentNode} renderContext={renderContext} priority />
         </figure>
       )}
       <div className="ctpl-container">

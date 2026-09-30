@@ -47,6 +47,7 @@ jahiaComponent(
           <>
             <Image
               node={image}
+              owner={currentNode}
               renderContext={renderContext}
               className={classes.backdrop}
               priority
@@ -74,7 +75,12 @@ jahiaComponent(
           </div>
           {mode === "split" && image && (
             <div className={classes.media}>
-              <Image node={image} renderContext={renderContext} priority={atTop} />
+              <Image
+                node={image}
+                owner={currentNode}
+                renderContext={renderContext}
+                priority={atTop}
+              />
             </div>
           )}
         </div>

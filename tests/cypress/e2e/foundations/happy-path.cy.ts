@@ -1,6 +1,6 @@
 import { deleteSite, publishAndWaitJobEnding } from '@jahia/cypress'
 import { siteKeyFor } from '../../support/constants'
-import { addPage, createTestSite, pageHeadings } from '../../support/test-helpers'
+import { addPage, createTestSite, jsonLd, pageHeadings } from '../../support/test-helpers'
 
 const siteKey = siteKeyFor('foundations')
 const about = {
@@ -35,6 +35,19 @@ describe('Foundations - document baseline of every template', () => {
         cy.get('a.ctpl-skip-link').should('have.attr', 'href', '#main-content')
         cy.get('main#main-content').should('have.length', 1)
         pageHeadings().should('have.length', 1).and('have.text', 'About us').and('be.visible')
+    })
+
+    it('describes the page in schema.org JSON-LD, with absolute URLs', () => {
+        cy.visit(`/sites/${siteKey}/home/about.html`)
+        jsonLd().then((node) => {
+            const page = node('WebPage')
+            expect(page).to.include({ name: 'About us', description: 'Who we are.', inLanguage: 'en' })
+            expect(page?.url).to.match(new RegExp(`^https?://[^/]+/sites/${siteKey}/home/about\\.html$`))
+            expect(node('WebSite')?.['@id']).to.match(/^https?:\/\/.+#website$/)
+            expect(node('Organization')?.name).to.eq(siteKey)
+        })
+        cy.visit(`/fr/sites/${siteKey}/home/about.html`)
+        jsonLd().then((node) => expect(node('WebPage')).to.include({ name: 'À propos', inLanguage: 'fr' }))
     })
 
     it('renders the French version with French title and description', () => {

@@ -329,6 +329,87 @@ def place_after(parent, name, after):
         {"p": parent, "n": names})
 
 
+STATEMENT = {
+    "en": "<p>Classic Dev commits to making its website accessible, in accordance with article 47 of French law "
+          "2005-102 of 11 February 2005. This statement applies to the site <strong>Classic Dev</strong> (an example "
+          "statement for the classic-templates demonstration: a real site publishes the results of its own audit).</p>"
+          "<h2>Compliance status</h2><p>The site is <strong>partially compliant</strong> with RGAA version 4.1.2.</p>"
+          "<h2>Test results</h2><p>An internal audit on 30 September 2026 found that 94% of the applicable RGAA criteria "
+          "are met.</p><h2>Content that is not accessible</h2><ul><li>Components from other modules (a FAQ, a media "
+          "gallery, a store locator, forms) are not covered by this statement.</li><li>Some demonstration images use "
+          "their title as text alternative instead of a description written for each use.</li></ul>"
+          "<h2>Preparation of this statement</h2><p>Established on 30 September 2026. Technologies used: HTML, CSS, "
+          "JavaScript. Tools: axe-core and Lighthouse in Chromium (desktop and 320 px wide), in six themes, and a manual "
+          "review of the RGAA criteria (keyboard, focus, text spacing, reflow, zoom, styles off). Screen readers have "
+          "not been tested yet (NVDA with Firefox and VoiceOver with Safari are planned). Pages tested (sixteen): home, "
+          "about, team, services, a service page, landing, news list, a news item, an article, site map, accessibility, "
+          "in English and French.</p><h2>Feedback and contact</h2><p>If you cannot access a "
+          "content or a service, contact us so that we direct you to an accessible alternative or send you the "
+          "content in another form.</p><h2>Remedies</h2><p>If you reported an accessibility defect and did not get a "
+          "satisfactory answer, you can write to the Défenseur des droits, use the contact form of its website, contact "
+          "its delegate in your region, or write free of charge to: Défenseur des droits, Libre réponse 71120, 75342 "
+          "Paris CEDEX 07, France.</p>",
+    "fr": "<p>Classic Dev s'engage à rendre son site internet accessible conformément à l'article 47 de la loi "
+          "n° 2005-102 du 11 février 2005. Cette déclaration d'accessibilité s'applique au site <strong>Classic "
+          "Dev</strong> (déclaration d'exemple pour la démonstration classic-templates : un vrai site publie les "
+          "résultats de son propre audit).</p><h2>État de conformité</h2><p>Le site est <strong>partiellement "
+          "conforme</strong> avec le RGAA version 4.1.2.</p><h2>Résultats des tests</h2><p>L'audit interne du 30 "
+          "septembre 2026 révèle que 94 % des critères du RGAA applicables sont respectés.</p><h2>Contenus non "
+          "accessibles</h2><ul><li>Les composants d'autres modules (une FAQ, une galerie de médias, un localisateur de "
+          "magasins, des formulaires) ne sont pas couverts par cette déclaration.</li><li>Certaines images de "
+          "démonstration utilisent leur titre comme alternative textuelle, au lieu d'une description rédigée pour "
+          "chaque usage.</li></ul><h2>Établissement de cette déclaration</h2><p>Établie le 30 septembre 2026. "
+          "Technologies utilisées : HTML, CSS, JavaScript. Outils : axe-core et Lighthouse dans Chromium (bureau et "
+          "320 px de large), dans six thèmes, et revue manuelle des critères du RGAA (clavier, focus, espacement du "
+          "texte, redistribution, zoom, styles désactivés). Les lecteurs d'écran n'ont pas encore été testés (NVDA avec "
+          "Firefox et VoiceOver avec Safari sont prévus). Pages testées (seize) : accueil, à propos, équipe, services, "
+          "une page de service, page d'atterrissage, liste des actualités, une actualité, un article, plan du site, "
+          "accessibilité, en anglais et en français.</p><h2>Retour d'information et contact</h2><p>Si vous n'arrivez pas à accéder à "
+          "un contenu ou à un service, contactez-nous pour être orienté vers une alternative accessible ou obtenir le "
+          "contenu sous une autre forme.</p><h2>Voies de recours</h2><p>Si vous avez signalé un défaut d'accessibilité "
+          "sans obtenir de réponse satisfaisante, vous pouvez écrire au Défenseur des droits, utiliser le formulaire de "
+          "contact de son site, contacter son délégué dans votre région, ou écrire gratuitement à : Défenseur des "
+          "droits, Libre réponse 71120, 75342 Paris CEDEX 07.</p>",
+}
+
+LEGAL = {
+    "en": "<p>Example legal notice of the classic-templates demonstration site.</p><h2>Publisher</h2><p>Classic Dev, an "
+          "example company. Publication director: the site owner.</p><h2>Hosting</h2><p>The host of the site, its "
+          "address and telephone number.</p><h2>Intellectual property</h2><p>Texts and images of this demonstration "
+          "are examples.</p>",
+    "fr": "<p>Mentions légales d'exemple du site de démonstration classic-templates.</p><h2>Éditeur</h2><p>Classic "
+          "Dev, société d'exemple. Directeur de la publication : le propriétaire du site.</p><h2>Hébergement</h2><p>"
+          "L'hébergeur du site, son adresse et son numéro de téléphone.</p><h2>Propriété intellectuelle</h2><p>Les "
+          "textes et images de cette démonstration sont des exemples.</p>",
+}
+
+IMAGE_TITLES_FR = {
+    "abstract-blue.jpg": "Composition abstraite de cercles bleus et turquoise sur un dégradé sombre",
+    "abstract-warm.jpg": "Composition abstraite de cercles orange et rouges",
+    "abstract-green.jpg": "Composition abstraite de cercles verts sur un dégradé clair",
+}
+
+
+def set_props(path, props):
+    gql("mutation($p:String!,$props:[InputJCRProperty]){jcr{mutateNode(pathOrId:$p){setPropertiesBatch(properties:$props){path}}}}",
+        {"p": path, "props": props})
+
+
+def seed_accessibility(site):
+    """Demo content the RGAA audit asked for: French image titles (they are the images' default
+    text alternatives), the home backdrop marked decorative, a complete example accessibility
+    statement and an example legal notice. Only touches nodes this script creates."""
+    home = f"{site}/home"
+    for name, title in IMAGE_TITLES_FR.items():
+        set_props(f"{site}/files/demo/{name}", [{"name": "jcr:title", "value": title, "language": "fr"}])
+    if exists(f"{home}/hero/welcome"):
+        set_props(f"{home}/hero/welcome", [{"name": "imageDecorative", "value": "true"}])
+    set_props(f"{home}/accessibility/main/statement", i18n("body", STATEMENT))
+    add_content(ensure_area(f"{home}/legal", "main", "ctpl:pageArea"), "notice", "ctpl:richText", i18n("body", LEGAL))
+    return [(f"{site}/files/demo", True), (f"{home}/hero/welcome", True),
+            (f"{home}/accessibility/main/statement", True), (f"{home}/legal/main", True)]
+
+
 def seed_examples(site):
     """Example content with every section type on the home, about, services and team pages, plus a
     site map page and an accessibility statement linked from the footer. Only adds what is missing.
@@ -459,7 +540,7 @@ def main():
 
     if args.sections_only:
         seed_landing_sections(site)
-        for path, subtree in seed_examples(site):
+        for path, subtree in seed_examples(site) + seed_accessibility(site):
             gql("mutation($s:String!,$t:Boolean){jcr{mutateNode(pathOrId:$s){publish(languages:[\"en\",\"fr\"],"
                 "publishSubNodes:$t,includeSubTree:$t)}}}", {"s": path, "t": subtree})
         print(f"example sections seeded and published on {site}")
@@ -694,6 +775,7 @@ def main():
 
     seed_landing_sections(site)
     seed_examples(site)
+    seed_accessibility(site)
 
     for root in (site, f"{site}/files", demo_cats):
         gql(

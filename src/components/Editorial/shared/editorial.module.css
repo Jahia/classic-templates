@@ -127,13 +127,10 @@
 .stretched:focus-visible {
   outline: none;
 }
+/* Never clamped: a truncated teaser hides text, worse with larger text spacing (RGAA 10.12). */
 .teaser {
   margin: 0;
   color: var(--ctpl-color-text-muted);
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 /* ---- Compact row -------------------------------------------------------------------------- */

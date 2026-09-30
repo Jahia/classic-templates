@@ -6,7 +6,7 @@ import { readString } from "../lib/props.js";
 import { chromeOwner } from "../lib/site.js";
 import classes from "./breadcrumb.module.css";
 
-interface Crumb {
+export interface Crumb {
   title: string;
   href?: string;
 }
@@ -44,48 +44,48 @@ const trailOf = (
 };
 
 /**
- * The breadcrumb trail of the page (or main resource) being rendered, above its content: every
- * page from home, then the current page, marked aria-current. Off on the home page, when the site
- * turns breadcrumbs off (ctplmix:siteSettings ctplShowBreadcrumb, on by default, including on
- * sites created before the setting existed) and on a page that hides it (ctplmix:pageOptions).
- * Carries schema.org BreadcrumbList microdata for search engines, without an inline script.
+ * The breadcrumb trail of the page (or main resource) being rendered, home first, the current page
+ * last (no href), or undefined when the page shows none: on the home page, when the site turns
+ * breadcrumbs off (ctplmix:siteSettings ctplShowBreadcrumb, on by default, including on sites
+ * created before the setting existed) and on a page that hides it (ctplmix:pageOptions). Shared by
+ * the visible trail and the schema.org BreadcrumbList (templates/StructuredData.tsx), so both
+ * always agree.
  */
+export const breadcrumbOf = (
+  mainNode: JCRNodeWrapper,
+  renderContext: RenderContext,
+): Crumb[] | undefined => {
+  const site = renderContext.getSite();
+  const home = chromeOwner(site);
+  if (mainNode.getPath() === home.getPath() || home.getPath() === site.getPath()) return undefined;
+  if (readString(site, "ctplShowBreadcrumb") === "false") return undefined;
+  if (readString(mainNode, "ctplHideBreadcrumb") === "true") return undefined;
+  return [
+    ...trailOf(mainNode, home, renderContext),
+    { title: readString(mainNode, "jcr:title") ?? mainNode.getName() },
+  ];
+};
+
+/** The visible breadcrumb trail, above the page's content (see breadcrumbOf). */
 export const Breadcrumb = () => {
   const { t } = useTranslation();
   const { mainNode, renderContext } = useServerContext();
-  const site = renderContext.getSite();
-  const home = chromeOwner(site);
-  if (mainNode.getPath() === home.getPath() || home.getPath() === site.getPath()) return null;
-  if (readString(site, "ctplShowBreadcrumb") === "false") return null;
-  if (readString(mainNode, "ctplHideBreadcrumb") === "true") return null;
-
-  const trail = trailOf(mainNode, home, renderContext);
-  const current: Crumb = { title: readString(mainNode, "jcr:title") ?? mainNode.getName() };
+  const trail = breadcrumbOf(mainNode, renderContext);
+  if (!trail) return null;
   return (
     <nav
       aria-label={t("breadcrumb.label")}
       className="ctpl-container"
       data-testid="ctpl-breadcrumb"
     >
-      <ol className={classes.trail} itemScope itemType="https://schema.org/BreadcrumbList">
-        {[...trail, current].map((crumb, index) => (
-          <li
-            key={crumb.href ?? "current"}
-            className={classes.crumb}
-            itemProp="itemListElement"
-            itemScope
-            itemType="https://schema.org/ListItem"
-          >
+      <ol className={classes.trail}>
+        {trail.map((crumb) => (
+          <li key={crumb.href ?? "current"} className={classes.crumb}>
             {crumb.href ? (
-              <a href={crumb.href} itemProp="item">
-                <span itemProp="name">{crumb.title}</span>
-              </a>
+              <a href={crumb.href}>{crumb.title}</a>
             ) : (
-              <span itemProp="name" aria-current="page">
-                {crumb.title}
-              </span>
+              <span aria-current="page">{crumb.title}</span>
             )}
-            <meta itemProp="position" content={String(index + 1)} />
           </li>
         ))}
       </ol>

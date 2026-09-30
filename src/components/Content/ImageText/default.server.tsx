@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Cta } from "../../../lib/Cta.js";
 import { Image } from "../../../lib/Image.js";
 import { RichText } from "../../../lib/RichText.js";
-import { SectionHeading } from "../../../lib/Heading.js";
+import { SectionHeading, useBodyHeadingLevel } from "../../../lib/Heading.js";
 import { Section } from "../../../lib/Section.js";
 import type { Props } from "./types.js";
 import classes from "./image-text.module.css";
@@ -20,6 +20,7 @@ jahiaComponent(
   ) => {
     const { t } = useTranslation();
     const headingId = `ctpl-it-${currentNode.getIdentifier()}`;
+    const bodyLevel = useBodyHeadingLevel(currentNode, Boolean(title));
     return (
       <Section
         surface={ctplSurface}
@@ -35,7 +36,7 @@ jahiaComponent(
         >
           <div className={`${classes.media} ${classes[imageRatio ?? "landscape"]}`}>
             {image ? (
-              <Image node={image} renderContext={renderContext} />
+              <Image node={image} owner={currentNode} renderContext={renderContext} />
             ) : (
               renderContext.isEditMode() && (
                 <p className={classes.placeholder}>{t("image.missing")}</p>
@@ -48,7 +49,7 @@ jahiaComponent(
                 {title}
               </SectionHeading>
             )}
-            <RichText html={body} />
+            <RichText html={body} headingLevel={bodyLevel} />
             <Cta node={currentNode} label={ctaLabel} renderContext={renderContext} />
           </div>
         </div>

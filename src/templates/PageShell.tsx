@@ -2,13 +2,14 @@ import { AbsoluteArea, useServerContext } from "@jahia/javascript-modules-librar
 import type { ReactNode } from "react";
 import { chromeOwner } from "../lib/site.js";
 import { Breadcrumb } from "./Breadcrumb.jsx";
+import { StructuredData } from "./StructuredData.jsx";
 import { Layout } from "./Layout.jsx";
 import classes from "./page-shell.module.css";
 
 /**
  * Page chrome shared by every template: the site header, the breadcrumb trail (every page but
  * home, see Breadcrumb), the main landmark, the site footer. The breadcrumb sits before <main>,
- * so the skip link jumps over it.
+ * so the skip link jumps over it. Every page also carries its schema.org JSON-LD (StructuredData).
  *
  * Header and footer are AbsoluteAreas owned by the home page (see chromeOwner): they render on
  * every page, are edited from the home page, and are read-only on every other page.
@@ -54,6 +55,7 @@ export const PageShell = ({
           nodeType="ctpl:footerArea"
           readOnly={readOnly}
         />
+        <StructuredData name={title} description={description} />
       </div>
     </Layout>
   );

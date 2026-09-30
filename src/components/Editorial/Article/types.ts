@@ -7,5 +7,8 @@ export interface Props {
   /** ISO 8601 date string. */
   "publicationDate"?: string;
   "image"?: JCRNodeWrapper;
+  /** Text alternative for this use of the image (ctplmix:media); defaults to its title. */
+  "imageAlt"?: string;
+  "imageDecorative"?: boolean;
   "author"?: string;
 }

@@ -1,6 +1,6 @@
 import { addNode, deleteSite, publishAndWaitJobEnding } from '@jahia/cypress'
 import { siteKeyFor } from '../../support/constants'
-import { addLink, addPage, chromeOf, createTestSite, uuidOf } from '../../support/test-helpers'
+import { addLink, addPage, chromeOf, createTestSite, jsonLd, uuidOf } from '../../support/test-helpers'
 
 const siteKey = siteKeyFor('chrome')
 const chrome = chromeOf(siteKey)
@@ -145,9 +145,14 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
             })
             cy.contains('li a', 'Consulting').should('have.attr', 'href', page('services/consulting'))
             cy.get('[aria-current="page"]').should('have.text', 'Strategy')
-            cy.get('ol').should('have.attr', 'itemtype', 'https://schema.org/BreadcrumbList')
         })
         cy.get('[data-testid="ctpl-breadcrumb"] + main#main-content').should('exist')
+        // The same trail for search engines, as a schema.org BreadcrumbList.
+        jsonLd().then((node) => {
+            const items = node('BreadcrumbList')?.itemListElement as { name: string; position: number }[]
+            expect(items.map((item) => item.name)).to.deep.equal(['Home', 'Services', 'Consulting', 'Strategy'])
+            expect(items[3].position).to.eq(4)
+        })
     })
 
     it('renders no breadcrumb on the home page, and French labels on French pages', () => {

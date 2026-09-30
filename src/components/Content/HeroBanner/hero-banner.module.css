@@ -48,6 +48,11 @@
 /* ---- image: photo behind the text ------------------------------------------------------ */
 .image {
   color: var(--ctpl-color-text-on-overlay);
+  /* The page focus colour is tuned for page surfaces; over the photo and its overlay the ring
+     takes the overlay text colour, which keeps 3:1 against it (RGAA 10.7, WCAG 2.4.7 / 1.4.11).
+     --ctpl-focus-ring is redeclared: a token that reads another resolves where it is declared. */
+  --ctpl-color-focus: var(--ctpl-color-text-on-overlay);
+  --ctpl-focus-ring: 3px solid var(--ctpl-color-focus);
 }
 .image .eyebrow,
 .image .subtitle {

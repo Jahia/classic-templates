@@ -45,6 +45,13 @@ export const useItemHeadingLevel = (item: JCRNodeWrapper): 2 | 3 | 4 => {
   }
 };
 
+/**
+ * Level the headings inside a section's rich text start at: one below the section's own heading
+ * when it shows one, the section's level otherwise (see RichText).
+ */
+export const useBodyHeadingLevel = (node: JCRNodeWrapper, hasTitle: boolean): number =>
+  useHeadingLevel(node) + (hasTitle ? 1 : 0);
+
 const TAGS = { 2: "h2", 3: "h3", 4: "h4" } as const;
 
 /** The heading element of a level: h2, h3 or h4. */

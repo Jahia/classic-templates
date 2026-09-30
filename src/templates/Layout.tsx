@@ -12,6 +12,7 @@ import { readSiteLook } from "../lib/site.js";
 import "modern-normalize/modern-normalize.css";
 import "./tokens.css";
 import "./global.css";
+import "./addons.css";
 import { languageTag } from "../lib/locale.js";
 
 /**

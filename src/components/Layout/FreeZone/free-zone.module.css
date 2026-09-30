@@ -1,0 +1,4 @@
+/* Reading width: the zone's content keeps the text measure, centred like the page container. */
+.reading {
+  max-width: calc(var(--ctpl-measure) + 2 * var(--ctpl-gutter));
+}

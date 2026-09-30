@@ -1,0 +1,139 @@
+/*
+ * Token bridge for components of other modules, dropped in a ctpl:freeZone (class .ctpl-addon).
+ * Their own stylesheets expose CSS variables with neutral defaults; these rules point them at the
+ * site's semantic tokens, so an add-on follows the theme and the colour scheme. Tokens are
+ * light-dark() pairs resolved where they are used, so the mapping holds in dark mode too.
+ * Only variables and documented class hooks are used: the add-ons' hashed CSS-module classes are
+ * never targeted. Components without variables (js-store-locator) keep their own light look.
+ */
+
+/* ---- Formidable (formidable-elements): buttons are styled unscoped, because the message's button
+   ("new form", "try again") sits beside the form, so their variables go on :root. ------------- */
+:root {
+  --fmdb-btn-radius: var(--ctpl-radius-md);
+  --fmdb-btn-font-weight: var(--ctpl-font-weight-bold);
+  --fmdb-btn-padding: var(--ctpl-space-3) var(--ctpl-space-5);
+  --fmdb-btn-focus-outline-color: var(--ctpl-color-focus);
+  --fmdb-btn-focus-outline-width: var(--ctpl-border-width-accent);
+  --fmdb-btn-primary-bg: var(--ctpl-color-accent);
+  --fmdb-btn-primary-hover-bg: var(--ctpl-color-accent-hover);
+  --fmdb-btn-primary-color: var(--ctpl-color-text-on-accent);
+  --fmdb-btn-secondary-bg: var(--ctpl-color-surface-raised);
+  --fmdb-btn-secondary-hover-bg: var(--ctpl-color-surface-sunken);
+  --fmdb-btn-secondary-color: var(--ctpl-color-text);
+  --fmdb-btn-secondary-border: var(--ctpl-color-border-strong);
+  --fmdb-btn-danger-bg: var(--ctpl-color-danger);
+  --fmdb-btn-danger-hover-bg: var(--ctpl-color-danger);
+  --fmdb-btn-danger-color: var(--ctpl-color-surface-page);
+  --fmdb-validation-error-color: var(--ctpl-color-danger);
+  --fmdb-invalid-border-color: var(--ctpl-color-danger);
+  --fmdb-invalid-outline-color: var(--ctpl-color-danger);
+  --fmdb-step-color: var(--ctpl-color-text-muted);
+  --fmdb-step-border: var(--ctpl-color-border);
+  --fmdb-step-active-color: var(--ctpl-color-accent);
+  --fmdb-step-done-color: var(--ctpl-color-success);
+  --fmdb-step-number-bg: var(--ctpl-color-surface-sunken);
+  --fmdb-step-active-number-bg: var(--ctpl-color-accent);
+}
+
+/* Formidable leaves fields, labels and layout to the template set (docs/styling). Visible labels,
+   3:1 field borders (border-strong, checked by check:contrast) and the site focus ring. */
+.ctpl-addon .fmdb-form {
+  display: grid;
+  gap: var(--ctpl-space-5);
+  max-width: var(--ctpl-measure);
+}
+.ctpl-addon .fmdb-form-group,
+.ctpl-addon .fmdb-fieldset {
+  display: grid;
+  gap: var(--ctpl-space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.ctpl-addon .fmdb-form-label,
+.ctpl-addon .fmdb-group-legend,
+.ctpl-addon .fmdb-fieldset-legend {
+  padding: 0;
+  font-weight: var(--ctpl-font-weight-bold);
+  color: var(--ctpl-color-text);
+}
+.ctpl-addon .fmdb-required-indicator {
+  color: var(--ctpl-color-danger);
+}
+.ctpl-addon .fmdb-form-control {
+  box-sizing: border-box;
+  width: 100%;
+  padding: var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  font: inherit;
+}
+.ctpl-addon .fmdb-form-control:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.ctpl-addon .fmdb-form-help {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.ctpl-addon .fmdb-group-items {
+  display: grid;
+  gap: var(--ctpl-space-2);
+}
+.ctpl-addon .fmdb-message-success {
+  padding: var(--ctpl-space-4);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-success-surface);
+  color: var(--ctpl-color-text);
+}
+.ctpl-addon .fmdb-message-error {
+  padding: var(--ctpl-space-4);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-danger-surface);
+  color: var(--ctpl-color-text);
+}
+
+/* ---- jsfaq: its :root defaults are overridden inside the zone (a class beats :root). ------- */
+.ctpl-addon {
+  --jsfaq-font-family: var(--ctpl-font-body);
+  --jsfaq-text-color: var(--ctpl-color-text);
+  --jsfaq-text-secondary: var(--ctpl-color-text-muted);
+  --jsfaq-muted-color: var(--ctpl-color-text-muted);
+  --jsfaq-accent-color: var(--ctpl-color-accent);
+  --jsfaq-accent-hover: var(--ctpl-color-accent-hover);
+  --jsfaq-accent-light: var(--ctpl-color-accent-subtle);
+  --jsfaq-border-color: var(--ctpl-color-border);
+  --jsfaq-radius: var(--ctpl-radius-md);
+  --jsfaq-shadow: var(--ctpl-shadow-sm);
+  --jsfaq-shadow-lg: var(--ctpl-shadow-md);
+  --jsfaq-spacing: var(--ctpl-space-5);
+  --jsfaq-featured-bg: var(--ctpl-color-warning-surface);
+  --jsfaq-featured-color: var(--ctpl-color-warning);
+  /* Its own ring is a 30% tint without an outline: the site ring is visible (RGAA 10.7). */
+  --jsfaq-focus-ring: 0 0 0 var(--ctpl-border-width-accent) var(--ctpl-color-focus);
+  --jsfaq-tag-bg: var(--ctpl-color-surface-raised);
+  --jsfaq-tag-active-bg: var(--ctpl-color-accent);
+
+  /* ---- js-media-gallery reads the host's --primary as its accent. ---- */
+  --primary: var(--ctpl-color-accent);
+}
+/* jsfaq paints some surfaces white outside its variables (its public, unhashed class names). */
+.ctpl-addon .jsfaq-ssr-wrapper {
+  max-width: none;
+  padding-inline: 0;
+  background: transparent;
+}
+.ctpl-addon .jsfaq__search-input,
+.ctpl-addon .jsfaq-search__field input[type="search"],
+.ctpl-addon .jsfaq-item {
+  background: var(--ctpl-color-surface-raised);
+}
+.ctpl-addon .jsfaq-tag--active,
+.ctpl-addon .jsfaq-tag--active:hover {
+  border-color: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+}
