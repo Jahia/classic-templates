@@ -124,6 +124,19 @@ video {
   margin: 0 0 var(--ctpl-space-4);
   padding-left: var(--ctpl-space-5);
 }
+.ctpl-prose dl {
+  margin: 0 0 var(--ctpl-space-4);
+}
+.ctpl-prose dt {
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.ctpl-prose dt:not(:first-child) {
+  margin-top: var(--ctpl-space-3);
+}
+.ctpl-prose dd {
+  margin: var(--ctpl-space-1) 0 0;
+  color: var(--ctpl-color-text-muted);
+}
 .ctpl-prose blockquote {
   margin: var(--ctpl-space-5) 0;
   padding-left: var(--ctpl-space-4);

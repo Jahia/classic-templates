@@ -25,7 +25,8 @@
   - publishes the site in both languages, files included (publishing content never publishes the
     images it references).
 
---sections-only only adds the example sections to an existing site (card grids, key figures,
+--sections-only only adds the example sections and the full demo content (scripts/demo_content.py)
+to an existing site (card grids, key figures,
 quotes, a call-to-action banner, the site map and accessibility pages and their footer links;
 nodes that already exist are left alone) and publishes the pages it touched: it never changes
 existing content, so it is safe on a site editors have changed.
@@ -44,6 +45,7 @@ import os
 import sys
 import time
 import urllib.request
+from pathlib import Path
 
 URL = os.environ.get("JAHIA_URL", "http://localhost:8080").rstrip("/")
 USER = os.environ.get("JAHIA_USER", "root:root1234")
@@ -372,15 +374,24 @@ STATEMENT = {
           "droits, Libre réponse 71120, 75342 Paris CEDEX 07.</p>",
 }
 
+OLD_LEGAL_START = ("<p>Example legal notice", "<p>Mentions légales d'exemple")
+
 LEGAL = {
-    "en": "<p>Example legal notice of the classic-templates demonstration site.</p><h2>Publisher</h2><p>Classic Dev, an "
-          "example company. Publication director: the site owner.</p><h2>Hosting</h2><p>The host of the site, its "
-          "address and telephone number.</p><h2>Intellectual property</h2><p>Texts and images of this demonstration "
-          "are examples.</p>",
-    "fr": "<p>Mentions légales d'exemple du site de démonstration classic-templates.</p><h2>Éditeur</h2><p>Classic "
-          "Dev, société d'exemple. Directeur de la publication : le propriétaire du site.</p><h2>Hébergement</h2><p>"
-          "L'hébergeur du site, son adresse et son numéro de téléphone.</p><h2>Propriété intellectuelle</h2><p>Les "
-          "textes et images de cette démonstration sont des exemples.</p>",
+    "en": "<p>This website is published by Classic Dev, a simplified joint-stock company (SAS) with a share capital "
+          "of 50,000 euros, registered in Lyon.</p><h2>Publisher</h2><p>Classic Dev, 27 rue des Tisseurs-Bleus, "
+          "69004 Lyon, France. Telephone: +33 4 00 00 00 00. Email: hello@classic-dev.example.</p><p>Publication "
+          "director: Ada Martin, co-founder.</p><h2>Hosting</h2><p>The website runs on Jahia Cloud, operated by Jahia "
+          "Solutions Group.</p><h2>Intellectual property</h2><p>Texts, pictures and graphic elements of this website "
+          "belong to Classic Dev unless stated otherwise. Reproducing them requires written permission.</p>"
+          "<h2>Personal data</h2><p>How we handle the data you send us is described in our privacy policy.</p>",
+    "fr": "<p>Ce site est édité par Classic Dev, société par actions simplifiée (SAS) au capital de 50 000 euros, "
+          "immatriculée à Lyon.</p><h2>Éditeur</h2><p>Classic Dev, 27 rue des Tisseurs-Bleus, 69004 Lyon, France. "
+          "Téléphone : +33 4 00 00 00 00. E-mail : hello@classic-dev.example.</p><p>Directrice de la publication : "
+          "Ada Martin, cofondatrice.</p><h2>Hébergement</h2><p>Le site fonctionne sur Jahia Cloud, opéré par Jahia "
+          "Solutions Group.</p><h2>Propriété intellectuelle</h2><p>Les textes, images et éléments graphiques de ce "
+          "site appartiennent à Classic Dev sauf mention contraire. Leur reproduction demande une autorisation "
+          "écrite.</p><h2>Données personnelles</h2><p>La façon dont nous traitons les données que vous nous "
+          "transmettez est décrite dans notre politique de confidentialité.</p>",
 }
 
 IMAGE_TITLES_FR = {
@@ -405,7 +416,11 @@ def seed_accessibility(site):
     if exists(f"{home}/hero/welcome"):
         set_props(f"{home}/hero/welcome", [{"name": "imageDecorative", "value": "true"}])
     set_props(f"{home}/accessibility/main/statement", i18n("body", STATEMENT))
-    add_content(ensure_area(f"{home}/legal", "main", "ctpl:pageArea"), "notice", "ctpl:richText", i18n("body", LEGAL))
+    notice = add_content(ensure_area(f"{home}/legal", "main", "ctpl:pageArea"), "notice", "ctpl:richText", i18n("body", LEGAL))
+    current = gql('query($p:String!){jcr{nodeByPath(path:$p){property(name:"body",language:"en"){value}}}}', {"p": notice})
+    body = (current["jcr"]["nodeByPath"]["property"] or {}).get("value", "")
+    if body.startswith(OLD_LEGAL_START):
+        set_props(notice, i18n("body", LEGAL))
     return [(f"{site}/files/demo", True), (f"{home}/hero/welcome", True),
             (f"{home}/accessibility/main/statement", True), (f"{home}/legal/main", True)]
 
@@ -528,6 +543,140 @@ def seed_examples(site):
     return touched
 
 
+# ---- Full demo content (scripts/demo_content.py) ----------------------------------------------
+
+# Types whose call to action is built in; any other section gets the optional ctplmix:cta.
+BUILT_IN_CTA = {"ctpl:heroBanner", "ctpl:imageText", "ctpl:jcrQuery"}
+# Placeholder bodies of the first seeding, replaced by real ones (anything else is an editor's text).
+# Page descriptions of the first seeding, too short for search results: replaced like placeholders.
+OLD_DESCRIPTIONS = {"Who we are and what we do.", "Qui nous sommes et ce que nous faisons.",
+                    "Every page of the site.", "Toutes les pages du site.",
+                    "Accessibility statement of the site.", "Déclaration d'accessibilité du site."}
+PLACEHOLDER_MARKERS = ("This demonstration item is part of", "The classic templates keep that promise with a small vocabulary")
+
+
+def seed_content(site):
+    """Real, bilingual content for every page of the demo site, from scripts/demo_content.py.
+
+    Only adds: a section that exists is left alone, a page description is set only in a language
+    that has none, and a news or article body is replaced only while it is still the placeholder
+    of the first seeding. New sections of a page that already had some go first. Returns
+    (path, whole subtree?) pairs to publish: only what was created or replaced, so an editor's
+    unpublished work stays unpublished."""
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import demo_content as dc
+
+    home = f"{site}/home"
+    images = f"{site}/files/demo"
+    touched = []
+
+    def page_path(rel):
+        return home if rel == "" else f"{home}/{rel}"
+
+    for image in dc.IMAGES:
+        path = f"{images}/{image['name']}"
+        new = not exists(path)
+        upload_image(images, image["name"], image["title"]["en"], image["size"], image["palette"])
+        if new:
+            set_props(path, i18n("jcr:title", image["title"]))
+            touched.append((path, True))
+
+    def props_of(section):
+        props, mixins = [], []
+        for name, value in section.get("props", {}).items():
+            props += i18n(name, value) if isinstance(value, dict) else [{"name": name, "value": value}]
+        if "image" in section:
+            props.append({"name": "image", "type": "WEAKREFERENCE", "value": uuid_at(f"{images}/{section['image']}")})
+        if "cta" in section:
+            cta_props, cta_mixins = cta(uuid_at(page_path(section["cta"]["page"])), section["cta"]["label"])
+            props += cta_props
+            mixins += cta_mixins + ([] if section["type"] in BUILT_IN_CTA else ["ctplmix:cta"])
+        if "link" in section:
+            link_props, link_mixins = internal_link(uuid_at(page_path(section["link"])))
+            props += link_props
+            mixins += link_mixins
+        return props, mixins
+
+    def add_section(parent, section):
+        path = f"{parent}/{section['name']}"
+        created = not exists(path)
+        if created:
+            props, mixins = props_of(section)
+            add_content(parent, section["name"], section["type"], props, mixins)
+            for child in section.get("children", []):
+                child_props, child_mixins = props_of(child)
+                add_content(path, child["name"], child["type"], child_props, child_mixins)
+            for column, sections in section.get("columns", {}).items():
+                for inner in sections:
+                    add_section(f"{path}/{column}", inner)
+        return created
+
+    def children_of(path):
+        return [c["name"] for c in gql("query($p:String!){jcr{nodeByPath(path:$p){children{nodes{name}}}}}",
+                                       {"p": path})["jcr"]["nodeByPath"]["children"]["nodes"]]
+
+    for rel, areas in dc.PAGES.items():
+        page = page_path(rel)
+        if not exists(page):
+            continue
+        if areas.get("hero") and not exists(f"{page}/hero/{areas['hero'][0]['name']}"):
+            # A hero banner titles the page: the page's h1 stays for screen readers and search
+            # engines, hidden from the screen ("Hide the page title"), so the title is not shown twice.
+            gql('mutation($p:String!){jcr{mutateNode(pathOrId:$p){addMixins(mixins:["ctplmix:pageOptions"])}}}', {"p": page})
+            set_props(page, [{"name": "ctplHideTitle", "value": "true"}])
+            touched.append((page, False))
+        for area_name, sections in areas.items():
+            if not sections:
+                continue
+            area = ensure_area(page, area_name, "ctpl:heroArea" if area_name == "hero" else "ctpl:pageArea")
+            before = children_of(area)
+            created = [section["name"] for section in sections if add_section(area, section)]
+            if not created:
+                continue
+            if not before:
+                touched.append((area, True))
+                continue
+            # New sections go first, in their own order, then what the page already had.
+            order = [n for n in (s["name"] for s in sections) if n in created] + [n for n in children_of(area) if n not in created]
+            gql("mutation($p:String!,$n:[String]!){jcr{mutateNode(pathOrId:$p){reorderChildren(names:$n)}}}", {"p": area, "n": order})
+            touched += [(f"{area}/{name}", True) for name in created] + [(area, False)]
+
+    for rel, description in dc.PAGE_DESCRIPTIONS.items():
+        page = page_path(rel)
+        if not exists(page):
+            continue
+        missing = {}
+        for lang, text in description.items():
+            current = gql("query($p:String!,$l:String!){jcr{nodeByPath(path:$p){property(name:\"jcr:description\",language:$l){value}}}}",
+                          {"p": page, "l": lang})["jcr"]["nodeByPath"]["property"]
+            if not current or current["value"] in OLD_DESCRIPTIONS:
+                missing[lang] = text
+        if missing:
+            set_props(page, i18n("jcr:description", missing))
+            touched += [(page, False)] + [(f"{page}/j:translation_{lang}", False) for lang in missing]
+
+    for folder, bodies in (("news", dc.NEWS_BODIES), ("articles", dc.ARTICLE_BODIES)):
+        for name, body in bodies.items():
+            item = f"{site}/contents/{folder}/{name}"
+            if not exists(item):
+                continue
+            current = gql("query($p:String!){jcr{nodeByPath(path:$p){property(name:\"body\",language:\"en\"){value}}}}",
+                          {"p": item})["jcr"]["nodeByPath"]["property"]
+            if current and any(marker in current["value"] for marker in PLACEHOLDER_MARKERS):
+                set_props(item, i18n("body", body))
+                touched.append((item, True))
+    return touched
+
+
+def publish_all(pairs):
+    for path, subtree in pairs:
+        try:
+            gql("mutation($s:String!,$t:Boolean){jcr{mutateNode(pathOrId:$s){publish(languages:[\"en\",\"fr\"],"
+                "publishSubNodes:$t,includeSubTree:$t)}}}", {"s": path, "t": subtree})
+        except RuntimeError:
+            pass  # a translation node that does not exist in this language
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--site", default="classic-dev")
@@ -540,9 +689,7 @@ def main():
 
     if args.sections_only:
         seed_landing_sections(site)
-        for path, subtree in seed_examples(site) + seed_accessibility(site):
-            gql("mutation($s:String!,$t:Boolean){jcr{mutateNode(pathOrId:$s){publish(languages:[\"en\",\"fr\"],"
-                "publishSubNodes:$t,includeSubTree:$t)}}}", {"s": path, "t": subtree})
+        publish_all(seed_examples(site) + seed_accessibility(site) + seed_content(site))
         print(f"example sections seeded and published on {site}")
         return
 
@@ -776,6 +923,7 @@ def main():
     seed_landing_sections(site)
     seed_examples(site)
     seed_accessibility(site)
+    seed_content(site)
 
     for root in (site, f"{site}/files", demo_cats):
         gql(
