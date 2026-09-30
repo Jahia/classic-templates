@@ -23,6 +23,13 @@ set (so `import.xml` runs) and fills it: 3-level EN/FR page tree, two pages hidd
 header utility links, footer columns, legal and social links, published. `pages-to-review.json`
 lists its pages for the site review.
 
+## Images in tests
+
+Upload test images with the `uploadImage` Cypress task (`tests/cypress/plugins/upload-image.js`,
+helper `uploadTestImage`), not `@jahia/cypress` `uploadFile`: the latter sends the binary through
+GraphQL-multipart's `map` indirection, the route known to store a Java object name instead of the
+bytes. The task sets `jcr:data` from a named multipart part and reads the stored value back.
+
 ## Local traps met while setting up
 
 - `0.Modules/` has its own `package.json`, so Yarn treats the module as a workspace member. The

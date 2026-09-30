@@ -1,0 +1,15 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A page section with an image beside text: an h2 heading (jcr:title), a rich text body and an
+// optional call to action. imagePosition puts the image left or right (it stacks above the text on
+// small screens); imageRatio crops it to a landscape, square or portrait frame.
+[ctpl:imageText] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:media, ctplmix:cta, ctplmix:sectionStyle
+ - body (string, richtext) i18n
+ - imagePosition (string, choicelist[resourceBundle]) = 'left' autocreated < 'left', 'right'
+ - imageRatio (string, choicelist[resourceBundle]) = 'landscape' autocreated < 'landscape', 'square', 'portrait'

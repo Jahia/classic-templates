@@ -95,3 +95,47 @@ export const chromeOf = (siteKey: string) => {
 
 /** The page's `<h1>` elements (the template must render exactly one). */
 export const pageHeadings = () => cy.get('h1')
+
+/** Uploads tests/cypress/fixtures/images/landscape.jpg into the site's files as an image. Yields its uuid. */
+export const uploadTestImage = (siteKey: string, name = 'landscape.jpg', title = 'Test landscape') =>
+    cy.task<string>('uploadImage', {
+        parent: `/sites/${siteKey}/files`,
+        name,
+        fixture: 'images/landscape.jpg',
+        width: 1200,
+        height: 675,
+        title,
+    })
+
+/** Adds a content node with EN/FR i18n values given as { prop: { en, fr } } plus plain properties. */
+export const addContent = (
+    parentPath: string,
+    name: string,
+    primaryNodeType: string,
+    i18nProps: Record<string, { en: string; fr: string }>,
+    props: { name: string; value: string; type?: string; language?: string }[] = [],
+    mixins: string[] = [],
+) =>
+    addNode({
+        parentPathOrId: parentPath,
+        name,
+        primaryNodeType,
+        mixins,
+        properties: [
+            ...Object.entries(i18nProps).flatMap(([prop, v]) => [
+                { name: prop, value: v.en, language: 'en' },
+                { name: prop, value: v.fr, language: 'fr' },
+            ]),
+            ...props,
+        ],
+    })
+
+/** Properties of an internal call to action (ctplmix:cta) to `target`, set in both languages. */
+export const ctaTo = (target: string) => ({
+    props: [
+        { name: 'j:linkType', value: 'internal' },
+        { name: 'j:linknode', type: 'WEAKREFERENCE', value: target, language: 'en' },
+        { name: 'j:linknode', type: 'WEAKREFERENCE', value: target, language: 'fr' },
+    ],
+    mixins: ['jmix:internalLink'],
+})

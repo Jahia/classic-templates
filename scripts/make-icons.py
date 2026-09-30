@@ -62,7 +62,43 @@ def footer_columns(d, p):
         d.rectangle(p(x, 8, x + 6, 24), outline=INK, width=w(2))
 
 
+def hero_banner(d, p):
+    d.rectangle(p(3, 6, 29, 26), outline=INK, width=w(2))
+    d.line(p(7, 13, 21, 13), fill=INK, width=w(3))
+    d.line(p(7, 18, 16, 18), fill=INK, width=w(2))
+    d.rectangle(p(7, 21, 13, 23), fill=INK)
+
+
+def image_text(d, p):
+    d.rectangle(p(3, 8, 15, 24), outline=INK, width=w(2))
+    d.polygon(p(5, 22, 9, 16, 13, 22), fill=INK)
+    for y in (10, 15, 20):
+        d.line(p(18, y, 29, y), fill=INK, width=w(2))
+
+
+def rich_text(d, p):
+    d.line(p(4, 7, 22, 7), fill=INK, width=w(3))
+    for y, x2 in ((13, 28), (18, 26), (23, 28)):
+        d.line(p(4, y, x2, y), fill=INK, width=w(2))
+
+
+def columns(d, p):
+    d.rectangle(p(3, 6, 14, 26), outline=INK, width=w(2))
+    d.rectangle(p(18, 6, 29, 26), outline=INK, width=w(2))
+
+
+def column(d, p):
+    d.rectangle(p(10, 5, 22, 27), outline=INK, width=w(2))
+    d.line(p(13, 11, 19, 11), fill=INK, width=w(2))
+    d.line(p(13, 16, 19, 16), fill=INK, width=w(2))
+
+
 ICONS = {
+    "ctpl_heroBanner": hero_banner,
+    "ctpl_imageText": image_text,
+    "ctpl_richText": rich_text,
+    "ctpl_columns": columns,
+    "ctpl_column": column,
     "ctpl_link": link,
     "ctpl_linkList": link_list,
     "ctpl_mainNavigation": main_navigation,

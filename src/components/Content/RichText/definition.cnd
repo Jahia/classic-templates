@@ -1,0 +1,13 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A text section: an optional h2 heading (jcr:title) and a rich text body. width keeps the text at
+// a comfortable reading measure ("readable") or lets it use the full content width ("wide").
+[ctpl:richText] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle
+ - body (string, richtext) i18n
+ - width (string, choicelist[resourceBundle]) = 'readable' autocreated < 'readable', 'wide'

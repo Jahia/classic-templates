@@ -1,0 +1,108 @@
+/* Tier-3 knobs a theme may tune; they fall back to semantic tokens. */
+.hero {
+  --hero-min-height: 26rem;
+  --hero-title-size: var(--ctpl-text-4xl);
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  min-height: var(--hero-min-height);
+  overflow: hidden;
+}
+.heightCompact {
+  --hero-min-height: 18rem;
+}
+.heightTall {
+  --hero-min-height: min(38rem, 80vh);
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--ctpl-space-6);
+  align-items: center;
+  padding-block: var(--ctpl-space-8);
+}
+
+.text {
+  max-width: 40rem;
+}
+.eyebrow {
+  margin-bottom: var(--ctpl-space-3);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.title {
+  margin-bottom: var(--ctpl-space-4);
+  font-size: var(--hero-title-size);
+}
+.subtitle {
+  margin: 0;
+  font-size: var(--ctpl-text-lg);
+}
+
+/* ---- image: photo behind the text ------------------------------------------------------ */
+.image {
+  color: var(--ctpl-color-text-on-overlay);
+}
+.image .eyebrow,
+.image .subtitle {
+  color: var(--ctpl-color-text-on-overlay);
+}
+.backdrop {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.overlay {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+}
+.overlayMedium {
+  background: var(--ctpl-color-overlay);
+}
+.overlayStrong {
+  background: color-mix(in srgb, var(--ctpl-color-overlay), var(--ctpl-color-shadow) 35%);
+}
+
+/* ---- split: text left, photo right -------------------------------------------------------- */
+.split {
+  background: var(--ctpl-color-surface-sunken);
+}
+.split .eyebrow {
+  color: var(--ctpl-color-accent);
+}
+.split .subtitle {
+  color: var(--ctpl-color-text-muted);
+}
+.media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--ctpl-radius-lg);
+  box-shadow: var(--ctpl-shadow-md);
+}
+@media (min-width: 64rem) {
+  .split .inner {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---- plain: tinted band ------------------------------------------------------------------- */
+.plain {
+  background: var(--ctpl-color-accent-subtle);
+}
+.plain .eyebrow {
+  color: var(--ctpl-color-accent);
+}
+.plain .subtitle {
+  color: var(--ctpl-color-text-muted);
+}

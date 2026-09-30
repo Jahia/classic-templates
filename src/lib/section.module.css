@@ -1,0 +1,16 @@
+.section {
+  color: var(--ctpl-color-text);
+}
+.default {
+  background: transparent;
+}
+.sunken,
+.accent {
+  padding-block: var(--ctpl-section-gap);
+}
+.sunken {
+  background: var(--ctpl-color-surface-sunken);
+}
+.accent {
+  background: var(--ctpl-color-accent-subtle);
+}

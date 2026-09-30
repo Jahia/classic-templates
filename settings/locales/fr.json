@@ -17,5 +17,11 @@
   },
   "links": {
     "label": "Liens"
+  },
+  "image": {
+    "missing": "Aucune image sélectionnée"
+  },
+  "cta": {
+    "noLabel": "Libellé du bouton manquant"
   }
 }

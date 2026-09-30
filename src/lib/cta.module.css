@@ -1,0 +1,55 @@
+.wrap {
+  margin: var(--ctpl-space-5) 0 0;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  min-height: 2.75rem;
+  padding: var(--ctpl-space-2) var(--ctpl-space-5);
+  border: 2px solid transparent;
+  border-radius: var(--ctpl-radius-md);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-decoration: none;
+  transition:
+    background-color var(--ctpl-duration-fast) var(--ctpl-ease),
+    color var(--ctpl-duration-fast) var(--ctpl-ease);
+}
+
+.primary {
+  background: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+}
+.primary:hover {
+  background: var(--ctpl-color-accent-hover);
+  color: var(--ctpl-color-text-on-accent);
+}
+
+.secondary {
+  border-color: var(--ctpl-color-accent);
+  color: var(--ctpl-color-accent);
+}
+.secondary:hover {
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-accent-hover);
+}
+
+/* Over a photo the overlay guarantees contrast for light text, so the button is light too. */
+.onOverlay {
+  border-color: var(--ctpl-color-text-on-overlay);
+  color: var(--ctpl-color-text-on-overlay);
+}
+.onOverlay:hover {
+  background: color-mix(in srgb, var(--ctpl-color-text-on-overlay) 18%, transparent);
+  color: var(--ctpl-color-text-on-overlay);
+}
+
+.hint {
+  margin: var(--ctpl-space-4) 0 0;
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-sm);
+}

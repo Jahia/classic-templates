@@ -140,6 +140,31 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
 - **Language switcher:** only languages the page exists in; `cache.mainResource` on its view so
   each page gets its own links inside the shared header (verified per page, EN and FR).
 
+## Content components (phase 6)
+
+Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
+
+- **Shared helpers** (`src/lib/`): `Section` (surface from `ctplmix:sectionStyle`: default, sunken
+  band, accent tint), `Cta` (the `ctplmix:cta` button: link resolution, allow-list, edit-mode hint
+  when the label or the translated target is missing), `Image` (alt from the image's `jcr:title`,
+  intrinsic `j:width`/`j:height` against layout shift, eager + high priority for the banner, lazy
+  otherwise, cache dependency on the image), `SectionHeading` (h2, or h3 when the section sits in a
+  column), `RichText` (the one raw-HTML sink).
+- **Hero banner** (`ctpl:heroBanner`, hero area or main area): variants image (photo behind the
+  text under the token overlay), split (text left, photo right) and plain (accent tint); any
+  variant without a photo renders plain. Overlay medium/strong, height compact/medium/tall.
+- **Image and text** (`ctpl:imageText`): image left or right, landscape/square/portrait crop,
+  rich text body, optional CTA, section surface.
+- **Rich text** (`ctpl:richText`): optional heading, body at reading measure or wide.
+- **Columns** (`ctpl:columns`): halves, thirds, quarters, 2/3+1/3, 1/3+2/3; four autocreated
+  `ctpl:column` child lists (each accepts page sections) of which the view renders as many as the
+  layout needs, so switching layout never deletes content. Rendered with `RenderChild` of the named
+  child lists, not AbsoluteAreas: each column shows up in Page Builder as a list restricted to
+  `ctplmix:pageComponent` with its own add button (checked in the edit frame). Sections inside a
+  column drop their own container gutter and step their heading down to h3.
+- **JCR query** is built right after the news and article types (phase 7): its card views and its
+  tests need a real main-resource type to list.
+
 ## Editor UI notes
 
 - **Shared areas are editable on home only - but not with `readOnly="children"`.** Verified in the

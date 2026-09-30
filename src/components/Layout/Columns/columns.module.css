@@ -1,0 +1,48 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.small {
+  gap: var(--ctpl-space-4);
+}
+.medium {
+  gap: var(--ctpl-space-6);
+}
+.large {
+  gap: var(--ctpl-space-8);
+}
+
+@media (min-width: 40rem) {
+  .quarters {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .halves {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .thirds {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .quarters {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .twoThirdsOneThird {
+    grid-template-columns: 2fr 1fr;
+  }
+  .oneThirdTwoThirds {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+/* Sections dropped in a column are already inside the row's container: no second gutter. */
+.column {
+  display: grid;
+  gap: var(--ctpl-space-5);
+  align-content: start;
+  min-width: 0;
+}
+.column :global(.ctpl-container) {
+  max-width: none;
+  padding-inline: 0;
+}

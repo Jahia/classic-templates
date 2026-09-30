@@ -17,5 +17,11 @@
   },
   "links": {
     "label": "Links"
+  },
+  "image": {
+    "missing": "No image selected"
+  },
+  "cta": {
+    "noLabel": "Button label missing"
   }
 }

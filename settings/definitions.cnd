@@ -59,6 +59,11 @@
 [ctplmix:media] mixin
  - image (weakreference, picker[type='image']) < jmix:image
 
+// Background of a page section, from the theme's surfaces: plain page, sunken (a quiet grey band)
+// or accent (a tint of the theme's accent). Alternating surfaces gives long pages their rhythm.
+[ctplmix:sectionStyle] mixin
+ - ctplSurface (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'sunken', 'accent'
+
 // ---- Page and site options ----------------------------------------------------------------------
 
 // Optional page settings, offered on every page's edit form.

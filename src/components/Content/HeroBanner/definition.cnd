@@ -1,0 +1,18 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A banner at the top of a page (hero area) or between sections (main area). Its heading is
+// jcr:title, rendered as an h2: the page template owns the h1. variant picks the layout: "image"
+// puts the photo full-bleed behind the text under a dark overlay (overlay sets its darkness),
+// "split" puts the text left and the photo right, "plain" drops the photo for a tinted band.
+[ctpl:heroBanner] > jnt:content, mix:title, ctplmix:heroComponent, ctplmix:pageComponent, ctplmix:media, ctplmix:cta
+ - eyebrow (string) i18n
+ - subtitle (string, textarea) i18n
+ - variant (string, choicelist[resourceBundle]) = 'image' autocreated < 'image', 'split', 'plain'
+ - overlay (string, choicelist[resourceBundle]) = 'medium' autocreated < 'medium', 'strong'
+ - height (string, choicelist[resourceBundle]) = 'medium' autocreated < 'compact', 'medium', 'tall'

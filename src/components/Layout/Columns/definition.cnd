@@ -1,0 +1,25 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// One column of a ctpl:columns row: an ordered list where editors drop page sections. A structural
+// container, not a component (it is never offered in the type picker on its own), and never hidden:
+// editors select it in Page Builder to add sections to it.
+[ctpl:column] > jnt:content, jmix:list orderable
+ + * (ctplmix:pageComponent)
+
+// A row of 2 to 4 columns with an optional h2 heading (jcr:title). layout sets the number and
+// widths of the columns; the four columns always exist (autocreated) and the view renders only as
+// many as the layout needs, so switching layouts never loses content. gap sets the space between
+// columns.
+[ctpl:columns] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle
+ - layout (string, choicelist[resourceBundle]) = 'halves' autocreated < 'halves', 'thirds', 'quarters', 'twoThirdsOneThird', 'oneThirdTwoThirds'
+ - gap (string, choicelist[resourceBundle]) = 'medium' autocreated < 'small', 'medium', 'large'
+ + col1 (ctpl:column) = ctpl:column autocreated
+ + col2 (ctpl:column) = ctpl:column autocreated
+ + col3 (ctpl:column) = ctpl:column autocreated
+ + col4 (ctpl:column) = ctpl:column autocreated
