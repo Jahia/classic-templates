@@ -62,10 +62,45 @@ mixin carries `ctplTheme` (default, plus two samples) and `ctplColorScheme` (aut
   only from choicelists, paths only from nodes), contributed URLs (scheme allow-list: `http`,
   `https`, `mailto`, `tel`), any server-side fetch.
 
+## Links (settled by the phase 3 spike, 2026-09-30)
+
+Tested on the local 8.2.3.2 with a throwaway module (namespace `lnkspk`, since removed). Details
+and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
+
+- **Shape:** one shared mixin in `settings/definitions.cnd`, the native Jahia link picker:
+
+  ```cnd
+  [ctplmix:linkTo] mixin
+   - j:linkType (string, choicelist[linkTypeInitializer,resourceBundle]) = 'none' autocreated indexed=no
+  ```
+
+  `internal` adds `jmix:internalLink` (page picker, `j:linknode`), `external` adds
+  `jmix:externalLink` (`j:url`, `j:linkTitle`). Works on our own types, in the Content Editor, over
+  GraphQL and in live rendering. The label is our own field (`ctaLabel (string) i18n` on
+  `ctplmix:cta` = `linkTo` + label); `ctpl:link` (list item) = `mix:title` + `ctplmix:linkTo`, and
+  an internal link without a title falls back to the target page's title.
+
+- **Links are per language:** `j:linknode` and `j:url` are both i18n. A link set in EN has no target
+  in FR. Views render the label without a link when the current language has no target (never
+  `href="#"`), and in edit mode show a small "no link target in this language" hint so editors
+  notice. Seeding scripts set the target for every language.
+- **Writes:** always pass `language` for `j:linknode` / `j:url`. Without it the write is rejected
+  and the `addMixins` of the same mutation is rolled back (the cause of tenant-portal's "mixin does
+  not stick").
+- **Security:** `j:url` is unconstrained, so one shared `resolveLink()` helper allow-lists `http`,
+  `https`, `mailto`, `tel` and returns nothing for anything else. External links get
+  `rel="noopener"` when they open a new tab.
+
+## CND files
+
+- Every component `definition.cnd` uses **exactly** the namespace URIs of `settings/definitions.cnd`
+  (`http://www.jahia.org/classic-templates/nt/1.0` and `/mix/1.0`). The engine merges all CND files
+  at install time; one prefix bound to two URIs fails the install with a bare `IOException` while
+  `yarn deploy` prints `{}`. The `check-cnd.mjs` gate (`namespaceUriMismatch`) catches it.
+- `settings/definitions.cnd` declares every prefix the module uses (`jnt`, `jmix`, `mix`, `j`,
+  `jcr`, `ctpl`, `ctplmix`). Component CNDs carry the same header.
+
 ## Open questions
 
-- **Links on module types (phase 3 spike):** does `j:linkType` with `choicelist[linkTypeInitializer]`
-  stick on our own types on Jahia 8.2.3.2? tenant-portal's CND says `jmix:internalLink` did not;
-  mysoprahr's footer links use it. The answer decides the shape of `ctplmix:cta` and `ctpl:link`.
 - **Theme change and cache:** confirm that publishing the site node after a theme change refreshes
   cached pages.
