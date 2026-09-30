@@ -1,0 +1,13 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// An ordered list of links with an optional title. Rendered as a section in a page (default view),
+// as a horizontal bar ("inline": header utility links, footer legal and social links) or as a
+// titled column ("column": footer columns).
+[ctpl:linkList] > jnt:content, mix:title, ctplmix:pageComponent, jmix:list orderable
+ + * (ctpl:link)

@@ -1,0 +1,21 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// The columns of titled link lists in the footer.
+[ctpl:footerColumns] > jnt:content, jmix:list orderable
+ + * (ctpl:linkList)
+
+// The site footer, shared by every page: a brand block with a tagline, link columns, then a bottom
+// bar with the copyright, legal links and social links. A singleton seeded in the home page's
+// footer area, hence hidden from the content type picker.
+[ctpl:siteFooter] > jnt:content, ctplmix:footerComponent, jmix:hiddenType
+ - tagline (string, textarea) i18n
+ - copyright (string) i18n
+ + columns (ctpl:footerColumns) = ctpl:footerColumns autocreated
+ + legal (ctpl:linkList) = ctpl:linkList autocreated
+ + social (ctpl:linkList) = ctpl:linkList autocreated

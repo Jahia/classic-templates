@@ -118,7 +118,36 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
 - `settings/definitions.cnd` declares every prefix the module uses (`jnt`, `jmix`, `mix`, `j`,
   `jcr`, `ctpl`, `ctplmix`). Component CNDs carry the same header.
 
+## Chrome (phase 5)
+
+- **Header** (`ctpl:siteHeader`, singleton, `jmix:hiddenType`): named children `utilityLinks`
+  (`ctpl:linkList`, rendered with its `inline` view in the right-aligned bar above),
+  `languageSwitcher` and `navigation` (`ctpl:mainNavigation`). Logo + optional dark logo (swapped
+  by CSS for forced or system dark), brand name defaulting to the site title.
+- **Footer** (`ctpl:siteFooter`, singleton): tagline, `columns` (`ctpl:footerColumns` of titled
+  `ctpl:linkList`s, `column` view), `legal` and `social` (`inline` view), copyright with a `{year}`
+  token. Always shows the site name and copyright, so the landmark is never empty.
+- **Links:** `ctpl:link` (`mix:title` + `ctplmix:linkTo` + `openInNewTab`) inside `ctpl:linkList`
+  (default, `inline`, `column` views). A list without links renders nothing on the live site.
+- **Main navigation:** built from the page tree under home by `src/lib/navigation.ts` (pages, menu
+  labels, node links, external links with the scheme allow-list), 1 to 3 levels (`navDepth`),
+  skipping pages with "Hide from navigation". Cache dependency on the whole tree under home.
+- **Behaviour:** server-rendered and usable without JavaScript. `static/js/navigation.js` (loaded
+  with `AddResources`) switches to the disclosure pattern: menu button on small screens, submenu
+  buttons with `aria-expanded`, Escape / outside click / focus leaving an item closes, hover can
+  be dismissed with Escape (WCAG 1.4.13), and `aria-current` on the current page. The current page
+  is marked in the browser because the header is one cached fragment shared by every page.
+- **Language switcher:** only languages the page exists in; `cache.mainResource` on its view so
+  each page gets its own links inside the shared header (verified per page, EN and FR).
+
 ## Editor UI notes
+
+- **Shared areas are editable on home only - but not with `readOnly="children"`.** Verified in the
+  edit frame on 8.2.3.2 with engine 1.2.0: `"children"` (engine: `editable` + core
+  `limitedAbsoluteAreaEdit`) locks the area AND its children on every page, home included;
+  `readOnly={true}` only removes the area's own marker and leaves the children editable. PageShell
+  therefore passes `false` on the home page and `"children"` everywhere else. The Cypress
+  authorization spec for the chrome checks both sides.
 
 - **Template names are not translatable:** the page editor's template picker shows the
   `displayName` of `jahiaComponent`. Core looks up
@@ -127,7 +156,6 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
 - **Empty shared areas are blank in the edit canvas:** an AbsoluteArea shows in Page Builder only
   once its node has a child. `import.xml` therefore seeds the header and footer singletons (phase 5),
   which also keeps the `<footer>` landmark from ever being empty.
-- Header and footer are locked (`readOnly="children"`) on every page except home.
 
 ## Open questions
 

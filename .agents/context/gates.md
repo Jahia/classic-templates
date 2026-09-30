@@ -16,6 +16,13 @@ A change is done when every gate below passes. Run them from the module root.
 | End-to-end          | `cd tests && JAHIA_URL=http://localhost:8080 SUPER_USER_PASSWORD=root1234 yarn e2e:ci`                                                                                                                                                                                                                   | all specs pass                                       |
 | Site review         | `/jahia-review-site`: the review script (AIStartupKit `.claude/skills/jahia-review-site/scripts/review-pages.mjs`, with its deps installed outside the module) run from the module root on `pages-to-review.json` (local `classic-dev` site), once per theme × scheme whenever a change affects the look | `pages.json` written (axe + Lighthouse SEO clean)    |
 
+## Demo site
+
+`python3 scripts/seed-demo.py --recreate` rebuilds the local `classic-dev` site from the template
+set (so `import.xml` runs) and fills it: 3-level EN/FR page tree, two pages hidden from the menu,
+header utility links, footer columns, legal and social links, published. `pages-to-review.json`
+lists its pages for the site review.
+
 ## Local traps met while setting up
 
 - `0.Modules/` has its own `package.json`, so Yarn treats the module as a workspace member. The

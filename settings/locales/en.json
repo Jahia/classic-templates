@@ -3,6 +3,19 @@
     "skipToContent": "Skip to main content"
   },
   "link": {
-    "noTarget": "No link target in this language"
+    "noTarget": "No link target in this language",
+    "newTab": "opens in a new tab",
+    "untitled": "Untitled link"
+  },
+  "nav": {
+    "main": "Main navigation",
+    "menu": "Menu",
+    "submenu": "Show the {{title}} submenu"
+  },
+  "lang": {
+    "label": "Language"
+  },
+  "links": {
+    "label": "Links"
   }
 }

@@ -1,0 +1,75 @@
+.header {
+  position: relative;
+  z-index: 10;
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  background: var(--ctpl-color-surface-page);
+}
+
+/* Utility bar: small, quiet, right-aligned, above the main bar. */
+.utility {
+  background: var(--ctpl-color-surface-sunken);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  font-size: var(--ctpl-text-sm);
+}
+.utilityInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ctpl-space-2) var(--ctpl-space-6);
+  min-height: 2.25rem;
+  padding-block: var(--ctpl-space-1);
+  color: var(--ctpl-color-text-muted);
+}
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ctpl-space-4) var(--ctpl-space-6);
+  min-height: 4.5rem;
+  padding-block: var(--ctpl-space-3);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-3);
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+}
+.brand:hover {
+  color: var(--ctpl-color-text);
+}
+.logo,
+.logoLight,
+.logoDark {
+  width: auto;
+  max-height: 2.75rem;
+}
+.logoDark {
+  display: none;
+}
+.brandName {
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-xl);
+  font-weight: var(--ctpl-heading-weight);
+  letter-spacing: var(--ctpl-heading-tracking);
+}
+
+/* Dark logo: when the site forces dark, or follows a visitor whose system is dark. */
+:global(:root[data-ctpl-scheme="dark"]) .logoLight {
+  display: none;
+}
+:global(:root[data-ctpl-scheme="dark"]) .logoDark {
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  :global(:root:not([data-ctpl-scheme])) .logoLight {
+    display: none;
+  }
+  :global(:root:not([data-ctpl-scheme])) .logoDark {
+    display: block;
+  }
+}

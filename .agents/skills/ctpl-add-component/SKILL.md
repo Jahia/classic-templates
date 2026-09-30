@@ -24,7 +24,7 @@ inventory, which shared mixins does it reuse (`ctplmix:cta`, `ctplmix:media`, `c
 - Images: `ctplmix:media` (weakreference to `jmix:image`); alt text comes from the image's `jcr:title`.
 - Labels in the same step: `settings/resources/classic-templates_en.properties` and `_fr.properties`,
   a label and a `ui.tooltip` for the type and every field, choicelist values keyed with `_`.
-- Icon: `settings/content-types-icons/ctpl_<name>.png` (32×32).
+- Icon: `settings/content-types-icons/ctpl_<name>.png` (32×32): add a glyph to `scripts/make-icons.py` and run it.
 - Gate: `check-cnd.mjs .` reports PASS.
 
 ## 3. View

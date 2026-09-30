@@ -5,6 +5,8 @@
   The shared header and footer areas live UNDER the home page: that is the node their
   AbsoluteAreas are parented on, and the only place Page Builder lets an editor change them.
   Area node types match the nodeType each template declares, otherwise the area renders nothing.
+  The header and footer singletons are seeded here: an empty shared area is blank in the Page
+  Builder canvas, and the footer landmark must never be empty (it always shows the copyright).
 -->
 <content
   xmlns:j="http://www.jahia.org/jahia/1.0"
@@ -37,8 +39,31 @@
           />
         <hero jcr:primaryType="ctpl:heroArea" />
         <main jcr:primaryType="ctpl:pageArea" />
-        <siteHeader jcr:primaryType="ctpl:headerArea" />
-        <siteFooter jcr:primaryType="ctpl:footerArea" />
+        <siteHeader jcr:primaryType="ctpl:headerArea">
+          <header jcr:primaryType="ctpl:siteHeader" showBrandName="true">
+            <utilityLinks jcr:primaryType="ctpl:linkList">
+              <j:translation_en jcr:language="en" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Quick links" />
+              <j:translation_fr jcr:language="fr" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Liens rapides" />
+            </utilityLinks>
+            <languageSwitcher jcr:primaryType="ctpl:languageSwitcher" />
+            <navigation jcr:primaryType="ctpl:mainNavigation" navDepth="3" />
+          </header>
+        </siteHeader>
+        <siteFooter jcr:primaryType="ctpl:footerArea">
+          <footer jcr:primaryType="ctpl:siteFooter">
+            <j:translation_en jcr:language="en" jcr:primaryType="jnt:translation" copyright="© {year}. All rights reserved." />
+            <j:translation_fr jcr:language="fr" jcr:primaryType="jnt:translation" copyright="© {year}. Tous droits réservés." />
+            <columns jcr:primaryType="ctpl:footerColumns" />
+            <legal jcr:primaryType="ctpl:linkList">
+              <j:translation_en jcr:language="en" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Legal information" />
+              <j:translation_fr jcr:language="fr" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Informations légales" />
+            </legal>
+            <social jcr:primaryType="ctpl:linkList">
+              <j:translation_en jcr:language="en" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Follow us" />
+              <j:translation_fr jcr:language="fr" jcr:mixinTypes="mix:title" jcr:primaryType="jnt:translation" jcr:title="Suivez-nous" />
+            </social>
+          </footer>
+        </siteFooter>
       </home>
       <contents jcr:primaryType="jnt:contentFolder" />
     </classic-templates>

@@ -32,14 +32,18 @@ Then create a site in Jahia on the **classic-templates** template set, with Engl
 
 ## Commands
 
-| Script              | Description                                                                            |
-| ------------------- | -------------------------------------------------------------------------------------- |
-| `yarn build`        | Type-check, build with Vite, pack `dist/package.tgz`                                   |
-| `yarn deploy`       | Install `dist/package.tgz` on the Jahia instance                                       |
-| `yarn dev`          | Watch mode: rebuild and redeploy on every change (for developers, in a terminal)       |
-| `yarn lint`         | ESLint                                                                                 |
-| `yarn format`       | Prettier                                                                               |
-| `mvn clean package` | Same build through Maven, as the CI runs it (`target/classic-templates-<version>.tgz`) |
+| Script                                    | Description                                                                            |
+| ----------------------------------------- | -------------------------------------------------------------------------------------- |
+| `yarn build`                              | Type-check, build with Vite, pack `dist/package.tgz`                                   |
+| `yarn deploy`                             | Install `dist/package.tgz` on the Jahia instance                                       |
+| `yarn dev`                                | Watch mode: rebuild and redeploy on every change (for developers, in a terminal)       |
+| `yarn lint`                               | ESLint                                                                                 |
+| `yarn format`                             | Prettier                                                                               |
+| `mvn clean package`                       | Same build through Maven, as the CI runs it (`target/classic-templates-<version>.tgz`) |
+| `yarn check:tokens`                       | Fails on any literal colour outside `src/templates/tokens.css`                         |
+| `yarn check:contrast`                     | Checks WCAG AA contrast of every theme in light and dark                               |
+| `python3 scripts/seed-demo.py --recreate` | Rebuilds and fills the local `classic-dev` demo site                                   |
+| `python3 scripts/make-icons.py`           | Redraws the content-type icons (Pillow)                                                |
 
 ## Project layout
 

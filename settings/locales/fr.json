@@ -3,6 +3,19 @@
     "skipToContent": "Aller au contenu principal"
   },
   "link": {
-    "noTarget": "Aucune cible de lien dans cette langue"
+    "noTarget": "Aucune cible de lien dans cette langue",
+    "newTab": "ouvre un nouvel onglet",
+    "untitled": "Lien sans titre"
+  },
+  "nav": {
+    "main": "Navigation principale",
+    "menu": "Menu",
+    "submenu": "Afficher le sous-menu {{title}}"
+  },
+  "lang": {
+    "label": "Langue"
+  },
+  "links": {
+    "label": "Liens"
   }
 }

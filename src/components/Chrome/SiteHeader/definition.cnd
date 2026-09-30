@@ -1,0 +1,19 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// The site header, shared by every page: a utility bar of links (right-aligned, above), then the
+// logo and the main navigation. A singleton seeded in the home page's header area, hence hidden
+// from the content type picker; its children stay selectable in Page Builder.
+[ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType
+ - logo (weakreference, picker[type='image']) < jmix:image
+ - logoDark (weakreference, picker[type='image']) < jmix:image
+ - brandName (string) i18n
+ - showBrandName (boolean) = true autocreated
+ + utilityLinks (ctpl:linkList) = ctpl:linkList autocreated
+ + languageSwitcher (ctpl:languageSwitcher) = ctpl:languageSwitcher autocreated
+ + navigation (ctpl:mainNavigation) = ctpl:mainNavigation autocreated

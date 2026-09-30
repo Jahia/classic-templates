@@ -1,8 +1,12 @@
-import { buildNodeUrl } from "@jahia/javascript-modules-library";
+import { buildNodeUrl, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
+import type { RenderContext } from "org.jahia.services.render";
 
 /** Schemes a contributed external URL may use. Anything else (javascript:, data:, ...) is dropped. */
 const SAFE_EXTERNAL = /^(?:https?:\/\/|mailto:|tel:)/i;
+
+/** True when `url` uses a scheme a visitor may safely be sent to. */
+export const isSafeExternalUrl = (url: string): boolean => SAFE_EXTERNAL.test(url.trim());
 
 export interface ResolvedLink {
   href: string;
@@ -35,13 +39,17 @@ const read = (node: JCRNodeWrapper, name: string): string | undefined =>
  *   workspace yields no link, never a broken one.
  * - "external": the contributed URL (j:url), only if its scheme is allow-listed.
  * - "none" or unset: no link.
+ *
+ * Pass `renderContext` when the caller shows the target's title: the target is then declared as a
+ * cache dependency, so renaming the target page refreshes the cached link.
  */
-export const resolveLink = (node: JCRNodeWrapper): LinkState => {
+export const resolveLink = (node: JCRNodeWrapper, renderContext?: RenderContext): LinkState => {
   const type = read(node, "j:linkType");
   if (type === "internal") {
     if (!node.hasProperty("j:linknode")) return { missingTarget: true };
     try {
       const target = node.getProperty("j:linknode").getNode() as JCRNodeWrapper;
+      if (renderContext) server.render.addCacheDependency({ node: target }, renderContext);
       return {
         link: {
           href: buildNodeUrl(target),
@@ -58,7 +66,7 @@ export const resolveLink = (node: JCRNodeWrapper): LinkState => {
   if (type === "external") {
     const url = read(node, "j:url")?.trim();
     if (!url) return { missingTarget: true };
-    if (!SAFE_EXTERNAL.test(url)) return { missingTarget: true };
+    if (!isSafeExternalUrl(url)) return { missingTarget: true };
     return {
       link: { href: url, external: true, targetTitle: read(node, "j:linkTitle") },
       missingTarget: false,

@@ -1,0 +1,13 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// One link of a link list (header utility links, footer columns, legal and social links, a list
+// dropped in a page). Its label is jcr:title; an internal link without a title shows the target
+// page's title. Never hidden: editors select each link in Page Builder.
+[ctpl:link] > jnt:content, mix:title, ctplmix:component, ctplmix:linkTo
+ - openInNewTab (boolean) = false autocreated

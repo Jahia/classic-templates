@@ -1,0 +1,21 @@
+.item {
+  margin: 0;
+}
+
+.link {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+.link:hover {
+  color: var(--ctpl-color-link-hover);
+  text-decoration-color: currentColor;
+}
+
+.hint {
+  margin-inline-start: var(--ctpl-space-2);
+  padding: 0 var(--ctpl-space-1);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-xs);
+}

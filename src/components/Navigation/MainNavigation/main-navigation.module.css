@@ -1,0 +1,190 @@
+/*
+ * Two layouts, one breakpoint (64rem, see tokens.css):
+ * - large screens: a horizontal bar; level 2 (with level 3 listed under each entry) in a dropdown
+ *   panel that opens on hover, on keyboard focus, or with the submenu button;
+ * - small screens: a vertical list. Without JavaScript everything is listed; with it
+ *   (html.ctpl-js), a menu button opens the list and submenu buttons open each level 2.
+ * Scripts target data-* attributes and style targets are ARIA states: CSS module class names are
+ * hashed, so a script can never rely on them.
+ */
+
+/* Not positioned: on small screens the open list is placed against the header, full width. */
+.level1,
+.level2,
+.level3 {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link1,
+.link2,
+.link3 {
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+}
+a.link1:hover,
+a.link2:hover,
+a.link3:hover {
+  color: var(--ctpl-color-link-hover);
+  text-decoration: underline;
+}
+.link1[aria-current="page"],
+.link2[aria-current="page"],
+.link3[aria-current="page"] {
+  color: var(--ctpl-color-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+
+.link1 {
+  display: inline-block;
+  padding: var(--ctpl-space-2) 0;
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.item1[data-active] > .link1 {
+  color: var(--ctpl-color-accent);
+  box-shadow: inset 0 -2px 0 var(--ctpl-color-accent);
+}
+
+.link2 {
+  display: block;
+  padding: var(--ctpl-space-1) 0;
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.level3 {
+  margin: 0 0 var(--ctpl-space-2) var(--ctpl-space-3);
+  padding-inline-start: var(--ctpl-space-3);
+  border-inline-start: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.link3 {
+  display: block;
+  padding: var(--ctpl-space-1) 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+
+.subToggle,
+.menuToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.subToggle {
+  padding: var(--ctpl-space-2) var(--ctpl-space-1);
+  vertical-align: middle;
+}
+.chevron {
+  transition: transform var(--ctpl-duration-fast) var(--ctpl-ease);
+}
+.subToggle[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+/* The menu button only exists once the script runs. */
+.menuToggle {
+  display: none;
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+}
+
+/* ---- Large screens ----------------------------------------------------------------------- */
+@media (min-width: 64rem) {
+  .level1 {
+    display: flex;
+    align-items: center;
+    gap: var(--ctpl-space-5);
+  }
+  .item1 {
+    position: relative;
+  }
+  .panel {
+    display: none;
+    position: absolute;
+    z-index: 20;
+    top: 100%;
+    left: calc(-1 * var(--ctpl-space-4));
+    min-width: 16rem;
+    padding: var(--ctpl-space-4);
+    border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+    border-radius: var(--ctpl-radius-md);
+    background: var(--ctpl-color-surface-raised);
+    box-shadow: var(--ctpl-shadow-md);
+  }
+  .subToggle[aria-expanded="true"] + .panel,
+  /* Without the script, keyboard focus is the only way in. */
+  :global(html:not(.ctpl-js)) .item1:focus-within > .panel {
+    display: block;
+  }
+  .level2 {
+    display: grid;
+    gap: var(--ctpl-space-2);
+  }
+}
+
+/* Hover opens a panel too; Escape dismisses it (data-ctpl-dismissed) until the pointer leaves. */
+@media (min-width: 64rem) and (hover: hover) {
+  .item1:hover:not([data-ctpl-dismissed]) > .panel {
+    display: block;
+  }
+}
+
+/* ---- Small screens ----------------------------------------------------------------------- */
+@media (max-width: 63.999rem) {
+  .level1 {
+    display: grid;
+    gap: var(--ctpl-space-1);
+    padding-block: var(--ctpl-space-3);
+  }
+  .item1 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  }
+  .panel {
+    flex-basis: 100%;
+    padding: 0 0 var(--ctpl-space-3) var(--ctpl-space-4);
+  }
+
+  :global(html.ctpl-js) .menuToggle {
+    display: inline-flex;
+  }
+  /* With the script: the open list drops below the whole header, full width, over the page. */
+  :global(html.ctpl-js) .level1 {
+    position: absolute;
+    z-index: 30;
+    top: 100%;
+    right: 0;
+    left: 0;
+    max-height: calc(100dvh - 8rem);
+    overflow-y: auto;
+    padding: var(--ctpl-space-2) var(--ctpl-gutter) var(--ctpl-space-5);
+    border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+    background: var(--ctpl-color-surface-raised);
+    box-shadow: var(--ctpl-shadow-lg);
+  }
+  :global(html.ctpl-js) .level1:not([data-open]) {
+    display: none;
+  }
+  /* Without it: the menu takes its own full-width row under the brand. */
+  :global(html:not(.ctpl-js)) .nav {
+    flex-basis: 100%;
+  }
+  :global(html.ctpl-js) .panel {
+    display: none;
+  }
+  :global(html.ctpl-js) .subToggle[aria-expanded="true"] + .panel {
+    display: block;
+  }
+  /* Without the script there is no way to open a panel, so every level is listed. */
+  :global(html:not(.ctpl-js)) .subToggle {
+    display: none;
+  }
+}

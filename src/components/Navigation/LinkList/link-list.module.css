@@ -1,0 +1,33 @@
+.sectionTitle {
+  font-size: var(--ctpl-text-2xl);
+}
+
+.stacked,
+.inline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stacked {
+  display: grid;
+  gap: var(--ctpl-space-2);
+}
+.inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2) var(--ctpl-space-5);
+}
+
+.column {
+  min-width: 0;
+}
+
+.columnTitle {
+  margin-bottom: var(--ctpl-space-3);
+  font-family: var(--ctpl-font-body);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ctpl-color-text-muted);
+}

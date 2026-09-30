@@ -8,7 +8,7 @@ import classes from "./page-shell.module.css";
  * Page chrome shared by every template: the site header, the main landmark, the site footer.
  *
  * Header and footer are AbsoluteAreas owned by the home page (see chromeOwner): they render on
- * every page, are edited from the home page, and `readOnly="children"` locks them everywhere else.
+ * every page, are edited from the home page, and are read-only on every other page.
  * Each area only accepts its own singleton type (ctpl:headerArea / ctpl:footerArea).
  *
  * The page's one `<h1>` is placed by each template with <PageHeading> (after the hero on content
@@ -24,8 +24,13 @@ export const PageShell = ({
   description?: string;
   children: ReactNode;
 }) => {
-  const { renderContext } = useServerContext();
+  const { renderContext, mainNode } = useServerContext();
   const owner = chromeOwner(renderContext.getSite());
+  // Editable on the home page, locked (children included) everywhere else. Verified in the edit
+  // frame with engine 1.2.0 on Jahia 8.2.3.2: readOnly="children" locks the area AND its children
+  // but on every page, home included; readOnly={true} only hides the area's own marker and leaves
+  // the children editable. So: false on home, "children" elsewhere.
+  const readOnly = mainNode.getPath() === owner.getPath() ? false : "children";
 
   return (
     <Layout title={title} description={description}>
@@ -34,7 +39,7 @@ export const PageShell = ({
           name="siteHeader"
           parent={owner}
           nodeType="ctpl:headerArea"
-          readOnly="children"
+          readOnly={readOnly}
         />
         <main id="main-content" className={classes.main} tabIndex={-1}>
           {children}
@@ -43,7 +48,7 @@ export const PageShell = ({
           name="siteFooter"
           parent={owner}
           nodeType="ctpl:footerArea"
-          readOnly="children"
+          readOnly={readOnly}
         />
       </div>
     </Layout>

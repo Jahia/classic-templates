@@ -1,0 +1,23 @@
+.list {
+  display: flex;
+  gap: var(--ctpl-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-block;
+  padding: 0 var(--ctpl-space-2);
+  border-radius: var(--ctpl-radius-sm);
+  color: inherit;
+  font-weight: var(--ctpl-font-weight-medium);
+  text-decoration: none;
+}
+.link:hover {
+  text-decoration: underline;
+}
+.link[aria-current="true"] {
+  background: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+}
