@@ -45,7 +45,6 @@
 /* Every slide in the same cell: the carousel is as tall as its tallest slide, whichever shows. */
 :global(html.ctpl-js) .carousel[data-ctpl-carousel] .track {
   display: grid;
-  order: 1;
 }
 :global(html.ctpl-js) .carousel[data-ctpl-carousel] .slide {
   grid-area: 1 / 1;
@@ -65,10 +64,19 @@
   }
 }
 
-/* Controls: first in the focus order (they precede the slides), shown under the slides. */
+/*
+ * Controls, in the source order they show in: the Pause / Play bar above the slides, previous /
+ * slide / next under them. Laid out from the first paint (html.ctpl-js), so their space is
+ * reserved before the script shows them: nothing moves when it starts.
+ */
+:global(html.ctpl-js) .carousel[data-ctpl-carousel] .toolbar,
 :global(html.ctpl-js) .carousel[data-ctpl-carousel] .controls {
   display: flex;
-  order: 2;
+}
+/* In the page container, so the button lines up with the end of the header and the content. */
+.toolbar {
+  justify-content: flex-end;
+  padding-block: var(--ctpl-space-2);
 }
 .controls {
   flex-wrap: wrap;
@@ -78,7 +86,7 @@
   padding: var(--ctpl-space-3) var(--ctpl-gutter);
 }
 
-/* Previous, slide buttons and next stay together on one row; the Pause button wraps above them. */
+/* Previous, slide buttons and next stay together on one row. */
 .nav {
   display: flex;
   align-items: center;
@@ -105,16 +113,8 @@
 .control:hover {
   background: var(--ctpl-color-accent-subtle);
 }
-.toggle {
-  margin-inline-end: var(--ctpl-space-3);
-}
-@media (max-width: 30rem) {
-  .toggle {
-    margin-inline-end: 0;
-  }
-}
-.toggle[data-playing="true"] .playIcon,
-.toggle:not([data-playing="true"]) .pauseIcon {
+[data-playing="true"] > .playIcon,
+[data-playing="false"] > .pauseIcon {
   display: none;
 }
 

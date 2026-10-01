@@ -123,13 +123,25 @@ describe('Hero carousel - one slide at a time, previous / next, slide buttons', 
         })
     })
 
-    it('puts the controls before the slides in the focus order, with 44 px targets', () => {
+    it('puts previous / slide / next after the slides in the focus order, as on screen, with 44 px targets', () => {
         cy.visit(live)
-        // The query returns elements in document order: the controls come first.
+        // The query returns elements in document order: the slides come first, then the controls.
         cy.get('[data-testid="ctpl-hero-carousel"]')
             .find('[data-ctpl-carousel-controls], [data-testid="ctpl-carousel-slide"]')
-            .first()
+            .should('have.length', 4)
+            .last()
             .should('have.attr', 'data-ctpl-carousel-controls')
+        cy.get('[data-testid="ctpl-carousel-slide"]')
+            .last()
+            .then(($slide) => {
+                cy.get('[data-testid="ctpl-carousel-prev"]').should(($prev) => {
+                    // Source order (DOCUMENT_POSITION_FOLLOWING) and visual order agree.
+                    expect($slide[0].compareDocumentPosition($prev[0]) & 4).to.equal(4)
+                    expect($prev[0].getBoundingClientRect().top).to.be.at.least(
+                        $slide[0].getBoundingClientRect().bottom,
+                    )
+                })
+            })
         cy.get('[data-ctpl-carousel-controls] button').each(($button) => {
             const rect = $button[0].getBoundingClientRect()
             expect(rect.width).to.be.at.least(44)

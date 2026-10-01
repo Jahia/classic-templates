@@ -298,8 +298,9 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
 - **Carousel behaviour** (`static/js/carousel.js`, loaded only live with two slides or more): sets
   `html.ctpl-js` from the page head, so the one-slide grid layout (every slide in one grid cell =
   height of the tallest, no layout shift) applies from the first paint. Controls are
-  server-rendered `hidden`, before the slides in source order (Pause/Play first), shown under them
-  by flex `order`. Hidden slides: `visibility: hidden` + `inert` + `aria-hidden`. Picker buttons
+  server-rendered `hidden` in the order they show (no flex `order`, so focus order = visual order,
+  WCAG 2.4.3 / RGAA 12.8): the Pause/Play bar above the slides (autoplay only), previous / slide /
+  next under them; both bars are laid out from the first paint, so their space is reserved. Hidden slides: `visibility: hidden` + `inert` + `aria-hidden`. Picker buttons
   carry `aria-current`, arrow keys / Home / End. A polite live region speaks visitor-made changes
   only (`aria-live="off"` while playing). Autoplay off by default; `interval` 5-30 s
   (`carouselInterval`, applied server-side again); one cycle back to the first slide then stop;

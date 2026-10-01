@@ -51,36 +51,40 @@ const ToggleIcons = () => (
 );
 
 /**
- * The carousel controls, rendered hidden: static/js/carousel.js shows and wires them. They come
- * before the slides in the focus order (the Pause / Play button first of all), and show under them.
+ * The Pause / Play button of an autoplaying carousel, rendered hidden: static/js/carousel.js shows
+ * and wires it. It comes before the slides, in the source and on screen (above them), so it is the
+ * first thing reached (RGAA 13.8).
  */
-const Controls = ({
-  slideIds,
-  trackId,
-  autoplay,
-}: {
-  slideIds: string[];
-  trackId: string;
-  autoplay: boolean;
-}) => {
+const Toggle = () => {
+  const { t } = useTranslation();
+  return (
+    <div className={`ctpl-container ${classes.toolbar}`} hidden data-ctpl-carousel-controls>
+      <button
+        type="button"
+        className={classes.control}
+        data-ctpl-carousel-toggle
+        data-playing="true"
+        data-label-pause={t("carousel.pause")}
+        data-label-play={t("carousel.play")}
+        data-testid="ctpl-carousel-toggle"
+      >
+        <ToggleIcons />
+        <span data-ctpl-carousel-toggle-label>{t("carousel.pause")}</span>
+      </button>
+    </div>
+  );
+};
+
+/**
+ * Previous, one button per slide and next, rendered hidden: static/js/carousel.js shows and wires
+ * them. They come after the slides, in the source as on screen (under them), so the focus order
+ * follows what the visitor sees (WCAG 2.4.3, RGAA 12.8).
+ */
+const Controls = ({ slideIds, trackId }: { slideIds: string[]; trackId: string }) => {
   const { t } = useTranslation();
   const total = slideIds.length;
   return (
     <div className={classes.controls} hidden data-ctpl-carousel-controls>
-      {autoplay && (
-        <button
-          type="button"
-          className={`${classes.control} ${classes.toggle}`}
-          data-ctpl-carousel-toggle
-          data-playing="true"
-          data-label-pause={t("carousel.pause")}
-          data-label-play={t("carousel.play")}
-          data-testid="ctpl-carousel-toggle"
-        >
-          <ToggleIcons />
-          <span data-ctpl-carousel-toggle-label>{t("carousel.pause")}</span>
-        </button>
-      )}
       <div className={classes.nav}>
         <button
           type="button"
@@ -175,8 +179,9 @@ interface ViewProps {
 }
 
 /**
- * Live, with two slides or more: the slides, the controls before them in the source order and
- * the live region, all wired by static/js/carousel.js.
+ * Live, with two slides or more: the Pause / Play button (autoplay only), the slides, then the
+ * previous / slide / next buttons and the live region, in the order they show, all wired by
+ * static/js/carousel.js.
  */
 const LiveView = ({
   node,
@@ -207,11 +212,7 @@ const LiveView = ({
         key="ctpl-carousel"
       />
       <CarouselHeading node={node} id={headingId} title={title} hidden={hideTitle} />
-      <Controls
-        slideIds={slides.map((slide) => slide.getIdentifier())}
-        trackId={trackId}
-        autoplay={autoplay}
-      />
+      {autoplay && <Toggle />}
       <ul id={trackId} className={`${classes.track} ${classes.list}`}>
         {slides.map((slide, i) => (
           <li
@@ -227,6 +228,7 @@ const LiveView = ({
           </li>
         ))}
       </ul>
+      <Controls slideIds={slides.map((slide) => slide.getIdentifier())} trackId={trackId} />
       <p
         className="ctpl-visually-hidden"
         aria-live={autoplay ? "off" : "polite"}
@@ -250,7 +252,8 @@ const LiveView = ({
  * - Autoplay only when the editor switched it on: every `interval` seconds (at least 5), once
  *   through the slides, never when the visitor asks for reduced motion, suspended by hover, focus
  *   inside and a hidden tab, stopped by any use of the slide buttons, with a Pause / Play button
- *   first in the focus order (RGAA 13.8, WCAG 2.2.2). Announcements are off while it plays.
+ *   above the slides, first in the focus order (RGAA 13.8, WCAG 2.2.2). Announcements are off
+ *   while it plays. Previous / slide / next buttons sit under the slides, after them in the source.
  * - A region named by its heading (an h2, visually hidden with hideTitle) or, untitled, by a
  *   translated "carousel" label; slide headings sit one level below a titled carousel (see
  *   lib/Heading.tsx). Nothing on the live site without a slide.

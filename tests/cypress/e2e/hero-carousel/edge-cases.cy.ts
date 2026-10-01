@@ -71,6 +71,20 @@ describe('Hero carousel - autoplay, reduced motion, no JavaScript, edit mode, si
             .first()
             .should('have.attr', 'data-testid', 'ctpl-carousel-toggle')
             .and('have.text', 'Pause')
+        // The Pause button shows above the slides, previous / next under them, as in the source.
+        carousel(0).within(() => {
+            cy.get('[data-testid="ctpl-carousel-slide"]')
+                .first()
+                .then(($slide) => {
+                    const slide = $slide[0].getBoundingClientRect()
+                    cy.get('[data-testid="ctpl-carousel-toggle"]').should(($toggle) =>
+                        expect($toggle[0].getBoundingClientRect().bottom).to.be.at.most(slide.top),
+                    )
+                    cy.get('[data-testid="ctpl-carousel-next"]').should(($next) =>
+                        expect($next[0].getBoundingClientRect().top).to.be.at.least(slide.bottom),
+                    )
+                })
+        })
         carousel(0).find('[data-ctpl-carousel-status]').should('have.attr', 'aria-live', 'off')
         activeLabel().should('eq', 'Slide 1 of 3')
         cy.tick(5000)

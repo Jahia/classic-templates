@@ -55,14 +55,16 @@
     root.dataset.ctplReady = "";
     var slides = Array.prototype.slice.call(root.querySelectorAll("[data-ctpl-slide]"));
     var count = slides.length;
-    var controls = root.querySelector("[data-ctpl-carousel-controls]");
-    if (count < 2 || !controls) return;
-    var pickers = Array.prototype.slice.call(
-      controls.querySelectorAll("[data-ctpl-carousel-goto]"),
+    // The Pause / Play bar above the slides (autoplay only) and the previous / slide / next row
+    // under them: shown together once wired.
+    var controls = Array.prototype.slice.call(
+      root.querySelectorAll("[data-ctpl-carousel-controls]"),
     );
-    var prev = controls.querySelector("[data-ctpl-carousel-prev]");
-    var next = controls.querySelector("[data-ctpl-carousel-next]");
-    var toggle = controls.querySelector("[data-ctpl-carousel-toggle]");
+    if (count < 2 || controls.length === 0) return;
+    var pickers = Array.prototype.slice.call(root.querySelectorAll("[data-ctpl-carousel-goto]"));
+    var prev = root.querySelector("[data-ctpl-carousel-prev]");
+    var next = root.querySelector("[data-ctpl-carousel-next]");
+    var toggle = root.querySelector("[data-ctpl-carousel-toggle]");
     var toggleLabel = toggle && toggle.querySelector("[data-ctpl-carousel-toggle-label]");
     var status = root.querySelector("[data-ctpl-carousel-status]");
     var delay = delayOf(root.dataset.interval);
@@ -138,7 +140,9 @@
     }
 
     show(0, false);
-    controls.hidden = false;
+    controls.forEach(function (bar) {
+      bar.hidden = false;
+    });
 
     if (prev) {
       prev.addEventListener("click", function () {

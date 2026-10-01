@@ -33,7 +33,7 @@ Each slide has the fields of a [hero banner](hero-banner.md).
 
 - One slide at a time. Under the slides, a **previous** and a **next** button (the next button on the last slide goes back to the first) and one round button per slide; the current slide's button is filled and larger.
 - The carousel is as tall as its tallest slide, so the page does not jump when the slide changes.
-- Keyboard: every button is reached with Tab. On the round buttons, the left and right arrow keys move to the previous or next slide, Home and End to the first or last.
+- Keyboard: every button is reached with Tab, in the order they show on screen: the **Pause** button above the slides (when the carousel plays automatically), then the slide's own button or link, then the previous, slide and next buttons under the slides. On the round buttons, the left and right arrow keys move to the previous or next slide, Home and End to the first or last.
 - Screen readers announce the slide the visitor picks ("Slide 2 of 4" and its heading). Slides that are not showing are hidden from everyone, so nothing in them can be reached by mistake.
 - With JavaScript off in the visitor's browser, every slide shows, one under the other, and no button.
 - A carousel with a single slide shows that banner, with no button.
@@ -43,7 +43,7 @@ Each slide has the fields of a [hero banner](hero-banner.md).
 **Play automatically** is off by default: a carousel that moves on its own is harder to read, and some visitors find motion distracting. When you switch it on:
 
 - the carousel shows each slide for **Seconds per slide**, goes once through every slide and stops back on the first one;
-- a **Pause** button, the first button of the carousel, stops it; it then reads **Play** and starts it again;
+- a **Pause** button, above the slides and the first button of the carousel, stops it; it then reads **Play** and starts it again;
 - it waits while the mouse is over the carousel, while keyboard focus is inside it, and while the browser tab is in the background;
 - it stops for good as soon as the visitor uses the previous, next or slide buttons;
 - it never starts for visitors whose system asks for reduced motion; those visitors also get no fading between slides;
