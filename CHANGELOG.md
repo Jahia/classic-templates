@@ -2,6 +2,8 @@
 
 All notable changes to classic-travel are listed here, newest first.
 
+## 0.2.0 (unreleased)
+
 ## 0.1.0 (2026-10-01)
 
 First version, a companion of the classic-templates template set.
