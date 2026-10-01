@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { languageTag } from "../lib/locale.js";
 import { readString } from "../lib/props.js";
 import { type EditorialData, buildGraph, jsonForScript } from "../lib/schema.js";
-import { chromeOwner } from "../lib/site.js";
+import { chromeOwner, pageSite } from "../lib/site.js";
 import { breadcrumbOf } from "./Breadcrumb.jsx";
 
 /** scheme://host[:port] of the current request, for absolute URLs. */
@@ -63,7 +63,7 @@ export const StructuredData = ({ name, description }: { name?: string; descripti
   const origin = originOf(renderContext);
   const absolute = (url: string) => (/^https?:\/\//.test(url) ? url : `${origin}${url}`);
 
-  const site = renderContext.getSite();
+  const site = pageSite(renderContext);
   const home = chromeOwner(site);
   const header = headerOf(home);
   if (header) server.render.addCacheDependency({ node: header }, renderContext);

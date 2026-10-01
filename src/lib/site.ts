@@ -1,5 +1,6 @@
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { JCRSiteNode } from "org.jahia.services.content.decorator";
+import type { RenderContext } from "org.jahia.services.render";
 
 /** Themes declared by the ctplmix:siteSettings choicelist, besides the implicit default. */
 const THEMES = new Set(["ocean", "terracotta", "horizon"]);
@@ -45,4 +46,20 @@ export const chromeOwner = (site: JCRSiteNode): JCRNodeWrapper => {
   } catch {
     return site;
   }
+};
+
+/**
+ * The site of the page being rendered. `renderContext.getSite()` is the site the instance resolved
+ * from the request, which on a shared instance where several sites keep the server name localhost
+ * (as Jahia Cloud needs) can be another site than the page's: theme, title, chrome and breadcrumb
+ * would then come from that other site. The main resource always belongs to the page's own site.
+ */
+export const pageSite = (renderContext: RenderContext): JCRSiteNode => {
+  try {
+    const node = renderContext.getMainResource()?.getNode();
+    if (node) return node.getResolveSite() ?? renderContext.getSite();
+  } catch {
+    // no main resource (rendering outside a page): use the request's site
+  }
+  return renderContext.getSite();
 };

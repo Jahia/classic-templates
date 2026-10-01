@@ -7,7 +7,7 @@ import {
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { readString as read } from "../lib/props.js";
-import { readSiteLook } from "../lib/site.js";
+import { pageSite, readSiteLook } from "../lib/site.js";
 
 import "modern-normalize/modern-normalize.css";
 import "./tokens.css";
@@ -42,7 +42,7 @@ export const Layout = ({
 }) => {
   const { renderContext, currentResource } = useServerContext();
   const { t } = useTranslation("classic-templates");
-  const site = renderContext.getSite();
+  const site = pageSite(renderContext);
   server.render.addCacheDependency({ node: site }, renderContext);
   const siteName = site.getTitle() || site.getName();
   const { theme, scheme } = readSiteLook(site);

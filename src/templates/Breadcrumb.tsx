@@ -3,7 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useTranslation } from "react-i18next";
 import { readString } from "../lib/props.js";
-import { chromeOwner } from "../lib/site.js";
+import { chromeOwner, pageSite } from "../lib/site.js";
 import { type Trail, type TrailTree, buildTrail } from "../lib/trail.js";
 import classes from "./breadcrumb.module.css";
 
@@ -14,7 +14,7 @@ import classes from "./breadcrumb.module.css";
  * clearing one refreshes the pages of the folder's items). Nothing above the site is read.
  */
 const jcrTree = (renderContext: RenderContext): TrailTree<JCRNodeWrapper> => {
-  const sitePath = renderContext.getSite().getPath();
+  const sitePath = pageSite(renderContext).getPath();
   const depend = (node: JCRNodeWrapper) =>
     server.render.addCacheDependency({ node }, renderContext);
   return {
@@ -66,7 +66,7 @@ export const breadcrumbOf = (
   renderContext: RenderContext,
   homeLabel: string,
 ): Trail | undefined => {
-  const site = renderContext.getSite();
+  const site = pageSite(renderContext);
   const home = chromeOwner(site);
   if (mainNode.getPath() === home.getPath() || home.getPath() === site.getPath()) return undefined;
   if (readString(site, "ctplShowBreadcrumb") === "false") return undefined;

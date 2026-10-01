@@ -5,7 +5,7 @@ import {
   server,
 } from "@jahia/javascript-modules-library";
 import { readPositive } from "../../../lib/props.js";
-import { chromeOwner } from "../../../lib/site.js";
+import { chromeOwner, pageSite } from "../../../lib/site.js";
 import type { Props } from "./types.js";
 import classes from "./site-header.module.css";
 
@@ -20,7 +20,7 @@ import classes from "./site-header.module.css";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:siteHeader", displayName: "Site header" },
   ({ logo, logoDark, brandName, showBrandName }: Props, { renderContext }) => {
-    const site = renderContext.getSite();
+    const site = pageSite(renderContext);
     server.render.addCacheDependency({ node: site }, renderContext); // brand falls back to the site title
     const home = chromeOwner(site);
     const brand = brandName || site.getTitle() || site.getName();

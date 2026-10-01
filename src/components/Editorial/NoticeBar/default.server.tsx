@@ -24,6 +24,7 @@ import {
 import { categoryTitlesOf } from "../shared/editorial.js";
 import type { Props } from "./types.js";
 import classes from "./notice-bar.module.css";
+import { pageSite } from "../../../lib/site.js";
 
 /** The translation key of an item's type label, as cards show it ("News", "Article"). */
 const kindKey = (item: JCRNodeWrapper) =>
@@ -59,7 +60,7 @@ jahiaComponent(
   (props: Props, { currentNode, renderContext, jcrSession, currentResource }) => {
     const { t } = useTranslation("classic-templates");
     const isEdit = renderContext.isEditMode();
-    const site = renderContext.getSite();
+    const site = pageSite(renderContext);
     const startMissing = !props.startNode && currentNode.hasProperty("startNode");
     const start: JCRNodeWrapper = props.startNode ?? site;
     const type = props.type ?? "ctpl:news";

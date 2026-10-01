@@ -5,7 +5,7 @@ import {
 } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import { buildMainNavigation, type NavItem } from "../../../lib/navigation.js";
-import { chromeOwner } from "../../../lib/site.js";
+import { chromeOwner, pageSite } from "../../../lib/site.js";
 import type { Props } from "./types.js";
 import classes from "./main-navigation.module.css";
 
@@ -39,7 +39,7 @@ jahiaComponent(
   ({ navDepth }: Props, { renderContext, currentNode }) => {
     const { t } = useTranslation("classic-templates");
     const items = buildMainNavigation(
-      chromeOwner(renderContext.getSite()),
+      chromeOwner(pageSite(renderContext)),
       navDepth ?? 3,
       renderContext,
     );

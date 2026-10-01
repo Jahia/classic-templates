@@ -1,6 +1,6 @@
 import { AbsoluteArea, useServerContext } from "@jahia/javascript-modules-library";
 import type { ReactNode } from "react";
-import { chromeOwner } from "../lib/site.js";
+import { chromeOwner, pageSite } from "../lib/site.js";
 import { Breadcrumb } from "./Breadcrumb.jsx";
 import { StructuredData } from "./StructuredData.jsx";
 import { Layout } from "./Layout.jsx";
@@ -29,7 +29,7 @@ export const PageShell = ({
   children: ReactNode;
 }) => {
   const { renderContext, mainNode } = useServerContext();
-  const owner = chromeOwner(renderContext.getSite());
+  const owner = chromeOwner(pageSite(renderContext));
   // Editable on the home page, locked (children included) everywhere else. Verified in the edit
   // frame with engine 1.2.0 on Jahia 8.2.3.2: readOnly="children" locks the area AND its children
   // but on every page, home included; readOnly={true} only hides the area's own marker and leaves

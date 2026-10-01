@@ -6,6 +6,7 @@ import {
 } from "@jahia/javascript-modules-library";
 import type { Props } from "./types.js";
 import classes from "./site-footer.module.css";
+import { pageSite } from "../../../lib/site.js";
 
 /**
  * The site footer: brand block (site name, tagline) and link columns, then a bottom bar with the
@@ -22,7 +23,7 @@ jahiaComponent(
     properties: { "cache.expiration": "86400" },
   },
   ({ tagline, copyright }: Props, { renderContext }) => {
-    const site = renderContext.getSite();
+    const site = pageSite(renderContext);
     server.render.addCacheDependency({ node: site }, renderContext); // the footer shows the site title
     const siteName = site.getTitle() || site.getName();
     const year = String(new Date().getFullYear());

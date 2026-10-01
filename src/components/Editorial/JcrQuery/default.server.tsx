@@ -18,6 +18,7 @@ import { Section } from "../../../lib/Section.js";
 import { EditPanel } from "./EditPanel.js";
 import type { Props } from "./types.js";
 import classes from "./jcr-query.module.css";
+import { pageSite } from "../../../lib/site.js";
 
 /** Editors see how many items match, up to this count. */
 const EDIT_COUNT = 500;
@@ -41,7 +42,7 @@ jahiaComponent(
     const { t } = useTranslation("classic-templates");
     const level = useHeadingLevel(currentNode); // hooks before any early return
     const isEdit = renderContext.isEditMode();
-    const site = renderContext.getSite();
+    const site = pageSite(renderContext);
     const startMissing = !props.startNode && currentNode.hasProperty("startNode");
     const start: JCRNodeWrapper = props.startNode ?? site;
     const type = props.type ?? "ctpl:news";

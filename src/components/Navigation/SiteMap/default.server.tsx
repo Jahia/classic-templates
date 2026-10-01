@@ -4,7 +4,7 @@ import { SectionHeading } from "../../../lib/Heading.js";
 import { buildSiteMap, type NavItem } from "../../../lib/navigation.js";
 import { readString } from "../../../lib/props.js";
 import { Section } from "../../../lib/Section.js";
-import { chromeOwner } from "../../../lib/site.js";
+import { chromeOwner, pageSite } from "../../../lib/site.js";
 import type { Props } from "./types.js";
 import classes from "./site-map.module.css";
 
@@ -26,7 +26,7 @@ const Tree = ({ items, nested }: { items: NavItem[]; nested?: boolean }) => (
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:siteMap", displayName: "Site map" },
   ({ "jcr:title": title, depth, ctplSurface }: Props, { currentNode, renderContext }) => {
-    const home = chromeOwner(renderContext.getSite());
+    const home = chromeOwner(pageSite(renderContext));
     const tree: NavItem = {
       id: home.getIdentifier(),
       title: readString(home, "jcr:title") ?? home.getName(),
