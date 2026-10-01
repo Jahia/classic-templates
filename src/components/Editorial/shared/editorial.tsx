@@ -6,6 +6,7 @@ import { formatDate, isoDay } from "../../../lib/dates.js";
 import { Image } from "../../../lib/Image.js";
 import { readString as str } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
+import { headingTag, type HeadingTag } from "../../../lib/Heading.js";
 import { Tile } from "../../../lib/Tile.js";
 import classes from "./editorial.module.css";
 import { languageTag } from "../../../lib/locale.js";
@@ -156,17 +157,15 @@ export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps })
   );
 };
 
-const TAGS = { 2: "h2", 3: "h3", 4: "h4" } as const;
-
 /**
  * Heading level asked by the list rendering the item: one below the list's own heading, or the
- * list's level when it has none. Clamped to h2-h4; rendered anywhere else, an item is an h3.
+ * list's level when it has none. Clamped to h2-h6; rendered anywhere else, an item is an h3.
  */
-const useHeadingTag = (): "h2" | "h3" | "h4" => {
+const useHeadingTag = (): HeadingTag => {
   const { currentResource } = useServerContext();
   try {
     const level = Number(String(currentResource.getModuleParams().get("headingLevel")));
-    return TAGS[Math.min(Math.max(level || 3, 2), 4) as 2 | 3 | 4];
+    return headingTag(level || 3);
   } catch {
     return "h3";
   }

@@ -253,6 +253,18 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   entry a URL hash points at, on load and on `hashchange`. Entry ids come from the node name
   (`anchorOf("acc-", name)`, `lib/anchor.ts`): readable, stable deep links. Edit mode renders the
   entries flat (no `<details>`), so a click selects instead of toggling.
+- **Tabs** (`ctpl:tabs` of `ctpl:tab`: `mix:title` label + `+ * (ctplmix:pageComponent)`, a
+  column-like list): the server renders every tab as a headed block (`data-ctpl-tab-panel`, label
+  `data-ctpl-tab-label`, id `tab-<name>`), which is the no-script and edit-mode rendering;
+  `static/js/tabs.js` builds the tablist from the labels (APG tabs, automatic activation, roving
+  tabindex, arrows wrap, Home/End), labels the tablist with the section heading, hides the other
+  panels and keeps each label as a visually hidden heading, so the outline does not change with
+  the script. The URL hash selects the tab holding the target (an accordion entry too). The tablist
+  is styled by its ARIA roles and states, never a hashed class.
+- **Heading levels in containers** (`lib/Heading.tsx`): `sectionLevel` walks up columns and tabs
+  (a column adds one under a titled row; a tab adds its label's level, one below a titled tabs
+  section, plus one), with every container as a cache dependency, clamped to h6; `headingTag`
+  covers h2 to h6.
 
 ## News, articles and content lists (phase 7)
 

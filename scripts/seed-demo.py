@@ -681,8 +681,8 @@ def _plans_table(lang):
 def seed_help_centre(site):
     """A help centre page (hidden from the menu, listed in the site map) that shows the sections
     added after 0.1.2: a comparison table that scrolls on its own on a phone, a card grid shown as
-    icon tiles and one shown as a logo strip, an accordion of frequent questions. Only adds what is
-    missing. Returns (path, whole
+    icon tiles and one shown as a logo strip, an accordion of frequent questions, and tabs holding a
+    text, an accordion and a card grid. Only adds what is missing. Returns (path, whole
     subtree?) pairs to publish: the page, its own sections and the images they show."""
     home = f"{site}/home"
     icons = f"{site}/files/demo/icons"
@@ -770,6 +770,49 @@ def seed_help_centre(site):
     ):
         add_content(faq, name, "ctpl:accordionItem", i18n("jcr:title", question) + i18n("body", answer)
                     + [{"name": "openByDefault", "value": str(is_open).lower()}])
+
+    # Tabs: the first weeks, one tab per stage, each holding a different kind of section.
+    tabs = add_content(main, "onboarding", "ctpl:tabs",
+        i18n("jcr:title", {"en": "Your first weeks", "fr": "Vos premières semaines"})
+        + [{"name": "ctplSurface", "value": "sunken"}])
+    first = add_content(tabs, "first-day", "ctpl:tab", i18n("jcr:title", {"en": "First day", "fr": "Premier jour"}))
+    add_content(first, "welcome", "ctpl:richText", i18n("body", {
+        "en": "<p>We open your accounts, walk you through the editor and publish a first page together.</p>"
+              "<ul><li>Accounts for every editor</li><li>A one-hour tour of Page Builder</li><li>Your first page, live</li></ul>",
+        "fr": "<p>Nous ouvrons vos comptes, vous faisons découvrir l'éditeur et publions ensemble une première page.</p>"
+              "<ul><li>Des comptes pour chaque rédacteur</li><li>Une visite d'une heure de Page Builder</li><li>Votre première page, en ligne</li></ul>"}))
+    week = add_content(tabs, "first-week", "ctpl:tab", i18n("jcr:title", {"en": "First week", "fr": "Première semaine"}))
+    questions = add_content(week, "questions", "ctpl:accordion", [])
+    for name, question, answer in (
+        ("who-publishes", {"en": "Who can publish?", "fr": "Qui peut publier ?"},
+         {"en": "<p>Every editor can prepare pages; publishing is open to the people you choose.</p>",
+          "fr": "<p>Chaque rédacteur peut préparer des pages ; la publication est ouverte aux personnes que vous choisissez.</p>"}),
+        ("translations", {"en": "How do translations work?", "fr": "Comment fonctionnent les traductions ?"},
+         {"en": "<p>Each page has its text in every language of the site; switch language in the editor to translate.</p>",
+          "fr": "<p>Chaque page a son texte dans chaque langue du site ; changez de langue dans l'éditeur pour traduire.</p>"}),
+    ):
+        add_content(questions, name, "ctpl:accordionItem", i18n("jcr:title", question) + i18n("body", answer))
+    month = add_content(tabs, "first-month", "ctpl:tab", i18n("jcr:title", {"en": "First month", "fr": "Premier mois"}))
+    more = add_content(month, "next-steps", "ctpl:cardGrid", [{"name": "display", "value": "iconTiles"}])
+    for name, glyph, colour, page, title, text in (
+        ("workshop", "cap", (14, 110, 140, 255), "services/training/workshops",
+         {"en": "Book a workshop", "fr": "Réserver un atelier"}, {"en": "Half a day with your team.", "fr": "Une demi-journée avec votre équipe."}),
+        ("review", "check", (11, 58, 102, 255), "services/consulting",
+         {"en": "Review your site", "fr": "Faire le point"}, {"en": "A first audit after a month.", "fr": "Un premier audit après un mois."}),
+    ):
+        icon = upload_icon(icons, f"{name}.png", title["en"], glyph, colour)
+        props, mixins = internal_link(uuid_at(f"{home}/{page}"))
+        props += i18n("jcr:title", title) + i18n("text", text) + [
+            {"name": "image", "type": "WEAKREFERENCE", "value": icon}]
+        add_content(more, name, "ctpl:card", props, mixins)
+
+    # Entry points first, then the tabs, the questions, the plans and the partners.
+    order = ["ways", "onboarding", "faq", "plans", "partners"]
+    names = [c["name"] for c in gql("query($p:String!){jcr{nodeByPath(path:$p){children{nodes{name}}}}}",
+                                    {"p": main})["jcr"]["nodeByPath"]["children"]["nodes"]]
+    if names[: len(order)] != order and set(order) <= set(names):
+        gql("mutation($p:String!,$n:[String]!){jcr{mutateNode(pathOrId:$p){reorderChildren(names:$n)}}}",
+            {"p": main, "n": order + [n for n in names if n not in order]})
     return [(icons, True), (logos, True), (f"{home}/help", True)]
 
 

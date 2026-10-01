@@ -19,9 +19,10 @@ light and dark, from its settings, with no code change.
   name, a menu built from the page tree three levels deep, utility links and a language switcher.
   A footer with a tagline, link columns, legal and social links and a copyright line. A breadcrumb
   trail. Header and footer are shared by every page and edited on the home page.
-- **Reusable sections.** Hero banner, image and text, rich text, columns, card grid, accordion,
-  key figures, quote, link list, content list, site map and free zone. Every section can end with an optional
-  call to action.
+- **Reusable sections.** Hero banner, image and text, rich text, columns, card grid (cards, icon
+  tiles or logos), accordion, tabs, key figures, quote, link list, content list, site map and free
+  zone. Every section can end with an optional call to action. Tables in rich text scroll on
+  small screens.
 - **News and articles.** Stored in content folders, each with its own page, listed as cards or
   compact rows by content lists that filter by folder, category and language.
 - **Themes.** Four themes (Classic, Ocean, Terracotta, Horizon), each in light and dark, chosen per site.
@@ -58,6 +59,7 @@ light and dark, from its settings, with no code change.
 | Content list      | News or articles found automatically, sorted and filtered     | [content-list](docs/components/content-list.md)                 |
 | News and articles | Editorial items with their own page, card and compact views   | [news-and-articles](docs/components/news-and-articles.md)       |
 | Site map          | Every page of the site as nested lists                        | [site-map](docs/components/site-map.md)                         |
+| Tabs              | Tabs, each holding its own sections                           | [tabs](docs/components/tabs.md)                                 |
 | Free zone         | A section for components of other modules                     | [free-zone](docs/components/free-zone.md)                       |
 | Call to action    | The optional button any section can end with                  | [call-to-action](docs/components/call-to-action.md)             |
 

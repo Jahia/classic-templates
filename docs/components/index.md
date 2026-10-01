@@ -6,7 +6,7 @@ Every text a visitor reads on the site is content you can edit, per language: he
 
 ## Page sections
 
-You add these to a page's main area, inside a [Columns](columns.md) column, or inside a [Free zone](free-zone.md).
+You add these to a page's main area, inside a [Columns](columns.md) column, a [Tabs](tabs.md) tab, or inside a [Free zone](free-zone.md).
 
 | Component      | What it is for                                                                | Where it goes                                                | Page                                               |
 | -------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
@@ -21,6 +21,7 @@ You add these to a page's main area, inside a [Columns](columns.md) column, or i
 | Content list   | News items or articles listed automatically, with a "see all" button.         | Main area, column, free zone                                 | [content-list.md](content-list.md)                 |
 | Link list      | An ordered list of links with an optional title.                              | Main area, column, free zone; also in the header and footer  | [links-and-link-lists.md](links-and-link-lists.md) |
 | Site map       | Every page of the site as nested lists of links.                              | Main area, usually on a page of its own                      | [site-map.md](site-map.md)                         |
+| Tabs           | Tabs, each holding its own sections; one tab shows at a time.                 | Main area, column, free zone                                 | [tabs.md](tabs.md)                                 |
 | Free zone      | A frame for components of other modules (forms, FAQ, gallery, store locator). | Main area, column                                            | [free-zone.md](free-zone.md)                       |
 
 ## Shared header and footer

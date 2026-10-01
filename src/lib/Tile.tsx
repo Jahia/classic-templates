@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { HeadingTag } from "./Heading.js";
 import classes from "./tile.module.css";
 
 /**
@@ -17,7 +18,7 @@ export const Tile = ({
   children,
 }: {
   heading?: string;
-  headingTag: "h2" | "h3" | "h4";
+  headingTag: HeadingTag;
   href?: string;
   text?: string;
   icon?: ReactNode;

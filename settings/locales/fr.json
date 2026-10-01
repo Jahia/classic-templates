@@ -98,5 +98,8 @@
     "expandAll": "Tout déplier",
     "collapseAll": "Tout replier",
     "noTitle": "Cette entrée n'a pas de titre dans cette langue : elle n'est pas affichée."
+  },
+  "tabs": {
+    "noTitle": "Cet onglet n'a pas de libellé dans cette langue : ni lui ni son contenu ne sont affichés."
   }
 }

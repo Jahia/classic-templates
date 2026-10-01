@@ -98,5 +98,8 @@
     "expandAll": "Expand all",
     "collapseAll": "Collapse all",
     "noTitle": "This entry has no heading in this language: it is not shown."
+  },
+  "tabs": {
+    "noTitle": "This tab has no label in this language: it is not shown, nor what it holds."
   }
 }

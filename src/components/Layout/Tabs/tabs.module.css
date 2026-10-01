@@ -1,0 +1,75 @@
+/*
+ * Tabs. Without JavaScript (and in edit mode) every tab is a headed block, one after the other.
+ * static/js/tabs.js adds the tablist ([role="tablist"], built in the browser, so it is styled by
+ * its ARIA roles and states, never by a hashed class) and hides the panels not selected.
+ */
+.tabs {
+  display: grid;
+  gap: var(--ctpl-space-6);
+}
+.tabs[data-ctpl-ready] {
+  gap: 0;
+}
+
+.panel {
+  min-width: 0;
+  scroll-margin-top: var(--ctpl-space-6);
+}
+.label {
+  margin: 0 0 var(--ctpl-space-4);
+  padding-bottom: var(--ctpl-space-2);
+  border-bottom: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+  font-size: var(--ctpl-text-xl);
+}
+.content {
+  display: grid;
+  gap: var(--ctpl-space-5);
+}
+/* Sections dropped in a tab are already inside the tabs' container: no second gutter. */
+.content :global(.ctpl-container) {
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* ---- With the script: the tablist, and the label kept as a visually hidden heading ---------- */
+.tabs > [role="tablist"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-1) var(--ctpl-space-2);
+  margin-bottom: var(--ctpl-space-5);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.tabs [role="tab"] {
+  margin-bottom: calc(-1 * var(--ctpl-border-width));
+  padding: var(--ctpl-space-3) var(--ctpl-space-4);
+  border: 0;
+  border-bottom: var(--ctpl-border-width-accent) solid transparent;
+  background: none;
+  color: var(--ctpl-color-text-muted);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.tabs [role="tab"]:hover {
+  color: var(--ctpl-color-text);
+}
+.tabs [role="tab"][aria-selected="true"] {
+  border-bottom-color: var(--ctpl-color-accent);
+  color: var(--ctpl-color-accent);
+}
+.tabs [role="tabpanel"]:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.label[data-ctpl-tab-hidden] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
