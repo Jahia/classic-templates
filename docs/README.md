@@ -4,7 +4,7 @@ For the people who build and run sites with the classic-templates template set: 
 administrators who set a site up, and editors who write and publish its pages. Developers start
 with the [README](../README.md).
 
-![A page of the demo site](images/theme-default-light.png)
+![The home page of the demo site](images/home.png)
 
 ## Start here
 

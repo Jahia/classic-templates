@@ -9,7 +9,7 @@ Everything a visitor reads is contributed content, editable in Page Builder and 
 language of the site. The look comes entirely from CSS design tokens: a site switches theme, or
 light and dark, from its settings, with no code change.
 
-![The demo home page in the Classic theme](docs/images/theme-default-light.png)
+![The demo home page in the Classic theme](docs/images/home.png)
 
 > **Status:** 0.1.0, in development, not released yet.
 
