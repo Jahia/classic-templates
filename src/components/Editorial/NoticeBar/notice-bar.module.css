@@ -41,24 +41,28 @@
   padding: 0;
   list-style: none;
 }
+/* Label, title and date flow as one line of text and wrap like a sentence on small screens. */
 .item {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0 var(--ctpl-space-2);
   min-width: 0;
+  padding-block: var(--ctpl-space-1);
 }
-/* 44 px tall targets without a taller band: the link grows, not its text. */
+/* 44 px tall targets without a taller band: the padding enlarges the link, not the line. */
 .link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
+  padding-block: 0.9rem;
   color: var(--ctpl-color-accent);
   font-weight: var(--ctpl-font-weight-medium);
   overflow-wrap: anywhere;
 }
 .link:hover {
   color: var(--ctpl-color-accent-hover);
+}
+/* The item's type or category, as on cards. */
+.kind {
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-xs);
+  font-weight: var(--ctpl-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 .date {
   color: var(--ctpl-color-text-muted);

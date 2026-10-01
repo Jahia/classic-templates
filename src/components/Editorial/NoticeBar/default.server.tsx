@@ -9,6 +9,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { useTranslation } from "react-i18next";
 import { Cta } from "../../../lib/Cta.js";
 import { formatDate, isoDay } from "../../../lib/dates.js";
+import { chooseItemLabel, itemLabelMode } from "../../../lib/itemLabel.js";
 import { languageTag } from "../../../lib/locale.js";
 import { noticeItemCount, noticeSignature } from "../../../lib/notice.js";
 import { readString } from "../../../lib/props.js";
@@ -20,8 +21,13 @@ import {
   startLabelOf,
   typeLabel,
 } from "../../../lib/query.js";
+import { categoryTitlesOf } from "../shared/editorial.js";
 import type { Props } from "./types.js";
 import classes from "./notice-bar.module.css";
+
+/** The translation key of an item's type label, as cards show it ("News", "Article"). */
+const kindKey = (item: JCRNodeWrapper) =>
+  item.isNodeType("ctpl:article") ? "editorial.article" : "editorial.news";
 
 /** Publication date of an item, or its creation date when the editor left it empty. */
 const dateOf = (item: JCRNodeWrapper) =>
@@ -61,6 +67,7 @@ jahiaComponent(
     const locale = currentResource.getLocale();
     const language = languageTag(locale);
     const max = noticeItemCount(props.maxItems);
+    const labelMode = itemLabelMode(props.itemLabel, "none");
 
     let items: JCRNodeWrapper[] = [];
     if (typeValid && !startMissing) {
@@ -117,6 +124,7 @@ jahiaComponent(
                   start: startLabelOf(start, site),
                   order: t("query.newest"),
                   max,
+                  interpolation: { escapeValue: false },
                 })}
             </p>
           )}
@@ -124,11 +132,24 @@ jahiaComponent(
             <ul className={classes.items}>
               {items.map((item) => {
                 const date = dateOf(item);
+                const itemLabel = chooseItemLabel(
+                  labelMode,
+                  t(kindKey(item)),
+                  labelMode === "category" ? categoryTitlesOf(item, renderContext) : [],
+                );
                 return (
                   <li key={item.getIdentifier()} className={classes.item} data-testid="ctpl-notice">
+                    {itemLabel && (
+                      <>
+                        <span className={classes.kind} data-testid="ctpl-notice-label">
+                          {itemLabel}
+                        </span>{" "}
+                      </>
+                    )}
                     <a className={classes.link} href={buildNodeUrl(item)}>
                       {readString(item, "jcr:title")}
                     </a>
+                    {date && " "}
                     {date && (
                       <time className={classes.date} dateTime={isoDay(date)}>
                         {formatDate(date, language)}

@@ -52,12 +52,18 @@
       "grid": "cards",
       "list": "compact list"
     },
+    "itemLabel": {
+      "none": "none",
+      "type": "content type",
+      "category": "first category, else content type"
+    },
     "panel": {
       "type": "Content",
       "start": "Under",
       "sort": "Sort",
       "max": "Maximum",
       "display": "Display",
+      "itemLabel": "Item label",
       "categories": "Categories",
       "allCategories": "all categories",
       "withSubcategories_one": "({{count}} category with subcategories)",

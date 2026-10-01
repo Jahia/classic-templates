@@ -17,28 +17,30 @@ To pick the items yourself, one by one, use a [Card grid](card-grid.md) with **C
 
 ## Fields
 
-| Label as shown in the editor | What it does                                                                                                                       | Notes                                                                               |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Title                        | The section heading.                                                                                                               | Per language. Optional. Level 2 heading.                                            |
-| Content to list              | Type of content the list shows: news items, articles, or both.                                                                     | Default: News item.                                                                 |
-| Look under                   | Folder or page under which to look for content.                                                                                    | Optional. Empty: the whole site. You can pick any folder, page or content.          |
-| Sort by                      | **Publication date**, **Creation date**, **Last modification date** or **Title**.                                                  | Default: Publication date.                                                          |
-| Sort direction               | **Descending** shows the newest items (or titles from Z to A) first. **Ascending** shows the oldest (or titles from A to Z) first. | Default: Descending.                                                                |
-| Number of items              | Maximum number of items shown.                                                                                                     | Default: 6. From 1 to 50.                                                           |
-| Display                      | **Cards**: a grid of cards with image and teaser. **Compact list**: one row per item with its title and date.                      | Default: Cards.                                                                     |
-| Items to leave out           | Items never shown in this list, for example the one already featured above it.                                                     | Optional. Only news items and articles can be picked.                               |
-| Categories                   | Only list items in one of these categories, or in one of their subcategories.                                                      | Optional. Empty: every category.                                                    |
-| Text when empty              | Text shown when there is nothing to list.                                                                                          | Per language. Optional. Empty: the section is hidden when there is nothing to list. |
-| Button label                 | Text of the "see all" button, for example "All news".                                                                              | Per language. See [Call to action](call-to-action.md).                              |
-| Link                         | Where the "see all" button goes, usually the page that lists everything.                                                           | Per language target.                                                                |
-| Background                   | Page background, Light band or Accent tint.                                                                                        | See [Section style](section-style.md).                                              |
+| Label as shown in the editor | What it does                                                                                                                                  | Notes                                                                               |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Title                        | The section heading.                                                                                                                          | Per language. Optional. Level 2 heading.                                            |
+| Content to list              | Type of content the list shows: news items, articles, or both.                                                                                | Default: News item.                                                                 |
+| Look under                   | Folder or page under which to look for content.                                                                                               | Optional. Empty: the whole site. You can pick any folder, page or content.          |
+| Sort by                      | **Publication date**, **Creation date**, **Last modification date** or **Title**.                                                             | Default: Publication date.                                                          |
+| Sort direction               | **Descending** shows the newest items (or titles from Z to A) first. **Ascending** shows the oldest (or titles from A to Z) first.            | Default: Descending.                                                                |
+| Number of items              | Maximum number of items shown.                                                                                                                | Default: 6. From 1 to 50.                                                           |
+| Display                      | **Cards**: a grid of cards with image and teaser. **Compact list**: one row per item with its title and date.                                 | Default: Cards.                                                                     |
+| Item label                   | The small label above each title, next to the date: **Content type** ("News", "Article") or **First category** (for example "Press release"). | Default: Content type. An item without a category shows its content type.           |
+| Items to leave out           | Items never shown in this list, for example the one already featured above it.                                                                | Optional. Only news items and articles can be picked.                               |
+| Categories                   | Only list items in one of these categories, or in one of their subcategories.                                                                 | Optional. Empty: every category.                                                    |
+| Text when empty              | Text shown when there is nothing to list.                                                                                                     | Per language. Optional. Empty: the section is hidden when there is nothing to list. |
+| Button label                 | Text of the "see all" button, for example "All news".                                                                                         | Per language. See [Call to action](call-to-action.md).                              |
+| Link                         | Where the "see all" button goes, usually the page that lists everything.                                                                      | Per language target.                                                                |
+| Background                   | Page background, Light band or Accent tint.                                                                                                   | See [Section style](section-style.md).                                              |
 
 ## How it behaves
 
 ### What visitors see
 
-- **Cards:** each item shows as a card with its image, its type ("News" or "Article"), its date, its title linking to the item's page, and its teaser. Articles also show their author and reading time.
-- **Compact list:** each item shows as one row with its title (a link) and the same line of type, date, author and reading time.
+- **Cards:** each item shows as a card with its image, its label, its date, its title linking to the item's page, and its teaser. Articles also show their author and reading time.
+- **The label** is the item's type ("News" or "Article") by default. With **Item label** set to **First category**, it is the title of the item's first category in the page's language (for example "Press release" or "Travel advisory"), so two kinds of news read differently; an item with no category, or whose category has no title in that language, shows its type.
+- **Compact list:** each item shows as one row with its title (a link) and the same line of label, date, author and reading time.
 - The **"see all" button** comes after the list, as an outlined button.
 - Item titles are one level below the list title: level 3 under a titled list, level 2 when the list has no title (one more level down inside a titled columns row).
 - The list is refreshed when an item under **Look under** is added, changed or published.
@@ -78,6 +80,7 @@ Then one line per setting:
 | Under          | Where the list looks: the site's name for the whole site, else the folder or page path.                                                                                        |
 | Sort           | The sort field and direction.                                                                                                                                                  |
 | Maximum        | The number of items asked for.                                                                                                                                                 |
+| Item label     | Whether items show their content type or their first category.                                                                                                                 |
 | Display        | "cards" or "compact list".                                                                                                                                                     |
 | Categories     | "all categories", or the selected categories followed by how many categories they cover with their subcategories, for example "(4 categories with subcategories)".             |
 | Excluded       | "none", or the titles of the items left out on purpose.                                                                                                                        |

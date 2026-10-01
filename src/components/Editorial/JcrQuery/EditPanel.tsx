@@ -15,6 +15,7 @@ export interface PanelInfo {
   direction: "asc" | "desc";
   max: number;
   layout: "grid" | "list";
+  itemLabel: string;
   categories: JCRNodeWrapper[];
   expandedCategories: number;
   excluded: JCRNodeWrapper[];
@@ -43,6 +44,7 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
     [t("query.panel.sort"), `${sortLabel}, ${order}`],
     [t("query.panel.max"), String(info.max)],
     [t("query.panel.display"), t(`query.layout.${info.layout}`)],
+    [t("query.panel.itemLabel"), t(`query.itemLabel.${info.itemLabel}`)],
     [
       t("query.panel.categories"),
       info.categories.length === 0

@@ -15,22 +15,23 @@ The band is a static list. It never scrolls or rotates, so visitors read it at t
 
 ## Fields
 
-| Label as shown in the editor | What it does                                                                                  | Notes                                                                                           |
-| ---------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Label                        | Short name shown at the start of the band, for example "Service updates".                     | Per language. Optional. Without it no label shows and screen readers announce "Latest updates". |
-| Content to list              | Type of content the band shows: news items, articles, or both.                                | Default: News item. The newest come first (publication date).                                   |
-| Look under                   | Folder or page under which to look for content, for example a folder that only holds notices. | Optional. Empty: the whole site.                                                                |
-| Categories                   | Only list items in one of these categories, or in one of their subcategories.                 | Optional. Empty: every category.                                                                |
-| Number of items              | How many of the latest items the band shows.                                                  | Default: 3. From 1 to 10.                                                                       |
-| Visitors can hide it         | Adds a close button to the band.                                                              | Default: off. See "Hiding the band" below.                                                      |
-| Button label                 | Text of the "view all" link at the end of the band.                                           | Per language. Optional. See [Call to action](call-to-action.md).                                |
-| Link                         | Where the "view all" link goes, usually the page that lists every notice.                     | Per language target. See [Call to action](call-to-action.md).                                   |
+| Label as shown in the editor | What it does                                                                                                           | Notes                                                                                           |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Label                        | Short name shown at the start of the band, for example "Service updates".                                              | Per language. Optional. Without it no label shows and screen readers announce "Latest updates". |
+| Content to list              | Type of content the band shows: news items, articles, or both.                                                         | Default: News item. The newest come first (publication date).                                   |
+| Look under                   | Folder or page under which to look for content, for example a folder that only holds notices.                          | Optional. Empty: the whole site.                                                                |
+| Categories                   | Only list items in one of these categories, or in one of their subcategories.                                          | Optional. Empty: every category.                                                                |
+| Number of items              | How many of the latest items the band shows.                                                                           | Default: 3. From 1 to 10.                                                                       |
+| Item label                   | A small label before each item: **No label**, **Content type** ("News") or **First category** (for example "Weather"). | Default: No label. An item without a category shows its content type.                           |
+| Visitors can hide it         | Adds a close button to the band.                                                                                       | Default: off. See "Hiding the band" below.                                                      |
+| Button label                 | Text of the "view all" link at the end of the band.                                                                    | Per language. Optional. See [Call to action](call-to-action.md).                                |
+| Link                         | Where the "view all" link goes, usually the page that lists every notice.                                              | Per language target. See [Call to action](call-to-action.md).                                   |
 
 ## How it behaves
 
 ### What visitors see
 
-- The label, then each item's title as a link to the item's page, followed by its date in the page's language. The "view all" link sits at the end of the band.
+- The label, then each item's title as a link to the item's page, followed by its date in the page's language. With **Item label** set, a small type or category label comes before each title, as on the cards of a [content list](content-list.md). The "view all" link sits at the end of the band.
 - Items not translated into the page's language are left out.
 - With no item to show (nothing published yet, or nothing in the chosen categories), the band does not show at all.
 - On phones the items wrap onto several lines.

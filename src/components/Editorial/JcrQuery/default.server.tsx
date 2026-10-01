@@ -3,6 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { useTranslation } from "react-i18next";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, useHeadingLevel } from "../../../lib/Heading.js";
+import { itemLabelMode } from "../../../lib/itemLabel.js";
 import { languageTag } from "../../../lib/locale.js";
 import {
   type ListResult,
@@ -75,6 +76,7 @@ jahiaComponent(
     const title = props["jcr:title"];
     const headingId = `ctpl-list-${currentNode.getIdentifier()}`;
     const view = props.layout === "list" ? "compact" : "card";
+    const itemLabel = itemLabelMode(props.itemLabel);
 
     return (
       <Section
@@ -99,6 +101,7 @@ jahiaComponent(
                 direction: props.sortDirection === "asc" ? "asc" : "desc",
                 max,
                 layout: props.layout === "list" ? "list" : "grid",
+                itemLabel,
                 categories: props.filterCategories ?? [],
                 expandedCategories: categories.length,
                 excluded: props.excludeNodes ?? [],
@@ -114,7 +117,7 @@ jahiaComponent(
                   <Render
                     node={item}
                     view={view}
-                    parameters={{ headingLevel: String(title ? level + 1 : level) }}
+                    parameters={{ headingLevel: String(title ? level + 1 : level), itemLabel }}
                   />
                 </li>
               ))}

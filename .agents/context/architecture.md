@@ -333,6 +333,12 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   - Card heading level is passed with `Render parameters={{ headingLevel }}` and read with
     `currentResource.getModuleParams()`: h3 under a titled list, h2 under an untitled one.
   - Items not translated into the page's language are skipped.
+  - **Item label** (`itemLabel`: `type`, the default and the previous output, or `category`):
+    passed with `Render parameters={{ itemLabel }}` like the heading level and read by the item's
+    `Meta` line (`useItemLabelMode`); `category` shows the first `j:defaultCategory` title in the
+    page's language (each category a cache dependency), else the type. `lib/itemLabel.ts` holds the
+    choice (unit-tested). The notice bar offers the same choice plus `none`, its default. Cards of a
+    card grid and full pages keep the type.
   - **Excluded items are filtered in code, not in the query:** on 8.2.3.2 `NOT ISSAMENODE(...)` in
     JCR-SQL2 is unreliable (GraphQL `nodesByQuery`: excluded nothing even with one condition;
     `getNodesByJCRQuery`: only the first of two). The Cypress regression test excludes two items.

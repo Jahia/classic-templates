@@ -9,6 +9,8 @@ export interface Props {
   "sortDirection"?: "desc" | "asc";
   "maxItems"?: number;
   "layout"?: "grid" | "list";
+  /** Label of each item: its type (default) or its first category's title. */
+  "itemLabel"?: "type" | "category";
   "excludeNodes"?: JCRNodeWrapper[];
   /** Categories an item must carry (any of them, subcategories included). */
   "filterCategories"?: JCRNodeWrapper[];

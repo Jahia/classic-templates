@@ -13,6 +13,7 @@
 // or page to look under (empty = the whole site); filterCategories keeps only items in one of
 // those categories or their subcategories. A static list: it never scrolls or rotates. dismissible
 // lets visitors hide the band for their browser session (a close button added by JavaScript).
+// itemLabel puts a small label before each item: none (default), its type, or its first category.
 [ctpl:noticeBar] > jnt:content, ctplmix:headerComponent, ctplmix:heroComponent, ctplmix:pageComponent, ctplmix:cta, jmix:list, jmix:renderableList, jmix:cache
  - label (string) i18n
  - type (string, choicelist[nodetypes='ctplmix:listable']) = 'ctpl:news' autocreated
@@ -20,4 +21,6 @@
  - startNode (weakreference)
  - filterCategories (weakreference, category[autoSelectParent=false]) multiple < jnt:category
  - maxItems (long) = 3 autocreated < '[1,10]'
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - itemLabel (string, choicelist[resourceBundle]) = 'none' autocreated < 'none', 'type', 'category'
  - dismissible (boolean) = false autocreated
