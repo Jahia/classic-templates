@@ -5,7 +5,8 @@
  * classic-templates' page shell already writes the page's @graph (WebSite, Organization, WebPage,
  * BreadcrumbList) on every main resource. These builders add only the item the page is about, as
  * a separate entity that points at that WebPage by its @id (the page URL): the page graph is never
- * written twice. Every URL is absolute; only what the page shows is described.
+ * written twice. Every URL is absolute; only what the page shows is described. The language is the
+ * WebPage's (inLanguage is not a property of a Place or an Offer).
  */
 
 export interface DestinationLd {
@@ -16,7 +17,6 @@ export interface DestinationLd {
   /** Absolute URL of the image the page shows. */
   image?: string;
   country?: string;
-  language: string;
   /** "From" price, when the page shows one. */
   price?: number;
   currency?: string;
@@ -25,7 +25,6 @@ export interface DestinationLd {
 export interface FareLd {
   url: string;
   name: string;
-  language: string;
   price?: number;
   currency?: string;
   /** ISO day of the end of the sale. */
@@ -62,7 +61,6 @@ export const buildDestinationLd = (page: DestinationLd): Json =>
     "url": page.url,
     "image": page.image ? [page.image] : undefined,
     "containedInPlace": page.country ? { "@type": "Country", "name": page.country } : undefined,
-    "inLanguage": page.language,
     "mainEntityOfPage": { "@id": page.url },
     "offers": offer(page.price, page.currency),
   });
@@ -93,7 +91,6 @@ export const buildFareLd = (page: FareLd): Json =>
             : undefined,
         })
       : undefined,
-    "inLanguage": page.language,
     "mainEntityOfPage": { "@id": page.url },
   });
 

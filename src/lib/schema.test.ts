@@ -10,7 +10,6 @@ describe("buildDestinationLd", () => {
       name: "Tokyo",
       description: "Neon, temples and ramen.",
       country: "Japan",
-      language: "en",
       price: 2980,
       currency: "HKD",
     });
@@ -22,14 +21,13 @@ describe("buildDestinationLd", () => {
       "description": "Neon, temples and ramen.",
       "url": URL,
       "containedInPlace": { "@type": "Country", "name": "Japan" },
-      "inLanguage": "en",
       "mainEntityOfPage": { "@id": URL },
       "offers": { "@type": "Offer", "price": 2980, "priceCurrency": "HKD" },
     });
   });
 
   it("leaves out what the page does not show", () => {
-    const ld = buildDestinationLd({ url: URL, name: "Tokyo", language: "fr" });
+    const ld = buildDestinationLd({ url: URL, name: "Tokyo" });
     expect(Object.keys(ld)).not.toContain("offers");
     expect(Object.keys(ld)).not.toContain("containedInPlace");
     expect(Object.keys(ld)).not.toContain("image");
@@ -41,7 +39,6 @@ describe("buildFareLd", () => {
     const ld = buildFareLd({
       url: `${URL}x`,
       name: "Tokyo in Economy",
-      language: "en",
       price: 2980,
       currency: "HKD",
       validThrough: "2026-10-31",
@@ -66,7 +63,7 @@ describe("buildFareLd", () => {
   });
 
   it("writes no currency without a price", () => {
-    const ld = buildFareLd({ url: URL, name: "x", language: "en", currency: "HKD" });
+    const ld = buildFareLd({ url: URL, name: "x", currency: "HKD" });
     expect(ld).not.toHaveProperty("priceCurrency");
     expect(ld).not.toHaveProperty("itemOffered");
   });

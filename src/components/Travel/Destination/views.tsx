@@ -3,7 +3,6 @@ import { Heading, useParamHeadingLevel } from "../../../lib/Heading.js";
 import { useT } from "../../../lib/i18n.js";
 import { Image } from "../../../lib/Image.js";
 import { JsonLd, useAbsoluteUrl } from "../../../lib/JsonLd.js";
-import { languageTag } from "../../../lib/locale.js";
 import { Price } from "../../../lib/Price.js";
 import { Styles } from "../../../lib/Styles.js";
 import { RichText } from "../../../lib/RichText.js";
@@ -43,13 +42,12 @@ const Place = ({ props, className }: { props: Props; className: string }) => {
  */
 export const DestinationFull = ({ props }: { props: Props }) => {
   const t = useT();
-  const { currentNode, renderContext, currentResource } = useServerContext();
+  const { currentNode, renderContext } = useServerContext();
   const toAbsolute = useAbsoluteUrl();
   const id = currentNode.getIdentifier();
   const title = props["jcr:title"];
   const facts = FACTS.filter((fact) => props[fact]);
   const related = relatedDestinations(currentNode);
-  const language = languageTag(currentResource.getLocale());
   return (
     <article className={classes.full} data-testid="ctrv-destination-full">
       <Styles />
@@ -104,7 +102,6 @@ export const DestinationFull = ({ props }: { props: Props }) => {
             description: props.teaser,
             image: props.image ? toAbsolute(buildNodeUrl(props.image)) : undefined,
             country: props.country,
-            language,
             price: props.price,
             currency: props.currency,
           })}

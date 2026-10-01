@@ -103,7 +103,7 @@ const Facts = ({
  */
 export const FareFull = ({ props }: { props: Props }) => {
   const fare = useFare(props);
-  const { t, currentNode, renderContext, language, destination, city, cabin, route } = fare;
+  const { t, currentNode, renderContext, destination, city, cabin, route } = fare;
   const toAbsolute = useAbsoluteUrl();
   const id = currentNode.getIdentifier();
   const title = props["jcr:title"] || route || city;
@@ -155,7 +155,6 @@ export const FareFull = ({ props }: { props: Props }) => {
           data={buildFareLd({
             url: toAbsolute(buildNodeUrl(currentNode)),
             name: title,
-            language,
             price: props.price,
             currency: props.currency,
             validThrough: isoDay(props.saleEnds),
