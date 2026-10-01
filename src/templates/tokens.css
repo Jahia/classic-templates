@@ -138,6 +138,10 @@
   --ctpl-color-danger: light-dark(var(--ctpl-red-700), var(--ctpl-red-300));
   --ctpl-color-danger-surface: light-dark(var(--ctpl-red-50), var(--ctpl-red-900));
 
+  /* Behind logos (card grid "logos" display): logos are drawn for light backgrounds, so the plate
+     stays light in both schemes, a touch dimmer in dark mode. */
+  --ctpl-color-surface-logo: light-dark(var(--ctpl-white), var(--ctpl-slate-100));
+
   /* Text over a photo (hero banners): always light text on a darkened image, in both schemes. */
   --ctpl-color-overlay: light-dark(#0c1019a6, #000000b3);
   --ctpl-color-text-on-overlay: var(--ctpl-white);

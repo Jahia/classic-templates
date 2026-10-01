@@ -50,7 +50,7 @@ light and dark, from its settings, with no code change.
 | Image and text    | An image beside a heading, rich text and a button             | [image-and-text](docs/components/image-and-text.md)             |
 | Rich text         | A heading and formatted text, at reading width or wide        | [rich-text](docs/components/rich-text.md)                       |
 | Columns           | Two, three or four columns of sections                        | [columns](docs/components/columns.md)                           |
-| Card grid         | Hand-picked cards and teasers of news or articles             | [card-grid](docs/components/card-grid.md)                       |
+| Card grid         | Hand-picked cards, icon tiles or a logo strip                 | [card-grid](docs/components/card-grid.md)                       |
 | Key figures       | A row of figures with their labels                            | [key-figures](docs/components/key-figures.md)                   |
 | Quote             | A quotation with the person's name, role and portrait         | [quote](docs/components/quote.md)                               |
 | Link list         | A list of links: a section, a bar or a footer column          | [links-and-link-lists](docs/components/links-and-link-lists.md) |

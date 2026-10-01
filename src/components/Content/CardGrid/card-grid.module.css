@@ -98,3 +98,63 @@
   color: var(--ctpl-color-link);
   font-weight: var(--ctpl-font-weight-bold);
 }
+
+/* ---- Icon tiles: as many small tiles as fit (two on a phone), each square
+   (lib/tile.module.css). The column count does not apply. ----------------------------------- */
+.grid.iconTiles {
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: var(--ctpl-space-4);
+}
+@media (min-width: 64rem) {
+  .grid.iconTiles {
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--ctpl-space-5);
+  }
+}
+
+/* ---- Logo strip: the images only, in a row that wraps, each on a light plate (logos are drawn for light
+   backgrounds, so the plate stays light in dark mode). The column count does not apply. ------- */
+.grid.logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-4);
+}
+@media (min-width: 40rem) {
+  .grid.logos {
+    gap: var(--ctpl-space-5);
+  }
+}
+.logoItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 8.5rem;
+  height: 5rem;
+  padding: var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-logo);
+  transition: border-color var(--ctpl-duration-base) var(--ctpl-ease);
+}
+@media (min-width: 40rem) {
+  .logo {
+    width: 10rem;
+    height: 6rem;
+  }
+}
+a.logo:hover {
+  border-color: var(--ctpl-color-accent);
+}
+.logo img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+}

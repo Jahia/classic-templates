@@ -213,6 +213,13 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
   title link; the link label is a visual cue with `aria-hidden` (the title is the accessible
   name); an untitled card with an internal link takes the target page's title. Nothing live
   without a card.
+- **Card grid displays** (`display`: `cards`, `iconTiles`, `logos`): the grid renders its children
+  with `RenderChildren view={display}` (none for cards), so each display is a named view of
+  `ctpl:card` and `ctpl:contentTeaser` (`variants.server.tsx`); a teaser tile renders the item's
+  own `tile` view, never its properties inline. Tiles (`lib/Tile.tsx`) are squares drawn by a
+  `padding-top: 100%` pseudo-element in the content's grid cell: `aspect-ratio` widened a tile
+  stretched to a taller neighbour (59 px of page overflow at 320 px). Logos sit on
+  `--ctpl-color-surface-logo`, light in both schemes. Columns apply to cards only.
 - **Card heading levels:** `useItemHeadingLevel` (`lib/Heading.tsx`) puts items one level below
   their section when it shows a title (h3, or h4 under a titled row), the section's level otherwise.
   `RenderChildren` passes no parameters, so each card works its level out from its parent, which is

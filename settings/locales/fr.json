@@ -78,7 +78,9 @@
   },
   "cards": {
     "teaserMissing": "Choisissez une actualité ou un article à afficher dans cette carte.",
-    "noTitle": "Cette carte n'a pas de titre dans cette langue : elle n'affiche aucun intitulé."
+    "noTitle": "Cette carte n'a pas de titre dans cette langue : elle n'affiche aucun intitulé.",
+    "logoMissing": "Ce logo n'a pas d'image : il n'est pas affiché.",
+    "teaserNotInLogos": "Les cartes d'éléments existants ne s'affichent pas dans un bandeau de logos."
   },
   "figures": {
     "noValue": "Ce chiffre n'a pas de valeur dans cette langue : il n'est pas affiché."

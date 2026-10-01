@@ -8,8 +8,9 @@ import { readPositive, readString } from "./props.js";
  * An image from the media library.
  *
  * - alt: "" when `decorative` or when `owner` (the node carrying ctplmix:media) marks it decorative;
- *   else the owner's imageAlt (what the image means there, per language); else the image's own
- *   title in the library (jcr:title).
+ *   else `alt` when the caller worked it out itself (a linked logo), else the owner's imageAlt
+ *   (what the image means there, per language); else the image's own title in the library
+ *   (jcr:title).
  * - width/height: the image's intrinsic size (j:width / j:height of jmix:image), so the browser
  *   reserves the space and the layout does not shift while it loads.
  * - `priority` for the banner image at the top of the page (eager, high fetch priority); every
@@ -24,6 +25,7 @@ export const Image = ({
   priority = false,
   decorative = false,
   owner,
+  alt,
 }: {
   node: JCRNodeWrapper;
   /** The node whose ctplmix:media points at the image, for its imageAlt / imageDecorative. */
@@ -32,11 +34,14 @@ export const Image = ({
   className?: string;
   priority?: boolean;
   decorative?: boolean;
+  /** The text alternative, when the caller resolves it (see above). */
+  alt?: string;
 }) => {
   const { t } = useTranslation();
   server.render.addCacheDependency({ node }, renderContext);
   const hidden = decorative || (owner ? readString(owner, "imageDecorative") === "true" : false);
-  const title = (owner && readString(owner, "imageAlt")) || readString(node, "jcr:title") || "";
+  const title =
+    alt || (owner && readString(owner, "imageAlt")) || readString(node, "jcr:title") || "";
   const img = (
     <img
       className={className}

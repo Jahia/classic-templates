@@ -1,0 +1,78 @@
+/*
+ * Icon tile (lib/Tile.tsx): outlined, square while its text fits, taller when it does not. The
+ * square is a minimum drawn by a pseudo-element in the same grid cell as the content (padding-top
+ * in % follows the width): aspect-ratio would widen a tile stretched to a taller row neighbour.
+ */
+.tile {
+  position: relative;
+  display: grid;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: var(--ctpl-space-4);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  text-align: center;
+  transition: border-color var(--ctpl-duration-base) var(--ctpl-ease);
+}
+.tile::before {
+  content: "";
+  grid-area: 1 / 1;
+  padding-top: 100%;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 1;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--ctpl-space-2);
+  min-width: 0;
+}
+@media (min-width: 40rem) {
+  .tile {
+    padding: var(--ctpl-space-5);
+  }
+}
+.tile:hover {
+  border-color: var(--ctpl-color-accent);
+}
+.tile:focus-within {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.icon img {
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+}
+.title {
+  margin: 0;
+  font-size: var(--ctpl-text-lg);
+  line-height: var(--ctpl-leading-snug);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+.title a {
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+}
+.tile:hover .title a {
+  color: var(--ctpl-color-link-hover);
+  text-decoration: underline;
+}
+/* The heading link covers the whole tile; its own focus ring is drawn by the tile. */
+.stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.stretched:focus-visible {
+  outline: none;
+}
+.text {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+  overflow-wrap: anywhere;
+}

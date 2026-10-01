@@ -78,7 +78,9 @@
   },
   "cards": {
     "teaserMissing": "Pick a news item or article to show in this card.",
-    "noTitle": "This card has no title in this language: it shows no heading."
+    "noTitle": "This card has no title in this language: it shows no heading.",
+    "logoMissing": "This logo has no image: it is not shown.",
+    "teaserNotInLogos": "Cards of existing items are not shown in a logo strip."
   },
   "figures": {
     "noValue": "This figure has no value in this language: it is not shown."

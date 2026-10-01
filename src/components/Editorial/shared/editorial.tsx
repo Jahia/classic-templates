@@ -6,6 +6,7 @@ import { formatDate, isoDay } from "../../../lib/dates.js";
 import { Image } from "../../../lib/Image.js";
 import { readString as str } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
+import { Tile } from "../../../lib/Tile.js";
 import classes from "./editorial.module.css";
 import { languageTag } from "../../../lib/locale.js";
 
@@ -194,6 +195,22 @@ export const Card = ({ kind, props }: { kind: Kind; props: EditorialProps }) => 
         {props.teaser && <p className={classes.teaser}>{props.teaser}</p>}
       </div>
     </article>
+  );
+};
+
+/** A tile of a card grid's "icon tiles" display: linked title and teaser, no image. */
+export const TileView = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
+  const { currentNode } = useServerContext();
+  const Heading = useHeadingTag();
+  if (!props["jcr:title"]) return <Untitled />;
+  return (
+    <Tile
+      heading={props["jcr:title"]}
+      headingTag={Heading}
+      href={buildNodeUrl(currentNode)}
+      text={props.teaser}
+      testId={`ctpl-${kind}-tile`}
+    />
   );
 };
 

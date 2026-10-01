@@ -23,9 +23,12 @@
 // A page section of hand-picked cards with an optional h2 heading (jcr:title) and a lead text
 // under it. Editors mix written cards (ctpl:card) and teasers of existing content
 // (ctpl:contentTeaser), in any order. columns sets how many cards sit on a row on large screens;
-// the grid wraps to fewer columns on small ones.
+// the grid wraps to fewer columns on small ones. display draws the same cards as cards (image,
+// title, text), as outlined icon tiles (the image is a small icon, the whole tile is the link) or
+// as a strip of logos (the image only, optionally linked; teasers are left out).
 [ctpl:cardGrid] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
  - columns (string, choicelist[resourceBundle]) = '3' autocreated < '2', '3', '4'
+ - display (string, choicelist[resourceBundle]) = 'cards' autocreated < 'cards', 'iconTiles', 'logos'
  - introText (string, textarea) i18n
  + * (ctpl:card)
  + * (ctpl:contentTeaser)
