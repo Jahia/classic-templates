@@ -13,8 +13,8 @@ These modules were tested inside free zones, in light and dark, in English and F
 | Module                                 | What it adds        | Notes                                         |
 | -------------------------------------- | ------------------- | --------------------------------------------- |
 | **Formidable** (`formidable-elements`) | forms               | placed with a form reference                  |
-| **jsfaq**                              | a FAQ               | brings jExperience                            |
-| **js-media-gallery**                   | an image gallery    | brings jExperience                            |
+| **jsfaq**                              | a FAQ               |                                               |
+| **js-media-gallery**                   | an image gallery    |                                               |
 | **js-store-locator**                   | a store locator map | loads map tiles and a stylesheet from outside |
 
 The free zone accepts components of other modules too, but only these four were checked. Others may
@@ -31,11 +31,7 @@ offered:
 2. In your site's administration, open **Modules** and enable the module for the site.
 3. Its components are now offered inside free zones.
 
-### jExperience
-
-**jsfaq** and **js-media-gallery** depend on jExperience: enabling them on a site enables
-jExperience on it too. Check with your administrator that this is what you want before enabling
-them. Formidable does not bring jExperience.
+None of these modules needs jExperience: enabling one adds only that module to the site.
 
 ## Place a component in a free zone
 
@@ -85,9 +81,10 @@ Limits:
 
 ## Store locator and content security policy
 
-The store locator's map loads its tiles from OpenStreetMap and a stylesheet from unpkg.com. If your
-site sends a content security policy (CSP), it must allow those two sources, or the map does not
-display. Ask your Jahia administrator.
+The store locator's map loads its tiles from OpenStreetMap (`tile.openstreetmap.org`); its
+stylesheet comes with the module. If your site sends a content security policy (CSP), it must allow
+the tile server as an image source, or the map shows no background. The store list works either
+way. Ask your Jahia administrator.
 
 ## Try it on a demo site
 

@@ -4,8 +4,8 @@
     python3 scripts/seed-addons.py [--site classic-addons]
     python3 scripts/seed-addons.py --contact-only --site classic-dev
 
-A separate site from classic-dev on purpose: jsfaq and js-media-gallery depend on jExperience, and
-a site that enables them gets jExperience too. The script:
+A separate site from classic-dev on purpose: classic-dev shows the template set's own components
+(plus a Formidable contact form), this one the components of other modules. The script:
   - creates the site on the classic-templates template set when it does not exist (EN + FR);
   - enables jsfaq, js-media-gallery, js-store-locator and formidable-elements on it;
   - uploads the three demo images;
@@ -15,7 +15,7 @@ a site that enables them gets jExperience too. The script:
   - publishes the site and its files.
 Nodes that already exist are left alone. Same environment and session rules as seed-demo.py.
 
---contact-only only enables formidable-elements (which brings no jExperience) and adds the contact
+--contact-only only enables formidable-elements and adds the contact
 form to the site's existing contact page, then publishes the new nodes: this is how classic-dev
 gets the form its accessibility statement points to.
 """

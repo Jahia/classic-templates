@@ -302,9 +302,13 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
     white surfaces (wrapper, search field, item) repainted.
   - **js-media-gallery**: accent from `--primary`; its hard-coded dark title repainted.
   - **js-store-locator**: no variables; keeps its own light panel, readable in dark mode. Its
-    Leaflet tiles and stylesheet come from OpenStreetMap and unpkg (a CSP must allow them).
-- jsfaq and js-media-gallery depend on jExperience, which a site enabling them gets too: that is
-  why the add-ons have their own demo site. None of them is covered by the site's RGAA statement.
+    Leaflet tiles come from OpenStreetMap (a CSP must allow the tile server); the reviewed version
+    serves the Leaflet stylesheet from the module.
+- None of the add-ons depends on jExperience (an earlier uncommitted `module-dependencies` line
+  listed it; no code used it, and it was removed on 2026-10-01). They have their own demo site
+  anyway, so classic-dev shows the template set's own content (plus Formidable for its contact
+  form). The demo site's RGAA statement does not cover them; each module was reviewed on its own
+  (security scan, Cortex lens, RGAA 4.1.2), fixes on its `feat/accessibility-and-review` branch.
 
 ## Accessibility (RGAA 4.1.2)
 
@@ -336,5 +340,4 @@ of both, linked from the footer.
 
 ## Open questions
 
-None open. Possible next steps: screen-reader testing (NVDA + Firefox, VoiceOver + Safari), a
-contact form on classic-dev (Formidable, which does not bring jExperience).
+None open. Possible next step: screen-reader testing (NVDA + Firefox, VoiceOver + Safari).

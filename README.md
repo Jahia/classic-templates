@@ -114,12 +114,18 @@ See the [accessibility](docs/guides/accessibility.md) and [search engines](docs/
 Drop them in a **Free zone** section. The template set does not depend on them. The site must
 enable each module, and `src/templates/addons.css` maps their styles onto the theme.
 
-| Module                             | Verified                           | Notes                                                                                |
-| ---------------------------------- | ---------------------------------- | ------------------------------------------------------------------------------------ |
-| Formidable (`formidable-elements`) | Forms placed with a Form reference | Fields, labels and messages styled by the template set                               |
-| `jsfaq`                            | FAQ with search and tags           | Depends on jExperience                                                               |
-| `js-media-gallery`                 | Image gallery                      | Depends on jExperience                                                               |
-| `js-store-locator`                 | Store list and map                 | Keeps its own light panel; the map loads OpenStreetMap tiles and an unpkg stylesheet |
+| Module                             | Verified                                          | Notes                                                                                        |
+| ---------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Formidable (`formidable-elements`) | Forms placed with a Form reference                | Fields, labels and messages styled by the template set                                       |
+| `jsfaq`                            | FAQ with search, tag filter and expand / collapse | Heading level chosen per FAQ; schema.org FAQPage                                             |
+| `js-media-gallery`                 | Image gallery                                     | External players (YouTube, Vimeo, ...) need the site's content security policy to allow them |
+| `js-store-locator`                 | Store search, list, map and store pages           | Keeps its own light panel; the map loads OpenStreetMap tiles                                 |
+
+None of them needs jExperience: enabling them on a site adds only the module itself. jsfaq,
+js-media-gallery and js-store-locator were checked with the Jahia security scan, the Cortex review
+lens and an RGAA 4.1.2 audit on the `classic-addons` demo site, in English and French, light and
+dark; their fixes live on each module's `feat/accessibility-and-review` branch until they are
+merged.
 
 See the [add-ons guide](docs/guides/add-ons.md).
 
