@@ -309,7 +309,9 @@ const filterTags = (html: string, prefix: string): string => {
   return kept + out.slice(at);
 };
 
-const TAG = /<(\/?)([a-z][a-z0-9]*)([^<>]*)>/g;
+/** A tag of the filter's own output. The lookahead keeps the name from giving characters back to
+ * the attributes, so a `<` with no closing `>` fails in linear time. Exported for the tests. */
+export const TAG = /<(\/?)([a-z][a-z0-9]*)(?![a-z0-9])([^<>]*)>/g;
 const HEADING = /^h[1-6]$/;
 const clamp = (level: number) => Math.min(Math.max(level, 2), 6);
 

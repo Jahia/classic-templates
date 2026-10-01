@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { isSafeRichTextUrl, sanitizeRichText, sanitizeRichTextWithReport } from "./sanitize.js";
+import {
+  TAG,
+  isSafeRichTextUrl,
+  sanitizeRichText,
+  sanitizeRichTextWithReport,
+} from "./sanitize.js";
 
 describe("sanitizeRichText", () => {
   it("keeps editorial markup", () => {
@@ -363,5 +368,27 @@ describe("isSafeRichTextUrl - characters the browser ignores", () => {
     expect(isSafeRichTextUrl("/a/\u{10001}")).toBe(true); // low 16 bits: U+0001
     expect(isSafeRichTextUrl("/a/\u{1005C}")).toBe(true); // low 16 bits: "\"
     expect(sanitizeRichText('<a href="/a/\u{1F600}">x</a>')).toBe('<a href="/a/\u{1F600}">x</a>');
+  });
+});
+
+describe("TAG", () => {
+  const matches = (pattern: RegExp, html: string) => [...html.matchAll(pattern)].map((m) => [...m]);
+  const previous = /<(\/?)([a-z][a-z0-9]*)([^<>]*)>/g;
+
+  it("finds the same tags as the pattern without the lookahead", () => {
+    for (const html of [
+      '<p>a</p><h2 id="x">b</h2><br /><img src="/a.png" alt="">',
+      '<table><tr><th scope="col">a</th></tr></table><h10>x</h10>',
+      "<a1b2 c3>d</a1b2><p<b>c</b>",
+      "<abc",
+    ]) {
+      expect(matches(TAG, html)).toEqual(matches(previous, html));
+    }
+  });
+
+  it("rejects an unclosed tag in linear time", () => {
+    const started = performance.now();
+    expect(matches(TAG, "<a" + "b".repeat(100_000))).toEqual([]);
+    expect(performance.now() - started).toBeLessThan(200);
   });
 });
