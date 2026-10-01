@@ -38,5 +38,9 @@
   "http://localhost:8080/sites/classic-dev/contents/news/launch.html",
   "http://localhost:8080/sites/classic-dev/contents/articles/contract.html",
   "http://localhost:8080/fr/sites/classic-dev/contents/news/launch.html",
-  "http://localhost:8080/fr/sites/classic-dev/contents/articles/contract.html"
+  "http://localhost:8080/fr/sites/classic-dev/contents/articles/contract.html",
+  "http://localhost:8080/sites/classic-dev/home/practical.html",
+  "http://localhost:8080/fr/sites/classic-dev/home/practical.html",
+  "http://localhost:8080/sites/classic-dev/contents/places/lyon.html",
+  "http://localhost:8080/fr/sites/classic-dev/contents/places/lyon.html"
 ]

@@ -18,8 +18,14 @@ Nodes that already exist are left alone. Same environment and session rules as s
 --contact-only only enables formidable-elements and adds the contact
 form to the site's existing contact page, then publishes the new nodes: this is how classic-dev
 gets the form its accessibility statement points to.
+
+--showcase enables jsfaq, js-media-gallery and js-store-locator on the site (classic-dev) and adds
+a "Practical information" page written in the demo studio's voice: a FAQ about visiting and
+workshops, the studio's colour studies as a gallery, and a locator of the studio and the partner
+rooms used in Paris and Geneva. Only the new page and the new stores folder are published.
 """
 import argparse
+import json
 import importlib.util
 import time
 from pathlib import Path
@@ -50,8 +56,9 @@ def create_site(key):
 
 
 def zone(page, name, title):
+    """A free zone at page width; no title when the add-on renders its own section heading."""
     return add_content(ensure_area(page, "main", "ctpl:pageArea"), name, "ctpl:freeZone",
-                       i18n("jcr:title", title) + [{"name": "width", "value": "container"}])
+                       (i18n("jcr:title", title) if title else []) + [{"name": "width", "value": "container"}])
 
 
 def seed_faq(site, home):
@@ -140,13 +147,139 @@ def seed_contact(site, home):
     return forms
 
 
+SHOWCASE_FAQ = (
+    ("getting-here", {"en": "How do I get to the studio?", "fr": "Comment venir au studio ?"},
+     {"en": "<p>Take metro line C to Croix-Rousse, then walk five minutes. Buses C13 and 38 stop at Croix-Rousse too. "
+            "Parking is rare on the plateau, so we recommend public transport or the bike-share station at the corner "
+            "of the street.</p>",
+      "fr": "<p>Prenez la ligne C du métro jusqu'à Croix-Rousse, puis cinq minutes à pied. Les bus C13 et 38 s'arrêtent "
+            "aussi à Croix-Rousse. Le stationnement est rare sur le plateau : nous conseillons les transports en commun "
+            "ou la station de vélos en libre-service au coin de la rue.</p>"}),
+    ("access", {"en": "Is the studio accessible to wheelchair users?", "fr": "Le studio est-il accessible en fauteuil roulant ?"},
+     {"en": "<p>Yes. The training room is on the ground floor, with step-free access and an accessible toilet. Tell us "
+            "before your visit if you need anything else, such as a sign language interpreter or printed material in "
+            "large type.</p>",
+      "fr": "<p>Oui. La salle de formation est de plain-pied, avec une entrée sans marche et des toilettes accessibles. "
+            "Prévenez-nous avant votre venue si vous avez besoin d'autre chose, comme un interprète en langue des signes "
+            "ou des documents imprimés en gros caractères.</p>"}),
+    ("hours", {"en": "When is the studio open?", "fr": "Quand le studio est-il ouvert ?"},
+     {"en": "<p>Monday to Friday, from 9:00 to 18:00, except on public holidays. Workshops start at 9:30; come a few "
+            "minutes early for coffee.</p>",
+      "fr": "<p>Du lundi au vendredi, de 9 h à 18 h, sauf les jours fériés. Les ateliers commencent à 9 h 30 : venez "
+            "quelques minutes plus tôt pour le café.</p>"}),
+    ("outside-lyon", {"en": "Do you run workshops outside Lyon?", "fr": "Organisez-vous des ateliers hors de Lyon ?"},
+     {"en": "<p>Yes. A trainer can come to your premises, and for clients without a training room we book partner rooms "
+            "in Paris and Geneva. The three places are on the map below. Every workshop is also available online.</p>",
+      "fr": "<p>Oui. Un formateur peut venir dans vos locaux et, pour les clients sans salle de formation, nous "
+            "réservons des salles partenaires à Paris et à Genève. Les trois lieux figurent sur la carte ci-dessous. "
+            "Chaque atelier existe aussi à distance.</p>"}),
+    ("equipment", {"en": "What should I bring to a workshop?", "fr": "Que faut-il apporter à un atelier ?"},
+     {"en": "<p>Nothing but your questions: laptops are provided in our rooms, already connected to a practice site. If "
+            "you prefer your own computer, any recent browser will do.</p>",
+      "fr": "<p>Seulement vos questions : des ordinateurs sont fournis dans nos salles, déjà connectés à un site "
+            "d'exercice. Si vous préférez votre propre ordinateur, un navigateur récent suffit.</p>"}),
+)
+
+SHOWCASE_PLACES = (
+    ("lyon", {"en": "Classic Dev studio", "fr": "Studio Classic Dev"},
+     {"en": "Our studio and training room on the Croix-Rousse plateau, in a former silk workshop.",
+      "fr": "Notre studio et sa salle de formation sur le plateau de la Croix-Rousse, dans un ancien atelier de soyeux."},
+     "27 rue des Tisseurs-Bleus", "Lyon", "69004", "FR", 45.7745, 4.8310, "+33 4 00 00 00 00"),
+    ("paris", {"en": "Partner room, Paris", "fr": "Salle partenaire, Paris"},
+     {"en": "A training room for eight near Gare de Lyon, booked for our clients' workshops in Paris.",
+      "fr": "Une salle de formation pour huit personnes près de la gare de Lyon, réservée pour les ateliers de nos clients parisiens."},
+     "14 rue de Bercy", "Paris", "75012", "FR", 48.8443, 2.3740, "+33 4 00 00 00 00"),
+    ("geneva", {"en": "Partner room, Geneva", "fr": "Salle partenaire, Genève"},
+     {"en": "A meeting room near Cornavin station, booked for our clients' workshops in Switzerland.",
+      "fr": "Une salle de réunion près de la gare Cornavin, réservée pour les ateliers de nos clients suisses."},
+     "8 rue de Lausanne", "Genève", "1201", "CH", 46.2105, 6.1430, "+33 4 00 00 00 00"),
+)
+
+SHOWCASE_IMAGES = ("abstract-violet.jpg", "abstract-sand.jpg", "abstract-teal.jpg",
+                   "abstract-rose.jpg", "abstract-slate.jpg", "abstract-gold.jpg")
+
+
+def seed_showcase(site, home):
+    """The "Practical information" page of classic-dev: the three reviewed add-ons in free zones."""
+    page = f"{home}/practical"
+    add_page(home, "practical", {"en": "Practical information", "fr": "Infos pratiques"},
+             description={"en": "Visiting the Classic Dev studio in Lyon: answers to common questions, the studio's "
+                                "colour studies and a map of the places where we hold workshops.",
+                          "fr": "Venir au studio Classic Dev à Lyon : réponses aux questions fréquentes, études de "
+                                "couleurs du studio et carte des lieux où se tiennent nos ateliers."})
+    main = ensure_area(page, "main", "ctpl:pageArea")
+    add_content(main, "intro", "ctpl:richText", i18n("body", {
+        "en": "<p>Everything you need before coming to a meeting or a workshop: how to reach the studio, what to "
+              "bring, and where we meet clients outside Lyon.</p>",
+        "fr": "<p>Tout ce qu'il faut savoir avant une réunion ou un atelier : comment venir au studio, quoi "
+              "apporter, et où nous retrouvons nos clients hors de Lyon.</p>"}))
+
+    faq = add_content(zone(page, "questions", {"en": "Questions before your visit", "fr": "Questions avant votre venue"}),
+                      "faq", "jsfaqnt:faqPage",
+                      i18n("jcr:title", {"en": "Visits and workshops", "fr": "Visites et ateliers"})
+                      + [{"name": "headingLevel", "value": "3"}])
+    for name, q, a in SHOWCASE_FAQ:
+        add_content(faq, name, "jsfaqnt:faqItem", i18n("question", q) + i18n("answer", a) + i18n("jcr:title", q))
+
+    images = [uuid_at(f"{site}/files/demo/{name}") for name in SHOWCASE_IMAGES]
+    # The gallery's title is an h2 with no level option: its zone has no heading of its own.
+    add_content(zone(page, "studies", None), "gallery", "jsmediagallerynt:imageGallery",
+                i18n("jcr:title", {"en": "Colour studies from the studio walls", "fr": "Études de couleurs aux murs du studio"})
+                + [{"name": "imgGalleryType", "value": "imgFile"},
+                   {"name": "imagesList", "type": "WEAKREFERENCE", "values": images}],
+                ["jsmediagallerymix:imagesLink"])
+
+    folder = f"{site}/contents/places"
+    add_content(f"{site}/contents", "places", "jnt:contentFolder",
+                i18n("jcr:title", {"en": "Workshop places", "fr": "Lieux des ateliers"}))
+    for name, title, description, street, city, postal, country, lat, lon, phone in SHOWCASE_PLACES:
+        add_content(folder, name, "jsstorelocnt:store",
+                    i18n("jcr:title", title) + i18n("name", title) + i18n("description", description)
+                    + [{"name": "streetAddress", "value": street}, {"name": "addressLocality", "value": city},
+                       {"name": "postalCode", "value": postal}, {"name": "addressCountry", "value": country},
+                       {"name": "latitude", "type": "DOUBLE", "value": str(lat)},
+                       {"name": "longitude", "type": "DOUBLE", "value": str(lon)},
+                       {"name": "telephone", "value": phone},
+                       {"name": "openingHours", "values": [
+                           json.dumps({"dayOfWeek": day, "opens": "09:00", "closes": "18:00"})
+                           for day in ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")]}])
+    add_content(zone(page, "places", {"en": "Where we hold workshops", "fr": "Où se tiennent nos ateliers"}),
+                "locator", "jsstorelocnt:storeLocatorApp",
+                i18n("jcr:title", {"en": "Workshop places", "fr": "Lieux des ateliers"})
+                + i18n("welcomeTitle", {"en": "Our studio and partner rooms", "fr": "Notre studio et nos salles partenaires"})
+                + i18n("welcomeMessage", {"en": "Pick a place on the map or in the list to see its address and how to get there.",
+                                          "fr": "Choisissez un lieu sur la carte ou dans la liste pour voir son adresse et comment y aller."})
+                + [{"name": "storesFolder", "type": "WEAKREFERENCE", "value": uuid_at(folder)}])
+    # Published when not live yet, so a run interrupted after creating them still publishes them.
+    return [path for path in (page, folder) if not in_live(path)]
+
+
+def in_live(path):
+    try:
+        gql("query($p:String!){jcr(workspace:LIVE){nodeByPath(path:$p){uuid}}}", {"p": path})
+        return True
+    except RuntimeError as error:
+        if "PathNotFoundException" in str(error):
+            return False
+        raise
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--site", default="classic-addons")
     ap.add_argument("--contact-only", action="store_true")
+    ap.add_argument("--showcase", action="store_true")
     args = ap.parse_args()
     site = f"/sites/{args.site}"
     home = f"{site}/home"
+    if args.showcase:
+        for module in ADDONS[:3]:
+            provisioning(f'- enable: "{module}"\n  site: "{args.site}"\n', "application/yaml")
+        for path in seed_showcase(site, home):
+            gql("mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(languages:[\"en\",\"fr\"],"
+                "publishSubNodes:true,includeSubTree:true)}}}", {"s": path})
+        print(f"practical information page seeded on {site} (new nodes published)")
+        return
     if args.contact_only:
         provisioning(f'- enable: "formidable-elements"\n  site: "{args.site}"\n', "application/yaml")
         forms = seed_contact(site, home)
