@@ -37,5 +37,5 @@ before changing a view.
 3. No TypeScript import from classic-templates (separate bundle): small helpers are copied into `src/lib` and kept in step (`sanitize.ts` is the classic-templates sanitizer with the `ctrv-` prefixes).
 4. Views read classic-templates semantic tokens only (`var(--ctpl-color-*)`...), never a literal or a primitive (`yarn check:tokens`).
 5. Every visible string is contributed content or a locale key in `settings/locales` (EN and FR); every type and field has an EN and FR label and tooltip.
-6. The page's only `<h1>` is the title of a main resource in its `fullPage` view (as classic-templates news); sections start at `h2` and follow the column / free-zone rule.
+6. The page's only `<h1>` is the title of a main resource in its `fullPage` view (as classic-templates news); sections start at `h2` and follow the column / tab / free-zone rule.
 7. Deploy after each change: `yarn build && yarn deploy`. Never run `yarn dev` from an agent. Never touch the `classic-dev` site.

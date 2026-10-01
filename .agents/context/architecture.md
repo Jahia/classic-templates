@@ -35,9 +35,12 @@ region, maxItems, noResultText).
   parameter. Both item types implement these views and read that parameter. Its sort criteria
   (publication date, created, modified, title) apply to the travel types too; price and end-of-sale
   sorting is the fare list's job.
-- **Headings.** Sections are `h2`, `h3` inside a titled `ctpl:column` row or a titled
-  `ctpl:freeZone` (`lib/Heading.tsx`, same rule as classic-templates). Card headings come from the
-  list (`headingLevel`).
+- **Headings.** Sections are `h2` in a page area and step down one level under each container that
+  shows a heading: a titled `ctpl:columns` row (for its columns), a `ctpl:tab` (one below its label,
+  itself one below a titled `ctpl:tabs`) and a titled `ctpl:freeZone`. Containers nest, so the level
+  is worked out up the tree and clamped to `h6`; each container is a cache dependency
+  (`lib/level.ts`, unit tested, wired in `lib/Heading.tsx`; same rule as classic-templates). Card
+  headings come from the list (`headingLevel`).
 - **Tokens.** Views read `--ctpl-*` semantic tokens. Prices use
   `var(--ctpl-color-highlight, var(--ctpl-color-accent))`: the highlight role is newer than
   classic-templates 0.1.2.

@@ -10,6 +10,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { Cta } from "../../../lib/Cta.js";
 import { Heading, sectionLevel, useHeadingLevel } from "../../../lib/Heading.js";
 import { Image } from "../../../lib/Image.js";
+import { innerLevel } from "../../../lib/level.js";
 import { readString } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
 import { Section } from "../../../lib/Section.js";
@@ -26,8 +27,10 @@ const toolLevel = (tool: JCRNodeWrapper, renderContext: Parameters<typeof sectio
   try {
     const section = tool.getParent() as JCRNodeWrapper;
     server.render.addCacheDependency({ node: section }, renderContext);
-    const level = sectionLevel(section, renderContext);
-    return readString(section, "jcr:title") ? level + 1 : level;
+    return innerLevel(
+      sectionLevel(section, renderContext),
+      Boolean(readString(section, "jcr:title")),
+    );
   } catch {
     return 3;
   }

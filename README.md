@@ -66,7 +66,8 @@ page says the sale has ended; edit mode shows how many offers each list leaves o
 
 - One `<h1>` per page: the city or the offer name on its own page (the page template of
   classic-templates renders the rest of the page). Sections start at `h2`, one level lower inside a
-  titled column or free zone; card headings follow their list.
+  titled column row, a tab (under its label) or a titled free zone, nested containers included;
+  card headings follow their list.
 - Prices read well aloud: "From HKD 1,280" for the eye, "From 1,280 Hong Kong dollars" for screen
   readers. Dates are written in the page's language.
 - Cards are whole-card links named by the city, with the cabin and departure city added for screen

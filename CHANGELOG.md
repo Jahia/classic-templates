@@ -21,6 +21,10 @@ First version, a companion of the classic-templates template set.
 - Destinations and fare offers are listable by the classic-templates content list
   (`ctplmix:listable`), and every section can be placed in classic-templates page areas, columns and
   free zones.
+- Section headings follow the classic-templates outline in nested containers: one level below a
+  titled columns row, below the label of a classic-templates tab (`ctpl:tab`, itself one below a
+  titled `ctpl:tabs`) and below a titled free zone, worked out up the tree and kept between h2 and
+  h6, card and tool headings included.
 - Prices written for the eye with the currency code and for screen readers with the currency name;
   dates in the page's language.
 - schema.org JSON-LD for destination pages (`TouristDestination`) and offer pages (`Offer`), next

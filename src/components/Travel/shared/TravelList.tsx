@@ -3,6 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { ReactNode } from "react";
 import { Cta } from "../../../lib/Cta.js";
 import { Heading, useHeadingLevel } from "../../../lib/Heading.js";
+import { innerLevel } from "../../../lib/level.js";
 import { useT } from "../../../lib/i18n.js";
 import { pathRegex } from "../../../lib/query.js";
 import { Section } from "../../../lib/Section.js";
@@ -83,7 +84,7 @@ export const TravelList = ({
                 <Render
                   node={item}
                   view="card"
-                  parameters={{ headingLevel: String(title ? level + 1 : level) }}
+                  parameters={{ headingLevel: String(innerLevel(level, Boolean(title))) }}
                 />
               </li>
             ))}
