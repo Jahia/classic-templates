@@ -13,7 +13,8 @@ const originOf = (renderContext: RenderContext): string => {
   const scheme = request.getScheme();
   const port = request.getServerPort();
   const standard = (scheme === "https" && port === 443) || (scheme === "http" && port === 80);
-  return `${scheme}://${request.getServerName()}${standard || port <= 0 ? "" : `:${port}`}`;
+  const portSuffix = standard || port <= 0 ? "" : `:${port}`;
+  return `${scheme}://${request.getServerName()}${portSuffix}`;
 };
 
 /** The header singleton, whose brand name and logo name the Organization. */

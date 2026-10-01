@@ -5,7 +5,7 @@ import { readString as read } from "./props.js";
 
 import { isSafeExternalUrl } from "./urls.js";
 
-export { isSafeExternalUrl };
+export { isSafeExternalUrl } from "./urls.js";
 
 export interface ResolvedLink {
   href: string;

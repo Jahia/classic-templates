@@ -152,6 +152,6 @@ export const buildGraph = (page: PageData): Json => {
  */
 export const jsonForScript = (data: unknown): string =>
   JSON.stringify(data)
-    .replace(/</g, "\\u003c")
-    .replace(/\u2028/g, "\\u2028")
-    .replace(/\u2029/g, "\\u2029");
+    .replaceAll("<", String.raw`\u003c`)
+    .replaceAll("\u2028", String.raw`\u2028`)
+    .replaceAll("\u2029", String.raw`\u2029`);

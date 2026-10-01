@@ -113,9 +113,8 @@ export const buildListQuery = ({
   const conditions = [`ISDESCENDANTNODE(item, ${literal(start.getPath())})`];
   const ids = (categories ?? []).filter((id) => UUID.test(id));
   if (ids.length > 0) {
-    conditions.push(
-      `(${ids.map((id) => `item.[j:defaultCategory] = ${literal(id)}`).join(" OR ")})`,
-    );
+    const inCategory = ids.map((id) => `item.[j:defaultCategory] = ${literal(id)}`).join(" OR ");
+    conditions.push(`(${inCategory})`);
   }
   return `SELECT * FROM [${type}] AS item WHERE ${conditions.join(" AND ")} ORDER BY item.[${sort}] ${dir}`;
 };
@@ -196,4 +195,4 @@ export const excludedIds = (exclude?: JCRNodeWrapper[]): Set<string> => {
 };
 
 /** Escapes a path for use inside a cache-flush regular expression. */
-export const pathRegex = (path: string) => path.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+export const pathRegex = (path: string) => path.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
