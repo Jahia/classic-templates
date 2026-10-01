@@ -65,10 +65,10 @@ they follow the theme's colours and the light or dark scheme.
 - **Formidable**: fields, labels, help texts, messages and buttons follow the theme.
 - **jsfaq**: follows the theme's colours. Its focus highlight is replaced by the site's focus ring,
   and its white surfaces are repainted so it reads well in dark mode.
-- **js-media-gallery**: takes the theme's accent colour, and its title is repainted so it stays
-  readable in dark mode.
-- **js-store-locator**: keeps its own light panel in every theme. It stays readable in dark mode
-  but does not take the theme's colours.
+- **js-media-gallery**: takes the theme's text, surfaces, accent and focus colours; video frames and
+  overlays keep their own dark backdrop.
+- **js-store-locator**: its panel, list, search field, map controls and open or closed labels take
+  the theme's colours, in light and dark.
 
 Limits:
 

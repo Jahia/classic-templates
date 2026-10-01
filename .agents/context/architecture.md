@@ -298,12 +298,16 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   - **Formidable** (`formidable-elements`): fields, labels, help, messages styled by the template
     set as its docs intend (visible labels, `border-strong` 3:1 borders, the site focus ring);
     forms placed with a Form reference in a free zone.
-  - **jsfaq**: variables mapped; its 30% focus tint replaced by the site ring (RGAA 10.7); three
-    white surfaces (wrapper, search field, item) repainted.
-  - **js-media-gallery**: accent from `--primary`; its hard-coded dark title repainted.
-  - **js-store-locator**: no variables; keeps its own light panel, readable in dark mode. Its
-    Leaflet tiles come from OpenStreetMap (a CSP must allow the tile server); the reviewed version
-    serves the Leaflet stylesheet from the module.
+  - **jsfaq**: its `--jsfaq-*` variables (surfaces and control borders included) mapped; its own
+    focus tint replaced by the site ring (RGAA 10.7); only its width cap is overridden by class name.
+  - **js-media-gallery**: its `--jsmg-*` variables mapped (text, surfaces, accent, focus, radius,
+    shadows); media frames, overlays and scrims keep their own dark values.
+  - **js-store-locator**: its `--jsstoreloc-*` variables mapped, and `--jsstoreloc-color-scheme` set
+    from the site scheme (`light dark`, or the forced one from `data-ctpl-scheme`), so the panel
+    follows dark mode; a value of `inherit` would not work: in a custom property it inherits the
+    property itself. Leaflet tiles come from OpenStreetMap (a CSP must allow the tile server).
+  - These variables come with the reviewed versions of the three modules (their
+    `feat/accessibility-and-review` branches); older versions keep their own colours.
 - None of the add-ons depends on jExperience (an earlier uncommitted `module-dependencies` line
   listed it; no code used it, and it was removed on 2026-10-01). They have their own demo site
   anyway, so classic-dev shows the template set's own content (plus Formidable for its contact

@@ -59,7 +59,9 @@ def seed_faq(site, home):
     add_page(home, "faq", {"en": "FAQ", "fr": "FAQ"},
              description={"en": "Frequently asked questions.", "fr": "Questions fréquentes."})
     faq = add_content(zone(page, "questions", {"en": "Questions and answers", "fr": "Questions et réponses"}),
-                      "faq", "jsfaqnt:faqPage", i18n("jcr:title", {"en": "Frequently asked questions", "fr": "Questions fréquentes"}))
+                      "faq", "jsfaqnt:faqPage", i18n("jcr:title", {"en": "Frequently asked questions", "fr": "Questions fréquentes"})
+                      # Under the free zone's h2: the FAQ title is an h3, its questions follow.
+                      + [{"name": "headingLevel", "value": "3"}])
     for name, q, a in (
         ("theme", {"en": "How do I change the theme?", "fr": "Comment changer de thème ?"},
          {"en": "<p>Open the site in jContent, edit the site and pick a theme and a colour scheme.</p>",

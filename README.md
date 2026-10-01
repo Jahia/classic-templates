@@ -119,7 +119,7 @@ enable each module, and `src/templates/addons.css` maps their styles onto the th
 | Formidable (`formidable-elements`) | Forms placed with a Form reference                                                                                     | Fields, labels and messages styled by the template set                                                                         |
 | `jsfaq`                            | FAQ with search, tag filter and expand / collapse                                                                      | Heading level chosen per FAQ; schema.org FAQPage                                                                               |
 | `js-media-gallery`                 | Image galleries (picked or from a folder: carousel, masonry, grid), video gallery, featured and list views, video hero | Internal videos take captions and a transcript; YouTube and Vimeo play in frames the site's content security policy must allow |
-| `js-store-locator`                 | Store search, list, map and store pages                                                                                | Keeps its own light panel; the map loads OpenStreetMap tiles                                                                   |
+| `js-store-locator`                 | Store search, list, map and store pages                                                                                | Follows the theme in light and dark; the map loads OpenStreetMap tiles                                                         |
 
 None of them needs jExperience: enabling them on a site adds only the module itself. jsfaq,
 js-media-gallery and js-store-locator were checked with the Jahia security scan, the Cortex review

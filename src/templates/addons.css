@@ -8,15 +8,6 @@
  * variables (js-store-locator, js-media-gallery beyond its accent) keep their own light look.
  */
 
-/* ---- js-media-gallery: its title is hard-coded dark (#1a1a1a) and disappears in dark mode. Its
-   classes are generic ("_root_", "_title_"), so the rule is tied to its structure: the title h2
-   right under the gallery root. Not a rule for every add-on heading: js-store-locator keeps a light
-   panel of its own, where the theme's text colour would be light on light. -------------------- */
-.ctpl-addon [class*="_root_"] > h2[class*="_title_"] {
-  color: var(--ctpl-color-text);
-  font-family: var(--ctpl-font-heading);
-}
-
 /* ---- Formidable (formidable-elements): buttons are styled unscoped, because the message's button
    ("new form", "try again") sits beside the form, so their variables go on :root. ------------- */
 :root {
@@ -107,8 +98,11 @@
   color: var(--ctpl-color-text);
 }
 
-/* ---- jsfaq: its :root defaults are overridden inside the zone (a class beats :root). ------- */
+/* ---- jsfaq, js-media-gallery, js-store-locator: each reads its own custom properties with its
+   previous colours as fallbacks; inside the zone they point at the site tokens (a class beats the
+   modules' :root defaults). ------------------------------------------------------------------- */
 .ctpl-addon {
+  /* jsfaq */
   --jsfaq-font-family: var(--ctpl-font-body);
   --jsfaq-text-color: var(--ctpl-color-text);
   --jsfaq-text-secondary: var(--ctpl-color-text-muted);
@@ -117,35 +111,62 @@
   --jsfaq-accent-hover: var(--ctpl-color-accent-hover);
   --jsfaq-accent-light: var(--ctpl-color-accent-subtle);
   --jsfaq-border-color: var(--ctpl-color-border);
+  --jsfaq-control-border: var(--ctpl-color-border-strong);
+  --jsfaq-surface: transparent;
+  --jsfaq-surface-raised: var(--ctpl-color-surface-raised);
   --jsfaq-radius: var(--ctpl-radius-md);
   --jsfaq-shadow: var(--ctpl-shadow-sm);
   --jsfaq-shadow-lg: var(--ctpl-shadow-md);
   --jsfaq-spacing: var(--ctpl-space-5);
   --jsfaq-featured-bg: var(--ctpl-color-warning-surface);
   --jsfaq-featured-color: var(--ctpl-color-warning);
-  /* Its own ring is a 30% tint without an outline: the site ring is visible (RGAA 10.7). */
   --jsfaq-focus-ring: 0 0 0 var(--ctpl-border-width-accent) var(--ctpl-color-focus);
   --jsfaq-tag-bg: var(--ctpl-color-surface-raised);
   --jsfaq-tag-active-bg: var(--ctpl-color-accent);
 
-  /* ---- js-media-gallery reads the host's --primary as its accent. ---- */
-  --primary: var(--ctpl-color-accent);
+  /* js-media-gallery (media frames, overlays and scrims keep their own dark values) */
+  --jsmg-color-page-text: var(--ctpl-color-text);
+  --jsmg-color-text: var(--ctpl-color-text);
+  --jsmg-color-text-muted: var(--ctpl-color-text-muted);
+  --jsmg-color-surface: var(--ctpl-color-surface-raised);
+  --jsmg-color-surface-sunken: var(--ctpl-color-surface-sunken);
+  --jsmg-color-accent: var(--ctpl-color-accent);
+  --jsmg-color-focus: var(--ctpl-color-focus);
+  --jsmg-radius: var(--ctpl-radius-md);
+  --jsmg-radius-lg: var(--ctpl-radius-lg);
+  --jsmg-shadow-sm: var(--ctpl-shadow-sm);
+  --jsmg-shadow-md: var(--ctpl-shadow-md);
+
+  /* js-store-locator: its panel follows the site scheme instead of staying light (the value must
+     be a real scheme: "inherit" in a custom property inherits the property, not color-scheme) */
+  --jsstoreloc-color-scheme: light dark;
+  --jsstoreloc-font-family: var(--ctpl-font-body);
+  --jsstoreloc-color-text: var(--ctpl-color-text);
+  --jsstoreloc-color-text-muted: var(--ctpl-color-text-muted);
+  --jsstoreloc-color-surface: var(--ctpl-color-surface-raised);
+  --jsstoreloc-color-surface-alt: var(--ctpl-color-surface-sunken);
+  --jsstoreloc-color-border: var(--ctpl-color-border);
+  --jsstoreloc-color-border-strong: var(--ctpl-color-border-strong);
+  --jsstoreloc-color-accent: var(--ctpl-color-accent);
+  --jsstoreloc-color-accent-subtle: var(--ctpl-color-accent-subtle);
+  --jsstoreloc-color-focus: var(--ctpl-color-focus);
+  --jsstoreloc-color-open-text: var(--ctpl-color-success);
+  --jsstoreloc-color-open-bg: var(--ctpl-color-success-surface);
+  --jsstoreloc-color-closed-text: var(--ctpl-color-danger);
+  --jsstoreloc-color-closed-bg: var(--ctpl-color-danger-surface);
+  --jsstoreloc-radius: var(--ctpl-radius-md);
+  --jsstoreloc-shadow: var(--ctpl-shadow-sm);
 }
-/* jsfaq paints three surfaces white outside its variables (measured: the wrapper, the search
-   field, each item). Its classes are CSS-module hashed ("_jsfaq-item_rhlsc_285"): the local name
-   is stable across its builds, the hash is not, so the rules match on the name, tied to the
-   element so that "_jsfaq-item__toggle_..." children are left alone. */
+[data-ctpl-scheme="light"] .ctpl-addon {
+  --jsstoreloc-color-scheme: light;
+}
+[data-ctpl-scheme="dark"] .ctpl-addon {
+  --jsstoreloc-color-scheme: dark;
+}
+/* jsfaq caps its width and pads itself; inside a free zone the zone sets the width. Its classes
+   are CSS-module hashed ("_jsfaq-ssr-wrapper_rhlsc_23"): the rule matches the stable local name,
+   tied to the element. */
 .ctpl-addon section[class*="_jsfaq-ssr-wrapper_"] {
   max-width: none;
   padding-inline: 0;
-  background: transparent;
-}
-.ctpl-addon input[class*="_jsfaq__search-input_"],
-.ctpl-addon article[class*="_jsfaq-item_"] {
-  background: var(--ctpl-color-surface-raised);
-}
-.ctpl-addon [class*="_jsfaq-tag--active_"],
-.ctpl-addon [class*="_jsfaq-tag--active_"]:hover {
-  border-color: var(--ctpl-color-accent);
-  color: var(--ctpl-color-text-on-accent);
 }
