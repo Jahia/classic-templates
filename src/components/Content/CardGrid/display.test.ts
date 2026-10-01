@@ -6,7 +6,7 @@ describe("card grid display", () => {
     expect(displayOf("iconTiles")).toBe("iconTiles");
     expect(displayOf("logos")).toBe("logos");
     expect(displayOf("cards")).toBe("cards");
-    expect(displayOf(undefined)).toBe("cards");
+    expect(displayOf()).toBe("cards");
     expect(displayOf("")).toBe("cards");
     expect(displayOf("carousel")).toBe("cards");
     expect(displayOf("toString")).toBe("cards");

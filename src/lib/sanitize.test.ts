@@ -380,16 +380,46 @@ describe("isSafeRichTextUrl - characters the browser ignores", () => {
 
 describe("TAG", () => {
   const matches = (pattern: RegExp, html: string) => [...html.matchAll(pattern)].map((m) => [...m]);
-  const previous = /<(\/?)([a-z][a-z0-9]*)([^<>]*)>/g;
 
-  it("finds the same tags as the pattern without the lookahead", () => {
-    for (const html of [
-      '<p>a</p><h2 id="x">b</h2><br /><img src="/a.png" alt="">',
-      '<table><tr><th scope="col">a</th></tr></table><h10>x</h10>',
-      "<a1b2 c3>d</a1b2><p<b>c</b>",
-      "<abc",
-    ]) {
-      expect(matches(TAG, html)).toEqual(matches(previous, html));
+  it("finds every tag with its closing slash, name and attributes", () => {
+    const cases: Array<[string, string[][]]> = [
+      [
+        '<p>a</p><h2 id="x">b</h2><br /><img src="/a.png" alt="">',
+        [
+          ["<p>", "", "p", ""],
+          ["</p>", "/", "p", ""],
+          ['<h2 id="x">', "", "h2", ' id="x"'],
+          ["</h2>", "/", "h2", ""],
+          ["<br />", "", "br", " /"],
+          ['<img src="/a.png" alt="">', "", "img", ' src="/a.png" alt=""'],
+        ],
+      ],
+      [
+        '<table><tr><th scope="col">a</th></tr></table><h10>x</h10>',
+        [
+          ["<table>", "", "table", ""],
+          ["<tr>", "", "tr", ""],
+          ['<th scope="col">', "", "th", ' scope="col"'],
+          ["</th>", "/", "th", ""],
+          ["</tr>", "/", "tr", ""],
+          ["</table>", "/", "table", ""],
+          ["<h10>", "", "h10", ""],
+          ["</h10>", "/", "h10", ""],
+        ],
+      ],
+      [
+        "<a1b2 c3>d</a1b2><p<b>c</b>",
+        [
+          ["<a1b2 c3>", "", "a1b2", " c3"],
+          ["</a1b2>", "/", "a1b2", ""],
+          ["<b>", "", "b", ""],
+          ["</b>", "/", "b", ""],
+        ],
+      ],
+      ["<abc", []],
+    ];
+    for (const [html, expected] of cases) {
+      expect(matches(TAG, html)).toEqual(expected);
     }
   });
 
