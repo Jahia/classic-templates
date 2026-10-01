@@ -192,6 +192,22 @@ def tab(d, p):
         d.line(p(10, y, 22, y), fill=INK, width=w(2))
 
 
+def notice_bar(d, p):
+    d.rectangle(p(2, 11, 30, 21), outline=INK, width=w(2))
+    d.ellipse(p(5, 14, 9, 18), fill=INK)
+    d.line(p(12, 16, 26, 16), fill=INK, width=w(2))
+
+
+def hero_carousel(d, p):
+    d.rectangle(p(5, 6, 27, 22), outline=INK, width=w(2))
+    d.line(p(9, 12, 20, 12), fill=INK, width=w(3))
+    d.line(p(9, 17, 16, 17), fill=INK, width=w(2))
+    d.polygon(p(1, 14, 3, 12, 3, 16), fill=INK)
+    d.polygon(p(31, 14, 29, 12, 29, 16), fill=INK)
+    for x in (12, 16, 20):
+        d.ellipse(p(x - 1, 25, x + 1, 27), fill=INK)
+
+
 ICONS = {
     "ctpl_news": news,
     "ctpl_article": article,
@@ -220,6 +236,8 @@ ICONS = {
     "ctpl_accordionItem": accordion_item,
     "ctpl_tabs": tabs,
     "ctpl_tab": tab,
+    "ctpl_noticeBar": notice_bar,
+    "ctpl_heroCarousel": hero_carousel,
 }
 
 if __name__ == "__main__":

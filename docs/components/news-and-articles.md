@@ -17,7 +17,7 @@ News items and articles are not dropped on pages. You create them in **jContent*
 - News items in **contents > News**.
 - Articles in **contents > Articles**.
 
-Each folder only offers its own type. A page then shows them through a [Content list](content-list.md) or a **Card of an existing item** in a [Card grid](card-grid.md).
+Each folder only offers its own type. A page then shows them through a [Content list](content-list.md) or a **Card of an existing item** in a [Card grid](card-grid.md). Name that page on the folder (**Listing page**) so the items' breadcrumb goes through it.
 
 ## Fields
 
@@ -47,7 +47,7 @@ At its own address, an item shows, in this order:
 5. The body. Its headings start at level 2, under the title.
 6. **Topics**: the item's categories and tags, when it has some.
 
-The site header, footer and breadcrumb surround it. The breadcrumb reads Home > the item's title: the content folder is not shown.
+The site header, footer and breadcrumb surround it. The breadcrumb goes through the page that lists the item when its folder names one (**Listing page**, set on the content folder in jContent), for example Home > News > the item's title; otherwise it reads Home > the item's title. The content folder itself is not shown. See [Breadcrumb](breadcrumb.md#the-page-that-lists-a-folder).
 
 ### Cards and compact rows
 

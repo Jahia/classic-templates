@@ -57,7 +57,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:keyFigure", displayName: "Key figure" },
   ({ value, label, detail }: KeyFigureProps, { renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     if (!value) {
       return renderContext.isEditMode() ? (
         <li className={classes.figure}>

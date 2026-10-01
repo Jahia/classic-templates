@@ -20,6 +20,8 @@ You do not add the header: it already exists, in the header area of the home pag
 
 **You edit it from the home page only.** Open the home page in Page Builder and select the header or one of its parts. On every other page the header is locked, so nobody changes it by accident while editing another page.
 
+The header area can also hold a [notice bar](notice-bar.md), above or below the header, to show the latest notices on every page.
+
 ## Fields
 
 ### Site header

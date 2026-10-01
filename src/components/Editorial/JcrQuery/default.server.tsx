@@ -1,9 +1,9 @@
 import { Render, jahiaComponent, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import type { JCRSiteNode } from "org.jahia.services.content.decorator";
 import { useTranslation } from "react-i18next";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, useHeadingLevel } from "../../../lib/Heading.js";
+import { itemLabelMode } from "../../../lib/itemLabel.js";
 import { languageTag } from "../../../lib/locale.js";
 import {
   type ListResult,
@@ -11,6 +11,7 @@ import {
   isListableType,
   pathRegex,
   runList,
+  startLabelOf,
   typeLabel,
 } from "../../../lib/query.js";
 import { Section } from "../../../lib/Section.js";
@@ -20,12 +21,6 @@ import classes from "./jcr-query.module.css";
 
 /** Editors see how many items match, up to this count. */
 const EDIT_COUNT = 500;
-
-/** The start node as the edit panel names it: the site's title, or its path below the site. */
-const startLabelOf = (start: JCRNodeWrapper, site: JCRSiteNode): string =>
-  start.getPath() === site.getPath()
-    ? site.getTitle() || site.getName()
-    : start.getPath().replace(`${site.getPath()}/`, "");
 
 /**
  * A content list: the news items or articles found under a folder (or page), optionally in given
@@ -43,7 +38,7 @@ const startLabelOf = (start: JCRNodeWrapper, site: JCRSiteNode): string =>
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:jcrQuery", displayName: "Content list" },
   (props: Props, { currentNode, renderContext, jcrSession, currentResource }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const level = useHeadingLevel(currentNode); // hooks before any early return
     const isEdit = renderContext.isEditMode();
     const site = renderContext.getSite();
@@ -81,6 +76,7 @@ jahiaComponent(
     const title = props["jcr:title"];
     const headingId = `ctpl-list-${currentNode.getIdentifier()}`;
     const view = props.layout === "list" ? "compact" : "card";
+    const itemLabel = itemLabelMode(props.itemLabel);
 
     return (
       <Section
@@ -105,6 +101,7 @@ jahiaComponent(
                 direction: props.sortDirection === "asc" ? "asc" : "desc",
                 max,
                 layout: props.layout === "list" ? "list" : "grid",
+                itemLabel,
                 categories: props.filterCategories ?? [],
                 expandedCategories: categories.length,
                 excluded: props.excludeNodes ?? [],
@@ -120,7 +117,7 @@ jahiaComponent(
                   <Render
                     node={item}
                     view={view}
-                    parameters={{ headingLevel: String(title ? level + 1 : level) }}
+                    parameters={{ headingLevel: String(title ? level + 1 : level), itemLabel }}
                   />
                 </li>
               ))}

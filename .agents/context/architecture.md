@@ -30,7 +30,7 @@
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                                                              |
+| Content                                    | `ctpl:heroBanner`, `ctpl:heroCarousel`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                       |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -172,10 +172,14 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
 - **Breadcrumb** (Tier 1, `src/templates/Breadcrumb.tsx`): rendered by the page shell between the
   header and `<main>` (the skip link jumps over it), not a droppable type: it has nothing to
   contribute but page titles. Home first, the page tree down to the current page (marked
-  `aria-current="page"`), a main resource outside the tree (a news item) gets Home > item. None on
-  home. Off for the whole site with `ctplShowBreadcrumb` (site settings, on by default - a missing
+  `aria-current="page"`), a main resource outside the tree (a news item) goes through the page
+  that lists it when its folder names one, else Home > item (see "Breadcrumb of items in content
+  folders" below). None on home. Off for the whole site with `ctplShowBreadcrumb` (site settings, on by default - a missing
   value on older sites counts as on) or per page with `ctplHideBreadcrumb` (page options).
   The trail comes from `breadcrumbOf`, shared with the JSON-LD `BreadcrumbList`, so both agree.
+  The home crumb reads the locale key `breadcrumb.home` (Home / Accueil), not the home page's
+  `jcr:title`, which sites set to a search-engine title; its URL is unchanged. The site map keeps
+  the title.
   Separators are drawn chevrons, so screen readers read no separator text. Every ancestor is a
   cache dependency.
 
@@ -261,10 +265,54 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   panels and keeps each label as a visually hidden heading, so the outline does not change with
   the script. The URL hash selects the tab holding the target (an accordion entry too). The tablist
   is styled by its ARIA roles and states, never a hashed class.
-- **Heading levels in containers** (`lib/Heading.tsx`): `sectionLevel` walks up columns and tabs
-  (a column adds one under a titled row; a tab adds its label's level, one below a titled tabs
-  section, plus one), with every container as a cache dependency, clamped to h6; `headingTag`
-  covers h2 to h6.
+- **Heading levels in containers** (`lib/Heading.tsx`): `sectionLevel` walks up columns, tabs and
+  hero carousels (a column adds one under a titled row; a tab adds its label's level, one below a
+  titled tabs section, plus one; a carousel slide adds one under a titled carousel), with every
+  container as a cache dependency, clamped to h6; `headingTag` covers h2 to h6.
+
+## Notice bar and hero carousel
+
+- **Notice bar** (`ctpl:noticeBar`, `ctplmix:headerComponent` + `heroComponent` + `pageComponent`,
+  listing mixins `jmix:list`/`renderableList`/`cache` like the content list, same form override):
+  the latest 1-10 items (default 3) of a listable type under a start node and/or in categories,
+  newest first, through `runList` (`lib/query.ts`), each a link plus a `<time>`; optional label
+  (`label`, i18n, the region's name, else a hidden "Latest updates") and a "view all" `ctplmix:cta`
+  rendered with the Cta `link` variant (text link, 44 px target). Static list, no rotation (RGAA
+  13.8). A named `<section>` (region), never `<aside>`: in `<main>` a complementary landmark would
+  fail axe `landmark-complementary-is-top-level`, and in the header area it must not be a second
+  banner.
+- **Layout:** one flex row when it fits: label (`flex: 0 1 auto`), items (`flex: 1 1 20rem`, so
+  they take the room left instead of forcing the label and the actions onto rows of their own),
+  actions (`flex: none`, pushed to the end). Long items wrap inside their column, each after a
+  decorative dot; below the 20rem basis the items wrap under the label. At 1366 px the bar of three
+  items is one row (70 px instead of 136), no sideways scroll at 320 px (Cypress).
+- **Header integration:** no change to the header. The header area (`ctpl:headerArea`) already
+  accepts any `ctplmix:headerComponent`, so the bar drops into it beside the `ctpl:siteHeader`
+  singleton (before or after it, the area is orderable), editable on home only like the header,
+  and outside the header's `<header>` landmark.
+- **Dismiss:** `dismissible` adds `static/js/notice-bar.js` and a `<template>` holding the close
+  button; the script clones it (no dead button without JavaScript), keeps the bar's items
+  signature (`noticeSignature`, FNV-1a of the item ids) in `sessionStorage` (try/catch), so a new
+  item shows the bar again, and moves focus to the next focusable element. Edit mode renders
+  neither, so a bar dismissed while browsing is never hidden there.
+- **Hero carousel** (`ctpl:heroCarousel`, `jmix:list` orderable, `+ * (ctpl:heroBanner)`): the
+  slides are existing hero banners, not a slide type, so editors reuse every banner variant and the
+  banner's image, overlay focus ring and CTA handling. `lib/Heading.tsx` puts a slide's heading one
+  level below a titled carousel (hidden title included), with the carousel as cache dependency;
+  only the first slide's photo loads with high priority.
+- **Carousel behaviour** (`static/js/carousel.js`, loaded only live with two slides or more): sets
+  `html.ctpl-js` from the page head, so the one-slide grid layout (every slide in one grid cell =
+  height of the tallest, no layout shift) applies from the first paint. Controls are
+  server-rendered `hidden` in the order they show (no flex `order`, so focus order = visual order,
+  WCAG 2.4.3 / RGAA 12.8): the Pause/Play bar above the slides (autoplay only), previous / slide /
+  next under them; both bars are laid out from the first paint, so their space is reserved. Hidden slides: `visibility: hidden` + `inert` + `aria-hidden`. Picker buttons
+  carry `aria-current`, arrow keys / Home / End. A polite live region speaks visitor-made changes
+  only (`aria-live="off"` while playing). Autoplay off by default; `interval` 5-30 s
+  (`carouselInterval`, applied server-side again); one cycle back to the first slide then stop;
+  suspended by hover, focus inside (not on the Pause button), hidden tab; stopped by any slide
+  button; never started under `prefers-reduced-motion`, which also drops the fade. Pure helpers
+  (`wrapIndex`, `keyTarget`, `delayOf`) are unit-tested by loading the script in a `node:vm`
+  sandbox, where it hands them to `module.exports` and skips the DOM part.
 
 ## News, articles and content lists (phase 7)
 
@@ -295,6 +343,12 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   - Card heading level is passed with `Render parameters={{ headingLevel }}` and read with
     `currentResource.getModuleParams()`: h3 under a titled list, h2 under an untitled one.
   - Items not translated into the page's language are skipped.
+  - **Item label** (`itemLabel`: `type`, the default and the previous output, or `category`):
+    passed with `Render parameters={{ itemLabel }}` like the heading level and read by the item's
+    `Meta` line (`useItemLabelMode`); `category` shows the first `j:defaultCategory` title in the
+    page's language (each category a cache dependency), else the type. `lib/itemLabel.ts` holds the
+    choice (unit-tested). The notice bar offers the same choice plus `none`, its default. Cards of a
+    card grid and full pages keep the type.
   - **Excluded items are filtered in code, not in the query:** on 8.2.3.2 `NOT ISSAMENODE(...)` in
     JCR-SQL2 is unreliable (GraphQL `nodesByQuery`: excluded nothing even with one condition;
     `getNodesByJCRQuery`: only the first of two). The Cypress regression test excludes two items.
@@ -304,6 +358,37 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
     type manager's node types carry no label.
   - A start node that is set but no longer resolves renders nothing on the live site (never the
     whole site) and a warning in edit mode.
+
+## Breadcrumb of items in content folders
+
+- **Rule:** an item outside the page tree (any main resource in a content folder: news, articles,
+  classic-travel destinations and fares) gets Home > the titled pages above the listing page > the
+  listing page > the item. The listing page is named by the folder: optional mixin
+  `ctplmix:listingPage` (`extends = jnt:contentFolder`, so the folder's edit form offers it as a
+  switchable "Listing page" fieldset), property `ctplListingPage` (`weakreference`,
+  `picker[type='page']`, `< jnt:page`). The nearest folder above the item that names a page of
+  this site wins, so sub-folders inherit; none: Home > item, as before. The property carries the
+  `ctpl` prefix like the other properties added to native types (`ctplHideBreadcrumb`, `ctplTheme`).
+- **Why explicit, not guessed:** the list that shows a folder is not unique (two content lists, a
+  notice bar, a list of another module such as `ctrv:destinationGrid` can all point at the same
+  folder, or at a parent of it), and finding them is a reverse lookup over every list type's
+  `startNode`, including types this module does not know. Its cache dependencies would be every list
+  of the site. An editor-set reference is deterministic, cheap (a walk up a few folders) and cached
+  like any node. So there is no reverse lookup; edit mode shows a hint (`breadcrumb.noListingPage`)
+  on an item whose folders name no listing page.
+- **Code:** `lib/trail.ts` builds the chain as pure functions over a small tree interface
+  (`TrailTree`, unit-tested in `trail.test.ts`); `templates/Breadcrumb.tsx` implements it on JCR
+  nodes. `breadcrumbOf` returns `{ crumbs, unlisted }`; the visible trail and the JSON-LD
+  `BreadcrumbList` both read `crumbs`, so they stay identical. The site and page switches apply
+  unchanged.
+- **Ignored:** a listing page outside the site's home tree (another site), not a page, or not
+  readable in the workspace (deleted, not published yet in live): the search goes on with the
+  folders above. A listing page untitled in the language is left out like any untitled page; the
+  home page as listing page gives Home > item (no repeated crumb).
+- **Cache:** the item page depends on every content folder looked at (adding, changing or removing
+  the mixin flushes the pages of the folder's items, verified by the Cypress edge case), on the
+  listing page found and on every page linked. Nothing above the site node is read. A listing page
+  published after its folder only shows once the folder (or the item) is published again.
 
 ## Structured data (JSON-LD)
 

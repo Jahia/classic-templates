@@ -37,7 +37,7 @@ export const Image = ({
   /** The text alternative, when the caller resolves it (see above). */
   alt?: string;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   server.render.addCacheDependency({ node }, renderContext);
   const hidden = decorative || (owner ? readString(owner, "imageDecorative") === "true" : false);
   const title =

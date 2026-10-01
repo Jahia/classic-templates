@@ -26,13 +26,14 @@ it goes, each field as the editor shows it, how it behaves, and good practice.
 
 - **Site chrome:** [site header](components/site-header.md), [site footer](components/site-footer.md),
   [breadcrumb](components/breadcrumb.md), [links and link lists](components/links-and-link-lists.md).
-- **Sections:** [hero banner](components/hero-banner.md), [image and text](components/image-and-text.md),
+- **Sections:** [hero banner](components/hero-banner.md), [hero carousel](components/hero-carousel.md),
+  [image and text](components/image-and-text.md),
   [rich text](components/rich-text.md), [columns](components/columns.md),
   [card grid](components/card-grid.md), [key figures](components/key-figures.md),
   [accordion](components/accordion.md), [tabs](components/tabs.md),
   [quote](components/quote.md), [site map](components/site-map.md), [free zone](components/free-zone.md).
 - **News and lists:** [news and articles](components/news-and-articles.md),
-  [content list](components/content-list.md).
+  [content list](components/content-list.md), [notice bar](components/notice-bar.md).
 - **Shared by several components:** [call to action](components/call-to-action.md),
   [section backgrounds](components/section-style.md), [images and alternatives](components/images.md).
 

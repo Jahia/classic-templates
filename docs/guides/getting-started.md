@@ -46,7 +46,8 @@ Every new site starts with:
   ("© {year}. All rights reserved." in English, "© {year}. Tous droits réservés." in French),
   empty footer columns, an empty "Legal information" link list and an empty "Follow us" link list.
 - **Two content folders** in jContent: `contents/news` ("News"), which only accepts news items, and
-  `contents/articles` ("Articles"), which only accepts articles.
+  `contents/articles` ("Articles"), which only accepts articles. Once a page lists them, name it
+  on each folder (**Listing page**) so the breadcrumb of their items goes through it.
 
 Empty link lists show nothing on the live site, so a new site shows a header with the site title
 and the language switcher, and a footer with the site title and the copyright.

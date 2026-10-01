@@ -52,12 +52,18 @@
       "grid": "cartes",
       "list": "liste compacte"
     },
+    "itemLabel": {
+      "none": "aucun",
+      "type": "type de contenu",
+      "category": "première catégorie, sinon type de contenu"
+    },
     "panel": {
       "type": "Contenu",
       "start": "Sous",
       "sort": "Tri",
       "max": "Maximum",
       "display": "Affichage",
+      "itemLabel": "Libellé des éléments",
       "categories": "Catégories",
       "allCategories": "toutes les catégories",
       "withSubcategories_one": "({{count}} catégorie avec sous-catégories)",
@@ -74,7 +80,9 @@
     "zToA": "de Z à A"
   },
   "breadcrumb": {
-    "label": "Fil d'Ariane"
+    "label": "Fil d'Ariane",
+    "home": "Accueil",
+    "noListingPage": "Ce fil d'Ariane ne passe pas par la page qui liste cet élément. Pour l'afficher, choisissez cette page sur le dossier de contenu de l'élément, dans ses réglages Page de liste."
   },
   "cards": {
     "teaserMissing": "Choisissez une actualité ou un article à afficher dans cette carte.",
@@ -101,5 +109,21 @@
   },
   "tabs": {
     "noTitle": "Cet onglet n'a pas de libellé dans cette langue : ni lui ni son contenu ne sont affichés."
+  },
+  "notice": {
+    "label": "Dernières informations",
+    "dismiss": "Masquer ces informations"
+  },
+  "carousel": {
+    "label": "À la une",
+    "roleDescription": "carrousel",
+    "slideRole": "diapositive",
+    "slideOf": "Diapositive {{index}} sur {{total}}",
+    "previous": "Diapositive précédente",
+    "next": "Diapositive suivante",
+    "pause": "Pause",
+    "play": "Lecture",
+    "empty": "Aucune diapositive : ajoutez des bannières à ce carrousel, une par diapositive.",
+    "editStacked": "Toutes les diapositives s'affichent ici, l'une sous l'autre. Les visiteurs en voient une à la fois, avec des boutons pour passer de l'une à l'autre."
   }
 }

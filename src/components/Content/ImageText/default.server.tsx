@@ -18,7 +18,7 @@ jahiaComponent(
     { "jcr:title": title, body, imagePosition, imageRatio, image, ctaLabel, ctplSurface }: Props,
     { currentNode, renderContext },
   ) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const headingId = `ctpl-it-${currentNode.getIdentifier()}`;
     const bodyLevel = useBodyHeadingLevel(currentNode, Boolean(title));
     return (

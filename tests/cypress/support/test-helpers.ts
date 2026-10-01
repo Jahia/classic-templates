@@ -199,6 +199,8 @@ export const addList = (
         /** Category identifiers: the list keeps items filed under any of them or their subcategories. */
         categories?: string[]
         noResult?: { en: string; fr: string }
+        /** "type" (default) or "category": the small label of each item. */
+        itemLabel?: 'type' | 'category'
     },
 ) =>
     addContent(
@@ -215,6 +217,7 @@ export const addList = (
             { name: 'layout', value: options.layout ?? 'grid' },
             { name: 'maxItems', value: String(options.max ?? 6) },
             { name: 'sortDirection', value: options.direction ?? 'desc' },
+            ...(options.itemLabel ? [{ name: 'itemLabel', value: options.itemLabel }] : []),
             ...(options.exclude ? [{ name: 'excludeNodes', type: 'WEAKREFERENCE', values: options.exclude }] : []),
             ...(options.categories
                 ? [{ name: 'filterCategories', type: 'WEAKREFERENCE', values: options.categories }]

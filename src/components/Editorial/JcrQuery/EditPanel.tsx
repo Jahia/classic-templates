@@ -15,6 +15,7 @@ export interface PanelInfo {
   direction: "asc" | "desc";
   max: number;
   layout: "grid" | "list";
+  itemLabel: string;
   categories: JCRNodeWrapper[];
   expandedCategories: number;
   excluded: JCRNodeWrapper[];
@@ -28,7 +29,7 @@ export interface PanelInfo {
  * the JCR-SQL2 query for developers.
  */
 export const EditPanel = ({ info }: { info: PanelInfo }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const r = info.result;
   // Dates read "newest / oldest first", the title "A to Z / Z to A".
   const alphabetical = info.criteria === "jcr:title";
@@ -43,6 +44,7 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
     [t("query.panel.sort"), `${sortLabel}, ${order}`],
     [t("query.panel.max"), String(info.max)],
     [t("query.panel.display"), t(`query.layout.${info.layout}`)],
+    [t("query.panel.itemLabel"), t(`query.itemLabel.${info.itemLabel}`)],
     [
       t("query.panel.categories"),
       info.categories.length === 0

@@ -28,7 +28,7 @@ export const RichText = ({
   className?: string;
   headingLevel?: number;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { renderContext, currentNode } = useServerContext();
   if (!html) return null;
   const {

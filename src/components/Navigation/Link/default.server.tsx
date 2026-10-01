@@ -14,7 +14,7 @@ import classes from "./link.module.css";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:link", displayName: "Link" },
   ({ "jcr:title": title, openInNewTab }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
     const label = title || link?.targetTitle;
     const isEdit = renderContext.isEditMode();

@@ -76,7 +76,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:tab", displayName: "Tab" },
   ({ "jcr:title": title }: TabProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const Heading = headingTag(useItemHeadingLevel(currentNode));
     const isEdit = renderContext.isEditMode();
     if (!title && !isEdit) return null;

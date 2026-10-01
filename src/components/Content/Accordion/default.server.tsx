@@ -36,7 +36,7 @@ const hasItems = (node: JCRNodeWrapper) =>
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:accordion", displayName: "Accordion" },
   ({ "jcr:title": title, introText, ctplSurface }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const isEdit = renderContext.isEditMode();
     if (!isEdit && !hasItems(currentNode)) return null;
     const headingId = `ctpl-acc-${currentNode.getIdentifier()}`;
@@ -99,7 +99,7 @@ const Chevron = () => (
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:accordionItem", displayName: "Accordion entry" },
   ({ "jcr:title": title, body, openByDefault }: ItemProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const level = useItemHeadingLevel(currentNode);
     const Heading = headingTag(level);
     const isEdit = renderContext.isEditMode();

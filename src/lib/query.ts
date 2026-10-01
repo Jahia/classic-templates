@@ -1,5 +1,6 @@
 import { getChildNodes, getNodesByJCRQuery } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper, JCRSessionWrapper } from "org.jahia.services.content";
+import type { JCRSiteNode } from "org.jahia.services.content.decorator";
 
 /** Sort fields a list may use, and the directions. Nothing else reaches the query string. */
 const CRITERIA = new Set(["publicationDate", "jcr:created", "jcr:lastModified", "jcr:title"]);
@@ -193,6 +194,12 @@ export const excludedIds = (exclude?: JCRNodeWrapper[]): Set<string> => {
   }
   return ids;
 };
+
+/** The start node as edit-mode summaries name it: the site's title, or its path below the site. */
+export const startLabelOf = (start: JCRNodeWrapper, site: JCRSiteNode): string =>
+  start.getPath() === site.getPath()
+    ? site.getTitle() || site.getName()
+    : start.getPath().replace(`${site.getPath()}/`, "");
 
 /** Escapes a path for use inside a cache-flush regular expression. */
 export const pathRegex = (path: string) => path.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);

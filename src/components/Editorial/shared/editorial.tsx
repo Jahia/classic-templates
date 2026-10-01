@@ -3,6 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useTranslation } from "react-i18next";
 import { formatDate, isoDay } from "../../../lib/dates.js";
+import { type ItemLabelMode, chooseItemLabel, itemLabelMode } from "../../../lib/itemLabel.js";
 import { Image } from "../../../lib/Image.js";
 import { readString as str } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
@@ -54,22 +55,34 @@ const readingMinutes = (html?: string) => {
 };
 
 /**
- * Tags (j:tagList) and category titles (j:defaultCategory), which Jahia offers on every node. Each
- * category is a cache dependency: renaming or translating it refreshes the pages that show it.
+ * Titles of the item's categories (j:defaultCategory, which Jahia offers on every node), in their
+ * order, in the session's language. A category without a title there shows its name with
+ * `withNames` (topics), and is left out otherwise (item labels, which then fall back to the type).
+ * Each category is a cache dependency: renaming or translating it refreshes the pages that show it.
  */
-const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] => {
-  const topics: string[] = [];
-  if (node.hasProperty("j:defaultCategory")) {
-    for (const value of node.getProperty("j:defaultCategory").getValues()) {
-      try {
-        const category = (value as unknown as { getNode(): JCRNodeWrapper }).getNode();
-        server.render.addCacheDependency({ node: category }, renderContext);
-        topics.push(str(category, "jcr:title") ?? category.getName());
-      } catch {
-        // category deleted or not readable here
-      }
+export const categoryTitlesOf = (
+  node: JCRNodeWrapper,
+  renderContext: RenderContext,
+  withNames = false,
+): string[] => {
+  const titles: string[] = [];
+  if (!node.hasProperty("j:defaultCategory")) return titles;
+  for (const value of node.getProperty("j:defaultCategory").getValues()) {
+    try {
+      const category = (value as unknown as { getNode(): JCRNodeWrapper }).getNode();
+      server.render.addCacheDependency({ node: category }, renderContext);
+      const title = str(category, "jcr:title") ?? (withNames ? category.getName() : undefined);
+      if (title) titles.push(title);
+    } catch {
+      // category deleted or not readable here
     }
   }
+  return titles;
+};
+
+/** Tags (j:tagList) and category titles, shown as the item's topics. */
+const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] => {
+  const topics = categoryTitlesOf(node, renderContext, true);
   if (node.hasProperty("j:tagList")) {
     for (const value of node.getProperty("j:tagList").getValues()) {
       const tag = (value as unknown as { getString(): string }).getString();
@@ -77,6 +90,19 @@ const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] 
     }
   }
   return topics;
+};
+
+/**
+ * The label mode the list rendering the item asks for (Render parameter "itemLabel", set by a
+ * content list); "type" anywhere else, the full page included.
+ */
+const useItemLabelMode = (): ItemLabelMode => {
+  const { currentResource } = useServerContext();
+  try {
+    return itemLabelMode(String(currentResource.getModuleParams().get("itemLabel")));
+  } catch {
+    return "type";
+  }
 };
 
 const Meta = ({
@@ -88,13 +114,19 @@ const Meta = ({
   node: JCRNodeWrapper;
   props: EditorialProps;
 }) => {
-  const { t } = useTranslation();
-  const { currentResource } = useServerContext();
+  const { t } = useTranslation("classic-templates");
+  const { currentResource, renderContext } = useServerContext();
+  const mode = useItemLabelMode();
   const lang = languageTag(currentResource.getLocale());
   const iso = dateOf(node, props.publicationDate);
+  const label = chooseItemLabel(
+    mode,
+    t(`editorial.${kind}`),
+    mode === "category" ? categoryTitlesOf(node, renderContext) : [],
+  );
   return (
     <p className={classes.meta}>
-      <span className={classes.kind}>{t(`editorial.${kind}`)}</span>
+      {label && <span className={classes.kind}>{label}</span>}
       {iso && <time dateTime={isoDay(iso)}>{formatDate(iso, lang)}</time>}
       {kind === "article" && props.author && (
         <span>
@@ -110,7 +142,7 @@ const Meta = ({
 
 /** Shown in edit mode instead of an item that has no title in this language. */
 const Untitled = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { renderContext } = useServerContext();
   return renderContext.isEditMode() ? (
     <p className={classes.missing}>{t("editorial.noTitle")}</p>
@@ -119,7 +151,7 @@ const Untitled = () => {
 
 /** The item's own page (rendered inside the main-resource template, which owns header and footer). */
 export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { currentNode, renderContext } = useServerContext();
   const topics = topicsOf(currentNode, renderContext);
   const title = props["jcr:title"];

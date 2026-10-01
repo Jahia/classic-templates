@@ -23,10 +23,13 @@ export const Cta = ({
   node: JCRNodeWrapper;
   label?: string;
   renderContext: RenderContext;
-  /** "primary" (filled), "secondary" (outlined), "onOverlay" (light, over a photo). */
-  variant?: "primary" | "secondary" | "onOverlay";
+  /**
+   * "primary" (filled), "secondary" (outlined), "onOverlay" (light, over a photo), "link" (a text
+   * link with a 44 px target, for slim bands).
+   */
+  variant?: "primary" | "secondary" | "onOverlay" | "link";
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { link, missingTarget } = resolveLink(node, renderContext);
   const ctaLabel = label ?? readString(node, "ctaLabel");
   const text = ctaLabel || link?.targetTitle;

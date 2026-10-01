@@ -1,4 +1,5 @@
-import { jahiaComponent } from "@jahia/javascript-modules-library";
+import { getChildNodes, jahiaComponent } from "@jahia/javascript-modules-library";
+import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading } from "../../../lib/Heading.js";
 import { Image } from "../../../lib/Image.js";
@@ -11,6 +12,26 @@ const MODES: Record<string, "image" | "split" | "plain"> = {
   plain: "plain",
 };
 
+/**
+ * Whether the banner's photo is likely the page's largest paint: the banner sits in the page's
+ * hero area, directly or as the first slide of a carousel there. Later slides of a carousel stay
+ * hidden until shown, so they never compete with the first one for an early, high-priority fetch.
+ */
+const placement = (banner: JCRNodeWrapper) => {
+  const parent = banner.getParent() as JCRNodeWrapper;
+  if (!parent.isNodeType("ctpl:heroCarousel")) {
+    return { atTop: parent.isNodeType("ctpl:heroArea"), firstShown: true };
+  }
+  const [first] = getChildNodes(parent, -1, 0, (n: JCRNodeWrapper) =>
+    n.isNodeType("ctpl:heroBanner"),
+  );
+  const firstShown = first?.getIdentifier() === banner.getIdentifier();
+  return {
+    atTop: firstShown && (parent.getParent() as JCRNodeWrapper).isNodeType("ctpl:heroArea"),
+    firstShown,
+  };
+};
+
 const HEIGHT = { compact: classes.heightCompact, medium: undefined, tall: classes.heightTall };
 
 /**
@@ -21,7 +42,8 @@ const HEIGHT = { compact: classes.heightCompact, medium: undefined, tall: classe
  * - "split": text on the left, photo on the right, on the sunken surface.
  * - "plain", or any variant without a photo: a tinted band.
  * In the page's hero area the photo is the most likely LCP element, so it loads eagerly with high
- * priority; lower in the page it loads lazily like any other image.
+ * priority; lower in the page it loads lazily like any other image. In a carousel (see
+ * HeroCarousel) only the first slide's photo gets that priority.
  */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:heroBanner", displayName: "Hero banner" },
@@ -32,7 +54,7 @@ jahiaComponent(
     // No photo: always the plain band. Otherwise the editor's variant, "image" by default.
     const mode = image ? (MODES[variant ?? "image"] ?? "image") : "plain";
     const headingId = `ctpl-hero-${currentNode.getIdentifier()}`;
-    const atTop = currentNode.getParent().isNodeType("ctpl:heroArea");
+    const { atTop, firstShown } = placement(currentNode);
 
     return (
       <section
@@ -50,7 +72,7 @@ jahiaComponent(
               owner={currentNode}
               renderContext={renderContext}
               className={classes.backdrop}
-              priority
+              priority={firstShown}
             />
             <div
               className={`${classes.overlay} ${overlay === "strong" ? classes.overlayStrong : classes.overlayMedium}`}

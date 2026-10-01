@@ -1,0 +1,20 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A carousel of hero banners, in the hero area at the top of a page or in a main area. Its slides
+// are ordinary ctpl:heroBanner children, in the editor's order, each with its own layout, photo
+// and call to action. Without JavaScript, and in edit mode, the slides are stacked; with it one
+// slide shows at a time, with previous / next buttons and a button per slide. The optional heading
+// (jcr:title, an h2) names the carousel and puts the slide headings one level below it;
+// hideTitle keeps it for screen readers only. autoplay (off by default) moves to the next slide
+// every interval seconds (5 to 30), once through the slides, with a pause button.
+[ctpl:heroCarousel] > jnt:content, mix:title, ctplmix:heroComponent, ctplmix:pageComponent, jmix:list orderable
+ - hideTitle (boolean) = false autocreated
+ - autoplay (boolean) = false autocreated
+ - interval (long) = 7 autocreated < '[5,30]'
+ + * (ctpl:heroBanner)

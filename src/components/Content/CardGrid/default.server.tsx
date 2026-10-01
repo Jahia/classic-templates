@@ -66,7 +66,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:card", displayName: "Card" },
   ({ "jcr:title": title, text, linkLabel, image }: CardProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const Heading = headingTag(useItemHeadingLevel(currentNode));
     const isEdit = renderContext.isEditMode();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
@@ -116,7 +116,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:contentTeaser", displayName: "Content teaser" },
   (_props: ContentTeaserProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const level = useItemHeadingLevel(currentNode);
     const target = teaserTarget(currentNode);
     if (!target) {

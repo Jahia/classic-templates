@@ -11,7 +11,8 @@
 // subtypes of ctplmix:listable; startNode is the folder or page to look under (empty = the whole
 // site, no picker restriction so both folders and pages can be picked); excludeNodes are items
 // never listed here; filterCategories keeps only items in one of those categories (or their
-// subcategories). layout "grid" renders cards, "list" renders compact rows.
+// subcategories). layout "grid" renders cards, "list" renders compact rows. itemLabel is the small
+// label of each item: its type ("News") or its first category's title ("Press release").
 [ctpl:jcrQuery] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, ctplmix:cta, jmix:list, jmix:renderableList, jmix:cache
  - type (string, choicelist[nodetypes='ctplmix:listable']) = 'ctpl:news' autocreated
  // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
@@ -20,6 +21,8 @@
  - sortDirection (string, choicelist[resourceBundle]) = 'desc' autocreated < 'desc', 'asc'
  - maxItems (long) = 6 autocreated < '[1,50]'
  - layout (string, choicelist[resourceBundle]) = 'grid' autocreated < 'grid', 'list'
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - itemLabel (string, choicelist[resourceBundle]) = 'type' autocreated < 'type', 'category'
  - excludeNodes (weakreference) multiple < ctplmix:listable
  - filterCategories (weakreference, category[autoSelectParent=false]) multiple < jnt:category
  - noResultText (string) i18n

@@ -18,7 +18,7 @@ jahiaComponent(
     { quote, author, authorRole, variant, image, ctplSurface }: Props,
     { currentNode, renderContext },
   ) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     if (!quote) {
       return renderContext.isEditMode() ? (
         <p className="ctpl-container ctpl-edit-hint">{t("quote.empty")}</p>

@@ -22,7 +22,7 @@ import classes from "./card-grid.module.css";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:card", name: "iconTiles", displayName: "Icon tile" },
   ({ "jcr:title": title, text, image }: CardProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const level = useItemHeadingLevel(currentNode);
     const isEdit = renderContext.isEditMode();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
@@ -55,7 +55,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:card", name: "logos", displayName: "Logo" },
   ({ "jcr:title": title, image, imageAlt }: CardProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const isEdit = renderContext.isEditMode();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
     if (!image) {
@@ -94,7 +94,7 @@ jahiaComponent(
     displayName: "Content tile",
   },
   (_props: ContentTeaserProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const level = useItemHeadingLevel(currentNode);
     const target = teaserTarget(currentNode);
     if (!target) {
@@ -116,7 +116,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:contentTeaser", name: "logos", displayName: "Logo" },
   (_props: ContentTeaserProps, { renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     return renderContext.isEditMode() ? (
       <li className={classes.logoItem}>
         <p className="ctpl-edit-hint">{t("cards.teaserNotInLogos")}</p>
