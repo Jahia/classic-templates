@@ -7,6 +7,10 @@ import { PageShell } from "../PageShell.jsx";
  * `priority: -1` lets a specific type register its own template later. This template owns the
  * page furniture (header, footer, `<title>`, description); the type's "fullPage" view owns the
  * content, including the page's `<h1>`, which is why no heading is passed to the shell.
+ *
+ * News and articles lay out their own page width. A main resource of another module (a store of
+ * js-store-locator, for example) is placed in the page container, so it lines up with the header
+ * instead of starting at the edge of the window.
  */
 jahiaComponent(
   {
@@ -25,7 +29,13 @@ jahiaComponent(
   ) => (
     // News and articles have a teaser: the natural meta description when none is set.
     <PageShell title={title} description={description || teaser}>
-      <Render node={currentNode} view="fullPage" />
+      {currentNode.isNodeType("ctplmix:editorialItem") ? (
+        <Render node={currentNode} view="fullPage" />
+      ) : (
+        <div className="ctpl-container">
+          <Render node={currentNode} view="fullPage" />
+        </div>
+      )}
     </PageShell>
   ),
 );
