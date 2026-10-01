@@ -104,6 +104,36 @@ describe('Notice bar - latest items as dated links, in the shared header and on 
             .and('have.attr', 'href', `${site}/home/all.html`)
     })
 
+    it('keeps label, items and "view all" on one row on a wide screen, and never scrolls sideways on a phone', () => {
+        const middle = (el: HTMLElement) => {
+            const rect = el.getBoundingClientRect()
+            return { top: rect.top, bottom: rect.bottom, mid: (rect.top + rect.bottom) / 2 }
+        }
+
+        cy.viewport(1366, 768)
+        cy.visit(live)
+        sharedBar().within(() => {
+            cy.get('[data-testid="ctpl-notice"]')
+                .first()
+                .then(($item) => {
+                    const items = $item[0].closest('ul') as HTMLElement
+                    const row = middle(items)
+                    cy.get('[data-testid="ctpl-cta"]').should(($cta) => {
+                        const cta = middle($cta[0])
+                        expect(cta.mid).to.be.within(row.top, row.bottom)
+                    })
+                    cy.get('p')
+                        .first()
+                        .should(($label) => {
+                            expect(middle($label[0]).mid).to.be.within(row.top, row.bottom)
+                        })
+                })
+        })
+        cy.viewport(320, 640)
+        cy.visit(live)
+        cy.document().then((doc) => expect(doc.documentElement.scrollWidth).to.be.at.most(320))
+    })
+
     it('shows on every page from the shared header, home included', () => {
         cy.visit(`${home}.html`)
         sharedBar().find('[data-testid="ctpl-notice"]').should('have.length', 3)

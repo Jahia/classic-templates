@@ -34,7 +34,7 @@ The band is a static list. It never scrolls or rotates, so visitors read it at t
 - The label, then each item's title as a link to the item's page, followed by its date in the page's language. With **Item label** set, a small type or category label comes before each title, as on the cards of a [content list](content-list.md). The "view all" link sits at the end of the band.
 - Items not translated into the page's language are left out.
 - With no item to show (nothing published yet, or nothing in the chosen categories), the band does not show at all.
-- On phones the items wrap onto several lines.
+- On a wide screen the label, the items and the "view all" link share one row, the items wrapping inside it when they are long; a small dot sets each item apart. On phones the items wrap under the label, and the "view all" link under them.
 - The band uses the theme's accent tint, in light and dark mode, and every link is at least 44 pixels tall, so it is easy to tap.
 
 ### Hiding the band

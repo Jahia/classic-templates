@@ -281,6 +281,11 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   13.8). A named `<section>` (region), never `<aside>`: in `<main>` a complementary landmark would
   fail axe `landmark-complementary-is-top-level`, and in the header area it must not be a second
   banner.
+- **Layout:** one flex row when it fits: label (`flex: 0 1 auto`), items (`flex: 1 1 20rem`, so
+  they take the room left instead of forcing the label and the actions onto rows of their own),
+  actions (`flex: none`, pushed to the end). Long items wrap inside their column, each after a
+  decorative dot; below the 20rem basis the items wrap under the label. At 1366 px the bar of three
+  items is one row (70 px instead of 136), no sideways scroll at 320 px (Cypress).
 - **Header integration:** no change to the header. The header area (`ctpl:headerArea`) already
   accepts any `ctplmix:headerComponent`, so the bar drops into it beside the `ctpl:siteHeader`
   singleton (before or after it, the area is orderable), editable on home only like the header,
