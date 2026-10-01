@@ -70,8 +70,8 @@ jahiaComponent(
  * A section of travel tools: optional heading, the contributed notice (always visible, above the
  * tools), then the tools. Without JavaScript and in edit mode they are stacked sections, each with
  * its heading; on the live site static/js/travel-tools.js turns them into WAI-ARIA tabs (tab list
- * named by the section heading, arrow keys, Home and End). Nothing live while there is no notice
- * and no tool.
+ * named by the section heading, arrow keys, Home and End), then the section's optional call to
+ * action. Nothing live while there is no notice and no tool.
  */
 jahiaComponent(
   { componentType: "view", nodeType: "ctrv:travelTools", displayName: "Travel tools" },
@@ -108,6 +108,8 @@ jahiaComponent(
           >
             <RenderChildren />
           </div>
+          {/* ctplmix:cta can be switched on for any section (classic-templates sectionStyle). */}
+          <Cta node={currentNode} renderContext={renderContext} variant="secondary" />
         </div>
         {!isEdit && (
           <AddResources
