@@ -11,7 +11,9 @@ light and dark, from its settings, with no code change.
 
 ![The demo home page in the Classic theme](docs/images/home.png)
 
-> **Status:** 0.1.0, in development, not released yet.
+> **Latest release:** [0.2.0](https://github.com/Jahia/classic-templates/releases/tag/0_2_0) (October 2026).
+> Every version is described in the [changelog](CHANGELOG.md); `main` holds the next version in
+> development.
 
 ## Highlights
 
@@ -144,6 +146,15 @@ See the [add-ons guide](docs/guides/add-ons.md).
 - Recommended on sites: Jahia's `sitemap` module.
 
 ## Install and try it
+
+### From a release
+
+Download `classic-templates-<version>.tgz` from the
+[GitHub releases](https://github.com/Jahia/classic-templates/releases) and install it in Jahia
+(Administration > Modules, or the provisioning API). Then create a site on the
+**classic-templates** template set.
+
+### From source
 
 ```bash
 yarn install
