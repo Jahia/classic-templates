@@ -160,10 +160,10 @@ describe("sanitizeRichText - URLs and attribute values", () => {
       "jav&#x09;ascript:alert(1)",
       "vbscript:x",
       "&#47;&#47;example.com",
-      "/\\example.com/a",
+      String.raw`/\example.com/a`,
       "/&#9;/example.com/a",
       "/\t/example.com",
-      "\\\\x",
+      String.raw`\\x`,
     ]) {
       expect(sanitizeRichText(`<a href="${href}">x</a>`)).toBe("<a>x</a>");
     }
@@ -352,9 +352,16 @@ describe("isSafeRichTextUrl - characters the browser ignores", () => {
   });
 
   it("rejects backslashes and control characters anywhere", () => {
-    expect(isSafeRichTextUrl("/a\\b")).toBe(false);
+    expect(isSafeRichTextUrl(String.raw`/a\b`)).toBe(false);
     expect(isSafeRichTextUrl("/a\nb")).toBe(false);
     expect(isSafeRichTextUrl("\u0001/a")).toBe(false);
     expect(isSafeRichTextUrl("  /a  ")).toBe(true);
+  });
+
+  it("reads astral characters as one code point, never as a control character or a backslash", () => {
+    expect(isSafeRichTextUrl("/a/\u{1F600}")).toBe(true);
+    expect(isSafeRichTextUrl("/a/\u{10001}")).toBe(true); // low 16 bits: U+0001
+    expect(isSafeRichTextUrl("/a/\u{1005C}")).toBe(true); // low 16 bits: "\"
+    expect(sanitizeRichText('<a href="/a/\u{1F600}">x</a>')).toBe('<a href="/a/\u{1F600}">x</a>');
   });
 });

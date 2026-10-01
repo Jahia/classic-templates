@@ -123,7 +123,7 @@ const DEFAULT_PREFIX = "ctpl-rt-";
 /** True for a control character (removed or trimmed by the URL parser) or a "\\" (read as "/"). */
 const hasIgnoredCharacter = (url: string): boolean => {
   for (let i = 0; i < url.length; i++) {
-    const code = url.charCodeAt(i);
+    const code = url.codePointAt(i) ?? 0; // always defined: i < url.length
     if (code < 0x20 || code === 0x7f || code === 0x5c) return true;
   }
   return false;
@@ -137,9 +137,42 @@ export const isSafeRichTextUrl = (value: string): boolean => {
 };
 
 const encodeAttr = (value: string): string =>
-  value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
 
 const isSpace = (c: string) => c === " " || c === "\n" || c === "\t" || c === "\r" || c === "\f";
+
+/** Position of the first character at or after `from` that is not a space (at most `end`). */
+const skipSpaces = (source: string, from: number, end: number): number => {
+  let j = from;
+  while (j < end && isSpace(source[j])) j++;
+  return j;
+};
+
+/** Position just after the attribute name starting at `from` (a leading "=" belongs to it). */
+const endOfName = (source: string, from: number, end: number): number => {
+  let j = from;
+  if (source[j] === "=") j++;
+  while (j < end && !isSpace(source[j]) && source[j] !== "/" && source[j] !== "=") j++;
+  return j;
+};
+
+/** The value written after an "=" (quoted or not) from `from`, and the position just after it. */
+const readValue = (source: string, from: number, end: number): [string, number] => {
+  const j = skipSpaces(source, from, end);
+  const quote = source[j];
+  if (quote === '"' || quote === "'") {
+    const close = source.indexOf(quote, j + 1);
+    const stop = close === -1 || close > end ? end : close;
+    return [source.slice(j + 1, stop), stop + 1];
+  }
+  let k = j;
+  while (k < end && !isSpace(source[k])) k++;
+  return [source.slice(j, k), k];
+};
 
 /**
  * The attributes of a start tag (`<a href="x" title=y>`), in one pass, as the browser reads them:
@@ -153,26 +186,11 @@ const readAttributes = (source: string, from: number, end: number): Array<[strin
     while (j < end && (isSpace(source[j]) || source[j] === "/")) j++;
     if (j >= end) break;
     const nameStart = j;
-    if (source[j] === "=") j++;
-    while (j < end && !isSpace(source[j]) && source[j] !== "/" && source[j] !== "=") j++;
+    j = endOfName(source, j, end);
     const name = source.slice(nameStart, j).toLowerCase();
-    while (j < end && isSpace(source[j])) j++;
+    j = skipSpaces(source, j, end);
     let value = "";
-    if (source[j] === "=") {
-      j++;
-      while (j < end && isSpace(source[j])) j++;
-      const quote = source[j];
-      if (quote === '"' || quote === "'") {
-        const close = source.indexOf(quote, j + 1);
-        const stop = close === -1 || close > end ? end : close;
-        value = source.slice(j + 1, stop);
-        j = stop + 1;
-      } else {
-        const valueStart = j;
-        while (j < end && !isSpace(source[j])) j++;
-        value = source.slice(valueStart, j);
-      }
-    }
+    if (source[j] === "=") [value, j] = readValue(source, j + 1, end);
     if (name && !seen.has(name)) {
       seen.add(name);
       attrs.push([name, decodeHTMLAttribute(value)]);
@@ -181,39 +199,42 @@ const readAttributes = (source: string, from: number, end: number): Array<[strin
   return attrs;
 };
 
+/** ` name="value"` as written in the output when `keep` is true, otherwise "". */
+const writeIf = (keep: boolean, name: string, value: string): string =>
+  keep ? ` ${name}="${encodeAttr(value)}"` : "";
+
 /** The attribute as written in the output, or "" when it is left out. */
 const writeAttribute = (tag: string, name: string, raw: string, prefix: string): string => {
   const value = raw.trim();
-  const write = (written: string) => ` ${name}="${encodeAttr(written)}"`;
   switch (name) {
     case "href":
     case "src":
     case "cite":
       // An empty href would still link to the page itself.
-      return isSafeRichTextUrl(value) ? write(value) : "";
+      return writeIf(isSafeRichTextUrl(value), name, value);
     case "alt":
     case "title":
       // Always written out, an empty alt included.
-      return write(raw);
+      return writeIf(true, name, raw);
     case "lang":
     case "hreflang":
-      return LANG.test(value) ? write(value) : "";
+      return writeIf(LANG.test(value), name, value);
     case "dir":
-      return DIR.has(value) ? write(value) : "";
+      return writeIf(DIR.has(value), name, value);
     case "id":
-      return ID.test(value) ? write(`${prefix}${value}`) : "";
+      return writeIf(ID.test(value), name, `${prefix}${value}`);
     case "headers": {
       const ids = value.split(/\s+/).filter((id) => ID.test(id));
-      return ids.length ? write(ids.map((id) => `${prefix}${id}`).join(" ")) : "";
+      return writeIf(ids.length > 0, name, ids.map((id) => `${prefix}${id}`).join(" "));
     }
     case "role":
-      return tag === "table" && value === "presentation" ? write(value) : "";
+      return writeIf(tag === "table" && value === "presentation", name, value);
     case "scope":
-      return SCOPE.has(value) ? write(value) : "";
+      return writeIf(SCOPE.has(value), name, value);
     case "reversed":
       return ' reversed=""';
     default: // start, width, height, colspan, rowspan
-      return NUMBER.test(value) ? write(value) : "";
+      return writeIf(NUMBER.test(value), name, value);
   }
 };
 
@@ -294,6 +315,100 @@ const clamp = (level: number) => Math.min(Math.max(level, 2), 6);
 
 type Open = { name: string; written: string };
 
+/** The elements open in the second pass, and the level of the last heading written. */
+type Outline = {
+  stack: Open[];
+  counts: Map<string, number>;
+  headingsOpen: number;
+  previous: number;
+};
+
+const ascending = (a: number, b: number) => a - b;
+
+/** The heading levels used in the filtered HTML, and the ids of its elements. */
+const scanTags = (html: string): { levels: Set<number>; ids: Set<string> } => {
+  const levels = new Set<number>();
+  const ids = new Set<string>();
+  for (const match of html.matchAll(TAG)) {
+    if (match[1]) continue;
+    if (HEADING.test(match[2])) levels.add(Number(match[2][1]));
+    const id = / id="([^"]*)"/.exec(match[3]);
+    if (id) ids.add(id[1]);
+  }
+  return { levels, ids };
+};
+
+/** Closes the last open element. */
+const closeLast = (outline: Outline): string => {
+  const open = outline.stack.pop() as Open;
+  outline.counts.set(open.name, (outline.counts.get(open.name) ?? 1) - 1);
+  if (HEADING.test(open.name)) outline.headingsOpen--;
+  return `</${open.written}>`;
+};
+
+/** Closes the open elements down to and including the last one matching `test`. */
+const closeTo = (outline: Outline, test: (name: string) => boolean): string => {
+  let closed = "";
+  for (;;) {
+    const name = (outline.stack.at(-1) as Open).name;
+    closed += closeLast(outline);
+    if (test(name)) return closed;
+  }
+};
+
+/** A closing tag: closes its element and the ones still open inside it, or "" when none is open. */
+const closeTag = (outline: Outline, name: string): string => {
+  if (name === "br") return "<br>"; // read as a line break by the browser
+  if (HEADING.test(name)) {
+    return outline.headingsOpen > 0 ? closeTo(outline, (n) => HEADING.test(n)) : "";
+  }
+  return (outline.counts.get(name) ?? 0) > 0 ? closeTo(outline, (n) => n === name) : "";
+};
+
+/**
+ * The attributes of a start tag: a repeated id left out (the first element with an id keeps it,
+ * as the browser's anchors do), an anchor to one of the block's own ids prefixed.
+ */
+const rewriteAttributes = (
+  name: string,
+  written: string,
+  { ids, seenIds, prefix }: { ids: Set<string>; seenIds: Set<string>; prefix: string },
+): string => {
+  let attrs = written;
+  const id = / id="([^"]*)"/.exec(attrs);
+  if (id) {
+    if (seenIds.has(id[1])) attrs = attrs.replace(id[0], "");
+    else seenIds.add(id[1]);
+  }
+  if (name === "a") {
+    attrs = attrs.replace(/ href="#([^"]*)"/, (match, target: string) =>
+      ids.has(`${prefix}${target}`) ? ` href="#${prefix}${target}"` : match,
+    );
+  }
+  return attrs;
+};
+
+/** Opens an element that is not void: a heading gets its level in the block's outline. */
+const openElement = (
+  outline: Outline,
+  name: string,
+  attrs: string,
+  level: (written: number) => number,
+): string => {
+  let out = "";
+  let written = name;
+  if (HEADING.test(name)) {
+    // A heading inside a heading closes it, as the browser does.
+    if (outline.headingsOpen > 0) out += closeTo(outline, (n) => HEADING.test(n));
+    outline.previous = Math.min(level(Number(name[1])), outline.previous + 1);
+    written = `h${outline.previous}`;
+    outline.headingsOpen++;
+  }
+  outline.stack.push({ name, written });
+  outline.counts.set(name, (outline.counts.get(name) ?? 0) + 1);
+  return `${out}<${written}${attrs}>`;
+};
+
 /**
  * Second pass over the filtered HTML, where every tag is in canonical form: closes the elements in
  * the block, renumbers the headings (the editor's levels are ranked: the highest used becomes
@@ -306,90 +421,39 @@ const finish = (
   base: number,
   prefix: string,
 ): { html: string; imageWithoutAlt: boolean } => {
-  const levels = new Set<number>();
-  const ids = new Set<string>();
-  for (const match of html.matchAll(TAG)) {
-    if (match[1]) continue;
-    if (HEADING.test(match[2])) levels.add(Number(match[2][1]));
-    const id = / id="([^"]*)"/.exec(match[3]);
-    if (id) ids.add(id[1]);
-  }
-  const rank = new Map([...levels].sort().map((level, index) => [level, clamp(base + index)]));
-
-  const stack: Open[] = [];
-  const counts = new Map<string, number>();
-  const seenIds = new Set<string>();
-  let headingsOpen = 0;
-  let previous = clamp(base) - 1;
+  const { levels, ids } = scanTags(html);
+  const rank = new Map(
+    [...levels].sort(ascending).map((level, index) => [level, clamp(base + index)]),
+  );
+  const level = (written: number) => rank.get(written) ?? clamp(base);
+  const outline: Outline = {
+    stack: [],
+    counts: new Map(),
+    headingsOpen: 0,
+    previous: clamp(base) - 1,
+  };
+  const attributes = { ids, seenIds: new Set<string>(), prefix };
   let imageWithoutAlt = false;
   let out = "";
   let at = 0;
-
-  const close = (): string => {
-    const open = stack.pop() as Open;
-    counts.set(open.name, (counts.get(open.name) ?? 1) - 1);
-    if (HEADING.test(open.name)) headingsOpen--;
-    return `</${open.written}>`;
-  };
-  /** Closes the open elements down to and including the last one matching `test`. */
-  const closeTo = (test: (name: string) => boolean): string => {
-    let closed = "";
-    for (;;) {
-      const name = stack[stack.length - 1].name;
-      closed += close();
-      if (test(name)) return closed;
-    }
-  };
 
   for (const match of html.matchAll(TAG)) {
     out += html.slice(at, match.index);
     at = match.index + match[0].length;
     const [, closing, name] = match;
-    let attrs = match[3];
-
     if (closing) {
-      if (name === "br")
-        out += "<br>"; // read as a line break by the browser
-      else if (HEADING.test(name)) out += headingsOpen > 0 ? closeTo((n) => HEADING.test(n)) : "";
-      else if ((counts.get(name) ?? 0) > 0) out += closeTo((n) => n === name);
+      out += closeTag(outline, name);
       continue;
     }
-
-    const id = / id="([^"]*)"/.exec(attrs);
-    if (id) {
-      // The first element with an id keeps it, as the browser's anchors do.
-      if (seenIds.has(id[1])) attrs = attrs.replace(id[0], "");
-      else seenIds.add(id[1]);
-    }
-    if (name === "a") {
-      attrs = attrs.replace(/ href="#([^"]*)"/, (written, target: string) =>
-        ids.has(`${prefix}${target}`) ? ` href="#${prefix}${target}"` : written,
-      );
-    }
+    let attrs = rewriteAttributes(name, match[3], attributes);
     if (name === "img" && !attrs.includes(' alt="')) {
       attrs = ` alt=""${attrs}`;
       imageWithoutAlt = true;
     }
-    if (VOID.has(name)) {
-      out += `<${name}${attrs}>`;
-      continue;
-    }
-
-    let written = name;
-    if (HEADING.test(name)) {
-      // A heading inside a heading closes it, as the browser does.
-      if (headingsOpen > 0) out += closeTo((n) => HEADING.test(n));
-      const level = Math.min(rank.get(Number(name[1])) ?? clamp(base), previous + 1);
-      previous = level;
-      written = `h${level}`;
-      headingsOpen++;
-    }
-    stack.push({ name, written });
-    counts.set(name, (counts.get(name) ?? 0) + 1);
-    out += `<${written}${attrs}>`;
+    out += VOID.has(name) ? `<${name}${attrs}>` : openElement(outline, name, attrs, level);
   }
   out += html.slice(at);
-  while (stack.length) out += close();
+  while (outline.stack.length) out += closeLast(outline);
   return { html: out, imageWithoutAlt };
 };
 
