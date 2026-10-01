@@ -1,5 +1,9 @@
 # classic-templates Changelog
 
+## 0.1.1
+
+* Rich text keeps links to other parts of the page as written, stays fast on very long tags, always closes its elements (a heading inside a heading included) and no longer shows "\[removed]" where an embedded object was left out
+
 ## 0.1.0
 
 ### New Features
