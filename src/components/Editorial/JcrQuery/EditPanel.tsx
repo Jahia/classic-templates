@@ -32,19 +32,15 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
   const r = info.result;
   // Dates read "newest / oldest first", the title "A to Z / Z to A".
   const alphabetical = info.criteria === "jcr:title";
-  const order = t(
-    alphabetical
-      ? info.direction === "asc"
-        ? "query.aToZ"
-        : "query.zToA"
-      : info.direction === "asc"
-        ? "query.oldest"
-        : "query.newest",
-  );
+  const ascending = info.direction === "asc";
+  const alphabeticalOrder = ascending ? "query.aToZ" : "query.zToA";
+  const dateOrder = ascending ? "query.oldest" : "query.newest";
+  const order = t(alphabetical ? alphabeticalOrder : dateOrder);
+  const sortLabel = t(`query.sort.${info.criteria.replace(":", "_")}`);
   const rows: [string, string][] = [
     [t("query.panel.type"), info.typeLabel],
     [t("query.panel.start"), info.startLabel],
-    [t("query.panel.sort"), `${t(`query.sort.${info.criteria.replace(":", "_")}`)}, ${order}`],
+    [t("query.panel.sort"), `${sortLabel}, ${order}`],
     [t("query.panel.max"), String(info.max)],
     [t("query.panel.display"), t(`query.layout.${info.layout}`)],
     [
@@ -59,22 +55,24 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
     ],
   ];
   if (r) {
-    rows.push([
-      t("query.panel.found"),
-      t("query.panel.foundValue", {
-        shown: r.items.length,
-        matching: r.fetched - r.skippedExcluded,
-        more: r.capped ? "+" : "",
-      }),
-    ]);
-    rows.push([
-      t("query.panel.skipped"),
-      t("query.panel.skippedValue", {
-        excluded: r.skippedExcluded,
-        untranslated: r.skippedUntranslated,
-        language: info.language,
-      }),
-    ]);
+    rows.push(
+      [
+        t("query.panel.found"),
+        t("query.panel.foundValue", {
+          shown: r.items.length,
+          matching: r.fetched - r.skippedExcluded,
+          more: r.capped ? "+" : "",
+        }),
+      ],
+      [
+        t("query.panel.skipped"),
+        t("query.panel.skippedValue", {
+          excluded: r.skippedExcluded,
+          untranslated: r.skippedUntranslated,
+          language: info.language,
+        }),
+      ],
+    );
   }
 
   return (
