@@ -93,5 +93,10 @@
     "table": "Table",
     "tableNumbered": "Table {{number}}",
     "tableWithoutCaption": "A table in this text has no caption: add one in the rich-text editor (table properties). It names the table for screen readers."
+  },
+  "accordion": {
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "noTitle": "This entry has no heading in this language: it is not shown."
   }
 }

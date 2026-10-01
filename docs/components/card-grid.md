@@ -72,12 +72,16 @@ Cards have equal heights in each row. Phones show one card per row, then two on 
 
 ### Icon tiles
 
+![Six outlined square tiles, each with a round icon, a title and a short text: Guides, Write to us, Chat with support, Workshops, Service status, Visit us](../images/card-grid-icon-tiles.png)
+
 - Each tile shows the card image as a small icon (always decorative), the title and the text. Use small, square, simple pictures: a pictogram on a plain disc reads well in light and dark mode.
 - With a link, the **whole tile** is clickable; its name is the title. The card's **Link text** is not shown in a tile.
 - Tiles fill the row with as many as fit: two side by side on a phone, up to six on a large screen. **Cards per row** does not apply. A tile stays square unless its text needs more room.
 - A **Card of an existing item** shows as a tile with the item's title and teaser.
 
 ### Logo strip
+
+![A strip of five partner logos, each on a light plate](../images/card-grid-logos.png)
 
 - Only the card images show, each on a light plate (logos are usually drawn for light backgrounds, so the plate stays light in dark mode), in a row that wraps. **Cards per row** does not apply.
 - The logo's text alternative is the card's **Text alternative**, else the card **Title**, else the image title in the media library. Name each logo after the organisation.

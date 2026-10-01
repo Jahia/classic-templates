@@ -243,6 +243,17 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
 - All four are `ctplmix:sectionStyle` types, so each gets the optional call to action and ends
   with `<Cta>`. There is no call-to-action banner type (see the call-to-action decision above).
 
+## Accordion and tabs (after 0.1.2)
+
+- **Accordion** (`ctpl:accordion` of `ctpl:accordionItem`: `mix:title` heading, rich-text body,
+  `openByDefault`): native `<details>`/`<summary>`, the heading inside the summary at
+  `useItemHeadingLevel`, the body's headings one level further down. Works with no script;
+  `static/js/accordion.js` adds "Expand all / Collapse all" (shown only once the script set
+  `data-ctpl-ready`, labels from `data-*-label`, so it follows the page language) and opens the
+  entry a URL hash points at, on load and on `hashchange`. Entry ids come from the node name
+  (`anchorOf("acc-", name)`, `lib/anchor.ts`): readable, stable deep links. Edit mode renders the
+  entries flat (no `<details>`), so a click selects instead of toggling.
+
 ## News, articles and content lists (phase 7)
 
 - **Types:** `ctpl:news` and `ctpl:article` (`jmix:mainResource`, `jmix:editorialContent`,

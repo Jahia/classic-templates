@@ -29,6 +29,7 @@ it goes, each field as the editor shows it, how it behaves, and good practice.
 - **Sections:** [hero banner](components/hero-banner.md), [image and text](components/image-and-text.md),
   [rich text](components/rich-text.md), [columns](components/columns.md),
   [card grid](components/card-grid.md), [key figures](components/key-figures.md),
+  [accordion](components/accordion.md),
   [quote](components/quote.md), [site map](components/site-map.md), [free zone](components/free-zone.md).
 - **News and lists:** [news and articles](components/news-and-articles.md),
   [content list](components/content-list.md).

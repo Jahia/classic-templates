@@ -681,7 +681,8 @@ def _plans_table(lang):
 def seed_help_centre(site):
     """A help centre page (hidden from the menu, listed in the site map) that shows the sections
     added after 0.1.2: a comparison table that scrolls on its own on a phone, a card grid shown as
-    icon tiles and one shown as a logo strip. Only adds what is missing. Returns (path, whole
+    icon tiles and one shown as a logo strip, an accordion of frequent questions. Only adds what is
+    missing. Returns (path, whole
     subtree?) pairs to publish: the page, its own sections and the images they show."""
     home = f"{site}/home"
     icons = f"{site}/files/demo/icons"
@@ -741,6 +742,34 @@ def seed_help_centre(site):
         logo = upload_logo(logos, f"{name}.png", label, shape, colour)
         add_content(strip, name, "ctpl:card", i18n("jcr:title", {"en": label, "fr": label}) + [
             {"name": "image", "type": "WEAKREFERENCE", "value": logo}])
+    # Accordion: frequent questions, the first open, one answer holding a table.
+    faq = add_content(main, "faq", "ctpl:accordion",
+        i18n("jcr:title", {"en": "Frequent questions", "fr": "Questions fréquentes"})
+        + i18n("introText", {"en": "Short answers to what editors ask us most.",
+                             "fr": "Des réponses courtes aux questions que les rédacteurs nous posent le plus."}))
+    hours = {lang: (f"<p>{intro}</p><table><caption>{cap}</caption><thead><tr>"
+                    + "".join(f'<th scope="col">{h}</th>' for h in head) + "</tr></thead><tbody>"
+                    + "".join(f'<tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>' for r in rows)
+                    + "</tbody></table>")
+             for lang, intro, cap, head, rows in (
+                 ("en", "It depends on the channel:", "Support hours by channel", ("Channel", "Weekdays", "Weekends"),
+                  (("E-mail", "9 am to 6 pm", "Closed"), ("Phone", "8 am to 8 pm", "Closed"), ("Chat", "Around the clock", "Around the clock"))),
+                 ("fr", "Cela dépend du canal :", "Horaires d'assistance par canal", ("Canal", "En semaine", "Le week-end"),
+                  (("E-mail", "De 9 h à 18 h", "Fermé"), ("Téléphone", "De 8 h à 20 h", "Fermé"), ("Chat", "24 h/24", "24 h/24"))))}
+    for name, question, answer, is_open in (
+        ("change-plan", {"en": "Can I change plan during the year?", "fr": "Puis-je changer de formule en cours d'année ?"},
+         {"en": "<p>Yes. A move to a higher plan applies the next day; a move to a lower one at the end of the month.</p>",
+          "fr": "<p>Oui. Le passage à une formule supérieure s'applique le lendemain, le passage à une formule inférieure à la fin du mois.</p>"}, True),
+        ("support-hours", {"en": "When can I reach support?", "fr": "Quand puis-je joindre l'assistance ?"}, hours, False),
+        ("languages", {"en": "Do you answer in French and English?", "fr": "Répondez-vous en français et en anglais ?"},
+         {"en": "<p>Yes, every channel answers in both languages.</p>",
+          "fr": "<p>Oui, chaque canal répond dans les deux langues.</p>"}, False),
+        ("training-included", {"en": "Is training included?", "fr": "La formation est-elle incluse ?"},
+         {"en": "<p>The Standard and Premium plans include one half-day workshop a year. See the <a href=\"#acc-change-plan\">plan question</a> to move up.</p>",
+          "fr": "<p>Les formules Standard et Premium comprennent un atelier d'une demi-journée par an. Voir la <a href=\"#acc-change-plan\">question sur les formules</a> pour en changer.</p>"}, False),
+    ):
+        add_content(faq, name, "ctpl:accordionItem", i18n("jcr:title", question) + i18n("body", answer)
+                    + [{"name": "openByDefault", "value": str(is_open).lower()}])
     return [(icons, True), (logos, True), (f"{home}/help", True)]
 
 

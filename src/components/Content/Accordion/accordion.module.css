@@ -1,0 +1,74 @@
+/* Accordion: native details/summary, one bordered list of entries. */
+.intro {
+  max-width: var(--ctpl-measure);
+  margin: 0 0 var(--ctpl-space-5);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-lg);
+}
+
+/* "Expand all / Collapse all" exists only once static/js/accordion.js has run (data-ctpl-ready),
+   so a visitor without JavaScript never sees a button that does nothing. */
+.toolbar {
+  display: none;
+  justify-content: flex-end;
+  margin-bottom: var(--ctpl-space-3);
+}
+:global(html.ctpl-js) .accordion[data-ctpl-ready] .toolbar {
+  display: flex;
+}
+.toggleAll {
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border: 0;
+  background: none;
+  color: var(--ctpl-color-link);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-medium);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+.toggleAll:hover {
+  color: var(--ctpl-color-link-hover);
+}
+
+.items {
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.item {
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  scroll-margin-top: var(--ctpl-space-6);
+}
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ctpl-space-4);
+  padding: var(--ctpl-space-4) var(--ctpl-space-1);
+  cursor: pointer;
+  list-style: none;
+}
+.summary::-webkit-details-marker {
+  display: none;
+}
+.summary:hover .question {
+  color: var(--ctpl-color-link-hover);
+}
+.question {
+  margin: 0;
+  font-family: var(--ctpl-font-body);
+  font-size: var(--ctpl-text-lg);
+  font-weight: var(--ctpl-font-weight-bold);
+  line-height: var(--ctpl-leading-snug);
+  overflow-wrap: anywhere;
+}
+.chevron {
+  flex: none;
+  color: var(--ctpl-color-accent);
+  transition: transform var(--ctpl-duration-base) var(--ctpl-ease);
+}
+details[open] > .summary .chevron {
+  transform: rotate(180deg);
+}
+.answer {
+  padding: 0 var(--ctpl-space-1) var(--ctpl-space-5);
+}

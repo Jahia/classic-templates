@@ -165,6 +165,33 @@ def free_zone(d, p):
         d.ellipse(p(x - 2, y - 2, x + 2, y + 2), fill=INK)
 
 
+def accordion(d, p):
+    for y in (5, 13, 21):
+        d.rectangle(p(4, y, 28, y + 6), outline=INK, width=w(2))
+        d.line(p(22, y + 2, 24, y + 4, 26, y + 2), fill=INK, width=w(2))
+
+
+def accordion_item(d, p):
+    d.rectangle(p(4, 6, 28, 13), fill=INK)
+    d.rectangle(p(4, 13, 28, 26), outline=INK, width=w(2))
+    for y in (18, 22):
+        d.line(p(8, y, 22, y), fill=INK, width=w(2))
+
+
+def tabs(d, p):
+    d.rectangle(p(4, 6, 12, 12), fill=INK)
+    d.rectangle(p(13, 7, 20, 12), outline=INK, width=w(2))
+    d.rectangle(p(21, 7, 28, 12), outline=INK, width=w(2))
+    d.rectangle(p(4, 12, 28, 27), outline=INK, width=w(2))
+
+
+def tab(d, p):
+    d.rectangle(p(6, 6, 16, 12), fill=INK)
+    d.rectangle(p(6, 12, 26, 27), outline=INK, width=w(2))
+    for y in (17, 22):
+        d.line(p(10, y, 22, y), fill=INK, width=w(2))
+
+
 ICONS = {
     "ctpl_news": news,
     "ctpl_article": article,
@@ -189,6 +216,10 @@ ICONS = {
     "ctpl_quote": quote,
     "ctpl_siteMap": site_map,
     "ctpl_freeZone": free_zone,
+    "ctpl_accordion": accordion,
+    "ctpl_accordionItem": accordion_item,
+    "ctpl_tabs": tabs,
+    "ctpl_tab": tab,
 }
 
 if __name__ == "__main__":

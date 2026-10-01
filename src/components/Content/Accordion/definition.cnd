@@ -1,0 +1,20 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// One entry of a ctpl:accordion: its heading (jcr:title, the question or label visitors click) and
+// the rich text it reveals. openByDefault shows the entry open when the page loads. Never hidden:
+// editors select each entry in Page Builder.
+[ctpl:accordionItem] > jnt:content, mix:title
+ - body (string, richtext) i18n
+ - openByDefault (boolean) = false autocreated
+
+// A page section of entries that open and close (questions and answers, details on demand), with
+// an optional h2 heading (jcr:title) and a lead text. Entries are ordered by the editor.
+[ctpl:accordion] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ - introText (string, textarea) i18n
+ + * (ctpl:accordionItem)

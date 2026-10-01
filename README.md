@@ -19,8 +19,8 @@ light and dark, from its settings, with no code change.
   name, a menu built from the page tree three levels deep, utility links and a language switcher.
   A footer with a tagline, link columns, legal and social links and a copyright line. A breadcrumb
   trail. Header and footer are shared by every page and edited on the home page.
-- **Reusable sections.** Hero banner, image and text, rich text, columns, card grid, key figures,
-  quote, link list, content list, site map and free zone. Every section can end with an optional
+- **Reusable sections.** Hero banner, image and text, rich text, columns, card grid, accordion,
+  key figures, quote, link list, content list, site map and free zone. Every section can end with an optional
   call to action.
 - **News and articles.** Stored in content folders, each with its own page, listed as cards or
   compact rows by content lists that filter by folder, category and language.
@@ -51,6 +51,7 @@ light and dark, from its settings, with no code change.
 | Rich text         | A heading and formatted text, at reading width or wide        | [rich-text](docs/components/rich-text.md)                       |
 | Columns           | Two, three or four columns of sections                        | [columns](docs/components/columns.md)                           |
 | Card grid         | Hand-picked cards, icon tiles or a logo strip                 | [card-grid](docs/components/card-grid.md)                       |
+| Accordion         | Entries that open and close, such as questions and answers    | [accordion](docs/components/accordion.md)                       |
 | Key figures       | A row of figures with their labels                            | [key-figures](docs/components/key-figures.md)                   |
 | Quote             | A quotation with the person's name, role and portrait         | [quote](docs/components/quote.md)                               |
 | Link list         | A list of links: a section, a bar or a footer column          | [links-and-link-lists](docs/components/links-and-link-lists.md) |

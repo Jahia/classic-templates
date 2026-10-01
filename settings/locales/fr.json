@@ -93,5 +93,10 @@
     "table": "Tableau",
     "tableNumbered": "Tableau {{number}}",
     "tableWithoutCaption": "Un tableau de ce texte n'a pas de titre : ajoutez-en un dans l'éditeur de texte riche (propriétés du tableau). Il nomme le tableau pour les lecteurs d'écran."
+  },
+  "accordion": {
+    "expandAll": "Tout déplier",
+    "collapseAll": "Tout replier",
+    "noTitle": "Cette entrée n'a pas de titre dans cette langue : elle n'est pas affichée."
   }
 }
