@@ -2,7 +2,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { JCRSiteNode } from "org.jahia.services.content.decorator";
 
 /** Themes declared by the ctplmix:siteSettings choicelist, besides the implicit default. */
-const THEMES = new Set(["ocean", "terracotta"]);
+const THEMES = new Set(["ocean", "terracotta", "horizon"]);
 const SCHEMES = new Set(["light", "dark"]);
 
 export interface SiteLook {

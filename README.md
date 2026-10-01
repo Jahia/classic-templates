@@ -24,7 +24,7 @@ light and dark, from its settings, with no code change.
   call to action.
 - **News and articles.** Stored in content folders, each with its own page, listed as cards or
   compact rows by content lists that filter by folder, category and language.
-- **Themes.** Three themes (Classic, Ocean, Terracotta), each in light and dark, chosen per site.
+- **Themes.** Four themes (Classic, Ocean, Terracotta, Horizon), each in light and dark, chosen per site.
   Visitors get their system's scheme unless the site forces one. Contrast is checked for every
   theme and scheme.
 - **Accessible by default.** WCAG 2.1 AA and RGAA 4.1.2 audited. Skip link, landmarks, strict
@@ -80,14 +80,15 @@ The full documentation for editors and site administrators is in [`docs/`](docs/
 The theme and colour scheme are site settings: edit the site in jContent and, under "Site look",
 choose a "Theme" and "Light or dark". "Automatic" follows each visitor's system setting.
 
-|                   | Light                                                        | Dark                                                       |
-| ----------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
-| Classic (navy)    | ![Classic, light](docs/images/theme-default-light.png)       | ![Classic, dark](docs/images/theme-default-dark.png)       |
-| Ocean (teal)      | ![Ocean, light](docs/images/theme-ocean-light.png)           | ![Ocean, dark](docs/images/theme-ocean-dark.png)           |
-| Terracotta (warm) | ![Terracotta, light](docs/images/theme-terracotta-light.png) | ![Terracotta, dark](docs/images/theme-terracotta-dark.png) |
+|                           | Light                                                        | Dark                                                       |
+| ------------------------- | ------------------------------------------------------------ | ---------------------------------------------------------- |
+| Classic (navy)            | ![Classic, light](docs/images/theme-default-light.png)       | ![Classic, dark](docs/images/theme-default-dark.png)       |
+| Ocean (teal)              | ![Ocean, light](docs/images/theme-ocean-light.png)           | ![Ocean, dark](docs/images/theme-ocean-dark.png)           |
+| Terracotta (warm)         | ![Terracotta, light](docs/images/theme-terracotta-light.png) | ![Terracotta, dark](docs/images/theme-terracotta-dark.png) |
+| Horizon (navy and orange) | ![Horizon, light](docs/images/theme-horizon-light.png)       | ![Horizon, dark](docs/images/theme-horizon-dark.png)       |
 
 Components never contain a colour, font or shadow value. They read semantic CSS custom properties
-(`--ctpl-color-text`, `--ctpl-color-accent`, ...) defined in `src/templates/tokens.css`, in three
+(`--ctpl-color-text`, `--ctpl-color-accent`, `--ctpl-color-highlight`, ...) defined in `src/templates/tokens.css`, in three
 tiers: primitives, semantic roles in `light-dark()` pairs, and a few component settings. A theme is
 a set of overrides of the semantic tokens under `[data-ctpl-theme="<name>"]`. Adding one means
 adding its tokens, its value to the site-settings choice list (with EN and FR labels), and running

@@ -8,7 +8,7 @@
 | Repository        | Public on GitHub, [Jahia/classic-templates](https://github.com/Jahia/classic-templates); MIT `LICENSE`                                     | User decision 2026-09-30: public in the Jahia organisation, MIT, copyright Jahia             |
 | Build and CI      | Jahia standard, copied from luxe-jahia-demo: thin `pom.xml` around Vite, shared `jahia-modules-action` workflows, `tests/` Cypress project | What Cortex review and the shared Sonar/publish/release pipeline expect                      |
 | Maven coordinates | `org.jahia.modules.javascript:classic-templates`, parent `org.jahia.modules:jahia-modules:8.2.1.0`                                         | Same as luxe; the Java-bundle rule (parent 8.2.0.0) does not apply to a JS module            |
-| Theming           | Light + dark, `default` + 2 sample themes, picked on the site node                                                                         | Proves the tokens re-theme every component                                                   |
+| Theming           | Light + dark, `default` + 3 sample themes, picked on the site node                                                                         | Proves the tokens re-theme every component                                                   |
 | Headings          | Template renders the one `<h1>` from `jcr:title`; heroes use `<h2>`; page "hide title" option hides the template `<h1>` visually           | Lighthouse and axe want exactly one `<h1>`; a hero reused on two pages must not duplicate it |
 | Languages         | EN + FR                                                                                                                                    | Harness rule                                                                                 |
 | Java              | None                                                                                                                                       | Nothing server-side that the JS engine cannot do                                             |
@@ -54,14 +54,19 @@
 
 See the AIStartupKit context doc `jahia-theming-tokens.md`. Tokens are prefixed `--ctpl-`, in
 `src/templates/tokens.css`. The site mixin `ctplmix:siteSettings` carries `ctplTheme` (`default`,
-`ocean`, `terracotta`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
+`ocean`, `terracotta`, `horizon`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
 Layout (only known values; the default look stamps nothing).
 
 - **Light and dark without duplication:** every colour role is a `light-dark()` pair and
   `:root { color-scheme: light dark }`; `data-ctpl-scheme` only forces `color-scheme`. Jahia's CSS
   aggregation/minification keeps `light-dark()`, `color-mix()` and `clamp()` intact (checked on
   8.2.3.2). Browser support: Baseline 2024.
-- **Contrast** is checked by `yarn check:contrast` for every theme × scheme (22 pairs each), and
+- **Emphasis role:** `--ctpl-color-highlight` (+ `--ctpl-color-text-on-highlight` for a filled
+  badge) is for values that must stand out (key figures, prices). `:root` aliases it to the accent,
+  so every theme has it; a theme that wants its own sets it (horizon: an orange, light first, with
+  its own surfaces, text and borders). The alias resolves on `<html>`, where the theme block
+  overrides the accent, so no theme has to repeat it.
+- **Contrast** is checked by `yarn check:contrast` for every theme × scheme (30 pairs each), and
   literal colours outside `tokens.css` by `yarn check:tokens`. Both were shown to fail on a
   deliberately broken token before being trusted.
 - **Cache:** the Layout declares a cache dependency on the site node

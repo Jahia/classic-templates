@@ -29,7 +29,7 @@
 .value {
   display: block;
   margin-bottom: var(--ctpl-space-1);
-  color: var(--ctpl-color-accent);
+  color: var(--ctpl-color-highlight);
   font-family: var(--ctpl-font-heading);
   font-size: var(--ctpl-text-4xl);
   line-height: var(--ctpl-leading-tight);
