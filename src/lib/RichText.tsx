@@ -6,8 +6,7 @@ import { sanitizeRichTextWithReport } from "./sanitize.js";
  * Renders a rich-text property written by an editor in the Jahia rich-text editor.
  *
  * This is the module's ONLY raw-HTML sink, on purpose: every component renders rich text through
- * it, so the security scan (jahia-security-scan rule R10, dangerouslySetInnerHTML) reports exactly
- * one place to justify. The justification is the allow-list sanitizer applied right here
+ * it, so static analysis of dangerouslySetInnerHTML points to exactly one place to justify. The justification is the allow-list sanitizer applied right here
  * (lib/sanitize.ts), never platform-side HTML filtering, a site setting the template set
  * cannot count on. HTML from
  * any other system must still never be passed here without thought: it is sanitized the same
