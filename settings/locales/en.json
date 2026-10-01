@@ -87,6 +87,9 @@
     "empty": "This quote has no text in this language: it is not shown."
   },
   "richText": {
-    "imageWithoutAlt": "An image in this text has no text alternative: edit the image in the rich-text editor and describe it, or mark it decorative with an empty text."
+    "imageWithoutAlt": "An image in this text has no text alternative: edit the image in the rich-text editor and describe it, or mark it decorative with an empty text.",
+    "table": "Table",
+    "tableNumbered": "Table {{number}}",
+    "tableWithoutCaption": "A table in this text has no caption: add one in the rich-text editor (table properties). It names the table for screen readers."
   }
 }

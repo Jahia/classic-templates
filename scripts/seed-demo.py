@@ -22,6 +22,8 @@
     quote, and adds example sections to the home, about, services and team pages;
   - adds a site map page and an accessibility statement, linked from the footer (the statement link
     carries the "Accessibility: partially compliant" mention);
+  - adds a help centre page (hidden from the menu) with the sections added after 0.1.2: a support
+    plans table that scrolls on a phone;
   - publishes the site in both languages, files included (publishing content never publishes the
     images it references).
 
@@ -575,7 +577,43 @@ def seed_examples(site):
              page=statement)
     touched += [(f"{home}/sitemap", True), (f"{home}/accessibility", True),
                 (f"{legal}/sitemap", True), (f"{legal}/accessibility", True), (legal, False)]
-    return touched
+    return touched + seed_help_centre(site)
+
+
+# ---- Help centre: sections added after 0.1.2 ---------------------------------------------------
+
+def _plans_table(lang):
+    """A comparison table with a caption, row and column headers: wide enough to scroll on a phone."""
+    head = {"en": ("Plan", "First answer", "Channels", "Opening hours", "Price per month"),
+            "fr": ("Formule", "Première réponse", "Canaux", "Horaires", "Prix par mois")}[lang]
+    rows = {"en": (("Essential", "2 working days", "E-mail", "Monday to Friday, 9 am to 6 pm", "Included"),
+                   ("Standard", "8 working hours", "E-mail, phone", "Monday to Friday, 8 am to 8 pm", "€390"),
+                   ("Premium", "1 hour", "E-mail, phone, chat", "Every day, around the clock", "€1,200")),
+            "fr": (("Essentielle", "2 jours ouvrés", "E-mail", "Du lundi au vendredi, de 9 h à 18 h", "Incluse"),
+                   ("Standard", "8 heures ouvrées", "E-mail, téléphone", "Du lundi au vendredi, de 8 h à 20 h", "390 €"),
+                   ("Premium", "1 heure", "E-mail, téléphone, chat", "Tous les jours, 24 h/24", "1 200 €"))}[lang]
+    caption = {"en": "Support plans compared", "fr": "Comparatif des formules d'assistance"}[lang]
+    ths = "".join(f'<th scope="col">{h}</th>' for h in head)
+    trs = "".join(f'<tr><th scope="row">{r[0]}</th>' + "".join(f"<td>{c}</td>" for c in r[1:]) + "</tr>" for r in rows)
+    return f"<table><caption>{caption}</caption><thead><tr>{ths}</tr></thead><tbody>{trs}</tbody></table>"
+
+
+def seed_help_centre(site):
+    """A help centre page (hidden from the menu, listed in the site map) that shows the sections
+    added after 0.1.2: a comparison table that scrolls on its own on a phone. Only adds what is
+    missing. Returns (path, whole subtree?) pairs to publish: the page and its own sections."""
+    home = f"{site}/home"
+    add_page(home, "help", {"en": "Help centre", "fr": "Centre d'aide"}, hidden=True,
+             description={"en": "Support plans, answers to frequent questions and ways to reach us.",
+                          "fr": "Formules d'assistance, réponses aux questions fréquentes et moyens de nous joindre."})
+    main = ensure_area(f"{home}/help", "main", "ctpl:pageArea")
+    add_content(main, "plans", "ctpl:richText",
+        i18n("jcr:title", {"en": "Support plans", "fr": "Formules d'assistance"})
+        + i18n("body", {lang: ({"en": "<p>Every plan includes the help centre and the editor guides.</p>",
+                                "fr": "<p>Chaque formule comprend le centre d'aide et les guides de rédaction.</p>"}[lang]
+                               + _plans_table(lang)) for lang in LANGS})
+        + [{"name": "width", "value": "wide"}])
+    return [(f"{home}/help", True)]
 
 
 # ---- Full demo content (scripts/demo_content.py) ----------------------------------------------

@@ -89,8 +89,14 @@ Layout (only known values; the default look stamps nothing).
   removes href/src/cite that is not http(s), mailto, tel, relative or a Jahia `##cms-context##`
   placeholder (so no `javascript:`, `data:` or `//host`); prefixes editor ids (`ctpl-rt-`) with
   the anchors and `headers` pointing at them; renumbers headings under the section's own heading
-  (`RichText headingLevel`, from `useBodyHeadingLevel`) with no skipped level. Unit tests in
-  `sanitize.test.ts`, end-to-end in the content edge-cases spec.
+  (`RichText headingLevel`, from `useBodyHeadingLevel`) with no skipped level; wraps every table in
+  a scroll region (`div.ctpl-table-scroll`, `role="region"`, `tabindex="0"`), named by
+  `aria-labelledby` after its caption (which gets an id `<prefix>-caption-<n>`: editor ids start
+  with a letter, so it never collides) or by `aria-label` from `tableLabel` ("Table", numbered when
+  the block has several), so a wide table scrolls inside the text at 320 px (RGAA 10.11, axe
+  `scrollable-region-focusable`). Two uncaptioned tables in two blocks of one page share the name
+  "Table" (axe `landmark-unique`): the edit-mode hint asks for a caption. Unit tests in
+  `sanitize.test.ts`, end-to-end in the content edge-cases and tables specs.
 - No scanner rule covers these, so review them by hand: JCR-SQL2 built by concatenation (values
   only from choicelists, paths only from nodes), contributed URLs (scheme allow-list: `http`,
   `https`, `mailto`, `tel`), any server-side fetch.

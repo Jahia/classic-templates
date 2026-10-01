@@ -87,6 +87,9 @@
     "empty": "Cette citation n'a pas de texte dans cette langue : elle n'est pas affichée."
   },
   "richText": {
-    "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : modifiez l'image dans l'éditeur et décrivez-la, ou marquez-la décorative avec un texte vide."
+    "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : modifiez l'image dans l'éditeur et décrivez-la, ou marquez-la décorative avec un texte vide.",
+    "table": "Tableau",
+    "tableNumbered": "Tableau {{number}}",
+    "tableWithoutCaption": "Un tableau de ce texte n'a pas de titre : ajoutez-en un dans l'éditeur de texte riche (propriétés du tableau). Il nomme le tableau pour les lecteurs d'écran."
   }
 }

@@ -61,6 +61,15 @@ You can write headings the way the editor offers them. The page outline stays co
 
 An image with no text alternative gets an empty one, so screen readers skip it instead of reading its file name. In edit mode the section then shows the hint "An image in this text has no text alternative: edit the image in the rich-text editor and describe it, or mark it decorative with an empty text."
 
+### Tables scroll on small screens
+
+Every table of a rich text sits in its own scroll area. On a phone, a table wider than the screen scrolls sideways inside the text, while the rest of the page stays in place (no horizontal scrolling of the whole page, even at 320 pixels wide).
+
+- Keyboard users reach the scroll area with the Tab key (it shows the focus ring) and scroll it with the arrow keys.
+- Screen readers announce the area by the table's **caption**. A table without a caption is announced as "Table" ("Table 1", "Table 2" when the text has several), and in edit mode the section shows the hint "A table in this text has no caption: add one in the rich-text editor (table properties). It names the table for screen readers."
+
+This applies to every rich-text field of the template set.
+
 ### Empty text
 
 A section with no text shows its title (if any) and its button (if switched on). Nothing else.
