@@ -10,7 +10,8 @@
  * `color-scheme`: the visitor's system preference by default, or the site's choice stamped on
  * <html data-ctpl-scheme="light|dark"> by the Layout. So dark mode is never written twice.
  *
- * Themes: <html data-ctpl-theme="ocean|terracotta"> (from the site settings) overrides tier 2 only.
+ * Themes: <html data-ctpl-theme="ocean|terracotta|horizon"> (from the site settings) overrides tier 2
+ * only.
  * Contrast of every theme x scheme pair is checked by `yarn check:contrast`.
  *
  * Breakpoints cannot be custom properties (they are not allowed in @media). The module uses two:
@@ -75,6 +76,27 @@
   --ctpl-red-700: #a92a1f;
   --ctpl-red-900: #571510;
 
+  /* Horizon theme: a deep sky navy, a lagoon teal and an ember orange. */
+  --ctpl-sky-50: #f2f8fc;
+  --ctpl-sky-100: #e8f5fb;
+  --ctpl-sky-200: #d3e3ee;
+  --ctpl-sky-300: #8cc4ee;
+  --ctpl-sky-700: #22405e;
+  --ctpl-sky-800: #0f2d4a;
+  --ctpl-sky-850: #0e2238;
+  --ctpl-sky-900: #0b3a66;
+  --ctpl-sky-950: #08182a;
+  --ctpl-ink-100: #e8f0f7;
+  --ctpl-ink-300: #a9bccd;
+  --ctpl-ink-400: #7f98af;
+  --ctpl-ink-500: #5b7083;
+  --ctpl-ink-600: #475569;
+  --ctpl-ink-800: #1e293b;
+  --ctpl-lagoon-300: #6fd0e6;
+  --ctpl-lagoon-700: #0e6e8c;
+  --ctpl-ember-300: #f7a26b;
+  --ctpl-ember-700: #b4410f;
+
   --ctpl-stack-sans:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
   --ctpl-stack-serif:
@@ -103,12 +125,22 @@
   --ctpl-color-link-hover: var(--ctpl-color-accent-hover);
   --ctpl-color-focus: light-dark(var(--ctpl-navy-600), var(--ctpl-navy-300));
 
+  /* Emphasis: prices, key figures, a value that must stand out. Every theme gets the theme's
+     accent unless it sets its own (horizon does): the aliases below resolve on <html>, where the
+     theme block overrides the accent. */
+  --ctpl-color-highlight: var(--ctpl-color-accent);
+  --ctpl-color-text-on-highlight: var(--ctpl-color-text-on-accent);
+
   --ctpl-color-success: light-dark(var(--ctpl-green-700), var(--ctpl-green-300));
   --ctpl-color-success-surface: light-dark(var(--ctpl-green-50), var(--ctpl-green-900));
   --ctpl-color-warning: light-dark(var(--ctpl-amber-700), var(--ctpl-amber-300));
   --ctpl-color-warning-surface: light-dark(var(--ctpl-amber-50), var(--ctpl-amber-900));
   --ctpl-color-danger: light-dark(var(--ctpl-red-700), var(--ctpl-red-300));
   --ctpl-color-danger-surface: light-dark(var(--ctpl-red-50), var(--ctpl-red-900));
+
+  /* Behind logos (card grid "logos" display): logos are drawn for light backgrounds, so the plate
+     stays light in both schemes, a touch dimmer in dark mode. */
+  --ctpl-color-surface-logo: light-dark(var(--ctpl-white), var(--ctpl-slate-100));
 
   /* Text over a photo (hero banners): always light text on a darkened image, in both schemes. */
   --ctpl-color-overlay: light-dark(#0c1019a6, #000000b3);
@@ -201,6 +233,31 @@
   --ctpl-color-focus: light-dark(var(--ctpl-clay-600), var(--ctpl-clay-300));
   --ctpl-radius-md: 0.125rem;
   --ctpl-radius-lg: 0.25rem;
+}
+
+/* ---- Theme: horizon (navy and ember orange, sans-serif headings, light first) --------------- */
+:root[data-ctpl-theme="horizon"] {
+  --ctpl-color-surface-page: light-dark(var(--ctpl-white), var(--ctpl-sky-950));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-sky-850));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-sky-50), var(--ctpl-sky-850));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-sky-900), var(--ctpl-sky-100));
+  --ctpl-color-text: light-dark(var(--ctpl-ink-800), var(--ctpl-ink-100));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-ink-600), var(--ctpl-ink-300));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-white), var(--ctpl-sky-900));
+  --ctpl-color-border: light-dark(var(--ctpl-sky-200), var(--ctpl-sky-700));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-ink-500), var(--ctpl-ink-400));
+  --ctpl-color-accent: light-dark(var(--ctpl-sky-900), var(--ctpl-sky-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-lagoon-700), var(--ctpl-lagoon-300));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-sky-100), var(--ctpl-sky-800));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-sky-950));
+  --ctpl-color-focus: light-dark(var(--ctpl-lagoon-700), var(--ctpl-lagoon-300));
+  --ctpl-color-highlight: light-dark(var(--ctpl-ember-700), var(--ctpl-ember-300));
+  --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-sky-950));
+  --ctpl-font-heading: var(--ctpl-stack-sans);
+  --ctpl-heading-weight: 700;
+  --ctpl-heading-tracking: -0.015em;
+  --ctpl-radius-md: 0.625rem;
+  --ctpl-radius-lg: 1.25rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

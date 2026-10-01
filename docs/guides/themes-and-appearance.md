@@ -14,24 +14,27 @@ The look of the site is set on the site itself, not on a page:
 
 The **Site look** section has three fields:
 
-| Field                   | Values                                          | Default        |
-| ----------------------- | ----------------------------------------------- | -------------- |
-| **Theme**               | Classic (navy), Ocean (teal), Terracotta (warm) | Classic (navy) |
-| **Light or dark**       | Automatic, Always light, Always dark            | Automatic      |
-| **Show the breadcrumb** | ticked or not                                   | ticked         |
+| Field                   | Values                                                                     | Default        |
+| ----------------------- | -------------------------------------------------------------------------- | -------------- |
+| **Theme**               | Classic (navy), Ocean (teal), Terracotta (warm), Horizon (navy and orange) | Classic (navy) |
+| **Light or dark**       | Automatic, Always light, Always dark                                       | Automatic      |
+| **Show the breadcrumb** | ticked or not                                                              | ticked         |
 
 ## Theme
 
 The theme sets the colours, fonts and shapes used across the site. Changing it alters no content
 and no layout: every page keeps its sections, text and images.
 
-| Theme                 | Light                                                            | Dark                                                           |
-| --------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------- |
-| **Classic (navy)**    | ![Classic theme, light](../images/theme-default-light.png)       | ![Classic theme, dark](../images/theme-default-dark.png)       |
-| **Ocean (teal)**      | ![Ocean theme, light](../images/theme-ocean-light.png)           | ![Ocean theme, dark](../images/theme-ocean-dark.png)           |
-| **Terracotta (warm)** | ![Terracotta theme, light](../images/theme-terracotta-light.png) | ![Terracotta theme, dark](../images/theme-terracotta-dark.png) |
+| Theme                         | Light                                                            | Dark                                                           |
+| ----------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------- |
+| **Classic (navy)**            | ![Classic theme, light](../images/theme-default-light.png)       | ![Classic theme, dark](../images/theme-default-dark.png)       |
+| **Ocean (teal)**              | ![Ocean theme, light](../images/theme-ocean-light.png)           | ![Ocean theme, dark](../images/theme-ocean-dark.png)           |
+| **Terracotta (warm)**         | ![Terracotta theme, light](../images/theme-terracotta-light.png) | ![Terracotta theme, dark](../images/theme-terracotta-dark.png) |
+| **Horizon (navy and orange)** | ![Horizon theme, light](../images/theme-horizon-light.png)       | ![Horizon theme, dark](../images/theme-horizon-dark.png)       |
 
 Every theme is checked for sufficient text contrast (WCAG 2.1 AA) in both light and dark.
+
+Each theme also has an **emphasis colour**, used for values that must stand out, such as key figures and prices. It is the theme's main colour in Classic, Ocean and Terracotta, and an orange in Horizon. Horizon is designed light first: its dark version keeps the same navy, teal and orange family.
 
 ## Light or dark
 

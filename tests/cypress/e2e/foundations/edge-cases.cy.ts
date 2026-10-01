@@ -62,6 +62,24 @@ describe('Foundations - fallbacks and site look', () => {
         })
     })
 
+    it('applies the horizon theme, light first, with its own emphasis colour', () => {
+        cy.login()
+        setLook('horizon', 'light')
+        cy.logout()
+        cy.visit(`${sitePath}/home/bare.html`)
+        cy.get('html').should('have.attr', 'data-ctpl-theme', 'horizon')
+        cy.window().then((win) => {
+            // The emphasis role exists in every theme; horizon gives it its own colour, not the accent.
+            const probe = win.document.createElement('span')
+            probe.style.color = 'var(--ctpl-color-highlight)'
+            win.document.body.append(probe)
+            expect(win.getComputedStyle(probe).color).to.eq('rgb(180, 65, 15)')
+            probe.remove()
+            expect(win.getComputedStyle(win.document.body).backgroundColor).to.eq('rgb(255, 255, 255)')
+        })
+        accent().should('eq', 'rgb(11, 58, 102)')
+    })
+
     it('returns to the default look when the theme is set back to default and auto', () => {
         cy.login()
         setLook('default', 'auto')

@@ -101,6 +101,6 @@
 // ctplShowBreadcrumb shows the breadcrumb trail above the content of every page except home.
 [ctplmix:siteSettings] mixin
  extends = jnt:virtualsite
- - ctplTheme (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'ocean', 'terracotta'
+ - ctplTheme (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'ocean', 'terracotta', 'horizon'
  - ctplColorScheme (string, choicelist[resourceBundle]) = 'auto' autocreated < 'auto', 'light', 'dark'
  - ctplShowBreadcrumb (boolean) = true autocreated

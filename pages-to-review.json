@@ -42,5 +42,7 @@
   "http://localhost:8080/sites/classic-dev/home/practical.html",
   "http://localhost:8080/fr/sites/classic-dev/home/practical.html",
   "http://localhost:8080/sites/classic-dev/contents/places/lyon.html",
-  "http://localhost:8080/fr/sites/classic-dev/contents/places/lyon.html"
+  "http://localhost:8080/fr/sites/classic-dev/contents/places/lyon.html",
+  "http://localhost:8080/sites/classic-dev/home/help.html",
+  "http://localhost:8080/fr/sites/classic-dev/home/help.html"
 ]

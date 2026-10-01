@@ -6,6 +6,10 @@ import {
   sanitizeRichTextWithReport,
 } from "./sanitize.js";
 
+/** A table as the sanitizer writes it: inside its scroll region, named `label`. */
+const scroll = (table: string, label = "Table") =>
+  `<div class="ctpl-table-scroll" role="region" tabindex="0" aria-label="${label}">${table}</div>`;
+
 describe("sanitizeRichText", () => {
   it("keeps editorial markup", () => {
     const html =
@@ -66,7 +70,7 @@ describe("sanitizeRichText", () => {
   it("keeps tables", () => {
     const html =
       '<table><thead><tr><th scope="col">h</th></tr></thead><tbody><tr><td colspan="2">d</td></tr></tbody></table>';
-    expect(sanitizeRichText(html)).toBe(html);
+    expect(sanitizeRichText(html)).toBe(scroll(html));
   });
 });
 
@@ -97,10 +101,12 @@ describe("sanitizeRichText - accessibility (RGAA)", () => {
         '<table role="presentation"><tr><th id="h1" scope="col">A</th></tr><tr><td headers="h1">1</td></tr></table>',
       ),
     ).toBe(
-      '<table role="presentation"><tr><th id="ctpl-rt-h1" scope="col">A</th></tr><tr><td headers="ctpl-rt-h1">1</td></tr></table>',
+      scroll(
+        '<table role="presentation"><tr><th id="ctpl-rt-h1" scope="col">A</th></tr><tr><td headers="ctpl-rt-h1">1</td></tr></table>',
+      ),
     );
     expect(sanitizeRichText('<table role="button"><tr><td>x</td></tr></table>')).toBe(
-      "<table><tr><td>x</td></tr></table>",
+      scroll("<table><tr><td>x</td></tr></table>"),
     );
   });
 
@@ -140,6 +146,7 @@ describe("sanitizeRichText - accessibility (RGAA)", () => {
     expect(sanitizeRichTextWithReport('<img src="/a.png">')).toEqual({
       html: '<img alt="" src="/a.png">',
       imageWithoutAlt: true,
+      tableWithoutCaption: false,
     });
     expect(sanitizeRichTextWithReport('<img src="/a.png" alt="">').imageWithoutAlt).toBe(false);
     // The pattern is global: a second call starts from the beginning again.
@@ -373,16 +380,46 @@ describe("isSafeRichTextUrl - characters the browser ignores", () => {
 
 describe("TAG", () => {
   const matches = (pattern: RegExp, html: string) => [...html.matchAll(pattern)].map((m) => [...m]);
-  const previous = /<(\/?)([a-z][a-z0-9]*)([^<>]*)>/g;
 
-  it("finds the same tags as the pattern without the lookahead", () => {
-    for (const html of [
-      '<p>a</p><h2 id="x">b</h2><br /><img src="/a.png" alt="">',
-      '<table><tr><th scope="col">a</th></tr></table><h10>x</h10>',
-      "<a1b2 c3>d</a1b2><p<b>c</b>",
-      "<abc",
-    ]) {
-      expect(matches(TAG, html)).toEqual(matches(previous, html));
+  it("finds every tag with its closing slash, name and attributes", () => {
+    const cases: Array<[string, string[][]]> = [
+      [
+        '<p>a</p><h2 id="x">b</h2><br /><img src="/a.png" alt="">',
+        [
+          ["<p>", "", "p", ""],
+          ["</p>", "/", "p", ""],
+          ['<h2 id="x">', "", "h2", ' id="x"'],
+          ["</h2>", "/", "h2", ""],
+          ["<br />", "", "br", " /"],
+          ['<img src="/a.png" alt="">', "", "img", ' src="/a.png" alt=""'],
+        ],
+      ],
+      [
+        '<table><tr><th scope="col">a</th></tr></table><h10>x</h10>',
+        [
+          ["<table>", "", "table", ""],
+          ["<tr>", "", "tr", ""],
+          ['<th scope="col">', "", "th", ' scope="col"'],
+          ["</th>", "/", "th", ""],
+          ["</tr>", "/", "tr", ""],
+          ["</table>", "/", "table", ""],
+          ["<h10>", "", "h10", ""],
+          ["</h10>", "/", "h10", ""],
+        ],
+      ],
+      [
+        "<a1b2 c3>d</a1b2><p<b>c</b>",
+        [
+          ["<a1b2 c3>", "", "a1b2", " c3"],
+          ["</a1b2>", "/", "a1b2", ""],
+          ["<b>", "", "b", ""],
+          ["</b>", "/", "b", ""],
+        ],
+      ],
+      ["<abc", []],
+    ];
+    for (const [html, expected] of cases) {
+      expect(matches(TAG, html)).toEqual(expected);
     }
   });
 
@@ -390,5 +427,81 @@ describe("TAG", () => {
     const started = performance.now();
     expect(matches(TAG, "<a" + "b".repeat(100_000))).toEqual([]);
     expect(performance.now() - started).toBeLessThan(200);
+  });
+});
+
+describe("sanitizeRichText - tables scroll in their own region (RGAA 10.11)", () => {
+  const row = "<tr><td>x</td></tr>";
+
+  it("wraps a table in a focusable region named with the table label", () => {
+    expect(sanitizeRichText(`<table>${row}</table>`)).toBe(scroll(`<table>${row}</table>`));
+  });
+
+  it("names the region after the caption, which gets an id in the block's id space", () => {
+    const out = sanitizeRichText(`<table>\n <caption>Fares</caption>${row}</table>`, {
+      idPrefix: "rt-1234abcd-",
+    });
+    expect(out).toBe(
+      '<div class="ctpl-table-scroll" role="region" tabindex="0" aria-labelledby="rt-1234abcd--caption-1">' +
+        `<table>\n <caption id="rt-1234abcd--caption-1">Fares</caption>${row}</table></div>`,
+    );
+  });
+
+  it("never gives the caption id of an editor id (editor ids start with a letter)", () => {
+    const out = sanitizeRichText(
+      `<h2 id="caption-1">A</h2><table><caption>B</caption>${row}</table>`,
+    );
+    expect(out).toContain('id="ctpl-rt-caption-1"');
+    expect(out).toContain('id="ctpl-rt--caption-1"');
+  });
+
+  it("numbers the labels when a block has several tables, with the caller's wording", () => {
+    const out = sanitizeRichText(`<table>${row}</table><p>t</p><table>${row}</table>`, {
+      tableLabel: (index, total) => `Tableau ${index} sur ${total}`,
+    });
+    expect(out).toBe(
+      scroll(`<table>${row}</table>`, "Tableau 1 sur 2") +
+        "<p>t</p>" +
+        scroll(`<table>${row}</table>`, "Tableau 2 sur 2"),
+    );
+    expect(sanitizeRichText(`<table>${row}</table><table>${row}</table>`)).toContain(
+      'aria-label="Table 2"',
+    );
+  });
+
+  it("uses the label when the caption is not the table's first child", () => {
+    const out = sanitizeRichText(`<table>${row}<caption>Late</caption></table>`);
+    expect(out).toContain('aria-label="Table"');
+    expect(out).not.toContain("aria-labelledby");
+    expect(out).toContain("<caption>Late</caption>");
+  });
+
+  it("encodes the label as an attribute value", () => {
+    expect(sanitizeRichText(`<table>${row}</table>`, { tableLabel: () => 'A "B" <C>' })).toContain(
+      'aria-label="A &quot;B&quot; &lt;C&gt;"',
+    );
+  });
+
+  it("closes the region with its table, an unclosed or nested one included", () => {
+    expect(sanitizeRichText(`<table>${row}`)).toBe(scroll(`<table>${row}</table>`));
+    const nested = sanitizeRichText(`<table><tr><td><table>${row}</table></td></tr></table>`);
+    expect(nested.match(/<div /g)).toHaveLength(2);
+    expect(nested.match(/<\/div>/g)).toHaveLength(2);
+    expect(nested.endsWith("</table></div></td></tr></table></div>")).toBe(true);
+  });
+
+  it("reports a table without caption, and none when every table has one", () => {
+    expect(sanitizeRichTextWithReport(`<table>${row}</table>`).tableWithoutCaption).toBe(true);
+    expect(
+      sanitizeRichTextWithReport(`<table><caption>c</caption>${row}</table>`).tableWithoutCaption,
+    ).toBe(false);
+    expect(sanitizeRichTextWithReport("<p>no table</p>").tableWithoutCaption).toBe(false);
+  });
+
+  it("finds the caption in linear time after a long run of white space", () => {
+    const started = performance.now();
+    const out = sanitizeRichText(`<table>${" ".repeat(100_000)}${row}</table>`.repeat(20));
+    expect(out.match(/role="region"/g)).toHaveLength(20);
+    expect(performance.now() - started).toBeLessThan(500);
   });
 });

@@ -30,6 +30,12 @@ import { FilterXSS, escapeHtml } from "xss";
  * the editor becomes the first level, never above it) and never skip a level (h2 then h4 becomes
  * h3 then h4 under a section h2), so the page outline stays whole (RGAA 9.1).
  *
+ * Tables: every table is wrapped in a scroll container (`ctpl-table-scroll`, `role="region"`,
+ * `tabindex="0"`) so a wide table scrolls on its own at 320 px instead of widening the page (RGAA
+ * 10.11), and keyboard users can scroll it (axe `scrollable-region-focusable`). The region is named
+ * after the table's caption when it has one (the caption gets an id in the block's id space), else
+ * with `tableLabel` (a translated "Table", numbered when the block has several tables).
+ *
  * The output is balanced: every element is closed inside the block, and a closing tag with no
  * matching element is left out.
  */
@@ -315,7 +321,8 @@ export const TAG = /<(\/?)([a-z][a-z0-9]*)(?![a-z0-9])([^<>]*)>/g;
 const HEADING = /^h[1-6]$/;
 const clamp = (level: number) => Math.min(Math.max(level, 2), 6);
 
-type Open = { name: string; written: string };
+/** An open element: its name, the name written (headings are renumbered), what closes it. */
+type Open = { name: string; written: string; after?: string };
 
 /** The elements open in the second pass, and the level of the last heading written. */
 type Outline = {
@@ -327,17 +334,60 @@ type Outline = {
 
 const ascending = (a: number, b: number) => a - b;
 
-/** The heading levels used in the filtered HTML, and the ids of its elements. */
-const scanTags = (html: string): { levels: Set<number>; ids: Set<string> } => {
+/** The heading levels used in the filtered HTML, the ids of its elements, its number of tables. */
+const scanTags = (html: string): { levels: Set<number>; ids: Set<string>; tables: number } => {
   const levels = new Set<number>();
   const ids = new Set<string>();
+  let tables = 0;
   for (const match of html.matchAll(TAG)) {
     if (match[1]) continue;
     if (HEADING.test(match[2])) levels.add(Number(match[2][1]));
+    if (match[2] === "table") tables++;
     const id = / id="([^"]*)"/.exec(match[3]);
     if (id) ids.add(id[1]);
   }
-  return { levels, ids };
+  return { levels, ids, tables };
+};
+
+/** A caption right at `from` (only white space before it): the table's first child. */
+const CAPTION_NEXT = /\s*<caption(?![a-z0-9])/y;
+
+const startsWithCaption = (html: string, from: number): boolean => {
+  CAPTION_NEXT.lastIndex = from;
+  return CAPTION_NEXT.test(html);
+};
+
+/** Name of the nth table of a block (1-based) that has no caption, out of `total` tables. */
+export type TableLabel = (index: number, total: number) => string;
+
+const defaultTableLabel: TableLabel = (index, total) => (total > 1 ? `Table ${index}` : "Table");
+
+/** State of the tables of one block in the second pass. */
+type Tables = {
+  label: TableLabel;
+  total: number;
+  count: number;
+  /** Id to give the caption that comes next, when its table is named after it. */
+  captionId?: string;
+  withoutCaption: boolean;
+};
+
+/**
+ * The scroll container written before a table: a focusable region named after the table's caption
+ * (an id in the block's id space: editor ids start with a letter, so `<prefix>-caption-<n>` is
+ * never one of them), or with the block's table label.
+ */
+const openTableScroll = (tables: Tables, html: string, at: number, prefix: string): string => {
+  tables.count++;
+  let name: string;
+  if (startsWithCaption(html, at)) {
+    tables.captionId = `${prefix}-caption-${tables.count}`;
+    name = ` aria-labelledby="${tables.captionId}"`;
+  } else {
+    tables.withoutCaption = true;
+    name = ` aria-label="${encodeAttr(tables.label(tables.count, tables.total))}"`;
+  }
+  return `<div class="ctpl-table-scroll" role="region" tabindex="0"${name}>`;
 };
 
 /** Closes the last open element. */
@@ -345,7 +395,7 @@ const closeLast = (outline: Outline): string => {
   const open = outline.stack.pop() as Open;
   outline.counts.set(open.name, (outline.counts.get(open.name) ?? 1) - 1);
   if (HEADING.test(open.name)) outline.headingsOpen--;
-  return `</${open.written}>`;
+  return `</${open.written}>${open.after ?? ""}`;
 };
 
 /** Closes the open elements down to and including the last one matching `test`. */
@@ -396,6 +446,7 @@ const openElement = (
   name: string,
   attrs: string,
   level: (written: number) => number,
+  after?: string,
 ): string => {
   let out = "";
   let written = name;
@@ -406,24 +457,54 @@ const openElement = (
     written = `h${outline.previous}`;
     outline.headingsOpen++;
   }
-  outline.stack.push({ name, written });
+  outline.stack.push({ name, written, after });
   outline.counts.set(name, (outline.counts.get(name) ?? 0) + 1);
   return `${out}<${written}${attrs}>`;
+};
+
+/** What the second pass reports besides the HTML. */
+export interface SanitizeReport {
+  html: string;
+  /** An image had no text alternative (it got alt=""). */
+  imageWithoutAlt: boolean;
+  /** A table had no caption (its region is named with the table label). */
+  tableWithoutCaption: boolean;
+}
+
+/** The written start tag of an element that is not a table, the table's scroll region included. */
+const startTag = (
+  context: { outline: Outline; tables: Tables; prefix: string; level: (written: number) => number },
+  name: string,
+  attrs: string,
+  position: { html: string; at: number },
+): string => {
+  const { outline, tables, prefix, level } = context;
+  if (name === "table") {
+    const scroll = openTableScroll(tables, position.html, position.at, prefix);
+    return scroll + openElement(outline, name, attrs, level, "</div>");
+  }
+  if (name === "caption" && tables.captionId) {
+    const id = tables.captionId;
+    tables.captionId = "";
+    return openElement(outline, name, ` id="${id}"${attrs}`, level);
+  }
+  return openElement(outline, name, attrs, level);
 };
 
 /**
  * Second pass over the filtered HTML, where every tag is in canonical form: closes the elements in
  * the block, renumbers the headings (the editor's levels are ranked: the highest used becomes
  * `base`, the next `base + 1`..., and each heading is at most one level below the previous one),
- * prefixes the anchors to the block's own ids, and gives an image without a text alternative an
- * empty one.
+ * prefixes the anchors to the block's own ids, gives an image without a text alternative an empty
+ * one, and wraps each table in its scroll region.
  */
 const finish = (
   html: string,
   base: number,
   prefix: string,
-): { html: string; imageWithoutAlt: boolean } => {
-  const { levels, ids } = scanTags(html);
+  tableLabel: TableLabel,
+): SanitizeReport => {
+  const { levels, ids, tables: total } = scanTags(html);
   const rank = new Map(
     [...levels].sort(ascending).map((level, index) => [level, clamp(base + index)]),
   );
@@ -435,6 +516,8 @@ const finish = (
     previous: clamp(base) - 1,
   };
   const attributes = { ids, seenIds: new Set<string>(), prefix };
+  const tables: Tables = { label: tableLabel, total, count: 0, withoutCaption: false };
+  const context = { outline, tables, prefix, level };
   let imageWithoutAlt = false;
   let out = "";
   let at = 0;
@@ -452,11 +535,11 @@ const finish = (
       attrs = ` alt=""${attrs}`;
       imageWithoutAlt = true;
     }
-    out += VOID.has(name) ? `<${name}${attrs}>` : openElement(outline, name, attrs, level);
+    out += VOID.has(name) ? `<${name}${attrs}>` : startTag(context, name, attrs, { html, at });
   }
   out += html.slice(at);
   while (outline.stack.length) out += closeLast(outline);
-  return { html: out, imageWithoutAlt };
+  return { html: out, imageWithoutAlt, tableWithoutCaption: tables.withoutCaption };
 };
 
 export interface SanitizeOptions {
@@ -464,20 +547,27 @@ export interface SanitizeOptions {
   headingLevel?: number;
   /** Prefix of the editor's ids and of the anchors pointing at them, unique per block on a page. */
   idPrefix?: string;
+  /** Name of a table without caption (translated by the caller); "Table", "Table 2"... by default. */
+  tableLabel?: TableLabel;
 }
 
 /**
- * Sanitized HTML of an editor's rich text (see the module comment), and whether an image had no
- * text alternative: it gets alt="" (a missing alt fails RGAA 1.1 outright; an empty one at least
- * keeps screen readers from reading the file name), and edit mode tells the editor.
+ * Sanitized HTML of an editor's rich text (see the module comment), whether an image had no text
+ * alternative (it gets alt="": a missing alt fails RGAA 1.1 outright; an empty one at least keeps
+ * screen readers from reading the file name) and whether a table had no caption. Edit mode tells
+ * the editor about both.
  */
 export const sanitizeRichTextWithReport = (
   html: string,
-  { headingLevel = 2, idPrefix = DEFAULT_PREFIX }: SanitizeOptions = {},
-): { html: string; imageWithoutAlt: boolean } => {
-  if (!html) return { html: "", imageWithoutAlt: false };
+  {
+    headingLevel = 2,
+    idPrefix = DEFAULT_PREFIX,
+    tableLabel = defaultTableLabel,
+  }: SanitizeOptions = {},
+): SanitizeReport => {
+  if (!html) return { html: "", imageWithoutAlt: false, tableWithoutCaption: false };
   const prefix = PREFIX.test(idPrefix) ? idPrefix : DEFAULT_PREFIX;
-  return finish(filterTags(html, prefix), headingLevel, prefix);
+  return finish(filterTags(html, prefix), headingLevel, prefix, tableLabel);
 };
 
 /** Sanitized HTML of an editor's rich text (see sanitizeRichTextWithReport). */

@@ -22,6 +22,8 @@
     quote, and adds example sections to the home, about, services and team pages;
   - adds a site map page and an accessibility statement, linked from the footer (the statement link
     carries the "Accessibility: partially compliant" mention);
+  - adds a help centre page (hidden from the menu) with the sections added after 0.1.2: a support
+    plans table that scrolls on a phone;
   - publishes the site in both languages, files included (publishing content never publishes the
     images it references).
 
@@ -133,25 +135,32 @@ def upload_image(folder, name, title, size, palette):
     img = img.filter(ImageFilter.GaussianBlur(2))
     buf = io.BytesIO()
     img.save(buf, "JPEG", quality=82)
+    return store_image(folder, name, title, size, buf.getvalue(), "image/jpeg")
 
+
+def store_image(folder, name, title, size, data, mime):
+    """Stores image bytes as a jnt:file + jmix:image under `folder`, with its title and size."""
+    path = f"{folder}/{name}"
+    w, h = size
     query = (
-        "mutation($parent:String!,$name:String!,$title:String!,$handle:String!,$w:String!,$h:String!){jcr{"
+        "mutation($parent:String!,$name:String!,$title:String!,$handle:String!,$w:String!,$h:String!,$mime:String!){jcr{"
         ' addNode(parentPathOrId:$parent,name:$name,primaryNodeType:"jnt:file",mixins:["jmix:image"]){uuid'
         '  title: mutateProperty(name:"jcr:title"){setValue(value:$title)}'
         '  width: mutateProperty(name:"j:width"){setValue(value:$w)}'
         '  height: mutateProperty(name:"j:height"){setValue(value:$h)}'
         '  content: addChild(name:"jcr:content",primaryNodeType:"jnt:resource"){'
         '   data: mutateProperty(name:"jcr:data"){setValue(type:BINARY,value:$handle)}'
-        '   mime: mutateProperty(name:"jcr:mimeType"){setValue(value:"image/jpeg")}}}}}'
+        '   mime: mutateProperty(name:"jcr:mimeType"){setValue(value:$mime)}}}}}'
     )
     operations = json.dumps({"query": query, "variables": {
-        "parent": folder, "name": name, "title": title, "handle": "image", "w": str(w), "h": str(h)}})
+        "parent": folder, "name": name, "title": title, "handle": "image", "w": str(w), "h": str(h),
+        "mime": mime}})
     boundary = "----ctplimage"
     body = (
         f'--{boundary}\r\nContent-Disposition: form-data; name="operations"\r\n\r\n{operations}\r\n'
         f'--{boundary}\r\nContent-Disposition: form-data; name="image"; filename="{name}"\r\n'
-        f"Content-Type: image/jpeg\r\n\r\n"
-    ).encode() + buf.getvalue() + f"\r\n--{boundary}--\r\n".encode()
+        f"Content-Type: {mime}\r\n\r\n"
+    ).encode() + data + f"\r\n--{boundary}--\r\n".encode()
     out = json.loads(_request("/modules/graphql", body, {
         "Content-Type": f"multipart/form-data; boundary={boundary}", "Origin": URL}))
     if out.get("errors"):
@@ -575,7 +584,236 @@ def seed_examples(site):
              page=statement)
     touched += [(f"{home}/sitemap", True), (f"{home}/accessibility", True),
                 (f"{legal}/sitemap", True), (f"{legal}/accessibility", True), (legal, False)]
-    return touched
+    return touched + seed_help_centre(site)
+
+
+# ---- Help centre: sections added after 0.1.2 ---------------------------------------------------
+
+def _png(img):
+    buf = io.BytesIO()
+    img.save(buf, "PNG", optimize=True)
+    return buf.getvalue()
+
+
+def upload_icon(folder, name, title, glyph, colour):
+    """A 96 px round icon: a filled disc (readable on light and dark pages) with a white glyph."""
+    from PIL import Image, ImageDraw
+
+    path = f"{folder}/{name}"
+    if exists(path):
+        return uuid_at(path)
+    s = 4  # drawn at 4x, then downsampled
+    img = Image.new("RGBA", (96 * s, 96 * s), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    d.ellipse([0, 0, 96 * s - 1, 96 * s - 1], fill=colour)
+    white, w = (255, 255, 255, 255), 6 * s
+
+    def box(*v):
+        return [x * s for x in v]
+
+    if glyph == "book":
+        d.rectangle(box(26, 30, 47, 66), outline=white, width=w)
+        d.rectangle(box(49, 30, 70, 66), outline=white, width=w)
+    elif glyph == "mail":
+        d.rectangle(box(24, 32, 72, 64), outline=white, width=w)
+        d.line(box(26, 34, 48, 52, 70, 34), fill=white, width=w, joint="curve")
+    elif glyph == "chat":
+        d.rounded_rectangle(box(24, 28, 72, 60), radius=8 * s, outline=white, width=w)
+        d.polygon(box(34, 58, 34, 72, 48, 58), fill=white)
+    elif glyph == "cap":
+        d.polygon(box(48, 26, 76, 40, 48, 54, 20, 40), fill=white)
+        d.rectangle(box(34, 46, 62, 64), fill=white)
+    elif glyph == "check":
+        d.line(box(28, 50, 42, 64, 70, 34), fill=white, width=8 * s, joint="curve")
+    elif glyph == "map":
+        d.ellipse(box(36, 22, 60, 46), outline=white, width=w)
+        d.polygon(box(38, 42, 58, 42, 48, 72), fill=white)
+    img = img.resize((96, 96), Image.LANCZOS)
+    return store_image(folder, name, title, (96, 96), _png(img), "image/png")
+
+
+def upload_logo(folder, name, title, shape, colour):
+    """A 240 x 120 abstract logo for a light plate: a mark and two bars standing for the name."""
+    from PIL import Image, ImageDraw
+
+    path = f"{folder}/{name}"
+    if exists(path):
+        return uuid_at(path)
+    s = 2
+    img = Image.new("RGBA", (240 * s, 120 * s), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+
+    def box(*v):
+        return [x * s for x in v]
+
+    if shape == "circle":
+        d.ellipse(box(16, 30, 76, 90), fill=colour)
+    elif shape == "triangle":
+        d.polygon(box(16, 90, 46, 30, 76, 90), fill=colour)
+    elif shape == "square":
+        d.rounded_rectangle(box(16, 30, 76, 90), radius=12 * s, fill=colour)
+    elif shape == "ring":
+        d.ellipse(box(16, 30, 76, 90), outline=colour, width=14 * s)
+    elif shape == "diamond":
+        d.polygon(box(46, 26, 78, 60, 46, 94, 14, 60), fill=colour)
+    d.rounded_rectangle(box(90, 42, 224, 60), radius=9 * s, fill=colour)
+    d.rounded_rectangle(box(90, 70, 180, 82), radius=6 * s, fill=(100, 116, 139, 255))
+    img = img.resize((240, 120), Image.LANCZOS)
+    return store_image(folder, name, title, (240, 120), _png(img), "image/png")
+
+
+def _plans_table(lang):
+    """A comparison table with a caption, row and column headers: wide enough to scroll on a phone."""
+    head = {"en": ("Plan", "First answer", "Channels", "Opening hours", "Price per month"),
+            "fr": ("Formule", "Première réponse", "Canaux", "Horaires", "Prix par mois")}[lang]
+    rows = {"en": (("Essential", "2 working days", "E-mail", "Monday to Friday, 9 am to 6 pm", "Included"),
+                   ("Standard", "8 working hours", "E-mail, phone", "Monday to Friday, 8 am to 8 pm", "€390"),
+                   ("Premium", "1 hour", "E-mail, phone, chat", "Every day, around the clock", "€1,200")),
+            "fr": (("Essentielle", "2 jours ouvrés", "E-mail", "Du lundi au vendredi, de 9 h à 18 h", "Incluse"),
+                   ("Standard", "8 heures ouvrées", "E-mail, téléphone", "Du lundi au vendredi, de 8 h à 20 h", "390 €"),
+                   ("Premium", "1 heure", "E-mail, téléphone, chat", "Tous les jours, 24 h/24", "1 200 €"))}[lang]
+    caption = {"en": "Support plans compared", "fr": "Comparatif des formules d'assistance"}[lang]
+    ths = "".join(f'<th scope="col">{h}</th>' for h in head)
+    trs = "".join(f'<tr><th scope="row">{r[0]}</th>' + "".join(f"<td>{c}</td>" for c in r[1:]) + "</tr>" for r in rows)
+    return f"<table><caption>{caption}</caption><thead><tr>{ths}</tr></thead><tbody>{trs}</tbody></table>"
+
+
+def seed_help_centre(site):
+    """A help centre page (hidden from the menu, listed in the site map) that shows the sections
+    added after 0.1.2: a comparison table that scrolls on its own on a phone, a card grid shown as
+    icon tiles and one shown as a logo strip, an accordion of frequent questions, and tabs holding a
+    text, an accordion and a card grid. Only adds what is missing. Returns (path, whole
+    subtree?) pairs to publish: the page, its own sections and the images they show."""
+    home = f"{site}/home"
+    icons = f"{site}/files/demo/icons"
+    logos = f"{site}/files/demo/logos"
+    for folder in (icons, logos):
+        if not exists(folder):
+            add_content(f"{site}/files/demo", folder.rsplit("/", 1)[1], "jnt:folder", [])
+    add_page(home, "help", {"en": "Help centre", "fr": "Centre d'aide"}, hidden=True,
+             description={"en": "Support plans, answers to frequent questions and ways to reach us.",
+                          "fr": "Formules d'assistance, réponses aux questions fréquentes et moyens de nous joindre."})
+    main = ensure_area(f"{home}/help", "main", "ctpl:pageArea")
+    add_content(main, "plans", "ctpl:richText",
+        i18n("jcr:title", {"en": "Support plans", "fr": "Formules d'assistance"})
+        + i18n("body", {lang: ({"en": "<p>Every plan includes the help centre and the editor guides.</p>",
+                                "fr": "<p>Chaque formule comprend le centre d'aide et les guides de rédaction.</p>"}[lang]
+                               + _plans_table(lang)) for lang in LANGS})
+        + [{"name": "width", "value": "wide"}])
+
+    # Icon tiles: ways to get help, each tile a link to a page of the site.
+    tiles = add_content(main, "ways", "ctpl:cardGrid",
+        i18n("jcr:title", {"en": "Ways to get help", "fr": "Obtenir de l'aide"})
+        + i18n("introText", {"en": "Pick the channel that suits your question.",
+                             "fr": "Choisissez le canal qui convient à votre question."})
+        + [{"name": "display", "value": "iconTiles"}, {"name": "columns", "value": "3"},
+           {"name": "ctplSurface", "value": "sunken"}])
+    for name, glyph, colour, page, title, text in (
+        ("guides", "book", (11, 58, 102, 255), "services/training",
+         {"en": "Guides", "fr": "Guides"}, {"en": "Step-by-step help for editors.", "fr": "L'aide pas à pas pour les rédacteurs."}),
+        ("write", "mail", (14, 110, 140, 255), "contact",
+         {"en": "Write to us", "fr": "Nous écrire"}, {"en": "An answer within two working days.", "fr": "Une réponse sous deux jours ouvrés."}),
+        ("chat", "chat", (11, 58, 102, 255), "services/support",
+         {"en": "Chat with support", "fr": "Discuter avec l'assistance"}, {"en": "Premium plan, every day.", "fr": "Formule Premium, tous les jours."}),
+        ("training", "cap", (14, 110, 140, 255), "services/training/workshops",
+         {"en": "Workshops", "fr": "Ateliers"}, {"en": "Half-day sessions for your team.", "fr": "Des demi-journées pour votre équipe."}),
+        ("status", "check", (11, 58, 102, 255), "news",
+         {"en": "Service status", "fr": "État du service"}, {"en": "Planned maintenance and news.", "fr": "Maintenances prévues et actualités."}),
+        ("visit", "map", (14, 110, 140, 255), "contact",
+         {"en": "Visit us", "fr": "Nous rendre visite"}, {"en": "Our office in Lyon.", "fr": "Nos bureaux à Lyon."}),
+    ):
+        icon = upload_icon(icons, f"{name}.png", title["en"], glyph, colour)
+        props, mixins = internal_link(uuid_at(f"{home}/{page}"))
+        props += i18n("jcr:title", title) + i18n("text", text) + [
+            {"name": "image", "type": "WEAKREFERENCE", "value": icon}]
+        add_content(tiles, name, "ctpl:card", props, mixins)
+
+    # Logo strip: partners, the logo's name as its text alternative (the card title).
+    strip = add_content(main, "partners", "ctpl:cardGrid",
+        i18n("jcr:title", {"en": "They work with us", "fr": "Ils travaillent avec nous"})
+        + [{"name": "display", "value": "logos"}])
+    for name, label, shape, colour in (
+        ("northwind", "Northwind Studio", "circle", (14, 110, 140, 255)),
+        ("bluepeak", "Bluepeak", "triangle", (11, 58, 102, 255)),
+        ("orbital", "Orbital Lab", "ring", (180, 65, 15, 255)),
+        ("fernway", "Fernway", "square", (29, 107, 58, 255)),
+        ("quartz", "Quartz & Co", "diamond", (110, 43, 140, 255)),
+    ):
+        logo = upload_logo(logos, f"{name}.png", label, shape, colour)
+        add_content(strip, name, "ctpl:card", i18n("jcr:title", {"en": label, "fr": label}) + [
+            {"name": "image", "type": "WEAKREFERENCE", "value": logo}])
+    # Accordion: frequent questions, the first open, one answer holding a table.
+    faq = add_content(main, "faq", "ctpl:accordion",
+        i18n("jcr:title", {"en": "Frequent questions", "fr": "Questions fréquentes"})
+        + i18n("introText", {"en": "Short answers to what editors ask us most.",
+                             "fr": "Des réponses courtes aux questions que les rédacteurs nous posent le plus."}))
+    hours = {lang: (f"<p>{intro}</p><table><caption>{cap}</caption><thead><tr>"
+                    + "".join(f'<th scope="col">{h}</th>' for h in head) + "</tr></thead><tbody>"
+                    + "".join(f'<tr><th scope="row">{r[0]}</th><td>{r[1]}</td><td>{r[2]}</td></tr>' for r in rows)
+                    + "</tbody></table>")
+             for lang, intro, cap, head, rows in (
+                 ("en", "It depends on the channel:", "Support hours by channel", ("Channel", "Weekdays", "Weekends"),
+                  (("E-mail", "9 am to 6 pm", "Closed"), ("Phone", "8 am to 8 pm", "Closed"), ("Chat", "Around the clock", "Around the clock"))),
+                 ("fr", "Cela dépend du canal :", "Horaires d'assistance par canal", ("Canal", "En semaine", "Le week-end"),
+                  (("E-mail", "De 9 h à 18 h", "Fermé"), ("Téléphone", "De 8 h à 20 h", "Fermé"), ("Chat", "24 h/24", "24 h/24"))))}
+    for name, question, answer, is_open in (
+        ("change-plan", {"en": "Can I change plan during the year?", "fr": "Puis-je changer de formule en cours d'année ?"},
+         {"en": "<p>Yes. A move to a higher plan applies the next day; a move to a lower one at the end of the month.</p>",
+          "fr": "<p>Oui. Le passage à une formule supérieure s'applique le lendemain, le passage à une formule inférieure à la fin du mois.</p>"}, True),
+        ("support-hours", {"en": "When can I reach support?", "fr": "Quand puis-je joindre l'assistance ?"}, hours, False),
+        ("languages", {"en": "Do you answer in French and English?", "fr": "Répondez-vous en français et en anglais ?"},
+         {"en": "<p>Yes, every channel answers in both languages.</p>",
+          "fr": "<p>Oui, chaque canal répond dans les deux langues.</p>"}, False),
+        ("training-included", {"en": "Is training included?", "fr": "La formation est-elle incluse ?"},
+         {"en": "<p>The Standard and Premium plans include one half-day workshop a year. See the <a href=\"#acc-change-plan\">plan question</a> to move up.</p>",
+          "fr": "<p>Les formules Standard et Premium comprennent un atelier d'une demi-journée par an. Voir la <a href=\"#acc-change-plan\">question sur les formules</a> pour en changer.</p>"}, False),
+    ):
+        add_content(faq, name, "ctpl:accordionItem", i18n("jcr:title", question) + i18n("body", answer)
+                    + [{"name": "openByDefault", "value": str(is_open).lower()}])
+
+    # Tabs: the first weeks, one tab per stage, each holding a different kind of section.
+    tabs = add_content(main, "onboarding", "ctpl:tabs",
+        i18n("jcr:title", {"en": "Your first weeks", "fr": "Vos premières semaines"})
+        + [{"name": "ctplSurface", "value": "sunken"}])
+    first = add_content(tabs, "first-day", "ctpl:tab", i18n("jcr:title", {"en": "First day", "fr": "Premier jour"}))
+    add_content(first, "welcome", "ctpl:richText", i18n("body", {
+        "en": "<p>We open your accounts, walk you through the editor and publish a first page together.</p>"
+              "<ul><li>Accounts for every editor</li><li>A one-hour tour of Page Builder</li><li>Your first page, live</li></ul>",
+        "fr": "<p>Nous ouvrons vos comptes, vous faisons découvrir l'éditeur et publions ensemble une première page.</p>"
+              "<ul><li>Des comptes pour chaque rédacteur</li><li>Une visite d'une heure de Page Builder</li><li>Votre première page, en ligne</li></ul>"}))
+    week = add_content(tabs, "first-week", "ctpl:tab", i18n("jcr:title", {"en": "First week", "fr": "Première semaine"}))
+    questions = add_content(week, "questions", "ctpl:accordion", [])
+    for name, question, answer in (
+        ("who-publishes", {"en": "Who can publish?", "fr": "Qui peut publier ?"},
+         {"en": "<p>Every editor can prepare pages; publishing is open to the people you choose.</p>",
+          "fr": "<p>Chaque rédacteur peut préparer des pages ; la publication est ouverte aux personnes que vous choisissez.</p>"}),
+        ("translations", {"en": "How do translations work?", "fr": "Comment fonctionnent les traductions ?"},
+         {"en": "<p>Each page has its text in every language of the site; switch language in the editor to translate.</p>",
+          "fr": "<p>Chaque page a son texte dans chaque langue du site ; changez de langue dans l'éditeur pour traduire.</p>"}),
+    ):
+        add_content(questions, name, "ctpl:accordionItem", i18n("jcr:title", question) + i18n("body", answer))
+    month = add_content(tabs, "first-month", "ctpl:tab", i18n("jcr:title", {"en": "First month", "fr": "Premier mois"}))
+    more = add_content(month, "next-steps", "ctpl:cardGrid", [{"name": "display", "value": "iconTiles"}])
+    for name, glyph, colour, page, title, text in (
+        ("workshop", "cap", (14, 110, 140, 255), "services/training/workshops",
+         {"en": "Book a workshop", "fr": "Réserver un atelier"}, {"en": "Half a day with your team.", "fr": "Une demi-journée avec votre équipe."}),
+        ("review", "check", (11, 58, 102, 255), "services/consulting",
+         {"en": "Review your site", "fr": "Faire le point"}, {"en": "A first audit after a month.", "fr": "Un premier audit après un mois."}),
+    ):
+        icon = upload_icon(icons, f"{name}.png", title["en"], glyph, colour)
+        props, mixins = internal_link(uuid_at(f"{home}/{page}"))
+        props += i18n("jcr:title", title) + i18n("text", text) + [
+            {"name": "image", "type": "WEAKREFERENCE", "value": icon}]
+        add_content(more, name, "ctpl:card", props, mixins)
+
+    # Entry points first, then the tabs, the questions, the plans and the partners.
+    order = ["ways", "onboarding", "faq", "plans", "partners"]
+    names = [c["name"] for c in gql("query($p:String!){jcr{nodeByPath(path:$p){children{nodes{name}}}}}",
+                                    {"p": main})["jcr"]["nodeByPath"]["children"]["nodes"]]
+    if names[: len(order)] != order and set(order) <= set(names):
+        gql("mutation($p:String!,$n:[String]!){jcr{mutateNode(pathOrId:$p){reorderChildren(names:$n)}}}",
+            {"p": main, "n": order + [n for n in names if n not in order]})
+    return [(icons, True), (logos, True), (f"{home}/help", True)]
 
 
 # ---- Full demo content (scripts/demo_content.py) ----------------------------------------------

@@ -1,3 +1,5 @@
-.wide {
+/* Wide text uses the whole container. Two classes, so it wins over the global .ctpl-prose measure
+   whatever the order the stylesheets are aggregated in. */
+:global(.ctpl-prose).wide {
   max-width: none;
 }

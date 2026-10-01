@@ -1,0 +1,18 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// One tab of a ctpl:tabs section: its label (jcr:title) and an ordered list where editors drop
+// page sections (rich text, accordions, card grids...), like a ctpl:column. Never hidden: editors
+// select it in Page Builder to add sections to it.
+[ctpl:tab] > jnt:content, mix:title, jmix:list orderable
+ + * (ctplmix:pageComponent)
+
+// A page section of tabs with an optional h2 heading (jcr:title). Tabs are ordered by the editor;
+// without JavaScript, and in edit mode, every tab shows as a headed block in that order.
+[ctpl:tabs] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ + * (ctpl:tab)

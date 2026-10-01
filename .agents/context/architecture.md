@@ -8,7 +8,7 @@
 | Repository        | Public on GitHub, [Jahia/classic-templates](https://github.com/Jahia/classic-templates); MIT `LICENSE`                                     | User decision 2026-09-30: public in the Jahia organisation, MIT, copyright Jahia             |
 | Build and CI      | Jahia standard, copied from luxe-jahia-demo: thin `pom.xml` around Vite, shared `jahia-modules-action` workflows, `tests/` Cypress project | What Cortex review and the shared Sonar/publish/release pipeline expect                      |
 | Maven coordinates | `org.jahia.modules.javascript:classic-templates`, parent `org.jahia.modules:jahia-modules:8.2.1.0`                                         | Same as luxe; the Java-bundle rule (parent 8.2.0.0) does not apply to a JS module            |
-| Theming           | Light + dark, `default` + 2 sample themes, picked on the site node                                                                         | Proves the tokens re-theme every component                                                   |
+| Theming           | Light + dark, `default` + 3 sample themes, picked on the site node                                                                         | Proves the tokens re-theme every component                                                   |
 | Headings          | Template renders the one `<h1>` from `jcr:title`; heroes use `<h2>`; page "hide title" option hides the template `<h1>` visually           | Lighthouse and axe want exactly one `<h1>`; a hero reused on two pages must not duplicate it |
 | Languages         | EN + FR                                                                                                                                    | Harness rule                                                                                 |
 | Java              | None                                                                                                                                       | Nothing server-side that the JS engine cannot do                                             |
@@ -30,7 +30,7 @@
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`                                                                                                                                                                                                 |
+| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                                                              |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -54,14 +54,19 @@
 
 See the AIStartupKit context doc `jahia-theming-tokens.md`. Tokens are prefixed `--ctpl-`, in
 `src/templates/tokens.css`. The site mixin `ctplmix:siteSettings` carries `ctplTheme` (`default`,
-`ocean`, `terracotta`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
+`ocean`, `terracotta`, `horizon`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
 Layout (only known values; the default look stamps nothing).
 
 - **Light and dark without duplication:** every colour role is a `light-dark()` pair and
   `:root { color-scheme: light dark }`; `data-ctpl-scheme` only forces `color-scheme`. Jahia's CSS
   aggregation/minification keeps `light-dark()`, `color-mix()` and `clamp()` intact (checked on
   8.2.3.2). Browser support: Baseline 2024.
-- **Contrast** is checked by `yarn check:contrast` for every theme × scheme (22 pairs each), and
+- **Emphasis role:** `--ctpl-color-highlight` (+ `--ctpl-color-text-on-highlight` for a filled
+  badge) is for values that must stand out (key figures, prices). `:root` aliases it to the accent,
+  so every theme has it; a theme that wants its own sets it (horizon: an orange, light first, with
+  its own surfaces, text and borders). The alias resolves on `<html>`, where the theme block
+  overrides the accent, so no theme has to repeat it.
+- **Contrast** is checked by `yarn check:contrast` for every theme × scheme (30 pairs each), and
   literal colours outside `tokens.css` by `yarn check:tokens`. Both were shown to fail on a
   deliberately broken token before being trusted.
 - **Cache:** the Layout declares a cache dependency on the site node
@@ -84,8 +89,14 @@ Layout (only known values; the default look stamps nothing).
   removes href/src/cite that is not http(s), mailto, tel, relative or a Jahia `##cms-context##`
   placeholder (so no `javascript:`, `data:` or `//host`); prefixes editor ids (`ctpl-rt-`) with
   the anchors and `headers` pointing at them; renumbers headings under the section's own heading
-  (`RichText headingLevel`, from `useBodyHeadingLevel`) with no skipped level. Unit tests in
-  `sanitize.test.ts`, end-to-end in the content edge-cases spec.
+  (`RichText headingLevel`, from `useBodyHeadingLevel`) with no skipped level; wraps every table in
+  a scroll region (`div.ctpl-table-scroll`, `role="region"`, `tabindex="0"`), named by
+  `aria-labelledby` after its caption (which gets an id `<prefix>-caption-<n>`: editor ids start
+  with a letter, so it never collides) or by `aria-label` from `tableLabel` ("Table", numbered when
+  the block has several), so a wide table scrolls inside the text at 320 px (RGAA 10.11, axe
+  `scrollable-region-focusable`). Two uncaptioned tables in two blocks of one page share the name
+  "Table" (axe `landmark-unique`): the edit-mode hint asks for a caption. Unit tests in
+  `sanitize.test.ts`, end-to-end in the content edge-cases and tables specs.
 - No scanner rule covers these, so review them by hand: JCR-SQL2 built by concatenation (values
   only from choicelists, paths only from nodes), contributed URLs (scheme allow-list: `http`,
   `https`, `mailto`, `tel`), any server-side fetch.
@@ -202,6 +213,13 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
   title link; the link label is a visual cue with `aria-hidden` (the title is the accessible
   name); an untitled card with an internal link takes the target page's title. Nothing live
   without a card.
+- **Card grid displays** (`display`: `cards`, `iconTiles`, `logos`): the grid renders its children
+  with `RenderChildren view={display}` (none for cards), so each display is a named view of
+  `ctpl:card` and `ctpl:contentTeaser` (`variants.server.tsx`); a teaser tile renders the item's
+  own `tile` view, never its properties inline. Tiles (`lib/Tile.tsx`) are squares drawn by a
+  `padding-top: 100%` pseudo-element in the content's grid cell: `aspect-ratio` widened a tile
+  stretched to a taller neighbour (59 px of page overflow at 320 px). Logos sit on
+  `--ctpl-color-surface-logo`, light in both schemes. Columns apply to cards only.
 - **Card heading levels:** `useItemHeadingLevel` (`lib/Heading.tsx`) puts items one level below
   their section when it shows a title (h3, or h4 under a titled row), the section's level otherwise.
   `RenderChildren` passes no parameters, so each card works its level out from its parent, which is
@@ -224,6 +242,29 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   site map too, so both agree; the check is guarded, the module stays optional.
 - All four are `ctplmix:sectionStyle` types, so each gets the optional call to action and ends
   with `<Cta>`. There is no call-to-action banner type (see the call-to-action decision above).
+
+## Accordion and tabs (after 0.1.2)
+
+- **Accordion** (`ctpl:accordion` of `ctpl:accordionItem`: `mix:title` heading, rich-text body,
+  `openByDefault`): native `<details>`/`<summary>`, the heading inside the summary at
+  `useItemHeadingLevel`, the body's headings one level further down. Works with no script;
+  `static/js/accordion.js` adds "Expand all / Collapse all" (shown only once the script set
+  `data-ctpl-ready`, labels from `data-*-label`, so it follows the page language) and opens the
+  entry a URL hash points at, on load and on `hashchange`. Entry ids come from the node name
+  (`anchorOf("acc-", name)`, `lib/anchor.ts`): readable, stable deep links. Edit mode renders the
+  entries flat (no `<details>`), so a click selects instead of toggling.
+- **Tabs** (`ctpl:tabs` of `ctpl:tab`: `mix:title` label + `+ * (ctplmix:pageComponent)`, a
+  column-like list): the server renders every tab as a headed block (`data-ctpl-tab-panel`, label
+  `data-ctpl-tab-label`, id `tab-<name>`), which is the no-script and edit-mode rendering;
+  `static/js/tabs.js` builds the tablist from the labels (APG tabs, automatic activation, roving
+  tabindex, arrows wrap, Home/End), labels the tablist with the section heading, hides the other
+  panels and keeps each label as a visually hidden heading, so the outline does not change with
+  the script. The URL hash selects the tab holding the target (an accordion entry too). The tablist
+  is styled by its ARIA roles and states, never a hashed class.
+- **Heading levels in containers** (`lib/Heading.tsx`): `sectionLevel` walks up columns and tabs
+  (a column adds one under a titled row; a tab adds its label's level, one below a titled tabs
+  section, plus one), with every container as a cache dependency, clamped to h6; `headingTag`
+  covers h2 to h6.
 
 ## News, articles and content lists (phase 7)
 

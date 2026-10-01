@@ -6,6 +6,8 @@ export interface Props {
   "columns"?: "2" | "3" | "4";
   "introText"?: string;
   "ctplSurface"?: "default" | "sunken" | "accent";
+  /** How the cards are drawn: cards, outlined icon tiles or a logo strip. */
+  "display"?: "cards" | "iconTiles" | "logos";
 }
 
 /** ctpl:card */

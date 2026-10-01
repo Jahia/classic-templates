@@ -78,7 +78,9 @@
   },
   "cards": {
     "teaserMissing": "Choisissez une actualité ou un article à afficher dans cette carte.",
-    "noTitle": "Cette carte n'a pas de titre dans cette langue : elle n'affiche aucun intitulé."
+    "noTitle": "Cette carte n'a pas de titre dans cette langue : elle n'affiche aucun intitulé.",
+    "logoMissing": "Ce logo n'a pas d'image : il n'est pas affiché.",
+    "teaserNotInLogos": "Les cartes d'éléments existants ne s'affichent pas dans un bandeau de logos."
   },
   "figures": {
     "noValue": "Ce chiffre n'a pas de valeur dans cette langue : il n'est pas affiché."
@@ -87,6 +89,17 @@
     "empty": "Cette citation n'a pas de texte dans cette langue : elle n'est pas affichée."
   },
   "richText": {
-    "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : modifiez l'image dans l'éditeur et décrivez-la, ou marquez-la décorative avec un texte vide."
+    "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : modifiez l'image dans l'éditeur et décrivez-la, ou marquez-la décorative avec un texte vide.",
+    "table": "Tableau",
+    "tableNumbered": "Tableau {{number}}",
+    "tableWithoutCaption": "Un tableau de ce texte n'a pas de titre : ajoutez-en un dans l'éditeur de texte riche (propriétés du tableau). Il nomme le tableau pour les lecteurs d'écran."
+  },
+  "accordion": {
+    "expandAll": "Tout déplier",
+    "collapseAll": "Tout replier",
+    "noTitle": "Cette entrée n'a pas de titre dans cette langue : elle n'est pas affichée."
+  },
+  "tabs": {
+    "noTitle": "Cet onglet n'a pas de libellé dans cette langue : ni lui ni son contenu ne sont affichés."
   }
 }

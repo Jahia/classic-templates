@@ -1,60 +1,32 @@
-import {
-  Render,
-  RenderChildren,
-  getChildNodes,
-  jahiaComponent,
-} from "@jahia/javascript-modules-library";
-import type { JCRNodeWrapper } from "org.jahia.services.content";
+import { Render, RenderChildren, jahiaComponent } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, headingTag, useItemHeadingLevel } from "../../../lib/Heading.js";
 import { Image } from "../../../lib/Image.js";
-import { readString } from "../../../lib/props.js";
 import { resolveLink } from "../../../lib/resolveLink.js";
 import { Section } from "../../../lib/Section.js";
+import { cardShows, hasVisibleCard, teaserTarget } from "./cards.js";
+import { childView, displayOf } from "./display.js";
 import type { CardProps, ContentTeaserProps, Props } from "./types.js";
 import classes from "./card-grid.module.css";
-
-/** The news item or article a teaser shows, when it resolves here and has a title. */
-const teaserTarget = (teaser: JCRNodeWrapper): JCRNodeWrapper | undefined => {
-  try {
-    if (!teaser.hasProperty("j:node")) return undefined;
-    const target = teaser.getProperty("j:node").getNode() as JCRNodeWrapper;
-    return readString(target, "jcr:title") ? target : undefined;
-  } catch {
-    return undefined; // deleted, or not published / not readable in this workspace
-  }
-};
-
-/** A written card shows something when it has a heading (own or lent by its link), text or image. */
-const cardShows = (card: JCRNodeWrapper) =>
-  Boolean(
-    readString(card, "jcr:title") ||
-    readString(card, "text") ||
-    card.hasProperty("image") ||
-    resolveLink(card).link?.targetTitle,
-  );
-
-/** True when at least one child renders on the live site: the same tests as the child views. */
-const hasVisibleCard = (grid: JCRNodeWrapper) =>
-  getChildNodes(grid, -1, 0, (n: JCRNodeWrapper) =>
-    n.isNodeType("ctpl:card")
-      ? cardShows(n)
-      : n.isNodeType("ctpl:contentTeaser") && teaserTarget(n) !== undefined,
-  ).length > 0;
 
 /**
  * A section of hand-picked cards: written cards and teasers of existing news items or articles,
  * in the editor's order, 2 to 4 per row on large screens. Card titles are one level below the
  * section's heading. Nothing is rendered on the live site while the grid has no card.
+ *
+ * `display` picks how the cards are drawn: "cards" (this file's card views), "iconTiles"
+ * (outlined square tiles with a small icon) or "logos" (an image-only strip); the children are
+ * rendered with the view of that name (variants.server.tsx).
  */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:cardGrid", displayName: "Card grid" },
   (
-    { "jcr:title": title, columns, introText, ctplSurface }: Props,
+    { "jcr:title": title, columns, introText, ctplSurface, "display": chosen }: Props,
     { currentNode, renderContext },
   ) => {
-    if (!renderContext.isEditMode() && !hasVisibleCard(currentNode)) return null;
+    const display = displayOf(chosen);
+    if (!renderContext.isEditMode() && !hasVisibleCard(currentNode, display)) return null;
     const headingId = `ctpl-cards-${currentNode.getIdentifier()}`;
     return (
       <Section
@@ -70,9 +42,12 @@ jahiaComponent(
           )}
           {introText && <p className={classes.intro}>{introText}</p>}
           <ul
-            className={[classes.grid, classes[`cols${columns ?? "3"}`]].filter(Boolean).join(" ")}
+            className={[classes.grid, classes[display], classes[`cols${columns ?? "3"}`]]
+              .filter(Boolean)
+              .join(" ")}
+            data-display={display}
           >
-            <RenderChildren />
+            <RenderChildren view={childView(display)} />
           </ul>
           <Cta node={currentNode} renderContext={renderContext} />
         </div>
