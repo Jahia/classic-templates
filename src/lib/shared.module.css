@@ -1,0 +1,34 @@
+/* Helpers shared by every view of the module. Colours, fonts and spacing are classic-templates
+   semantic tokens (--ctpl-*), never literals. */
+
+/* Hidden on screen, still read by screen readers. */
+.visuallyHidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Edit-mode hints (a missing translation, label or image title): never rendered on the live site. */
+.hint {
+  display: inline-block;
+  margin: var(--ctpl-space-1) 0;
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-xs);
+}
+
+/* Every table of a rich text sits in its own scroll region (lib/sanitize.ts): a wide table scrolls
+   sideways inside the text, never the page (reflow at 320 px), and the region takes keyboard focus. */
+:global(.ctrv-table-scroll) {
+  max-width: 100%;
+  margin: 0 0 var(--ctpl-space-4);
+  overflow-x: auto;
+}
