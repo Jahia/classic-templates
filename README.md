@@ -121,11 +121,12 @@ enable each module, and `src/templates/addons.css` maps their styles onto the th
 | `js-media-gallery`                 | Image galleries (picked or from a folder: carousel, masonry, grid), video gallery, featured and list views, video hero | Internal videos take captions and a transcript; YouTube and Vimeo play in frames the site's content security policy must allow |
 | `js-store-locator`                 | Store search, list, map and store pages                                                                                | Follows the theme in light and dark; the map loads OpenStreetMap tiles                                                         |
 
-None of them needs jExperience: enabling them on a site adds only the module itself. jsfaq,
-js-media-gallery and js-store-locator were checked with the Jahia security scan, the Cortex review
-lens and an RGAA 4.1.2 audit on the `classic-addons` demo site, in English and French, light and
-dark; their fixes live on each module's `feat/accessibility-and-review` branch until they are
-merged.
+None of them needs jExperience: enabling them on a site adds only the module itself. Use
+[jsfaq 1.1.0](https://github.com/smonier/jsfaq/releases/tag/v1.1.0),
+[js-media-gallery 1.1.0](https://github.com/smonier/js-media-gallery/releases/tag/1.1.0) and
+[js-store-locator 1.1.0](https://github.com/smonier/js-store-locator/releases/tag/v1.1.0) or later:
+these versions were reviewed and audited against RGAA 4.1.2 on the `classic-addons` demo site and
+the Practical information page of `classic-dev`, in English and French, light and dark.
 
 See the [add-ons guide](docs/guides/add-ons.md).
 
@@ -198,7 +199,7 @@ tests/                            Cypress end-to-end tests (separate npm project
 ### Quality gates
 
 A change is done when every gate in [`.agents/context/gates.md`](.agents/context/gates.md) passes:
-build, Maven build, unit tests, lint, Prettier, CND lint, tokens, contrast, the Jahia security scan
+build, Maven build, unit tests, lint, Prettier, CND lint, tokens, contrast, static analysis
 (Semgrep), Cypress, and the accessibility and SEO review of the demo pages in every theme and
 scheme. The design decisions behind the code are recorded in
 [`.agents/context/architecture.md`](.agents/context/architecture.md).

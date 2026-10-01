@@ -309,10 +309,11 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   - These variables come with the reviewed versions of the three modules (their
     `feat/accessibility-and-review` branches); older versions keep their own colours.
 - None of the add-ons depends on jExperience (an earlier uncommitted `module-dependencies` line
-  listed it; no code used it, and it was removed on 2026-10-01). They have their own demo site
-  anyway, so classic-dev shows the template set's own content (plus Formidable for its contact
-  form). The demo site's RGAA statement does not cover them; each module was reviewed on its own
-  (security scan, Cortex lens, RGAA 4.1.2), fixes on its `feat/accessibility-and-review` branch.
+  listed it; no code used it, and it was removed on 2026-10-01). classic-addons has one page per
+  add-on; classic-dev shows them together on one page, Practical information
+  (`scripts/seed-addons.py --site classic-dev --showcase`), and otherwise its own content (plus
+  Formidable for its contact form). The demo site's RGAA statement does not cover that page; each
+  module was reviewed and audited (RGAA 4.1.2) on its own, released as 1.1.0 on 2026-10-01.
 
 ## Accessibility (RGAA 4.1.2)
 
