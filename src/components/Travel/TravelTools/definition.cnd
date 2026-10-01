@@ -1,0 +1,22 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctrv = 'http://www.jahia.org/classic-travel/nt/1.0'>
+<ctrvmix = 'http://www.jahia.org/classic-travel/mix/1.0'>
+
+// One tool of a travel tools section (book, manage a booking, check in...): jcr:title is its tab
+// label and heading, text its explanation, the call to action (ctplmix:cta) its link, icon an
+// optional decorative image. Never hidden: editors select each tool in Page Builder.
+[ctrv:travelTool] > jnt:content, mix:title, ctplmix:cta
+ - text (string, richtext) i18n
+ - icon (weakreference, picker[type='image']) < jmix:image
+
+// A page section of travel tools shown as tabs (stacked sections without JavaScript and in edit
+// mode), with an optional heading (jcr:title, an h2) and a notice shown to every visitor above the
+// tools, for example "This is a demonstration site: no booking is made".
+[ctrv:travelTools] > jnt:content, mix:title, ctrvmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ - notice (string, textarea) i18n
+ + * (ctrv:travelTool)

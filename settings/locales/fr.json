@@ -1,0 +1,60 @@
+{
+  "item": {
+    "noTitle": "Pas de titre dans cette langue : cet élément n'apparaît dans aucune liste et n'a pas de titre."
+  },
+  "image": {
+    "noTitle": "Cette image n'a pas de titre dans la médiathèque : elle n'a donc pas d'alternative textuelle."
+  },
+  "richText": {
+    "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : les lecteurs d'écran l'ignorent.",
+    "table": "Tableau",
+    "tableNumbered": "Tableau {{number}}",
+    "tableWithoutCaption": "Un tableau de ce texte n'a pas de légende : donnez-lui en une pour qu'il soit repérable et compréhensible."
+  },
+  "cta": {
+    "noTarget": "Pas de cible de lien dans cette langue",
+    "noLabel": "Libellé du bouton manquant",
+    "noLink": "Ce bouton a un libellé mais pas de lien : choisissez une page ou une adresse web, ou effacez le libellé."
+  },
+  "price": {
+    "from": "À partir de",
+    "fromSpoken": "À partir de {{price}}"
+  },
+  "cabin": {
+    "economy": "Économique",
+    "premiumEconomy": "Économique premium",
+    "business": "Affaires"
+  },
+  "destination": {
+    "airportCode": "Code aéroport",
+    "facts": "Bon à savoir",
+    "fact": {
+      "localCurrency": "Monnaie",
+      "language": "Langue",
+      "timeZone": "Fuseau horaire",
+      "voltage": "Électricité",
+      "diallingCode": "Indicatif téléphonique"
+    },
+    "related": "Vous aimerez aussi"
+  },
+  "fare": {
+    "route": "{{origin}} vers {{destination}}",
+    "fromOrigin": "au départ de {{origin}}",
+    "travel": "Voyage",
+    "period": {
+      "range": "du {{from}} au {{to}}",
+      "from": "à partir du {{from}}",
+      "until": "jusqu'au {{to}}"
+    },
+    "bookBy": "Réservez avant le",
+    "saleEnded": "Offre terminée le",
+    "conditions": "Conditions tarifaires",
+    "aboutDestination": "À propos de la destination"
+  },
+  "list": {
+    "empty": "Rien à afficher pour le moment.",
+    "startMissing": "Le dossier de départ est défini mais introuvable ici (supprimé, ou pas encore publié) : la liste n'affiche rien sur le site en ligne.",
+    "fareSummary": "{{shown}} offres affichées sur les {{found}} trouvées. Écartées : {{ended}} dont la vente est terminée, {{otherRegion}} d'une autre région, {{untranslated}} non traduites dans cette langue, {{noDestination}} sans destination.",
+    "destinationSummary": "{{shown}} destinations affichées sur les {{found}} trouvées ({{untranslated}} non traduites dans cette langue)."
+  }
+}

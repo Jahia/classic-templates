@@ -1,0 +1,28 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctrv = 'http://www.jahia.org/classic-travel/nt/1.0'>
+<ctrvmix = 'http://www.jahia.org/classic-travel/mix/1.0'>
+
+// A destination served by the airline, stored in a content folder. It has its own page (fullPage
+// view) and appears in lists: the destination grid of this module, and the content lists of
+// classic-templates (ctplmix:listable; card and compact views). jcr:title is the city name, teaser
+// the short text of cards and the page's meta description, body the long description. The image
+// follows ctplmix:media (text alternative per use, or decorative). The "from" price comes from
+// ctrvmix:price. The facts are free texts as shown to visitors. Tags and categories are native
+// (jmix:tagged, jmix:categorized): never declared here.
+[ctrv:destination] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctrvmix:component, ctplmix:listable, ctplmix:media, ctrvmix:price
+ - airportCode (string) < '[A-Z]{3}'
+ - country (string) i18n
+ - region (string, choicelist[resourceBundle]) < 'greaterChina', 'japanKorea', 'southeastAsia', 'southAsia', 'oceania', 'europe', 'northAmerica', 'other'
+ - teaser (string, textarea) i18n
+ - body (string, richtext) i18n
+ - localCurrency (string) i18n
+ - language (string) i18n
+ - timeZone (string) i18n
+ - voltage (string) i18n
+ - diallingCode (string)
+ - relatedDestinations (weakreference, picker[type='editorial']) multiple < ctrv:destination

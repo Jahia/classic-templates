@@ -1,14 +1,44 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
-<classictravel = 'https://example.com/classic-travel/nt/1.0'>
-<classictravelmix = 'https://example.com/classic-travel/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctrv = 'http://www.jahia.org/classic-travel/nt/1.0'>
+<ctrvmix = 'http://www.jahia.org/classic-travel/mix/1.0'>
 
-// Defining the content types is similar to defining a data model: once deployed, you cannot change the type of a property.
-// If you need to do changes during the development phase, it is possible to remove the definitions from the tools:
-// http://localhost:8080/cms/login?redirect=/modules/tools/definitionsBrowser.jsp however that will remove content created with this type.
-// Learn more about content types definitions here:
-// https://github.com/Jahia/javascript-modules/tree/main/docs/3-reference/1-cnd-format/
+// Namespaces, base mixins and the mixins shared by several types. Each content type lives next to
+// its views in src/components/<Category>/<Name>/definition.cnd, with exactly this header: the
+// engine merges every CND of the module at install time, and a prefix bound to two URIs fails the
+// install. The ctplmix mixins come from classic-templates (a declared module dependency).
 
-// This mixin creates a category to regroup types in the content type selector UI. Apply it to any definition you want
-// to see in this category.
-[classictravelmix:component] > jmix:droppableContent, jmix:accessControllableContent mixin
+// ---- Component tiers ----------------------------------------------------------------------------
+
+// Groups every classic-travel type in the content type selector. A ctplmix:component, so the
+// travel types sit with the classic-templates ones.
+[ctrvmix:component] > ctplmix:component mixin
+
+// A page section: accepted in the main area of classic-templates pages and in their columns and
+// free zones (ctplmix:pageComponent).
+[ctrvmix:pageComponent] > ctrvmix:component, ctplmix:pageComponent mixin
+
+// ---- Shared property groups ---------------------------------------------------------------------
+
+// A "from" price as contributed content: the amount, its currency (ISO 4217 code) and a short note
+// on what the price covers ("one way, economy, taxes included"). Views write it as
+// "From HKD 1,280" for the eye and spell the currency out for screen readers.
+[ctrvmix:price] mixin
+ - price (double) < '[0,)'
+ - currency (string, choicelist[resourceBundle]) = 'USD' autocreated < 'USD', 'EUR', 'GBP', 'HKD', 'CNY', 'JPY', 'KRW', 'SGD', 'THB', 'AUD', 'NZD', 'CAD', 'CHF'
+ - priceNote (string) i18n
+
+// What a fare list and a destination grid share: where to look (empty = the whole site; no picker
+// restriction, so a folder or a page can be picked), the region to keep (the region of the
+// destination), how many items to show, and the text shown when nothing matches (empty = the
+// section is hidden on the live site).
+[ctrvmix:travelList] mixin
+ // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
+ - startNode (weakreference)
+ - region (string, choicelist[resourceBundle]) = 'all' autocreated < 'all', 'greaterChina', 'japanKorea', 'southeastAsia', 'southAsia', 'oceania', 'europe', 'northAmerica', 'other'
+ - maxItems (long) = 6 autocreated < '[1,50]'
+ - noResultText (string) i18n

@@ -1,0 +1,82 @@
+/* Full page of a fare offer. The main-resource template of classic-templates already places it in
+   the page container (.ctpl-container). */
+.full {
+  display: grid;
+  gap: var(--ctpl-space-6);
+  padding-block: var(--ctpl-space-7) var(--ctpl-space-8);
+}
+.top {
+  display: grid;
+  gap: var(--ctpl-space-6);
+  align-items: start;
+}
+@media (min-width: 64rem) {
+  .top {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+.head {
+  display: grid;
+  gap: var(--ctpl-space-3);
+}
+.head > * {
+  margin: 0;
+}
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-1) var(--ctpl-space-3);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.kicker > :first-child {
+  color: var(--ctpl-color-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.title {
+  overflow-wrap: anywhere;
+}
+.facts {
+  display: grid;
+  gap: var(--ctpl-space-2);
+  margin: 0;
+  padding: var(--ctpl-space-4);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-sunken);
+}
+.facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ctpl-space-3);
+}
+.facts dt {
+  color: var(--ctpl-color-text-muted);
+}
+.facts dd {
+  margin: 0;
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.ended {
+  color: var(--ctpl-color-danger);
+}
+.figure {
+  margin: 0;
+}
+.figure img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--ctpl-radius-lg);
+}
+.block {
+  max-width: var(--ctpl-measure);
+}
+.block h2 {
+  font-size: var(--ctpl-text-2xl);
+}
+.destination {
+  max-width: 24rem;
+}
