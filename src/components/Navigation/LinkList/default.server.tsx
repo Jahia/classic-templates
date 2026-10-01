@@ -47,7 +47,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:linkList", name: "inline", displayName: "Inline links" },
   ({ "jcr:title": title }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
     return (
       <nav
@@ -67,7 +67,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:linkList", name: "column", displayName: "Link column" },
   ({ "jcr:title": title }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
     const headingId = `ctpl-links-${currentNode.getIdentifier()}`;
     return (

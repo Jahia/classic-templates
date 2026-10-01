@@ -29,7 +29,7 @@ jahiaComponent(
     properties: { "cache.mainResource": "true" },
   },
   (_, { mainNode, currentResource, renderContext }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     server.render.addCacheDependency({ node: mainNode }, renderContext);
     const current = currentResource.getLocale().toString();
     const invalid = new Set<string>(

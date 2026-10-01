@@ -79,7 +79,7 @@ export const breadcrumbOf = (
  * whose folders name no listing page says where to set one.
  */
 export const Breadcrumb = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { mainNode, renderContext } = useServerContext();
   const trail = breadcrumbOf(mainNode, renderContext, t("breadcrumb.home"));
   if (!trail) return null;

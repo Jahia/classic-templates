@@ -114,7 +114,7 @@ const Meta = ({
   node: JCRNodeWrapper;
   props: EditorialProps;
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { currentResource, renderContext } = useServerContext();
   const mode = useItemLabelMode();
   const lang = languageTag(currentResource.getLocale());
@@ -142,7 +142,7 @@ const Meta = ({
 
 /** Shown in edit mode instead of an item that has no title in this language. */
 const Untitled = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { renderContext } = useServerContext();
   return renderContext.isEditMode() ? (
     <p className={classes.missing}>{t("editorial.noTitle")}</p>
@@ -151,7 +151,7 @@ const Untitled = () => {
 
 /** The item's own page (rendered inside the main-resource template, which owns header and footer). */
 export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { currentNode, renderContext } = useServerContext();
   const topics = topicsOf(currentNode, renderContext);
   const title = props["jcr:title"];

@@ -57,7 +57,7 @@ const CloseIcon = () => (
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:noticeBar", displayName: "Notice bar" },
   (props: Props, { currentNode, renderContext, jcrSession, currentResource }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const isEdit = renderContext.isEditMode();
     const site = renderContext.getSite();
     const startMissing = !props.startNode && currentNode.hasProperty("startNode");

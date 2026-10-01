@@ -29,7 +29,7 @@ export interface PanelInfo {
  * the JCR-SQL2 query for developers.
  */
 export const EditPanel = ({ info }: { info: PanelInfo }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const r = info.result;
   // Dates read "newest / oldest first", the title "A to Z / Z to A".
   const alphabetical = info.criteria === "jcr:title";

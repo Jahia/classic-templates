@@ -38,7 +38,7 @@ const EDIT_COUNT = 500;
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:jcrQuery", displayName: "Content list" },
   (props: Props, { currentNode, renderContext, jcrSession, currentResource }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const level = useHeadingLevel(currentNode); // hooks before any early return
     const isEdit = renderContext.isEditMode();
     const site = renderContext.getSite();

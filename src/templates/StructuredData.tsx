@@ -58,7 +58,7 @@ const valuesOf = (node: JCRNodeWrapper, name: string): string[] =>
  * <, so no dangerouslySetInnerHTML is needed and no value can end the script.
  */
 export const StructuredData = ({ name, description }: { name?: string; description?: string }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { mainNode, renderContext, currentResource } = useServerContext();
   const origin = originOf(renderContext);
   const absolute = (url: string) => (/^https?:\/\//.test(url) ? url : `${origin}${url}`);

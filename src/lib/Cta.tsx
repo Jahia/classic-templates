@@ -29,7 +29,7 @@ export const Cta = ({
    */
   variant?: "primary" | "secondary" | "onOverlay" | "link";
 }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const { link, missingTarget } = resolveLink(node, renderContext);
   const ctaLabel = label ?? readString(node, "ctaLabel");
   const text = ctaLabel || link?.targetTitle;

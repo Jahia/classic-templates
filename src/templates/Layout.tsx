@@ -41,7 +41,7 @@ export const Layout = ({
   children: ReactNode;
 }) => {
   const { renderContext, currentResource } = useServerContext();
-  const { t } = useTranslation();
+  const { t } = useTranslation("classic-templates");
   const site = renderContext.getSite();
   server.render.addCacheDependency({ node: site }, renderContext);
   const siteName = site.getTitle() || site.getName();

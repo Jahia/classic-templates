@@ -37,7 +37,7 @@ const Chevron = () => (
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:mainNavigation", displayName: "Main navigation" },
   ({ navDepth }: Props, { renderContext, currentNode }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("classic-templates");
     const items = buildMainNavigation(
       chromeOwner(renderContext.getSite()),
       navDepth ?? 3,
