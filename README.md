@@ -11,7 +11,7 @@ light and dark, from its settings, with no code change.
 
 ![The demo home page in the Classic theme](docs/images/home.png)
 
-> **Latest release:** [0.2.0](https://github.com/Jahia/classic-templates/releases/tag/0_2_0) (October 2026).
+> **Latest release:** [0.3.0](https://github.com/Jahia/classic-templates/releases/tag/0_3_0) (October 2026).
 > Every version is described in the [changelog](CHANGELOG.md); `main` holds the next version in
 > development.
 
