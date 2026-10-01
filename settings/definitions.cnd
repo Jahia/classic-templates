@@ -97,6 +97,14 @@
  - ctplHideTitle (boolean) = false autocreated
  - ctplHideBreadcrumb (boolean) = false autocreated
 
+// Optional setting of a content folder (news, articles, any folder of items with their own page):
+// the page that lists its items. An item's breadcrumb, and its schema.org BreadcrumbList, then go
+// through that page (Home > News > item) instead of Home > item. Sub-folders inherit it: the
+// nearest folder above the item that names a page of this site wins (src/lib/trail.ts).
+[ctplmix:listingPage] mixin
+ extends = jnt:contentFolder
+ - ctplListingPage (weakreference, picker[type='page']) < jnt:page
+
 // Look of the whole site, set on the site node in jContent: no deploy needed to change it.
 // ctplShowBreadcrumb shows the breadcrumb trail above the content of every page except home.
 [ctplmix:siteSettings] mixin

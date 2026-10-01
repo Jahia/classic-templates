@@ -172,10 +172,14 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
 - **Breadcrumb** (Tier 1, `src/templates/Breadcrumb.tsx`): rendered by the page shell between the
   header and `<main>` (the skip link jumps over it), not a droppable type: it has nothing to
   contribute but page titles. Home first, the page tree down to the current page (marked
-  `aria-current="page"`), a main resource outside the tree (a news item) gets Home > item. None on
-  home. Off for the whole site with `ctplShowBreadcrumb` (site settings, on by default - a missing
+  `aria-current="page"`), a main resource outside the tree (a news item) goes through the page
+  that lists it when its folder names one, else Home > item (see "Breadcrumb of items in content
+  folders" below). None on home. Off for the whole site with `ctplShowBreadcrumb` (site settings, on by default - a missing
   value on older sites counts as on) or per page with `ctplHideBreadcrumb` (page options).
   The trail comes from `breadcrumbOf`, shared with the JSON-LD `BreadcrumbList`, so both agree.
+  The home crumb reads the locale key `breadcrumb.home` (Home / Accueil), not the home page's
+  `jcr:title`, which sites set to a search-engine title; its URL is unchanged. The site map keeps
+  the title.
   Separators are drawn chevrons, so screen readers read no separator text. Every ancestor is a
   cache dependency.
 
@@ -348,6 +352,37 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
     type manager's node types carry no label.
   - A start node that is set but no longer resolves renders nothing on the live site (never the
     whole site) and a warning in edit mode.
+
+## Breadcrumb of items in content folders
+
+- **Rule:** an item outside the page tree (any main resource in a content folder: news, articles,
+  classic-travel destinations and fares) gets Home > the titled pages above the listing page > the
+  listing page > the item. The listing page is named by the folder: optional mixin
+  `ctplmix:listingPage` (`extends = jnt:contentFolder`, so the folder's edit form offers it as a
+  switchable "Listing page" fieldset), property `ctplListingPage` (`weakreference`,
+  `picker[type='page']`, `< jnt:page`). The nearest folder above the item that names a page of
+  this site wins, so sub-folders inherit; none: Home > item, as before. The property carries the
+  `ctpl` prefix like the other properties added to native types (`ctplHideBreadcrumb`, `ctplTheme`).
+- **Why explicit, not guessed:** the list that shows a folder is not unique (two content lists, a
+  notice bar, a list of another module such as `ctrv:destinationGrid` can all point at the same
+  folder, or at a parent of it), and finding them is a reverse lookup over every list type's
+  `startNode`, including types this module does not know. Its cache dependencies would be every list
+  of the site. An editor-set reference is deterministic, cheap (a walk up a few folders) and cached
+  like any node. So there is no reverse lookup; edit mode shows a hint (`breadcrumb.noListingPage`)
+  on an item whose folders name no listing page.
+- **Code:** `lib/trail.ts` builds the chain as pure functions over a small tree interface
+  (`TrailTree`, unit-tested in `trail.test.ts`); `templates/Breadcrumb.tsx` implements it on JCR
+  nodes. `breadcrumbOf` returns `{ crumbs, unlisted }`; the visible trail and the JSON-LD
+  `BreadcrumbList` both read `crumbs`, so they stay identical. The site and page switches apply
+  unchanged.
+- **Ignored:** a listing page outside the site's home tree (another site), not a page, or not
+  readable in the workspace (deleted, not published yet in live): the search goes on with the
+  folders above. A listing page untitled in the language is left out like any untitled page; the
+  home page as listing page gives Home > item (no repeated crumb).
+- **Cache:** the item page depends on every content folder looked at (adding, changing or removing
+  the mixin flushes the pages of the folder's items, verified by the Cypress edge case), on the
+  listing page found and on every page linked. Nothing above the site node is read. A listing page
+  published after its folder only shows once the folder (or the item) is published again.
 
 ## Structured data (JSON-LD)
 

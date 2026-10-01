@@ -80,7 +80,9 @@
     "zToA": "de Z à A"
   },
   "breadcrumb": {
-    "label": "Fil d'Ariane"
+    "label": "Fil d'Ariane",
+    "home": "Accueil",
+    "noListingPage": "Ce fil d'Ariane ne passe pas par la page qui liste cet élément. Pour l'afficher, choisissez cette page sur le dossier de contenu de l'élément, dans ses réglages Page de liste."
   },
   "cards": {
     "teaserMissing": "Choisissez une actualité ou un article à afficher dans cette carte.",

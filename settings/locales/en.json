@@ -80,7 +80,9 @@
     "zToA": "Z to A"
   },
   "breadcrumb": {
-    "label": "Breadcrumb"
+    "label": "Breadcrumb",
+    "home": "Home",
+    "noListingPage": "This breadcrumb skips the page that lists this item. To show it, pick that page on the item's content folder, in its Listing page settings."
   },
   "cards": {
     "teaserMissing": "Pick a news item or article to show in this card.",

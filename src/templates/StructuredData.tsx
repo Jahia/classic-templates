@@ -1,6 +1,7 @@
 import { buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
+import { useTranslation } from "react-i18next";
 import { languageTag } from "../lib/locale.js";
 import { readString } from "../lib/props.js";
 import { type EditorialData, buildGraph, jsonForScript } from "../lib/schema.js";
@@ -57,6 +58,7 @@ const valuesOf = (node: JCRNodeWrapper, name: string): string[] =>
  * <, so no dangerouslySetInnerHTML is needed and no value can end the script.
  */
 export const StructuredData = ({ name, description }: { name?: string; description?: string }) => {
+  const { t } = useTranslation();
   const { mainNode, renderContext, currentResource } = useServerContext();
   const origin = originOf(renderContext);
   const absolute = (url: string) => (/^https?:\/\//.test(url) ? url : `${origin}${url}`);
@@ -92,10 +94,12 @@ export const StructuredData = ({ name, description }: { name?: string; descripti
     name,
     description,
     language: languageTag(currentResource.getLocale()),
-    breadcrumb: breadcrumbOf(mainNode, renderContext)?.map((crumb) => ({
-      name: crumb.title,
-      url: crumb.href ? absolute(crumb.href) : undefined,
-    })),
+    breadcrumb: breadcrumbOf(mainNode, renderContext, t("breadcrumb.home"))?.crumbs.map(
+      (crumb) => ({
+        name: crumb.title,
+        url: crumb.href ? absolute(crumb.href) : undefined,
+      }),
+    ),
     editorial,
   });
 

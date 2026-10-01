@@ -121,6 +121,12 @@ For one page, tick **Hide the breadcrumb** in its page options. For the whole si
 the breadcrumb** in the site's **Site look** settings. See
 [Breadcrumb](themes-and-appearance.md#breadcrumb).
 
+### Why does the breadcrumb of a news item read Home > the item?
+
+News items and articles live in content folders, outside the page tree. Name the page that lists
+them on their folder: in jContent, edit the folder, switch on **Listing page** and pick the page.
+See [The page that lists a folder](../components/breadcrumb.md#the-page-that-lists-a-folder).
+
 ### Why are the template names in English when I edit in French?
 
 The names of the page templates (Home, Content page, Full-width page) are not translatable in the
