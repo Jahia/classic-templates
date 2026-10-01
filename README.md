@@ -11,12 +11,15 @@ site's classic-templates theme (light and dark) through its design tokens.
 ## Requirements
 
 - Jahia 8.2.1 or later with `javascript-modules-engine` 1.2 or later.
-- **classic-templates** installed and used by the site (declared module dependency): the travel
-  types reuse its mixins, page areas, content list and design tokens.
+- **classic-templates** 0.2.0 or later, installed and used by the site (declared module
+  dependency): the travel types reuse its mixins, page areas, tabs, content list and design tokens
+  (0.2.0 brings the emphasis colour used for prices and the tabs the sections can sit in).
 
 ## Installation
 
-Install the package (`dist/package.tgz`, built by CI or by `yarn build`) in Jahia, then enable
+Download `classic-travel-<version>.tgz` from the
+[GitHub releases](https://github.com/Jahia/classic-travel/releases) and install it in Jahia
+(Administration > Modules), or build it with `yarn build && yarn package`. Then enable
 **classic-travel** on a site that uses the classic-templates template set (Site settings >
 Modules, or the provisioning API: `- enable: "classic-travel"` with `site: "<siteKey>"`).
 
