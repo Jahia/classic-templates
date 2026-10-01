@@ -1,0 +1,23 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A slim band listing the latest news items or articles as dated links, newest first: in the
+// home page's header area it shows on every page (before or after the site header), in a hero or
+// main area at the top of one page. label names the band for everyone ("Service updates"); the
+// cta is its "view all" link. type offers the subtypes of ctplmix:listable; startNode is the folder
+// or page to look under (empty = the whole site); filterCategories keeps only items in one of
+// those categories or their subcategories. A static list: it never scrolls or rotates. dismissible
+// lets visitors hide the band for their browser session (a close button added by JavaScript).
+[ctpl:noticeBar] > jnt:content, ctplmix:headerComponent, ctplmix:heroComponent, ctplmix:pageComponent, ctplmix:cta, jmix:list, jmix:renderableList, jmix:cache
+ - label (string) i18n
+ - type (string, choicelist[nodetypes='ctplmix:listable']) = 'ctpl:news' autocreated
+ // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
+ - startNode (weakreference)
+ - filterCategories (weakreference, category[autoSelectParent=false]) multiple < jnt:category
+ - maxItems (long) = 3 autocreated < '[1,10]'
+ - dismissible (boolean) = false autocreated

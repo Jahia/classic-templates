@@ -1,0 +1,93 @@
+/*
+ * Notice bar: one slim band on the accent tint (the theme has no separate information surface).
+ * Text, muted text and the accent as link colour are contrast-checked on that tint in every
+ * theme and scheme (yarn check:contrast), focus ring included.
+ */
+.bar {
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-text);
+  font-size: var(--ctpl-text-sm);
+}
+/* Hidden by the visitor (static/js/notice-bar.js). */
+.bar[hidden] {
+  display: none;
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--ctpl-space-5);
+  padding-block: var(--ctpl-space-1);
+}
+
+.label {
+  margin: 0;
+  font-weight: var(--ctpl-font-weight-bold);
+}
+
+.hint {
+  flex-basis: 100%;
+}
+
+.items {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: 0 var(--ctpl-space-5);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--ctpl-space-2);
+  min-width: 0;
+}
+/* 44 px tall targets without a taller band: the link grows, not its text. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--ctpl-color-accent);
+  font-weight: var(--ctpl-font-weight-medium);
+  overflow-wrap: anywhere;
+}
+.link:hover {
+  color: var(--ctpl-color-accent-hover);
+}
+.date {
+  color: var(--ctpl-color-text-muted);
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  margin-inline-start: auto;
+}
+/* The call to action renders in a paragraph with a top margin meant for sections. */
+.actions > p {
+  margin: 0;
+}
+
+.dismiss {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ctpl-radius-md);
+  background: transparent;
+  color: var(--ctpl-color-text);
+  cursor: pointer;
+}
+.dismiss:hover {
+  background: color-mix(in srgb, var(--ctpl-color-accent) 14%, transparent);
+}

@@ -45,6 +45,19 @@
   color: var(--ctpl-color-text-on-overlay);
 }
 
+/* A text link, for slim bands (notice bar): same target size, no button shape. */
+.link {
+  padding: 0;
+  border: 0;
+  color: var(--ctpl-color-link);
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+.link:hover {
+  color: var(--ctpl-color-link-hover);
+}
+
 .hint {
   margin: var(--ctpl-space-4) 0 0;
   padding: var(--ctpl-space-1) var(--ctpl-space-2);

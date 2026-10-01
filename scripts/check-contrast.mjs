@@ -105,6 +105,7 @@ const PAIRS = [
   ["text-muted", "accent-subtle", 4.5],
   ["text-on-accent", "accent", 4.5, "buttons on any section"],
   ["link-hover", "surface-page", 4.5],
+  ["link-hover", "accent-subtle", 4.5, "hovered links on the notice bar"],
   ["text-on-accent", "accent", 4.5, "filled buttons"],
   ["text-on-accent", "accent-hover", 4.5],
   ["success", "success-surface", 4.5],
@@ -120,6 +121,7 @@ const PAIRS = [
   ["text-on-highlight", "highlight", 4.5, "filled emphasis (a price tag)"],
   ["border-strong", "surface-page", 3, "form field borders (non-text)"],
   ["focus", "surface-page", 3, "focus ring (non-text)"],
+  ["focus", "accent-subtle", 3, "focus ring on accent-tint sections and the notice bar"],
   ["text-on-overlay", "overlay", 4.5, "hero text, overlay composited over a white photo"],
 ];
 

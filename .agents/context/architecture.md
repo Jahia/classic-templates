@@ -30,7 +30,7 @@
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                                                              |
+| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                                                              |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -265,6 +265,27 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   (a column adds one under a titled row; a tab adds its label's level, one below a titled tabs
   section, plus one), with every container as a cache dependency, clamped to h6; `headingTag`
   covers h2 to h6.
+
+## Notice bar
+
+- **Notice bar** (`ctpl:noticeBar`, `ctplmix:headerComponent` + `heroComponent` + `pageComponent`,
+  listing mixins `jmix:list`/`renderableList`/`cache` like the content list, same form override):
+  the latest 1-10 items (default 3) of a listable type under a start node and/or in categories,
+  newest first, through `runList` (`lib/query.ts`), each a link plus a `<time>`; optional label
+  (`label`, i18n, the region's name, else a hidden "Latest updates") and a "view all" `ctplmix:cta`
+  rendered with the Cta `link` variant (text link, 44 px target). Static list, no rotation (RGAA
+  13.8). A named `<section>` (region), never `<aside>`: in `<main>` a complementary landmark would
+  fail axe `landmark-complementary-is-top-level`, and in the header area it must not be a second
+  banner.
+- **Header integration:** no change to the header. The header area (`ctpl:headerArea`) already
+  accepts any `ctplmix:headerComponent`, so the bar drops into it beside the `ctpl:siteHeader`
+  singleton (before or after it, the area is orderable), editable on home only like the header,
+  and outside the header's `<header>` landmark.
+- **Dismiss:** `dismissible` adds `static/js/notice-bar.js` and a `<template>` holding the close
+  button; the script clones it (no dead button without JavaScript), keeps the bar's items
+  signature (`noticeSignature`, FNV-1a of the item ids) in `sessionStorage` (try/catch), so a new
+  item shows the bar again, and moves focus to the next focusable element. Edit mode renders
+  neither, so a bar dismissed while browsing is never hidden there.
 
 ## News, articles and content lists (phase 7)
 

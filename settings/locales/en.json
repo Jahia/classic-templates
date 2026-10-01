@@ -101,5 +101,9 @@
   },
   "tabs": {
     "noTitle": "This tab has no label in this language: it is not shown, nor what it holds."
+  },
+  "notice": {
+    "label": "Latest updates",
+    "dismiss": "Hide these updates"
   }
 }

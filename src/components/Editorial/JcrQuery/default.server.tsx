@@ -1,6 +1,5 @@
 import { Render, jahiaComponent, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import type { JCRSiteNode } from "org.jahia.services.content.decorator";
 import { useTranslation } from "react-i18next";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, useHeadingLevel } from "../../../lib/Heading.js";
@@ -11,6 +10,7 @@ import {
   isListableType,
   pathRegex,
   runList,
+  startLabelOf,
   typeLabel,
 } from "../../../lib/query.js";
 import { Section } from "../../../lib/Section.js";
@@ -20,12 +20,6 @@ import classes from "./jcr-query.module.css";
 
 /** Editors see how many items match, up to this count. */
 const EDIT_COUNT = 500;
-
-/** The start node as the edit panel names it: the site's title, or its path below the site. */
-const startLabelOf = (start: JCRNodeWrapper, site: JCRSiteNode): string =>
-  start.getPath() === site.getPath()
-    ? site.getTitle() || site.getName()
-    : start.getPath().replace(`${site.getPath()}/`, "");
 
 /**
  * A content list: the news items or articles found under a folder (or page), optionally in given

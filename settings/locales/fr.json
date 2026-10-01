@@ -101,5 +101,9 @@
   },
   "tabs": {
     "noTitle": "Cet onglet n'a pas de libellé dans cette langue : ni lui ni son contenu ne sont affichés."
+  },
+  "notice": {
+    "label": "Dernières informations",
+    "dismiss": "Masquer ces informations"
   }
 }

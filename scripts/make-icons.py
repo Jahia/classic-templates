@@ -192,6 +192,12 @@ def tab(d, p):
         d.line(p(10, y, 22, y), fill=INK, width=w(2))
 
 
+def notice_bar(d, p):
+    d.rectangle(p(2, 11, 30, 21), outline=INK, width=w(2))
+    d.ellipse(p(5, 14, 9, 18), fill=INK)
+    d.line(p(12, 16, 26, 16), fill=INK, width=w(2))
+
+
 ICONS = {
     "ctpl_news": news,
     "ctpl_article": article,
@@ -220,6 +226,7 @@ ICONS = {
     "ctpl_accordionItem": accordion_item,
     "ctpl_tabs": tabs,
     "ctpl_tab": tab,
+    "ctpl_noticeBar": notice_bar,
 }
 
 if __name__ == "__main__":

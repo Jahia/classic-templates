@@ -23,8 +23,11 @@ export const Cta = ({
   node: JCRNodeWrapper;
   label?: string;
   renderContext: RenderContext;
-  /** "primary" (filled), "secondary" (outlined), "onOverlay" (light, over a photo). */
-  variant?: "primary" | "secondary" | "onOverlay";
+  /**
+   * "primary" (filled), "secondary" (outlined), "onOverlay" (light, over a photo), "link" (a text
+   * link with a 44 px target, for slim bands).
+   */
+  variant?: "primary" | "secondary" | "onOverlay" | "link";
 }) => {
   const { t } = useTranslation();
   const { link, missingTarget } = resolveLink(node, renderContext);

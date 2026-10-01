@@ -57,6 +57,7 @@ light and dark, from its settings, with no code change.
 | Quote             | A quotation with the person's name, role and portrait         | [quote](docs/components/quote.md)                               |
 | Link list         | A list of links: a section, a bar or a footer column          | [links-and-link-lists](docs/components/links-and-link-lists.md) |
 | Content list      | News or articles found automatically, sorted and filtered     | [content-list](docs/components/content-list.md)                 |
+| Notice bar        | A slim band of the latest items as dated links, dismissible   | [notice-bar](docs/components/notice-bar.md)                     |
 | News and articles | Editorial items with their own page, card and compact views   | [news-and-articles](docs/components/news-and-articles.md)       |
 | Site map          | Every page of the site as nested lists                        | [site-map](docs/components/site-map.md)                         |
 | Tabs              | Tabs, each holding its own sections                           | [tabs](docs/components/tabs.md)                                 |
