@@ -67,7 +67,7 @@ A tabs section with no tab (or none with a label in the current language) shows 
 ## Good practice
 
 - Keep labels short (one to three words) and distinct: they are read as a list.
-- Use two to six tabs. With more, a page with sections and headings is easier to scan.
+- Use two to six tabs. With more, a page with sections and headings is easier to skim.
 - Never hide content in a tab that every visitor must read: most visitors only see the first tab.
 - Do not put tabs inside tabs.
 

@@ -61,7 +61,7 @@ An accordion with no entry (or none with a heading in the current language) show
 
 ## Good practice
 
-- Write entry headings that say what is inside ("Can I change plan during the year?"): visitors scan the headings to find their question.
+- Write entry headings that say what is inside ("Can I change plan during the year?"): visitors skim the headings to find their question.
 - Keep answers short. A long answer is easier to read on a page of its own.
 - Open at most one entry by default, the one most visitors need.
 - Do not hide information that every visitor must read (prices, legal conditions) in a closed entry.
