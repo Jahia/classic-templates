@@ -1,5 +1,23 @@
 # classic-templates Changelog
 
+## 0.2.0
+
+### New Features
+
+* Added an accordion section (entries that open and close, built on native disclosure), with expand all and collapse all, and links that open an entry
+
+* Card grids can be shown as outlined icon tiles or as a logo strip, besides cards
+
+* Added the Horizon theme (navy, teal and orange, light first, with its dark version) and an emphasis colour in every theme, used by key figures
+
+* Tables in rich text scroll sideways on small screens inside a keyboard-reachable area named after their caption, instead of widening the page
+
+* Added a tabs section whose tabs hold any page sections, shown one at a time with keyboard support, and as headed blocks without JavaScript or in edit mode
+
+### Bug Fixes
+
+* A text section set to "Wide" now uses the full content width, as its option says
+
 ## 0.1.2
 
 * Rich text keeps links to other parts of the page as written, stays fast on very long tags, always closes its elements (a heading inside a heading included) and no longer shows "\[removed]" where an embedded object was left out
