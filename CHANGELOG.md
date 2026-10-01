@@ -1,5 +1,21 @@
 # classic-templates Changelog
 
+## 0.3.0
+
+### New Features
+
+* The breadcrumb of news items, articles and other items stored in content folders goes through the page that lists them (Home > News > item), once that page is named on the folder with the new Listing page setting, and its first crumb reads Home whatever the home page title; the structured data follows the same trail
+
+* Added the hero carousel: hero banners shown one at a time with previous, next and slide buttons, stacked without JavaScript and in edit mode, autoplay off by default with a pause button
+
+* Content lists and notice bars can label each item with its first category instead of its content type, so two kinds of news no longer read the same
+
+* Added the notice bar: a slim band of the latest news items or articles as dated links, for the shared header or the top of a page, with an optional label, "view all" link and close button
+
+### Bug Fixes
+
+* Labels of the template set no longer show their raw key on pages that also show components of other modules (item pages of other modules, free zones)
+
 ## 0.2.0
 
 ### New Features
