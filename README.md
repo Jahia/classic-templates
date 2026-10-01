@@ -48,6 +48,7 @@ light and dark, from its settings, with no code change.
 | Site footer       | Tagline, link columns, legal and social links, copyright      | [site-footer](docs/components/site-footer.md)                   |
 | Breadcrumb        | The trail from home to the current page, above the content    | [breadcrumb](docs/components/breadcrumb.md)                     |
 | Hero banner       | The banner at the top of a page: photo, split or plain        | [hero-banner](docs/components/hero-banner.md)                   |
+| Hero carousel     | Hero banners shown one at a time, autoplay off by default     | [hero-carousel](docs/components/hero-carousel.md)               |
 | Image and text    | An image beside a heading, rich text and a button             | [image-and-text](docs/components/image-and-text.md)             |
 | Rich text         | A heading and formatted text, at reading width or wide        | [rich-text](docs/components/rich-text.md)                       |
 | Columns           | Two, three or four columns of sections                        | [columns](docs/components/columns.md)                           |

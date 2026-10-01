@@ -13,6 +13,7 @@ A large banner with a heading, a short text, an optional photo and a button. It 
 - The **hero area** at the top of a page. It exists on pages that use the **Home** and **Content page** templates. The **Full-width page** template has no hero area.
 - The page's **main area**, between other sections.
 - Inside a [Columns](columns.md) column, or a [Free zone](free-zone.md).
+- Inside a [Hero carousel](hero-carousel.md), as one of its slides.
 
 ## Fields
 

@@ -105,5 +105,17 @@
   "notice": {
     "label": "Dernières informations",
     "dismiss": "Masquer ces informations"
+  },
+  "carousel": {
+    "label": "À la une",
+    "roleDescription": "carrousel",
+    "slideRole": "diapositive",
+    "slideOf": "Diapositive {{index}} sur {{total}}",
+    "previous": "Diapositive précédente",
+    "next": "Diapositive suivante",
+    "pause": "Pause",
+    "play": "Lecture",
+    "empty": "Aucune diapositive : ajoutez des bannières à ce carrousel, une par diapositive.",
+    "editStacked": "Toutes les diapositives s'affichent ici, l'une sous l'autre. Les visiteurs en voient une à la fois, avec des boutons pour passer de l'une à l'autre."
   }
 }

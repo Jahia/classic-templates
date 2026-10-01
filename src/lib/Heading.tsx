@@ -15,12 +15,20 @@ const clampLevel = (level: number) => Math.min(Math.max(level, 2), DEEPEST);
  *   h2 row), the row's own level otherwise, so the outline never jumps from h1 to h3;
  * - in a tab of a ctpl:tabs section: one below the tab's label, which is itself a heading (one
  *   below the tabs title when it shows one).
+ * - a slide (hero banner) of a ctpl:heroCarousel: one below the carousel's title when it has one,
+ *   shown or visually hidden, the carousel's own level otherwise.
  * Containers nest (a row in a tab), so the level is worked out up the tree. Each container is a
  * cache dependency: giving it a title, or removing it, re-renders the sections inside.
  */
 const sectionLevel = (node: JCRNodeWrapper, renderContext: RenderContext): number => {
   try {
     const parent = node.getParent() as JCRNodeWrapper;
+    if (parent.isNodeType("ctpl:heroCarousel")) {
+      // The carousel itself is the container: its slides are its direct children.
+      server.render.addCacheDependency({ node: parent }, renderContext);
+      const titled = readString(parent, "jcr:title") ? 1 : 0;
+      return clampLevel(sectionLevel(parent, renderContext) + titled);
+    }
     if (!parent.isNodeType("ctpl:column") && !parent.isNodeType("ctpl:tab")) return 2;
     const container = parent.getParent() as JCRNodeWrapper;
     server.render.addCacheDependency({ node: container }, renderContext);

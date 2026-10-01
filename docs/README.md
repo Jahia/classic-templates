@@ -26,7 +26,7 @@ it goes, each field as the editor shows it, how it behaves, and good practice.
 
 - **Site chrome:** [site header](components/site-header.md), [site footer](components/site-footer.md),
   [breadcrumb](components/breadcrumb.md), [links and link lists](components/links-and-link-lists.md).
-- **Sections:** [hero banner](components/hero-banner.md),
+- **Sections:** [hero banner](components/hero-banner.md), [hero carousel](components/hero-carousel.md),
   [image and text](components/image-and-text.md),
   [rich text](components/rich-text.md), [columns](components/columns.md),
   [card grid](components/card-grid.md), [key figures](components/key-figures.md),

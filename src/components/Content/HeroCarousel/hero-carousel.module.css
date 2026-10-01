@@ -1,0 +1,159 @@
+/*
+ * Hero carousel. Without JavaScript (and in edit mode) the slides are stacked. With
+ * static/js/carousel.js, which sets html.ctpl-js from the page head (before the body is drawn),
+ * the carousel is laid out for one slide at a time from the first paint: no shift when it starts.
+ */
+.carousel {
+  --carousel-fade: calc(var(--ctpl-duration-base) * 2);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.heading {
+  padding-block: var(--ctpl-space-6) var(--ctpl-space-2);
+}
+.title {
+  margin: 0;
+}
+
+.editHint {
+  margin: 0;
+}
+
+.track {
+  display: flex;
+  flex-direction: column;
+}
+/* The slides of a live carousel are a list. */
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.slide {
+  display: flex;
+  min-width: 0;
+}
+.slide > * {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* ---- One slide at a time (JavaScript on) ----------------------------------------------------- */
+
+/* Every slide in the same cell: the carousel is as tall as its tallest slide, whichever shows. */
+:global(html.ctpl-js) .carousel[data-ctpl-carousel] .track {
+  display: grid;
+  order: 1;
+}
+:global(html.ctpl-js) .carousel[data-ctpl-carousel] .slide {
+  grid-area: 1 / 1;
+}
+:global(html.ctpl-js) .carousel[data-ctpl-carousel] .slide:not([data-active]) {
+  visibility: hidden;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :global(html.ctpl-js) .carousel[data-ctpl-carousel] .slide {
+    transition:
+      opacity var(--carousel-fade) var(--ctpl-ease),
+      visibility 0s linear var(--carousel-fade);
+  }
+  :global(html.ctpl-js) .carousel[data-ctpl-carousel] .slide[data-active] {
+    transition-delay: 0s;
+  }
+}
+
+/* Controls: first in the focus order (they precede the slides), shown under the slides. */
+:global(html.ctpl-js) .carousel[data-ctpl-carousel] .controls {
+  display: flex;
+  order: 2;
+}
+.controls {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ctpl-space-2);
+  padding: var(--ctpl-space-3) var(--ctpl-gutter);
+}
+
+/* Previous, slide buttons and next stay together on one row; the Pause button wraps above them. */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--ctpl-space-1);
+  max-width: 100%;
+}
+
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ctpl-space-2);
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-page);
+  color: var(--ctpl-color-text);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-medium);
+  cursor: pointer;
+}
+.control:hover {
+  background: var(--ctpl-color-accent-subtle);
+}
+.toggle {
+  margin-inline-end: var(--ctpl-space-3);
+}
+@media (max-width: 30rem) {
+  .toggle {
+    margin-inline-end: 0;
+  }
+}
+.toggle[data-playing="true"] .playIcon,
+.toggle:not([data-playing="true"]) .pauseIcon {
+  display: none;
+}
+
+.pickers {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 0;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* A 44 px target around a small dot; the current slide's dot is larger and filled, so the state
+   never rests on colour alone. */
+.picker {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ctpl-radius-pill);
+  background: transparent;
+  cursor: pointer;
+}
+.picker::before {
+  content: "";
+  box-sizing: border-box;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 2px solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-pill);
+}
+.picker:hover::before {
+  border-color: var(--ctpl-color-accent);
+}
+.picker[aria-current="true"]::before {
+  width: 1rem;
+  height: 1rem;
+  border-color: var(--ctpl-color-accent);
+  background: var(--ctpl-color-accent);
+}

@@ -30,7 +30,7 @@
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                                                              |
+| Content                                    | `ctpl:heroBanner`, `ctpl:heroCarousel`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                       |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -261,12 +261,12 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   panels and keeps each label as a visually hidden heading, so the outline does not change with
   the script. The URL hash selects the tab holding the target (an accordion entry too). The tablist
   is styled by its ARIA roles and states, never a hashed class.
-- **Heading levels in containers** (`lib/Heading.tsx`): `sectionLevel` walks up columns and tabs
-  (a column adds one under a titled row; a tab adds its label's level, one below a titled tabs
-  section, plus one), with every container as a cache dependency, clamped to h6; `headingTag`
-  covers h2 to h6.
+- **Heading levels in containers** (`lib/Heading.tsx`): `sectionLevel` walks up columns, tabs and
+  hero carousels (a column adds one under a titled row; a tab adds its label's level, one below a
+  titled tabs section, plus one; a carousel slide adds one under a titled carousel), with every
+  container as a cache dependency, clamped to h6; `headingTag` covers h2 to h6.
 
-## Notice bar
+## Notice bar and hero carousel
 
 - **Notice bar** (`ctpl:noticeBar`, `ctplmix:headerComponent` + `heroComponent` + `pageComponent`,
   listing mixins `jmix:list`/`renderableList`/`cache` like the content list, same form override):
@@ -286,6 +286,23 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   signature (`noticeSignature`, FNV-1a of the item ids) in `sessionStorage` (try/catch), so a new
   item shows the bar again, and moves focus to the next focusable element. Edit mode renders
   neither, so a bar dismissed while browsing is never hidden there.
+- **Hero carousel** (`ctpl:heroCarousel`, `jmix:list` orderable, `+ * (ctpl:heroBanner)`): the
+  slides are existing hero banners, not a slide type, so editors reuse every banner variant and the
+  banner's image, overlay focus ring and CTA handling. `lib/Heading.tsx` puts a slide's heading one
+  level below a titled carousel (hidden title included), with the carousel as cache dependency;
+  only the first slide's photo loads with high priority.
+- **Carousel behaviour** (`static/js/carousel.js`, loaded only live with two slides or more): sets
+  `html.ctpl-js` from the page head, so the one-slide grid layout (every slide in one grid cell =
+  height of the tallest, no layout shift) applies from the first paint. Controls are
+  server-rendered `hidden`, before the slides in source order (Pause/Play first), shown under them
+  by flex `order`. Hidden slides: `visibility: hidden` + `inert` + `aria-hidden`. Picker buttons
+  carry `aria-current`, arrow keys / Home / End. A polite live region speaks visitor-made changes
+  only (`aria-live="off"` while playing). Autoplay off by default; `interval` 5-30 s
+  (`carouselInterval`, applied server-side again); one cycle back to the first slide then stop;
+  suspended by hover, focus inside (not on the Pause button), hidden tab; stopped by any slide
+  button; never started under `prefers-reduced-motion`, which also drops the fade. Pure helpers
+  (`wrapIndex`, `keyTarget`, `delayOf`) are unit-tested by loading the script in a `node:vm`
+  sandbox, where it hands them to `module.exports` and skips the DOM part.
 
 ## News, articles and content lists (phase 7)
 

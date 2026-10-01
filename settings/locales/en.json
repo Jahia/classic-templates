@@ -105,5 +105,17 @@
   "notice": {
     "label": "Latest updates",
     "dismiss": "Hide these updates"
+  },
+  "carousel": {
+    "label": "Featured",
+    "roleDescription": "carousel",
+    "slideRole": "slide",
+    "slideOf": "Slide {{index}} of {{total}}",
+    "previous": "Previous slide",
+    "next": "Next slide",
+    "pause": "Pause",
+    "play": "Play",
+    "empty": "No slide yet: add hero banners to this carousel, one per slide.",
+    "editStacked": "Every slide shows here, one under the other. Visitors see one slide at a time, with buttons to move between them."
   }
 }
