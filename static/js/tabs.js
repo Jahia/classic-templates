@@ -83,10 +83,19 @@
     instances.push({ panels, select });
   };
 
+  /** The id the address points at ("" for none, or for a malformed escape). */
+  const hashId = () => {
+    try {
+      return decodeURIComponent(globalThis.location.hash.slice(1));
+    } catch {
+      return "";
+    }
+  };
+
   /** Selects the tab the address points at: the tab itself or something inside it. */
   const followHash = () => {
-    const id = decodeURIComponent(window.location.hash.slice(1));
-    const target = id ? document.getElementById(id) : null;
+    const id = hashId();
+    const target = id ? document.querySelector(`#${CSS.escape(id)}`) : null;
     if (!target) return;
     for (const { panels, select } of instances) {
       const index = panels.findIndex((panel) => panel.contains(target));
@@ -100,7 +109,7 @@
     followHash();
   };
 
-  window.addEventListener("hashchange", followHash);
+  globalThis.addEventListener("hashchange", followHash);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
 })();

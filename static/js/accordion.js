@@ -34,11 +34,20 @@
     root.setAttribute("data-ctpl-ready", "");
   };
 
+  /** The id the address points at ("" for none, or for a malformed escape). */
+  const hashId = () => {
+    try {
+      return decodeURIComponent(globalThis.location.hash.slice(1));
+    } catch {
+      return "";
+    }
+  };
+
   /** Opens the entry the address points at (the entry itself or something inside it). */
   const openTarget = () => {
-    const id = decodeURIComponent(window.location.hash.slice(1));
+    const id = hashId();
     if (!id) return;
-    const target = document.getElementById(id);
+    const target = document.querySelector(`#${CSS.escape(id)}`);
     const entry = target ? target.closest("details[data-ctpl-accordion-item]") : null;
     if (!entry) return;
     entry.open = true;
@@ -50,7 +59,7 @@
     openTarget();
   };
 
-  window.addEventListener("hashchange", openTarget);
+  globalThis.addEventListener("hashchange", openTarget);
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
 })();

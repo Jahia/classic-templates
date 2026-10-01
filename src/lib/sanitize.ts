@@ -485,7 +485,7 @@ const startTag = (
   }
   if (name === "caption" && tables.captionId) {
     const id = tables.captionId;
-    tables.captionId = undefined;
+    tables.captionId = "";
     return openElement(outline, name, ` id="${id}"${attrs}`, level);
   }
   return openElement(outline, name, attrs, level);
