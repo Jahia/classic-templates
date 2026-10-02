@@ -18,7 +18,7 @@ const referenced = (node: JCRNodeWrapper | undefined, name: string): JCRNodeWrap
 
 const child = (node: JCRNodeWrapper, path: string): JCRNodeWrapper | undefined => {
   try {
-    return node.hasNode(path) ? (node.getNode(path) as JCRNodeWrapper) : undefined;
+    return node.hasNode(path) ? node.getNode(path) : undefined;
   } catch {
     return undefined;
   }
@@ -34,7 +34,7 @@ const heroImageOf = (page: JCRNodeWrapper): JCRNodeWrapper | undefined => {
   const own = referenced(section, "image");
   if (own) return own;
   for (const slide of section.getNodes()) {
-    const image = referenced(slide as JCRNodeWrapper, "image");
+    const image = referenced(slide, "image");
     if (image) return image;
   }
   return undefined;
