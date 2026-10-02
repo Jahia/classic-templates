@@ -7,7 +7,9 @@ import {
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { readString as read } from "../lib/props.js";
+import { fullTitle } from "../lib/share.js";
 import { pageSite, readSiteLook } from "../lib/site.js";
+import { ShareMeta } from "./ShareMeta.jsx";
 
 import "modern-normalize/modern-normalize.css";
 import "./tokens.css";
@@ -25,6 +27,8 @@ import { languageTag } from "../lib/locale.js";
  * - `<title>` is "<page> | <site>": `jcr:title` stays the short page name.
  * - `<meta name="description">` from the page's (or main resource's) description, falling back to
  *   the site description, so every page has one.
+ * - Open Graph and Twitter card tags (ShareMeta): the same title and description, and an image
+ *   that is never missing.
  * - A skip link to `#main-content`, the id of the template's `<main>`.
  *
  * The rendered page depends on the site node (theme, scheme, title, description), which is not a
@@ -47,6 +51,7 @@ export const Layout = ({
   const siteName = site.getTitle() || site.getName();
   const { theme, scheme } = readSiteLook(site);
   const metaDescription = description || read(site, "j:description");
+  const pageTitle = fullTitle(title, siteName);
 
   return (
     <html
@@ -57,8 +62,9 @@ export const Layout = ({
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{title && title !== siteName ? `${title} | ${siteName}` : siteName}</title>
+        <title>{pageTitle}</title>
         {metaDescription && <meta name="description" content={metaDescription} />}
+        <ShareMeta title={pageTitle} description={metaDescription} />
         <AddResources type="css" resources={buildModuleFileUrl("dist/assets/style.css")} />
       </head>
       <body>

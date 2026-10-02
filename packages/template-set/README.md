@@ -32,7 +32,8 @@ light and dark, from its settings, with no code change.
 - **Accessible by default.** WCAG 2.1 AA and RGAA 4.1.2 audited. Skip link, landmarks, strict
   heading order, keyboard menu, visible focus, reflow at 320 px, language-aware links, a site map as
   the second navigation system. Rich text is cleaned and restructured when it is rendered.
-- **Search-engine ready.** One `<h1>` per page, titles and descriptions, image alternatives, and
+- **Search-engine and share ready.** One `<h1>` per page, titles and descriptions, image
+  alternatives, Open Graph and Twitter card tags with an image on every page, and
   schema.org structured data (JSON-LD) on every page: WebSite, Organization, WebPage, the
   breadcrumb, and NewsArticle or Article on news and articles.
 - **Open to other modules.** A free zone section takes components of other modules (Formidable
