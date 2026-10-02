@@ -19,6 +19,8 @@
   <description>Themeable Jahia JavaScript template set with standard reusable components</description>
 
   <properties>
+    <!-- The Sonar project key is this module's coordinates (set on the root): give the module another key -->
+    <sonar.moduleKey>org.jahia.modules.javascript:classic-templates-template-set</sonar.moduleKey>
     <sonar.sources>src,package.json,pom.xml</sonar.sources>
     <sonar.tests />
   </properties>
