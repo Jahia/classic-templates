@@ -29,7 +29,7 @@ const heroImageOf = (page: JCRNodeWrapper): JCRNodeWrapper | undefined => {
   const area = child(page, "hero");
   if (!area) return undefined;
   // Only the first hero section counts: a banner, or a carousel whose first slide has an image.
-  const [section] = Array.from(area.getNodes()) as JCRNodeWrapper[];
+  const [section] = Array.from(area.getNodes());
   if (!section) return undefined;
   const own = referenced(section, "image");
   if (own) return own;
