@@ -23,6 +23,25 @@ under the title in their results.
   is the same on every page, which helps nobody choose: write your own.
 - A news item or an article uses its **Teaser** as its description.
 
+## Sharing on social networks
+
+When a page is shared on a social network or in a messaging app, the link preview shows its title,
+its description and an image. The template set writes these Open Graph and Twitter card tags on
+every page: the title and description are the page's own, as above.
+
+The image is the first that exists of:
+
+1. the page's own share image, set in the **SEO** panel of the page or item (the Open Graph
+   image field of Jahia's SEO module);
+2. the image of the news item, article or other item the page shows;
+3. the image of the page's first hero banner;
+4. the site's **Default share image** (site settings);
+5. the site logo.
+
+Set a **Default share image** on the site so pages without a hero still share a picture. A
+landscape image of about 1200 by 630 pixels suits most networks. The image's text alternative is
+sent with it.
+
 ## One main heading
 
 Every page has exactly one main heading, its title, placed by the template. Search engines read it

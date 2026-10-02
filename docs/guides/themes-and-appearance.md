@@ -14,11 +14,12 @@ The look of the site is set on the site itself, not on a page:
 
 The **Site look** section has three fields:
 
-| Field                   | Values                                                                     | Default        |
-| ----------------------- | -------------------------------------------------------------------------- | -------------- |
-| **Theme**               | Classic (navy), Ocean (teal), Terracotta (warm), Horizon (navy and orange) | Classic (navy) |
-| **Light or dark**       | Automatic, Always light, Always dark                                       | Automatic      |
-| **Show the breadcrumb** | ticked or not                                                              | ticked         |
+| Field                   | Values                                                                     | Default                                                                                                                         |
+| ----------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Theme**               | Classic (navy), Ocean (teal), Terracotta (warm), Horizon (navy and orange) | Classic (navy)                                                                                                                  |
+| **Light or dark**       | Automatic, Always light, Always dark                                       | Automatic                                                                                                                       |
+| **Default share image** | An image from the media library                                            | The picture shown when a page without its own image is shared ([Sharing on social networks](seo.md#sharing-on-social-networks)) |
+| **Show the breadcrumb** | ticked or not                                                              | ticked                                                                                                                          |
 
 ## Theme
 
