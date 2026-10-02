@@ -1,0 +1,6 @@
+# Package outputs (the repository root .gitignore covers the rest)
+dist
+node_modules
+target
+.env
+.yarn
