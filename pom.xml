@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Thin Maven wrapper around the Vite build, so the shared Jahia CI actions (build, Sonar, publish,
-  release) can handle this JavaScript module like any other. It installs Node and Yarn, runs
-  `yarn build`, and attaches dist/package.tgz as the deployable artifact. No Java is compiled.
+  Aggregator of the classic-templates monorepo. Every package shares this version:
+  - packages/template-set    the classic-templates template set (JavaScript module, .tgz)
+  - packages/travel          the classic-travel module (JavaScript module, .tgz)
+  - packages/prepackaged-site the classic-dev demo site as a pre-packaged project (.jar)
+  The JavaScript packages are standalone Yarn projects: their pom.xml installs Node and Yarn,
+  runs `yarn build` in the package folder and attaches dist/package.tgz.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -12,11 +15,11 @@
     <version>8.2.1.0</version>
   </parent>
   <groupId>org.jahia.modules.javascript</groupId>
-  <artifactId>classic-templates</artifactId>
-  <name>Classic Templates</name>
+  <artifactId>classic-templates-root</artifactId>
+  <name>Classic Templates Root</name>
   <version>0.4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <description>Themeable Jahia JavaScript template set with standard reusable components</description>
+  <description>Classic Templates monorepo: the template set, classic-travel and the pre-packaged demo site</description>
 
   <scm>
     <connection>scm:git:git@github.com:Jahia/classic-templates.git</connection>
@@ -25,11 +28,21 @@
     <tag>HEAD</tag>
   </scm>
 
+  <modules>
+    <module>packages/template-set</module>
+    <module>packages/travel</module>
+    <module>packages/prepackaged-site</module>
+  </modules>
+
   <properties>
     <node.version>v22.21.0</node.version>
     <yarn.version>v1.22.22</yarn.version>
     <frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
     <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
+    <!-- Sonar: keep the project key of the single-module days. The root module holds the pom
+         files, .github and the Cypress tests; each package declares its own sources and no tests. -->
+    <sonar.projectKey>org.jahia.modules.javascript:classic-templates</sonar.projectKey>
+    <sonar.tests>tests</sonar.tests>
   </properties>
 
   <repositories>
@@ -63,86 +76,56 @@
   </pluginRepositories>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <!-- Used by the JavaScript packages: Node and Yarn in the package's target/, then yarn install and yarn build -->
+        <plugin>
+          <groupId>com.github.eirslett</groupId>
+          <artifactId>frontend-maven-plugin</artifactId>
+          <version>${frontend-maven-plugin.version}</version>
+          <configuration>
+            <nodeVersion>${node.version}</nodeVersion>
+            <!-- Yarn 1 only bootstraps: the root .yarnrc.yml's yarnPath hands over to the committed Yarn 4 -->
+            <yarnVersion>${yarn.version}</yarnVersion>
+            <installDirectory>target</installDirectory>
+          </configuration>
+          <executions>
+            <execution>
+              <id>install node and yarn</id>
+              <goals>
+                <goal>install-node-and-yarn</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>yarn install</id>
+              <goals>
+                <goal>yarn</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>yarn build</id>
+              <phase>package</phase>
+              <goals>
+                <goal>yarn</goal>
+              </goals>
+              <configuration>
+                <arguments>build</arguments>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${build-helper-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
-      <plugin>
-        <groupId>com.github.eirslett</groupId>
-        <artifactId>frontend-maven-plugin</artifactId>
-        <version>${frontend-maven-plugin.version}</version>
-        <configuration>
-          <nodeVersion>${node.version}</nodeVersion>
-          <!-- Yarn 1 only bootstraps: .yarnrc.yml's yarnPath hands over to the committed Yarn 4 -->
-          <yarnVersion>${yarn.version}</yarnVersion>
-          <installDirectory>target</installDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>install node and yarn</id>
-            <goals>
-              <goal>install-node-and-yarn</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>yarn install</id>
-            <goals>
-              <goal>yarn</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>yarn build</id>
-            <phase>package</phase>
-            <goals>
-              <goal>yarn</goal>
-            </goals>
-            <configuration>
-              <arguments>build</arguments>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>${build-helper-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <!-- Mark dist/package.tgz as the artifact Maven deploys -->
-            <id>attach-tgz-artifact</id>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>dist/package.tgz</file>
-                  <type>tgz</type>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <!-- Copy dist/package.tgz to target/ where the CI actions look for it -->
-            <id>copy-dist-package</id>
-            <phase>package</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <target>
-                <copy file="dist/package.tgz" tofile="${project.build.directory}/${project.build.finalName}.tgz" />
-              </target>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
-          <!-- 'clean verify/install' recomputes the yarn.lock checksum after the version bump; scm:checkin commits it -->
+          <!-- 'clean verify/install' recomputes the yarn.lock checksums after the version bump; scm:checkin commits them -->
           <preparationGoals>-P release-prepare clean verify scm:checkin</preparationGoals>
           <completionGoals>-P release-prepare clean install scm:checkin</completionGoals>
           <releaseProfiles>release-perform</releaseProfiles>
@@ -160,26 +143,10 @@
           <plugin>
             <artifactId>maven-scm-plugin</artifactId>
             <configuration>
-              <includes>yarn.lock,package.json</includes>
+              <!-- Each JavaScript package syncs its package.json to the Maven version (see its pom.xml) -->
+              <includes>packages/*/package.json,packages/*/yarn.lock</includes>
               <message>chore(release): Prepare release ${project.version}</message>
             </configuration>
-          </plugin>
-          <plugin>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-            <executions>
-              <!-- Keep package.json in sync with the Maven version -->
-              <execution>
-                <id>sync-version</id>
-                <phase>process-resources</phase>
-                <goals>
-                  <goal>yarn</goal>
-                </goals>
-                <configuration>
-                  <arguments>node ${basedir}/.m2/sync-version.js ${project.version}</arguments>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>

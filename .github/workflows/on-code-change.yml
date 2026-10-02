@@ -1,4 +1,6 @@
-# Runs on every pull request: signature, Maven build (wraps yarn build), Sonar, integration tests.
+# Runs on every pull request: signature, static checks of the JavaScript packages, the Maven build
+# of the three packages (template set, classic-travel, pre-packaged site), Sonar and the
+# integration tests (they install every *-SNAPSHOT.jar and *-SNAPSHOT.tgz the build produced).
 name: On Code Change (PR)
 
 on:
@@ -23,6 +25,35 @@ jobs:
         with:
           nexus_username: ${{ secrets.NEXUS_USERNAME }}
           nexus_password: ${{ secrets.NEXUS_PASSWORD }}
+
+  static-checks:
+    name: Static checks (${{ matrix.package }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [template-set, travel]
+    defaults:
+      run:
+        working-directory: packages/${{ matrix.package }}
+    steps:
+      - uses: actions/checkout@v4
+      # mise.toml pins Node 22 and Yarn 4; the root .yarnrc.yml hands over to the committed Yarn
+      - uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
+      - run: yarn install --immutable
+      - name: Lint and format
+        run: |
+          yarn lint
+          yarn prettier --check .
+      - name: No literal colours
+        run: yarn check:tokens
+      - name: Theme contrast
+        if: matrix.package == 'template-set'
+        run: yarn check:contrast
+      - name: Unit tests
+        run: yarn test:unit
+        env:
+          TZ: UTC
 
   build:
     name: Build Module

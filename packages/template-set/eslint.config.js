@@ -21,7 +21,6 @@ export default defineConfig(
   // React
   eslintReact.configs["recommended-typescript"],
 
-  // Ignore the same files as .gitignore, plus the Cypress project (it has its own lint setup)
+  // Ignore the same files as the package .gitignore
   includeIgnoreFile(path.resolve(import.meta.dirname, ".gitignore")),
-  { ignores: ["tests/**", ".yarn/**", ".m2/**"] },
 );

@@ -109,7 +109,15 @@ publishing a page does not publish the images it uses. See
 
 ## Demo sites for evaluators
 
-Two scripts in the module's `scripts/` folder build demonstration sites on a local Jahia. They are
+The quickest way to see a complete site is the **pre-packaged demo site**: install the
+`classic-templates-prepackaged-website` module (same version as the template set) next to the
+template set, then in Jahia's administration open **Projects** and, under **Import prepackaged
+project**, choose **Classic Templates demo site (classic-dev) - pre-packaged**. You get the
+`classic-dev` site in English and French, published: 19 pages using every section of the template
+set, news items and articles. It needs no other module. See the
+[pre-packaged site README](../../packages/prepackaged-site/README.md).
+
+Two scripts in the repository's `scripts/` folder build demonstration sites on a local Jahia. They are
 meant for evaluating the template set, not for production sites. They need Python 3 and the
 Pillow library (they generate the demo images), and they read `JAHIA_URL` and `JAHIA_USER` from the
 environment (defaults: `http://localhost:8080` and `root:root1234`).

@@ -1,0 +1,24 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctrv = 'http://www.jahia.org/classic-travel/nt/1.0'>
+<ctrvmix = 'http://www.jahia.org/classic-travel/mix/1.0'>
+
+// A fare offer to one destination, stored in a content folder: its own page (fullPage view) and a
+// card in fare lists and in classic-templates content lists (ctplmix:listable). jcr:title is the
+// offer's name (the page title; cards show the destination's city). origin is the departure city as
+// shown; the price, currency and price note come from ctrvmix:price; travelFrom / travelTo bound
+// the travel period and saleEnds the last day to book (an offer whose sale has ended leaves the fare
+// lists). conditions is the fare's small print. The call to action (ctplmix:cta, a contributed
+// link and its label) leads to the booking or fare page.
+[ctrv:fareOffer] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctrvmix:component, ctplmix:listable, ctrvmix:price, ctplmix:cta
+ - destination (weakreference, picker[type='editorial']) mandatory < ctrv:destination
+ - origin (string) i18n
+ - cabin (string, choicelist[resourceBundle]) = 'economy' autocreated < 'economy', 'premiumEconomy', 'business'
+ - travelFrom (date, datepicker)
+ - travelTo (date, datepicker)
+ - saleEnds (date, datepicker)
+ - conditions (string, richtext) i18n

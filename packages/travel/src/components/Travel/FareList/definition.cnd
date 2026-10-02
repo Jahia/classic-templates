@@ -1,0 +1,15 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctrv = 'http://www.jahia.org/classic-travel/nt/1.0'>
+<ctrvmix = 'http://www.jahia.org/classic-travel/mix/1.0'>
+
+// A page section listing fare offers automatically (ctrvmix:travelList: where to look, region of
+// the destination, how many, text when empty), sorted by price, by the end of the sale or by
+// destination name. Its heading is the optional jcr:title (an h2); the cta is the "see all" link.
+// Offers whose sale has ended are left out. Each offer renders with its card view.
+[ctrv:fareList] > jnt:content, mix:title, ctrvmix:pageComponent, ctplmix:sectionStyle, ctplmix:cta, ctrvmix:travelList, jmix:list, jmix:renderableList, jmix:cache
+ - sort (string, choicelist[resourceBundle]) = 'priceAsc' autocreated < 'priceAsc', 'saleEndsAsc', 'destinationAsc'

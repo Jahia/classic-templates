@@ -6,7 +6,8 @@ description: Module-specific checklist for adding a component to classic-templat
 # Adding a component to classic-templates
 
 The generic pipeline is `/jahia-dev-build-component` (spec → `/jahia-cnd-author` → view → deploy →
-review). This skill adds what is specific to this module. Follow both.
+review). This skill adds what is specific to this module. Follow both. Paths are relative to
+`packages/template-set`, except `tests/` and `docs/` at the repository root.
 
 ## 1. Spec
 
@@ -48,8 +49,8 @@ inventory, which shared mixins does it reuse (`ctplmix:cta`, `ctplmix:media`, `c
 
 ## 4. Deploy and test
 
-1. `yarn build && yarn deploy`, then check the bundle is `STARTED`.
-2. Create or update `tests/cypress/e2e/<name>/` with `happy-path.cy.ts`, `authorization.cy.ts` and
+1. `yarn build && yarn deploy` from `packages/template-set`, then check the bundle is `STARTED`.
+2. Create or update `tests/cypress/e2e/<name>/` (repository root) with `happy-path.cy.ts`, `authorization.cy.ts` and
    `edge-cases.cy.ts` (see `/jahia-dev-cypress`), using `siteKeyFor('<name>')` and
    `createTestSite` from `support/`. Include a French assertion and an empty-optional-fields case.
 3. Run the specs against the local Jahia.

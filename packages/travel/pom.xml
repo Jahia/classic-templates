@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Thin Maven wrapper around the Vite build of classic-travel, so the shared Jahia CI actions
+  (build, Sonar, publish, release) can handle this JavaScript module like any other. It installs
+  Node and Yarn, runs `yarn build` in this folder and attaches dist/package.tgz as the deployable
+  artifact. No Java is compiled.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>classic-templates-root</artifactId>
+    <groupId>org.jahia.modules.javascript</groupId>
+    <version>0.4.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <artifactId>classic-travel</artifactId>
+  <name>Classic Travel</name>
+  <packaging>pom</packaging>
+  <description>Travel content types (destinations, fare offers, fare and destination lists, travel tools) for sites built on the classic-templates template set</description>
+
+  <properties>
+    <sonar.sources>src,package.json,pom.xml</sonar.sources>
+    <!-- Helpers copied from the template set on purpose (separate bundle, no TypeScript import
+         across modules, see .agents/context/travel.md): left out of the duplication count -->
+    <sonar.cpd.exclusions>**/lib/sanitize.ts,**/lib/sanitize.test.ts,**/lib/resolveLink.ts,**/lib/urls.ts,**/lib/urls.test.ts,**/lib/locale.ts</sonar.cpd.exclusions>
+    <sonar.tests />
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.eirslett</groupId>
+        <artifactId>frontend-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- Mark dist/package.tgz as the artifact Maven deploys -->
+            <id>attach-tgz-artifact</id>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>dist/package.tgz</file>
+                  <type>tgz</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <!-- Copy dist/package.tgz to target/ where the CI actions look for it -->
+            <id>copy-dist-package</id>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <copy file="dist/package.tgz" tofile="${project.build.directory}/${project.build.finalName}.tgz" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>release-prepare</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <executions>
+              <!-- Keep package.json in sync with the Maven version -->
+              <execution>
+                <id>sync-version</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>node ${basedir}/../../.m2/sync-version.js ${project.version}</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
