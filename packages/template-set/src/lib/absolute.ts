@@ -11,5 +11,8 @@ export const originOf = (renderContext: RenderContext): string => {
 };
 
 /** A site path made absolute on the current request's origin; full URLs pass through. */
-export const absoluteUrl = (origin: string, path: string): string =>
-  /^https?:\/\//.test(path) ? path : `${origin}${path.startsWith("/") ? "" : "/"}${path}`;
+export const absoluteUrl = (origin: string, path: string): string => {
+  if (/^https?:\/\//.test(path)) return path;
+  const separator = path.startsWith("/") ? "" : "/";
+  return `${origin}${separator}${path}`;
+};

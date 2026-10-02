@@ -28,15 +28,14 @@ const child = (node: JCRNodeWrapper, path: string): JCRNodeWrapper | undefined =
 const heroImageOf = (page: JCRNodeWrapper): JCRNodeWrapper | undefined => {
   const area = child(page, "hero");
   if (!area) return undefined;
-  for (const first of area.getNodes()) {
-    const section = first as JCRNodeWrapper;
-    const own = referenced(section, "image");
-    if (own) return own;
-    for (const slide of section.getNodes()) {
-      const image = referenced(slide as JCRNodeWrapper, "image");
-      if (image) return image;
-    }
-    return undefined; // only the first hero section counts
+  // Only the first hero section counts: a banner, or a carousel whose first slide has an image.
+  const [section] = Array.from(area.getNodes()) as JCRNodeWrapper[];
+  if (!section) return undefined;
+  const own = referenced(section, "image");
+  if (own) return own;
+  for (const slide of section.getNodes()) {
+    const image = referenced(slide as JCRNodeWrapper, "image");
+    if (image) return image;
   }
   return undefined;
 };
@@ -86,9 +85,8 @@ export const ShareMeta = ({ title, description }: { title: string; description?:
   if (header) server.render.addCacheDependency({ node: header }, renderContext);
 
   const image = found?.image;
-  const imageAlt = image
-    ? altOf(image, found?.source === "item" ? mainNode : undefined)
-    : undefined;
+  const altOwner = found?.source === "item" ? mainNode : undefined;
+  const imageAlt = image ? altOf(image, altOwner) : undefined;
   const width = image ? readPositive(image, "j:width") : undefined;
   const height = image ? readPositive(image, "j:height") : undefined;
   const isArticle = mainNode.isNodeType("ctplmix:editorialItem");

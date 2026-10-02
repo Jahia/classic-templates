@@ -5,10 +5,14 @@ import { firstShareImage, fullTitle, ogLocale } from "./share.js";
 describe("firstShareImage", () => {
   it("returns the first candidate that resolves, with its source", () => {
     const calls: string[] = [];
+    const track = (name: string, value: string | undefined) => () => {
+      calls.push(name);
+      return value;
+    };
     const found = firstShareImage([
-      { source: "seo", find: () => (calls.push("seo"), undefined) },
-      { source: "item", find: () => (calls.push("item"), "item.jpg") },
-      { source: "logo", find: () => (calls.push("logo"), "logo.png") },
+      { source: "seo", find: track("seo", undefined) },
+      { source: "item", find: track("item", "item.jpg") },
+      { source: "logo", find: track("logo", "logo.png") },
     ]);
     expect(found).toEqual({ image: "item.jpg", source: "item" });
     expect(calls).toEqual(["seo", "item"]);
