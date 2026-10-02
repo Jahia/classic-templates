@@ -30,6 +30,7 @@
 
   <modules>
     <module>packages/template-set</module>
+    <module>packages/travel</module>
   </modules>
 
   <properties>

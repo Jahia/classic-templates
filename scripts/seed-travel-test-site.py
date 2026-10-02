@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Seeds a small test site for classic-travel on the classic-templates template set (EN + FR).
 
-    python3 scripts/seed-test-site.py [--site ctrv-test]
+    python3 scripts/seed-travel-test-site.py [--site ctrv-test]
 
 The script:
   - creates the site on the classic-templates template set when it does not exist, with EN and FR;
