@@ -1,6 +1,10 @@
 # classic-travel
 
-Travel content for Jahia sites built on the [classic-templates](https://github.com/Jahia/classic-templates)
+The **classic-travel** module (`org.jahia.modules.javascript:classic-travel`), one of the three
+packages of this repository, released at the same version as the template set. Back to the
+[repository README](../../README.md).
+
+Travel content for Jahia sites built on the [classic-templates](../template-set/README.md)
 template set: destinations and fare offers with their own pages, automatic fare and destination
 lists, and a travel tools section shown as tabs. Built for travel and airline demonstration sites;
 every text and link is contributed content, in every site language.
@@ -11,15 +15,16 @@ site's classic-templates theme (light and dark) through its design tokens.
 ## Requirements
 
 - Jahia 8.2.1 or later with `javascript-modules-engine` 1.2 or later.
-- **classic-templates** 0.2.0 or later, installed and used by the site (declared module
-  dependency): the travel types reuse its mixins, page areas, tabs, content list and design tokens
-  (0.2.0 brings the emphasis colour used for prices and the tabs the sections can sit in).
+- **classic-templates**, installed and used by the site (declared module dependency): the travel
+  types reuse its mixins, page areas, tabs, content list and design tokens. Install the two modules
+  at the same version.
 
 ## Installation
 
 Download `classic-travel-<version>.tgz` from the
-[GitHub releases](https://github.com/Jahia/classic-travel/releases) and install it in Jahia
-(Administration > Modules), or build it with `yarn build && yarn package`. Then enable
+[GitHub releases](https://github.com/Jahia/classic-templates/releases) (from 0.4.0; version 0.1.0
+is on the [former repository](https://github.com/Jahia/classic-travel/releases)) and install it in
+Jahia (Administration > Modules), or build it with `yarn build`. Then enable
 **classic-travel** on a site that uses the classic-templates template set (Site settings >
 Modules, or the provisioning API: `- enable: "classic-travel"` with `site: "<siteKey>"`).
 
@@ -92,20 +97,25 @@ colour with versions of classic-templates that do not define it.
 
 ## Development
 
-Node 22 and Yarn 4 (Corepack). Run every command from the module root.
+Node 22 and Yarn 4 (the repository's `.yarn/releases`). Run the Yarn commands from this folder
+(`packages/travel`), a standalone Yarn project.
 
 ```bash
 yarn install
 yarn build && yarn deploy     # build the package and install it in the local Jahia (http://localhost:8080)
 yarn lint                     # ESLint
-yarn test                     # Vitest unit tests (formatting, selection, queries, sanitizer, JSON-LD)
+yarn test:unit                # Vitest unit tests (formatting, selection, queries, sanitizer, JSON-LD)
 yarn check:tokens             # no literal colour or primitive token in the stylesheets
-python3 scripts/seed-test-site.py   # test site "ctrv-test" with EN and FR travel content
 ```
+
+From the repository root, `python3 scripts/seed-travel-test-site.py` builds the test site
+`ctrv-test` with EN and FR travel content, and `mvn clean install` builds the package as the CI
+does (`target/classic-travel-<version>.tgz`).
 
 `yarn deploy` reads `JAHIA_HOST` and `JAHIA_USER` from `.env` (defaults `http://localhost:8080` and
 `root:root1234`). The CND files are checked with the AIStartupKit `check-cnd.mjs`. AI agents start
-with [`.agents/README.md`](.agents/README.md).
+with the repository's [`.agents/README.md`](../../.agents/README.md) and
+[`.agents/context/travel.md`](../../.agents/context/travel.md).
 
 ```
 src/
@@ -113,12 +123,15 @@ src/
 ├── lib/                        formatting, selection and query helpers (unit-tested), shared views
 settings/                       namespaces and shared mixins, EN/FR labels, locales, type icons
 static/js/travel-tools.js       tabs enhancement
+scripts/                        token gate and icon drawing
+pom.xml                         Maven wrapper around the Vite build
 ```
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md).
+From 0.4.0 the changes are in the repository's [CHANGELOG.md](../../CHANGELOG.md). The history up
+to 0.1.0 is in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-MIT, see [LICENSE](LICENSE).
+MIT, see [LICENSE](../../LICENSE).

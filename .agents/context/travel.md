@@ -1,4 +1,19 @@
-# Architecture: classic-travel
+# classic-travel: architecture, rules and gates
+
+The module lives in `packages/travel` (paths below are relative to it unless they start with the
+repository root). It follows the template set's conventions (heading policy, theming tokens, link
+and media mixins, rich-text sanitizer): read [`architecture.md`](architecture.md) too before
+changing a view.
+
+## Non-negotiables
+
+1. Namespaces are `ctrv` (types) and `ctrvmix` (mixins), URIs `http://www.jahia.org/classic-travel/{nt,mix}/1.0`. Never rename them once content exists.
+2. classic-templates is a declared dependency: reuse its mixins (`ctplmix:listable`, `ctplmix:media`, `ctplmix:cta`, `ctplmix:sectionStyle`, `ctplmix:pageComponent`), never redeclare their fields.
+3. No TypeScript import from classic-templates (separate bundle): small helpers are copied into `src/lib` and kept in step (`sanitize.ts` is the classic-templates sanitizer with the `ctrv-` prefixes).
+4. Views read classic-templates semantic tokens only (`var(--ctpl-color-*)`...), never a literal or a primitive (`yarn check:tokens`).
+5. Every visible string is contributed content or a locale key in `settings/locales` (EN and FR); every type and field has an EN and FR label and tooltip.
+6. The page's only `<h1>` is the title of a main resource in its `fullPage` view (as classic-templates news); sections start at `h2` and follow the column / tab / free-zone rule.
+7. Deploy after each change: `yarn build && yarn deploy` from `packages/travel`. Never run `yarn dev` from an agent. Never touch the `classic-dev` site.
 
 ## Purpose
 
@@ -77,3 +92,30 @@ region, maxItems, noResultText).
 - `jcrQuery` sort criteria: add `price` / `saleEnds` in classic-templates if editors want those
   orders in a generic content list.
 - Region list: fixed choicelist; a site that needs its own regions would rather use categories.
+
+## Gates
+
+Run them from `packages/travel` (Node 22: `source ~/.nvm/nvm.sh && nvm use 22`), with
+`AISTARTUPKIT` set to the AIStartupKit checkout. The pull-request workflow runs the lint, format,
+token and unit-test gates for this package too.
+
+| Gate               | Command                                                                                                                                                                                                                                         | Passes when                                                                        |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Type-check + build | `yarn build`                                                                                                                                                                                                                                    | exit 0, `dist/package.tgz` produced                                                |
+| Unit tests         | `TZ=UTC yarn test:unit` (also under another time zone when touching dates)                                                                                                                                                                      | all pass                                                                           |
+| Lint + format      | `yarn lint && yarn prettier --check .`                                                                                                                                                                                                          | no error                                                                           |
+| CND                | `node $AISTARTUPKIT/.agents/skills/jahia-dev-review-cnd/scripts/check-cnd.mjs .`                                                                                                                                                                | PASS                                                                               |
+| No literal colours | `yarn check:tokens`                                                                                                                                                                                                                             | nothing outside the classic-templates tokens                                       |
+| Deploy             | `yarn deploy`, then `curl -s -u root:root1234 'http://localhost:8080/modules/api/bundles/org.jahia.modules.javascript/classic-travel/*/_info'`                                                                                                  | `ACTIVE` / `STARTED`, and the `ctrv:*` types listed by GraphQL `jcr { nodeTypes }` |
+| Live check         | `python3 scripts/seed-travel-test-site.py` from the repository root (site `ctrv-test`), then axe (all rules) on the travel page, a destination and a fare offer, EN and FR, light and dark (site settings `ctplColorScheme`), and 320 px reflow | no violation, no horizontal scroll                                                 |
+
+## Traps met while setting up
+
+- `0.Modules/` has its own `package.json`: the committed `yarn.lock` marks the package as a
+  standalone project. Run Yarn from `packages/travel`.
+- The scaffold's create-module CLI is interactive only; it was driven with `expect` ("An empty
+  module").
+- A CND prefix already registered elsewhere fails silently: `ctrv` / `ctrvmix` were checked free on
+  the instance (Jahia `NodeTypeRegistry` namespaces and the Jackrabbit namespace registry) before
+  the first deploy.
+- Theme and scheme switches from zsh: `for look in "a b"` does not split; drive them from bash.

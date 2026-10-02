@@ -1,8 +1,8 @@
 # Changelog
 
-All notable changes to classic-travel are listed here, newest first.
-
-## 0.2.0 (unreleased)
+The history of classic-travel while it had its own repository (Jahia/classic-travel). From 0.4.0
+the module ships from the classic-templates repository at the same version as the template set,
+and its changes are in the repository's [CHANGELOG.md](../../CHANGELOG.md).
 
 ## 0.1.0 (2026-10-01)
 

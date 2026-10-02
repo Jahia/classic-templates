@@ -3,6 +3,9 @@
   "editor.formatOnSave": true,
   "i18n-ally.extract.keygenStrategy": "random",
   "i18n-ally.keystyle": "flat",
-  "i18n-ally.localesPaths": ["packages/template-set/settings/locales"],
+  "i18n-ally.localesPaths": [
+    "packages/template-set/settings/locales",
+    "packages/travel/settings/locales"
+  ],
   "typescript.tsdk": "packages/template-set/node_modules/typescript/lib"
 }
