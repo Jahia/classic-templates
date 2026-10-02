@@ -1,5 +1,11 @@
 # classic-templates Changelog
 
+## 0.4.0
+
+* classic-travel and a pre-packaged demo site now ship from this repository with the template set, at the same version: install classic-templates-prepackaged-website and import the classic-dev demo site from Administration > Projects, with no other module needed
+
+* Every page carries Open Graph and Twitter card tags (title, description, image) so shared links show a preview; the image falls back from the page's SEO image to its item or hero image, then to a new Default share image site setting and the logo
+
 ## 0.3.1
 
 * Pages take their theme, title, header, footer, breadcrumb and structured data from their own site, also on an instance where several sites keep the server name localhost (Jahia Cloud)
