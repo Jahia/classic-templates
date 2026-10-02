@@ -19,7 +19,7 @@
     "format": "prettier --write --list-different .",
     "lint": "eslint .",
     "package": "yarn pack --out dist/package.tgz",
-    "test": "vitest run",
+    "test:unit": "vitest run",
     "watch": "run dev",
     "watch:callback": "run package && run deploy"
   },
