@@ -50,6 +50,20 @@ describe('Foundations - document baseline of every template', () => {
         jsonLd().then((node) => expect(node('WebPage')).to.include({ name: 'À propos', inLanguage: 'fr' }))
     })
 
+    it('writes Open Graph and Twitter card tags from the page title and description', () => {
+        cy.visit(`/sites/${siteKey}/home/about.html`)
+        cy.get('meta[property="og:title"]').should('have.attr', 'content', `About us | ${siteKey}`)
+        cy.get('meta[property="og:description"]').should('have.attr', 'content', 'Who we are.')
+        cy.get('meta[property="og:type"]').should('have.attr', 'content', 'website')
+        cy.get('meta[property="og:url"]')
+            .should('have.attr', 'content')
+            .and('match', /^https?:\/\/[^/]+\/sites\/.+\/home\/about\.html$/)
+        cy.get('meta[property="og:locale"]').should('have.attr', 'content', 'en')
+        // This test site has no image anywhere (no SEO image, hero, default share image or logo)
+        cy.get('meta[property="og:image"]').should('not.exist')
+        cy.get('meta[name="twitter:card"]').should('have.attr', 'content', 'summary')
+    })
+
     it('renders the French version with French title and description', () => {
         cy.visit(`/fr/sites/${siteKey}/home/about.html`)
         cy.get('html').should('have.attr', 'lang', 'fr')
