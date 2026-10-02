@@ -950,6 +950,20 @@ def publish_all(pairs):
             pass  # a translation node that does not exist in this language
 
 
+def seed_share_image(site):
+    """Default share image of the site (og:image of pages without their own, item or hero image):
+    the home hero picture. Set only while the site has none, so an editor's choice is kept; the
+    site node alone is published."""
+    current = gql('query($p:String!){jcr{nodeByPath(path:$p){property(name:"ctplShareImage"){value}}}}', {"p": site})
+    if (current["jcr"]["nodeByPath"] or {}).get("property"):
+        return
+    image = f"{site}/files/demo/abstract-blue.jpg"
+    if not exists(image):
+        return
+    set_props(site, [{"name": "ctplShareImage", "type": "WEAKREFERENCE", "value": uuid_at(image)}])
+    gql('mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(publishSubNodes:false,includeSubTree:false)}}}', {"s": site})
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--site", default="classic-dev")
@@ -963,6 +977,7 @@ def main():
     if args.sections_only:
         seed_landing_sections(site)
         publish_all(seed_examples(site) + seed_accessibility(site) + seed_content(site))
+        seed_share_image(site)
         print(f"example sections seeded and published on {site}")
         return
 
@@ -1203,6 +1218,7 @@ def main():
             "mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(languages:[\"en\",\"fr\"],publishSubNodes:true,includeSubTree:true)}}}",
             {"s": root},
         )
+    seed_share_image(site)
     for _ in range(60):
         try:
             if "ctpl-site-footer" in urllib.request.urlopen(f"{URL}/sites/{args.site}/home/about.html").read().decode():
