@@ -51,13 +51,21 @@ js-store-locator). They are left out of this package, see [regenerating](#regene
 
 ### With the provisioning API
 
-```yaml
-- installOrUpgradeBundle:
-    - "js:mvn:org.jahia.modules.javascript/classic-templates/<version>/tgz"
-    - "mvn:org.jahia.community/classic-templates-prepackaged-website/<version>"
-  autoStart: true
-- importSite: "jar:mvn:org.jahia.community/classic-templates-prepackaged-website/<version>/zip/import!/classic-dev.zip"
+Download the release files from the
+[GitHub releases](https://github.com/Jahia/classic-templates/releases), unzip
+`classic-templates-prepackaged-website-<version>-import.zip` (it holds `classic-dev.zip` and
+`export.properties`), then send the packages and the site with the files attached:
+
+```bash
+curl -u root -H "Origin: https://<host>" -X POST https://<host>/modules/api/provisioning \
+  --form 'script=[{"installOrUpgradeBundle":"classic-templates-<version>.tgz","forceUpdate":true},{"importSite":"classic-dev.zip"}];type=application/json' \
+  --form "file=@classic-templates-<version>.tgz" \
+  --form "file=@classic-dev.zip"
 ```
+
+`importSite` takes the site zip itself (`classic-dev.zip`), never the outer zip. When the release
+is also published to Nexus, the Maven forms work too:
+`importSite: "jar:mvn:org.jahia.community/classic-templates-prepackaged-website/<version>/zip/import!/classic-dev.zip"`.
 
 The site key is `classic-dev`: an instance can hold the site only once.
 

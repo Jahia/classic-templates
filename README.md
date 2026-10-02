@@ -3,11 +3,13 @@
 A themeable Jahia JavaScript template set with the standard building blocks of a corporate or
 institutional website, a companion module for travel content, and a pre-packaged demo site. Every
 text a visitor reads is contributed content, in every language of the site, and the look comes
-entirely from CSS design tokens: a site switches theme, or light and dark, from its settings.
+entirely from CSS design tokens: a site switches theme, or light and dark, from its settings. Pages
+are accessible (WCAG 2.1 AA, RGAA 4.1.2), describe themselves to search engines (JSON-LD) and show a
+preview with an image when they are shared (Open Graph, Twitter card).
 
 ![The demo home page in the Classic theme](docs/images/home.png)
 
-> **Latest release:** [0.3.1](https://github.com/Jahia/classic-templates/releases/tag/0_3_1) (October 2026).
+> **Latest release:** [0.4.0](https://github.com/Jahia/classic-templates/releases/tag/0_4_0) (October 2026).
 > Every version is described in the [changelog](CHANGELOG.md); `main` holds the next version in
 > development.
 
@@ -37,11 +39,13 @@ Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later.
 - **classic-travel.** Install `classic-travel-<version>.tgz` next to the template set, then enable
   **classic-travel** on a site that uses the template set. See the [classic-travel README](packages/travel/README.md).
 - **Pre-packaged demo site.** Install the template set and
-  `classic-templates-prepackaged-website-<version>.jar`, then in Administration > Projects choose
-  **Import prepackaged project** > **Classic Templates demo site (classic-dev) - pre-packaged**. With
-  the provisioning API:
-  `importSite: "jar:mvn:org.jahia.community/classic-templates-prepackaged-website/<version>/zip/import!/classic-dev.zip"`.
-  See the [pre-packaged site README](packages/prepackaged-site/README.md).
+  `classic-templates-prepackaged-website-<version>.jar` (both on the
+  [GitHub releases](https://github.com/Jahia/classic-templates/releases)), then in Administration >
+  Projects choose **Import prepackaged project** > **Classic Templates demo site (classic-dev) -
+  pre-packaged**. With the provisioning API, unzip
+  `classic-templates-prepackaged-website-<version>-import.zip` from the release and pass its
+  `classic-dev.zip` to `importSite` as an attached file. See the
+  [pre-packaged site README](packages/prepackaged-site/README.md).
 
 ## Demo sites
 
