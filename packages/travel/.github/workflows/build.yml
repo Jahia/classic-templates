@@ -1,0 +1,39 @@
+# Lint, test, build and package the module on every push and pull request, and upload the package.
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+      - run: corepack enable
+      - run: yarn install --immutable
+      - name: Lint
+        run: |
+          yarn lint
+          yarn prettier --check .
+          yarn check:tokens
+      - name: Unit tests
+        run: yarn test
+        env:
+          TZ: UTC
+      - name: Build
+        run: yarn build
+      - name: Package
+        run: yarn package
+      - name: Name the artifact
+        run: |
+          echo name=$(yarn node -p process.env.npm_package_name) >> $GITHUB_ENV
+          echo version=$(yarn node -p process.env.npm_package_version) >> $GITHUB_ENV
+      - uses: actions/upload-artifact@v6
+        with:
+          name: ${{ env.name }}-${{ env.version }}.tgz
+          path: dist/package.tgz
+          if-no-files-found: error

@@ -1,0 +1,64 @@
+{
+  "name": "classic-travel",
+  "version": "0.2.0-SNAPSHOT",
+  "description": "Travel content types (destinations, fare offers, fare and destination lists, travel tools) for sites built on the classic-templates template set",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist",
+    "src/**/*.cnd",
+    "settings",
+    "static"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit && vite build && run package",
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "clean": "rm -rf dist/",
+    "deploy": "jahia-deploy",
+    "dev": "vite build --watch",
+    "format": "prettier --write --list-different .",
+    "lint": "eslint .",
+    "package": "yarn pack --out dist/package.tgz",
+    "test": "vitest run",
+    "watch": "run dev",
+    "watch:callback": "run package && run deploy"
+  },
+  "dependencies": {
+    "entities": "^8.1.0",
+    "xss": "^1.0.15"
+  },
+  "devDependencies": {
+    "@eslint-react/eslint-plugin": "^2.0.0",
+    "@eslint/compat": "^2.0.0",
+    "@eslint/js": "^9.26.0",
+    "@jahia/javascript-modules-library": "^1.2.0",
+    "@jahia/vite-plugin": "^1.2.0",
+    "@types/react": "^19.1.2",
+    "eslint": "^9.26.0",
+    "globals": "^16.0.0",
+    "i18next": "^25.0.2",
+    "prettier": "^3.5.3",
+    "react": "^19.1.0",
+    "react-i18next": "^16.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.1",
+    "typescript-plugin-css-modules": "^5.1.0",
+    "vite": "^7.0.0",
+    "vitest": "^3"
+  },
+  "packageManager": "yarn@4.12.0",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "jahia": {
+    "name": "classic-travel",
+    "required-version": "8.2.1.0",
+    "module-dependencies": "default,classic-templates,javascript-modules-engine=[1.2,2)",
+    "module-type": "module",
+    "server": "dist/server/index.js",
+    "static-resources": "/dist/client,/dist/assets,/locales,/images,/icons,/static",
+    "maven": {
+      "groupId": "org.jahia.modules.javascript"
+    }
+  }
+}

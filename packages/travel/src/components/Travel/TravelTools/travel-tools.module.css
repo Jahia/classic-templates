@@ -1,0 +1,83 @@
+/* Travel tools: stacked sections without JavaScript and in edit mode; tabs once
+   static/js/travel-tools.js has enhanced the section (data-ctrv-tabs="ready"). */
+.notice {
+  display: flex;
+  gap: var(--ctpl-space-2);
+  max-width: var(--ctpl-measure);
+  margin: 0 0 var(--ctpl-space-5);
+  padding: var(--ctpl-space-3) var(--ctpl-space-4);
+  border-inline-start: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-text);
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.tools {
+  display: grid;
+  gap: var(--ctpl-space-5);
+}
+
+/* ---- The tab list, built by the script ------------------------------------------------------- */
+.tools [role="tablist"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.tools [role="tab"] {
+  min-height: 2.75rem;
+  margin-bottom: calc(-1 * var(--ctpl-border-width));
+  padding: var(--ctpl-space-2) var(--ctpl-space-4);
+  border: var(--ctpl-border-width) solid transparent;
+  border-bottom-width: var(--ctpl-border-width-accent);
+  border-radius: var(--ctpl-radius-sm) var(--ctpl-radius-sm) 0 0;
+  background: transparent;
+  color: var(--ctpl-color-text-muted);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  cursor: pointer;
+}
+.tools [role="tab"]:hover {
+  color: var(--ctpl-color-text);
+  background: var(--ctpl-color-surface-sunken);
+}
+.tools [role="tab"][aria-selected="true"] {
+  border-bottom-color: var(--ctpl-color-accent);
+  color: var(--ctpl-color-accent);
+}
+
+/* ---- One tool ----------------------------------------------------------------------------------- */
+.tool {
+  padding: var(--ctpl-space-5);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+}
+.tool[hidden] {
+  display: none;
+}
+.tools[data-ctrv-tabs="ready"] .tool {
+  border-top-left-radius: 0;
+}
+.toolTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--ctpl-space-3);
+  font-size: var(--ctpl-text-xl);
+}
+.icon {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+/* Once tabbed, the tab names the panel: its heading stays for screen readers only. */
+.tools[data-ctrv-tabs="ready"] .toolTitle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
