@@ -20,6 +20,9 @@
 
   <properties>
     <sonar.sources>src,package.json,pom.xml</sonar.sources>
+    <!-- Helpers copied from the template set on purpose (separate bundle, no TypeScript import
+         across modules, see .agents/context/travel.md): left out of the duplication count -->
+    <sonar.cpd.exclusions>**/lib/sanitize.ts,**/lib/sanitize.test.ts,**/lib/resolveLink.ts,**/lib/urls.ts,**/lib/urls.test.ts,**/lib/locale.ts</sonar.cpd.exclusions>
     <sonar.tests />
   </properties>
 
