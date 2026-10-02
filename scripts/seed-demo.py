@@ -964,6 +964,21 @@ def seed_share_image(site):
     gql('mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(publishSubNodes:false,includeSubTree:false)}}}', {"s": site})
 
 
+def seed_listing_pages(site):
+    """Breadcrumbs of news items go through the News page (ctplmix:listingPage on the folder).
+    Articles are listed on the home page only, so their trail stays Home > article. Set only while
+    the folder names no page; the folder node alone is published."""
+    folder, page = f"{site}/contents/news", f"{site}/home/news"
+    if not (exists(folder) and exists(page)):
+        return
+    current = gql('query($p:String!){jcr{nodeByPath(path:$p){property(name:"ctplListingPage"){value}}}}', {"p": folder})
+    if (current["jcr"]["nodeByPath"] or {}).get("property"):
+        return
+    gql('mutation($p:String!,$u:String!){jcr{mutateNode(pathOrId:$p){addMixins(mixins:["ctplmix:listingPage"]) '
+        'mutateProperty(name:"ctplListingPage"){setValue(type:WEAKREFERENCE,value:$u)}}}}', {"p": folder, "u": uuid_at(page)})
+    gql('mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(languages:["en","fr"],publishSubNodes:false,includeSubTree:false)}}}', {"s": folder})
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--site", default="classic-dev")
@@ -978,6 +993,7 @@ def main():
         seed_landing_sections(site)
         publish_all(seed_examples(site) + seed_accessibility(site) + seed_content(site))
         seed_share_image(site)
+        seed_listing_pages(site)
         print(f"example sections seeded and published on {site}")
         return
 
@@ -1219,6 +1235,7 @@ def main():
             {"s": root},
         )
     seed_share_image(site)
+    seed_listing_pages(site)
     for _ in range(60):
         try:
             if "ctpl-site-footer" in urllib.request.urlopen(f"{URL}/sites/{args.site}/home/about.html").read().decode():
