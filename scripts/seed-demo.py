@@ -960,6 +960,8 @@ def seed_share_image(site):
     image = f"{site}/files/demo/abstract-blue.jpg"
     if not exists(image):
         return
+    # The site settings mixin is not on a site created from the template set until it is edited.
+    gql('mutation($s:String!){jcr{mutateNode(pathOrId:$s){addMixins(mixins:["ctplmix:siteSettings"])}}}', {"s": site})
     set_props(site, [{"name": "ctplShareImage", "type": "WEAKREFERENCE", "value": uuid_at(image)}])
     gql('mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(publishSubNodes:false,includeSubTree:false)}}}', {"s": site})
 

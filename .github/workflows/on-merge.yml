@@ -1,5 +1,5 @@
 # Runs on every push to main: build, SBOM, integration tests, then publish the snapshots of the
-# three packages (template set, classic-travel, pre-packaged site) to Nexus.
+# four packages (template set, classic-travel, classic-weather, pre-packaged site) to Nexus.
 name: On merge to main
 
 on:

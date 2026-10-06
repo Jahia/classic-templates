@@ -7,10 +7,13 @@ The script:
   - creates the site on the classic-templates template set when it does not exist, with EN and FR;
   - enables classic-travel on it;
   - uploads three generated images (Pillow) to files/travel, with titles as alt text;
-  - adds a content folder "travel" with three destinations and, under it, "fares" with two fare
-    offers (EN + FR, prices, dates, conditions, a call to action to the booking page);
-  - adds a "Travel" page holding a fare list, a destination grid and a travel tools section with
-    three tools and a demonstration notice, and a "Booking information" page the links point to;
+  - adds a content folder "travel" with three destinations (with their coordinates) and, under it,
+    "fares" with two fare offers (EN + FR, prices, dates, conditions, a call to action to the
+    booking page);
+  - adds a "Travel" page holding a destination mosaic of the three destinations (their live weather
+    shows when classic-weather is installed), a fare list, a destination grid and a travel tools
+    section with three tools and a demonstration notice, and a "Booking information" page the links
+    point to;
   - publishes the site and its files in both languages.
 Nodes that already exist are left alone, so the script can be run again. Link targets are set in
 every language (they are i18n). One HTTP session is reused for every call (a fresh basic auth per
@@ -175,7 +178,7 @@ DESTINATIONS = (
      {"en": "100 V, plugs of type A and B", "fr": "100 V, prises de type A et B"}, "+81",
      {"en": "One way, economy, taxes included. Demonstration price.",
       "fr": "Aller simple, classe économique, taxes incluses. Prix de démonstration."},
-     ((30, 60, 120), (240, 170, 150), (250, 236, 200), (60, 40, 80)), "Tokyo skyline at dusk"),
+     ((30, 60, 120), (240, 170, 150), (250, 236, 200), (60, 40, 80)), "Tokyo skyline at dusk", (35.6762, 139.6503)),
     ("bangkok", {"en": "Bangkok", "fr": "Bangkok"}, "BKK", {"en": "Thailand", "fr": "Thaïlande"}, "southeastAsia", 1280,
      {"en": "Golden temples, river boats and street food at every corner.",
       "fr": "Temples dorés, bateaux sur le fleuve et cuisine de rue à chaque coin."},
@@ -187,7 +190,8 @@ DESTINATIONS = (
      {"en": "220 V, plugs of type A, B, C and O", "fr": "220 V, prises de type A, B, C et O"}, "+66",
      {"en": "One way, economy, taxes included. Demonstration price.",
       "fr": "Aller simple, classe économique, taxes incluses. Prix de démonstration."},
-     ((250, 160, 60), (250, 220, 150), (255, 245, 210), (20, 90, 80)), "Bangkok temple roofs in the sun"),
+     ((250, 160, 60), (250, 220, 150), (255, 245, 210), (20, 90, 80)), "Bangkok temple roofs in the sun",
+     (13.7563, 100.5018)),
     ("sydney", {"en": "Sydney", "fr": "Sydney"}, "SYD", {"en": "Australia", "fr": "Australie"}, "oceania", 4580,
      {"en": "Harbour views, golden beaches and a coastal walk to remember.",
       "fr": "Vue sur la baie, plages dorées et une balade côtière inoubliable."},
@@ -198,7 +202,8 @@ DESTINATIONS = (
      {"en": "230 V, plugs of type I", "fr": "230 V, prises de type I"}, "+61",
      {"en": "One way, economy, taxes included. Demonstration price.",
       "fr": "Aller simple, classe économique, taxes incluses. Prix de démonstration."},
-     ((40, 120, 200), (170, 220, 240), (255, 250, 230), (200, 160, 90)), "Sydney harbour and beach"),
+     ((40, 120, 200), (170, 220, 240), (255, 250, 230), (200, 160, 90)), "Sydney harbour and beach",
+     (-33.8688, 151.2093)),
 )
 
 
@@ -208,7 +213,7 @@ def seed_destinations(site):
     images = add_content(f"{site}/files", "travel", "jnt:folder", [])
     paths = {}
     for (name, title, code, country, region, price, teaser, body, currency, language, tz, voltage, dial,
-         note, colours, alt) in DESTINATIONS:
+         note, colours, alt, (latitude, longitude)) in DESTINATIONS:
         image = upload_image(images, f"{name}.jpg", alt, (1200, 675), colours)
         paths[name] = add_content(folder, name, "ctrv:destination",
                                   i18n("jcr:title", title) + i18n("country", country) + i18n("teaser", teaser)
@@ -218,6 +223,8 @@ def seed_destinations(site):
                                      {"name": "price", "type": "DOUBLE", "value": str(price)},
                                      {"name": "currency", "value": "HKD"},
                                      {"name": "diallingCode", "value": dial},
+                                     {"name": "latitude", "type": "DOUBLE", "value": str(latitude)},
+                                     {"name": "longitude", "type": "DOUBLE", "value": str(longitude)},
                                      {"name": "image", "type": "WEAKREFERENCE", "value": image}])
     # Related destinations (set once all three exist).
     gql("mutation($p:String!,$v:[String]){jcr{mutateNode(pathOrId:$p){mutateProperty(name:\"relatedDestinations\")"
@@ -256,10 +263,14 @@ def seed_fares(folder, destinations, booking_uuid):
     return fares
 
 
-def seed_page(home, folder, fares, booking_uuid):
+def seed_page(home, folder, destinations, fares, booking_uuid):
     page = add_page(home, "travel", {"en": "Travel", "fr": "Voyager"},
                     {"en": "Fares, destinations and travel tools.", "fr": "Tarifs, destinations et outils de voyage."})
     area = add_content(page, "main", "ctpl:pageArea", [])
+    add_content(area, "mosaic", "ctrv:destinationMosaic",
+                i18n("jcr:title", {"en": "Where to next?", "fr": "Où partir ?"})
+                + [{"name": "destinations", "type": "WEAKREFERENCE", "values": [
+                    uuid_at(destinations[name]) for name in ("sydney", "tokyo", "bangkok")]}])
     add_content(area, "fares", "ctrv:fareList",
                 i18n("jcr:title", {"en": "Fares of the moment", "fr": "Tarifs du moment"})
                 + [{"name": "startNode", "type": "WEAKREFERENCE", "value": uuid_at(fares)},
@@ -323,7 +334,7 @@ def main():
     booking_uuid = uuid_at(booking)
     folder, destinations = seed_destinations(site)
     fares = seed_fares(folder, destinations, booking_uuid)
-    seed_page(home, folder, fares, booking_uuid)
+    seed_page(home, folder, destinations, fares, booking_uuid)
     publish(site, subtree=False)
     for path in (f"{site}/files/travel", f"{site}/contents/travel", home):
         publish(path)

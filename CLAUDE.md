@@ -1,11 +1,13 @@
 # classic-templates
 
-Monorepo of three Jahia packages, one version (root `pom.xml`):
+Monorepo of four Jahia packages, one version (root `pom.xml`):
 
 - `packages/template-set`: the classic-templates JavaScript template set (React 19, Vite),
   namespaces `ctpl` / `ctplmix`.
 - `packages/travel`: classic-travel, a JavaScript module on the template set, namespaces `ctrv` /
   `ctrvmix`.
+- `packages/weather`: classic-weather, a Java module (JDK 17) with one action, `weather`, called by the
+  destination mosaic of classic-travel (`<destination URL>.weather.do`).
 - `packages/prepackaged-site`: the `classic-dev` demo site as a pre-packaged project, written by
   `scripts/export-prepackaged.py`.
 

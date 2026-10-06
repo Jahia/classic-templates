@@ -26,4 +26,7 @@ export interface Props {
   "voltage"?: string;
   "diallingCode"?: string;
   "relatedDestinations"?: JCRNodeWrapper[];
+  /** Decimal degrees: the page's JSON-LD and the live weather of the mosaic card read them. */
+  "latitude"?: number;
+  "longitude"?: number;
 }

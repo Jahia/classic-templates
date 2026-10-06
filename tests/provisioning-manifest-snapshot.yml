@@ -12,3 +12,8 @@
       - 'js:mvn:org.jahia.modules.javascript/classic-travel/LATEST/tgz'
   autoStart: true
   uninstallPreviousVersion: true
+
+- installBundle:
+      - 'mvn:org.jahia.modules.javascript/classic-weather/LATEST'
+  autoStart: true
+  uninstallPreviousVersion: true

@@ -12,8 +12,10 @@
 // classic-templates (ctplmix:listable; card and compact views). jcr:title is the city name, teaser
 // the short text of cards and the page's meta description, body the long description. The image
 // follows ctplmix:media (text alternative per use, or decorative). The "from" price comes from
-// ctrvmix:price. The facts are free texts as shown to visitors. Tags and categories are native
-// (jmix:tagged, jmix:categorized): never declared here.
+// ctrvmix:price. The facts are free texts as shown to visitors. latitude and longitude place the
+// destination on the map: the page's JSON-LD and the live weather of the mosaic card read them
+// (the classic-weather module serves <destination URL>.weather.do from them). Tags and categories
+// are native (jmix:tagged, jmix:categorized): never declared here.
 [ctrv:destination] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctrvmix:component, ctplmix:listable, ctplmix:media, ctrvmix:price
  - airportCode (string) < '[A-Z]{3}'
  - country (string) i18n
@@ -26,3 +28,5 @@
  - voltage (string) i18n
  - diallingCode (string)
  - relatedDestinations (weakreference, picker[type='editorial']) multiple < ctrv:destination
+ - latitude (double) < '[-90,90]'
+ - longitude (double) < '[-180,180]'

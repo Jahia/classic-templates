@@ -104,6 +104,8 @@ export const DestinationFull = ({ props }: { props: Props }) => {
             country: props.country,
             price: props.price,
             currency: props.currency,
+            latitude: props.latitude,
+            longitude: props.longitude,
           })}
         />
       )}

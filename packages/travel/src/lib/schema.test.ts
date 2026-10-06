@@ -26,6 +26,19 @@ describe("buildDestinationLd", () => {
     });
   });
 
+  it("places the destination when both coordinates are set", () => {
+    expect(
+      buildDestinationLd({ url: URL, name: "Tokyo", latitude: 35.68, longitude: 139.69 }).geo,
+    ).toEqual({
+      "@type": "GeoCoordinates",
+      "latitude": 35.68,
+      "longitude": 139.69,
+    });
+    expect(buildDestinationLd({ url: URL, name: "Tokyo", latitude: 35.68 })).not.toHaveProperty(
+      "geo",
+    );
+  });
+
   it("leaves out what the page does not show", () => {
     const ld = buildDestinationLd({ url: URL, name: "Tokyo" });
     expect(Object.keys(ld)).not.toContain("offers");

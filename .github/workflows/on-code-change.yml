@@ -1,5 +1,5 @@
 # Runs on every pull request: signature, static checks of the JavaScript packages, the Maven build
-# of the three packages (template set, classic-travel, pre-packaged site), Sonar and the
+# of the four packages (template set, classic-travel, classic-weather, pre-packaged site), Sonar and the
 # integration tests (they install every *-SNAPSHOT.jar and *-SNAPSHOT.tgz the build produced).
 name: On Code Change (PR)
 

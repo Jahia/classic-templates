@@ -56,5 +56,24 @@
     "startMissing": "The start folder is set but cannot be found here (deleted, or not published yet): the list shows nothing on the live site.",
     "fareSummary": "Showing {{shown}} of the {{found}} fare offers found. Left out: {{ended}} with the sale ended, {{otherRegion}} in another region, {{untranslated}} not translated into this language, {{noDestination}} without a destination.",
     "destinationSummary": "Showing {{shown}} of the {{found}} destinations found ({{untranslated}} not translated into this language)."
+  },
+  "mosaic": {
+    "empty": "Destination mosaic: pick 1 to 4 destinations.",
+    "tooMany": "{{count}} destinations are picked: the mosaic shows the first {{max}}."
+  },
+  "weather": {
+    "now": "Weather now:",
+    "condition": {
+      "clear": "Clear",
+      "partlyCloudy": "Partly cloudy",
+      "fog": "Fog",
+      "drizzle": "Drizzle",
+      "rain": "Rain",
+      "snow": "Snow",
+      "showers": "Showers",
+      "snowShowers": "Snow showers",
+      "thunderstorm": "Thunderstorm",
+      "unknown": "Weather"
+    }
   }
 }

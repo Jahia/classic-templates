@@ -24,14 +24,15 @@ component, themes) belong in classic-templates, not here.
 
 ## Type inventory
 
-| Type                   | Supertypes (besides `jnt:content`)                                                                                                                  | Views                                   |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
-| `ctrv:destination`     | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctrvmix:component`, `ctplmix:listable`, `ctplmix:media`, `ctrvmix:price`                | default (card), card, compact, fullPage |
-| `ctrv:fareOffer`       | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctrvmix:component`, `ctplmix:listable`, `ctrvmix:price`, `ctplmix:cta`                  | default (card), card, compact, fullPage |
-| `ctrv:fareList`        | `mix:title`, `ctrvmix:pageComponent`, `ctplmix:sectionStyle`, `ctplmix:cta`, `ctrvmix:travelList`, `jmix:list`, `jmix:renderableList`, `jmix:cache` | default                                 |
-| `ctrv:destinationGrid` | same as the fare list, without `sort`                                                                                                               | default                                 |
-| `ctrv:travelTools`     | `mix:title`, `ctrvmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list` (orderable, `+ * (ctrv:travelTool)`)                                      | default                                 |
-| `ctrv:travelTool`      | `mix:title`, `ctplmix:cta` (never hidden: editors select each tool in Page Builder)                                                                 | default                                 |
+| Type                     | Supertypes (besides `jnt:content`)                                                                                                                  | Views                                               |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| `ctrv:destination`       | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctrvmix:component`, `ctplmix:listable`, `ctplmix:media`, `ctrvmix:price`                | default (card), card, compact, fullPage, mosaicCard |
+| `ctrv:fareOffer`         | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctrvmix:component`, `ctplmix:listable`, `ctrvmix:price`, `ctplmix:cta`                  | default (card), card, compact, fullPage             |
+| `ctrv:fareList`          | `mix:title`, `ctrvmix:pageComponent`, `ctplmix:sectionStyle`, `ctplmix:cta`, `ctrvmix:travelList`, `jmix:list`, `jmix:renderableList`, `jmix:cache` | default                                             |
+| `ctrv:destinationGrid`   | same as the fare list, without `sort`                                                                                                               | default                                             |
+| `ctrv:destinationMosaic` | `mix:title`, `ctrvmix:pageComponent`, `ctplmix:sectionStyle`; `destinations` (weakreference multiple `< ctrv:destination`)                          | default                                             |
+| `ctrv:travelTools`       | `mix:title`, `ctrvmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list` (orderable, `+ * (ctrv:travelTool)`)                                      | default                                             |
+| `ctrv:travelTool`        | `mix:title`, `ctplmix:cta` (never hidden: editors select each tool in Page Builder)                                                                 | default                                             |
 
 Mixins: `ctrvmix:component` (> `ctplmix:component`, groups the types), `ctrvmix:pageComponent`
 (> `ctrvmix:component`, `ctplmix:pageComponent`: accepted in `ctpl:pageArea`, `ctpl:column`,
@@ -66,6 +67,28 @@ region, maxItems, noResultText).
 
 ## Decisions
 
+- **Destination mosaic** (from the Avitron demo, 2026-10-06). 1 to 4 picked destinations: one card
+  full width, two side by side, three as a large card and a column of two, four as a large card and
+  a column of one above two. More than four picked: the first four, and an edit-mode note. Each card
+  is the destination's `mosaicCard` view (`<Render readOnly>`): a cached fragment of its own,
+  refreshed when the destination changes, with no edit-mode wrapper to break the grid.
+- **Live weather as an island.** Jahia caches the rendered HTML, so live data is never baked into
+  it: `WeatherChip.client.tsx` is a `clientOnly` island that fetches
+  `buildNodeUrl(node, { extension: ".weather.do", mode: "live" })` (never a literal, never
+  Open-Meteo directly) on the first hover or focus of its card, at once on touch screens. The call
+  is anonymous (`credentials: "omit"`): Jahia's CSRF guard refuses a `.do` call from a logged-in
+  user without a token, which would hide the chip from editors. The chip names the condition from
+  the WMO code with a locale key (`lib/weather.ts`, unit-tested), so it is translated; the island
+  receives those strings as props. It renders nothing when the endpoint fails or is not installed.
+- **Coordinates on the destination.** `latitude` and `longitude` are fields of `ctrv:destination`:
+  the weather action reads them from the node, and the destination page writes them as the
+  `geo` of its JSON-LD.
+- **classic-weather** (`packages/weather`) is a Java module with one action, `weather`, on any node
+  with `latitude` and `longitude`: Open-Meteo, 3 s connect and 5 s read timeouts, an in-memory cache
+  per node for 600 s (`cacheTtlSeconds` in the OSGi configuration
+  `org.jahia.modules.classicweather`), `Cache-Control: public, max-age=600`, failures not cached.
+  It is optional: classic-travel does not declare it as a dependency.
+
 - **Filtering and sorting in code** (`lib/select.ts`): the region of a fare is its destination's,
   destination order follows the page language (`Intl.Collator`), ended sales depend on today. The
   query (`lib/query.ts`) only selects a type under a path, at most `FETCH_LIMIT` (200) rows; no
@@ -99,15 +122,17 @@ Run them from `packages/travel` (Node 22: `source ~/.nvm/nvm.sh && nvm use 22`),
 `AISTARTUPKIT` set to the AIStartupKit checkout. The pull-request workflow runs the lint, format,
 token and unit-test gates for this package too.
 
-| Gate               | Command                                                                                                                                                                                                                                         | Passes when                                                                        |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Type-check + build | `yarn build`                                                                                                                                                                                                                                    | exit 0, `dist/package.tgz` produced                                                |
-| Unit tests         | `TZ=UTC yarn test:unit` (also under another time zone when touching dates)                                                                                                                                                                      | all pass                                                                           |
-| Lint + format      | `yarn lint && yarn prettier --check .`                                                                                                                                                                                                          | no error                                                                           |
-| CND                | `node $AISTARTUPKIT/.agents/skills/jahia-dev-review-cnd/scripts/check-cnd.mjs .`                                                                                                                                                                | PASS                                                                               |
-| No literal colours | `yarn check:tokens`                                                                                                                                                                                                                             | nothing outside the classic-templates tokens                                       |
-| Deploy             | `yarn deploy`, then `curl -s -u root:root1234 'http://localhost:8080/modules/api/bundles/org.jahia.modules.javascript/classic-travel/*/_info'`                                                                                                  | `ACTIVE` / `STARTED`, and the `ctrv:*` types listed by GraphQL `jcr { nodeTypes }` |
-| Live check         | `python3 scripts/seed-travel-test-site.py` from the repository root (site `ctrv-test`), then axe (all rules) on the travel page, a destination and a fare offer, EN and FR, light and dark (site settings `ctplColorScheme`), and 320 px reflow | no violation, no horizontal scroll                                                 |
+| Gate               | Command                                                                                                                                                                                                                                                                                            | Passes when                                                                        |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Type-check + build | `yarn build`                                                                                                                                                                                                                                                                                       | exit 0, `dist/package.tgz` produced                                                |
+| Unit tests         | `TZ=UTC yarn test:unit` (also under another time zone when touching dates)                                                                                                                                                                                                                         | all pass                                                                           |
+| Lint + format      | `yarn lint && yarn prettier --check .`                                                                                                                                                                                                                                                             | no error                                                                           |
+| CND                | `node $AISTARTUPKIT/.agents/skills/jahia-dev-review-cnd/scripts/check-cnd.mjs .`                                                                                                                                                                                                                   | PASS                                                                               |
+| No literal colours | `yarn check:tokens`                                                                                                                                                                                                                                                                                | nothing outside the classic-templates tokens                                       |
+| Deploy             | `yarn deploy`, then `curl -s -u root:root1234 'http://localhost:8080/modules/api/bundles/org.jahia.modules.javascript/classic-travel/*/_info'`                                                                                                                                                     | `ACTIVE` / `STARTED`, and the `ctrv:*` types listed by GraphQL `jcr { nodeTypes }` |
+| Weather unit tests | `mvn -B package` from `packages/weather` (JDK 17)                                                                                                                                                                                                                                                  | 25 tests pass                                                                      |
+| Weather deploy     | `curl -s -u root:root1234 -X POST -F bundle=@target/classic-weather-<version>.jar -F start=true http://localhost:8080/modules/api/bundles`, then `curl -s http://localhost:8080/sites/ctrv-test/contents/travel/tokyo.weather.do` twice                                                            | `200`, then `"cached":true`                                                        |
+| Live check         | `python3 scripts/seed-travel-test-site.py` from the repository root (site `ctrv-test`), then hover a mosaic card (its weather chip shows), then axe (all rules) on the travel page, a destination and a fare offer, EN and FR, light and dark (site settings `ctplColorScheme`), and 320 px reflow | no violation, no horizontal scroll                                                 |
 
 ## Traps met while setting up
 
@@ -118,4 +143,7 @@ token and unit-test gates for this package too.
 - A CND prefix already registered elsewhere fails silently: `ctrv` / `ctrvmix` were checked free on
   the instance (Jahia `NodeTypeRegistry` namespaces and the Jackrabbit namespace registry) before
   the first deploy.
+- A Java module under `org.jahia.modules` with this symbolic name failed to install on 8.2.4
+  ("Unable to find a module bundle corresponding to the key"); under the repository's
+  `org.jahia.modules.javascript` it installs. classic-weather keeps the inherited groupId.
 - Theme and scheme switches from zsh: `for look in "a b"` does not split; drive them from bash.

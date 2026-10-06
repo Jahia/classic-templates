@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  classic-weather: a Jahia Java module with one action, `weather`, that returns the current weather
+  at the latitude and longitude of a node, from Open-Meteo, with an in-memory cache. The destination
+  mosaic of classic-travel calls it from the browser.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>classic-templates-root</artifactId>
+    <groupId>org.jahia.modules.javascript</groupId>
+    <version>0.5.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <artifactId>classic-weather</artifactId>
+  <name>Classic Weather</name>
+  <packaging>bundle</packaging>
+  <description>Jahia action returning the current weather at the coordinates of a node (a classic-travel destination), from Open-Meteo, with an in-memory cache</description>
+
+  <properties>
+    <jahia-depends>default</jahia-depends>
+    <jahia-module-type>module</jahia-module-type>
+    <maven.compiler.release>17</maven.compiler.release>
+    <sonar.sources>src/main/java,pom.xml</sonar.sources>
+    <sonar.tests>src/test/java</sonar.tests>
+  </properties>
+
+  <dependencies>
+    <!-- Exported by Jahia core; any version from Jahia 8.2.1 on -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20231013</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <_dsannotations>*</_dsannotations>
+            <Import-Package>org.json;version="[20180813,30000000)",*</Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,16 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctrv = 'http://www.jahia.org/classic-travel/nt/1.0'>
+<ctrvmix = 'http://www.jahia.org/classic-travel/mix/1.0'>
+
+// A page section of 1 to 4 destinations picked by the editor, as large photo cards: one full width,
+// two side by side, or a large card beside a stacked column (3 and 4). The cards read the city,
+// country and image from the picked destinations (weakreferences), so nothing is typed twice, and
+// show the live weather of each destination that has coordinates. Its heading is the optional
+// jcr:title (an h2).
+[ctrv:destinationMosaic] > jnt:content, mix:title, ctrvmix:pageComponent, ctplmix:sectionStyle
+ - destinations (weakreference, picker[type='editorial']) multiple < ctrv:destination

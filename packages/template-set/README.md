@@ -1,7 +1,7 @@
 # Classic Templates: the template set
 
 The **classic-templates** template set (`org.jahia.modules.javascript:classic-templates`), one of
-the three packages of this repository. Back to the [repository README](../../README.md).
+the four packages of this repository. Back to the [repository README](../../README.md).
 
 A themeable Jahia JavaScript template set with the standard building blocks of a corporate or
 institutional website: a header with logo, three-level menu, utility links and language switcher,

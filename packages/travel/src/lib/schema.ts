@@ -20,6 +20,9 @@ export interface DestinationLd {
   /** "From" price, when the page shows one. */
   price?: number;
   currency?: string;
+  /** Decimal degrees; written only when both are set. */
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface FareLd {
@@ -61,6 +64,10 @@ export const buildDestinationLd = (page: DestinationLd): Json =>
     "url": page.url,
     "image": page.image ? [page.image] : undefined,
     "containedInPlace": page.country ? { "@type": "Country", "name": page.country } : undefined,
+    "geo":
+      page.latitude !== undefined && page.longitude !== undefined
+        ? { "@type": "GeoCoordinates", "latitude": page.latitude, "longitude": page.longitude }
+        : undefined,
     "mainEntityOfPage": { "@id": page.url },
     "offers": offer(page.price, page.currency),
   });
