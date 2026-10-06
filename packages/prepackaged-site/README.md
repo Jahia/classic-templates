@@ -89,7 +89,8 @@ and uses one HTTP session. It keeps the content of the template set only:
   declares (read from the template set's CND files) are removed, with the Practical information
   page, the `forms` and `places` content folders and the free zone that held the contact form;
 - references to removed nodes are removed too (a link item without a target goes, another internal
-  link becomes "none"), and the script fails if any remaining value still names a removed node;
+  link becomes "none"), and the script fails if any remaining value still names a removed node,
+  or if the export carries a user (a member of a site group comes with their profile);
 - the sentences that described the contact form (accessibility statement, contact page
   description) are adjusted;
 - `site.properties` lists the template set, `default`, `siteSettings` and `site-settings-seo` as

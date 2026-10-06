@@ -4,6 +4,7 @@
   - packages/template-set    the classic-templates template set (JavaScript module, .tgz)
   - packages/travel          the classic-travel module (JavaScript module, .tgz)
   - packages/prepackaged-site the classic-dev demo site as a pre-packaged project (.jar)
+  - packages/prepackaged-skylantern the skylantern demo site as a pre-packaged project (.jar)
   The JavaScript packages are standalone Yarn projects: their pom.xml installs Node and Yarn,
   runs `yarn build` in the package folder and attaches dist/package.tgz.
 -->
@@ -19,7 +20,7 @@
   <name>Classic Templates Root</name>
   <version>0.5.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <description>Classic Templates monorepo: the template set, classic-travel and the pre-packaged demo site</description>
+  <description>Classic Templates monorepo: the template set, classic-travel and the pre-packaged demo sites</description>
 
   <scm>
     <connection>scm:git:git@github.com:Jahia/classic-templates.git</connection>
@@ -32,6 +33,7 @@
     <module>packages/template-set</module>
     <module>packages/travel</module>
     <module>packages/prepackaged-site</module>
+    <module>packages/prepackaged-skylantern</module>
   </modules>
 
   <properties>

@@ -117,6 +117,12 @@ project**, choose **Classic Templates demo site (classic-dev) - pre-packaged**. 
 set, news items and articles. It needs no other module. See the
 [pre-packaged site README](../../packages/prepackaged-site/README.md).
 
+For a travel site, the **Skylantern Airways** demo (a fictional airline) is packaged the same way:
+install `classic-travel` and the `skylantern-prepackaged-website` module too, then choose **Skylantern
+Airways demo site (skylantern) - pre-packaged**. You get 36 pages in English and French with
+destinations, fare offers, travel advisories and the Horizon theme. See the
+[Skylantern package README](../../packages/prepackaged-skylantern/README.md).
+
 Two scripts in the repository's `scripts/` folder build demonstration sites on a local Jahia. They are
 meant for evaluating the template set, not for production sites. They need Python 3 and the
 Pillow library (they generate the demo images), and they read `JAHIA_URL` and `JAHIA_USER` from the
