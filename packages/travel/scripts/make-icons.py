@@ -65,11 +65,6 @@ def tool(d, p):
     d.line(p(4, 16, 28, 16), fill=INK, width=w(2))
 
 
-def mosaic(d, p):
-    d.rounded_rectangle(p(4, 4, 16, 28), radius=2 * S, outline=INK, width=w(2))
-    d.rounded_rectangle(p(18, 4, 28, 14), radius=2 * S, fill=INK)
-    d.rounded_rectangle(p(18, 18, 28, 28), radius=2 * S, outline=INK, width=w(2))
-
 
 ICONS = {
     "ctrvmix_component": plane,
@@ -78,7 +73,6 @@ ICONS = {
     "ctrv_fareOffer": tag,
     "ctrv_fareList": fare_list,
     "ctrv_destinationGrid": grid,
-    "ctrv_destinationMosaic": mosaic,
     "ctrv_travelTools": tabs,
     "ctrv_travelTool": tool,
 }

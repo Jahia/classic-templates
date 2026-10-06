@@ -56,24 +56,5 @@
     "startMissing": "Le dossier de départ est défini mais introuvable ici (supprimé, ou pas encore publié) : la liste n'affiche rien sur le site en ligne.",
     "fareSummary": "{{shown}} offres affichées sur les {{found}} trouvées. Écartées : {{ended}} dont la vente est terminée, {{otherRegion}} d'une autre région, {{untranslated}} non traduites dans cette langue, {{noDestination}} sans destination.",
     "destinationSummary": "{{shown}} destinations affichées sur les {{found}} trouvées ({{untranslated}} non traduites dans cette langue)."
-  },
-  "mosaic": {
-    "empty": "Mosaïque de destinations : choisissez de 1 à 4 destinations.",
-    "tooMany": "{{count}} destinations sont choisies : la mosaïque affiche les {{max}} premières."
-  },
-  "weather": {
-    "now": "Météo actuelle :",
-    "condition": {
-      "clear": "Dégagé",
-      "partlyCloudy": "Partiellement nuageux",
-      "fog": "Brouillard",
-      "drizzle": "Bruine",
-      "rain": "Pluie",
-      "snow": "Neige",
-      "showers": "Averses",
-      "snowShowers": "Averses de neige",
-      "thunderstorm": "Orage",
-      "unknown": "Météo"
-    }
   }
 }

@@ -10,8 +10,7 @@ The script:
   - adds a content folder "travel" with three destinations (with their coordinates) and, under it,
     "fares" with two fare offers (EN + FR, prices, dates, conditions, a call to action to the
     booking page);
-  - adds a "Travel" page holding a destination mosaic of the three destinations (their live weather
-    shows when classic-weather is installed), a fare list, a destination grid and a travel tools
+  - adds a "Travel" page holding a fare list, a destination grid and a travel tools
     section with three tools and a demonstration notice, and a "Booking information" page the links
     point to;
   - publishes the site and its files in both languages.
@@ -267,10 +266,6 @@ def seed_page(home, folder, destinations, fares, booking_uuid):
     page = add_page(home, "travel", {"en": "Travel", "fr": "Voyager"},
                     {"en": "Fares, destinations and travel tools.", "fr": "Tarifs, destinations et outils de voyage."})
     area = add_content(page, "main", "ctpl:pageArea", [])
-    add_content(area, "mosaic", "ctrv:destinationMosaic",
-                i18n("jcr:title", {"en": "Where to next?", "fr": "Où partir ?"})
-                + [{"name": "destinations", "type": "WEAKREFERENCE", "values": [
-                    uuid_at(destinations[name]) for name in ("sydney", "tokyo", "bangkok")]}])
     add_content(area, "fares", "ctrv:fareList",
                 i18n("jcr:title", {"en": "Fares of the moment", "fr": "Tarifs du moment"})
                 + [{"name": "startNode", "type": "WEAKREFERENCE", "value": uuid_at(fares)},
