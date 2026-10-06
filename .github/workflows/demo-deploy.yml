@@ -6,7 +6,7 @@ name: Demo deploy
 
 on:
   push:
-    branches: [demo-live, demo-fallback]
+    branches: [demo-live, demo-fallback, main]
   workflow_dispatch:
 
 concurrency:
