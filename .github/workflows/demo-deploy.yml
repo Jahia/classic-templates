@@ -1,0 +1,50 @@
+# Deploys classic-travel and classic-weather to the demo cloud instance on every push to a demo
+# branch. This file lives on the demo branches only, never on main.
+# Repository settings: variable DEMO_JAHIA_HOST (https://<instance>), secret DEMO_JAHIA_USER
+# (<user>:<password>).
+name: Demo deploy
+
+on:
+  push:
+    branches: [demo-live, demo-fallback]
+  workflow_dispatch:
+
+concurrency:
+  group: demo-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to the demo instance
+    runs-on: ubuntu-latest
+    env:
+      JAHIA_HOST: ${{ secrets.DEMO_JAHIA_HOST }}
+      JAHIA_USER: ${{ secrets.DEMO_JAHIA_USER }}
+    steps:
+      - uses: actions/checkout@v4
+      # mise.toml pins Node 22, Yarn 4 and the JDK 17
+      - uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
+
+      - name: Build and deploy classic-travel
+        working-directory: packages/travel
+        run: |
+          yarn install --immutable
+          yarn build
+          yarn deploy
+
+      - name: Build and deploy classic-weather
+        run: |
+          # The demo starts without the Java sources: nothing to deploy until they are written.
+          if [ ! -d packages/weather/src/main/java ]; then
+            echo "packages/weather has no Java sources yet: skipped"
+            exit 0
+          fi
+          mvn -B -f packages/weather/pom.xml package
+          jar=$(ls packages/weather/target/classic-weather-*.jar | grep -v -- -sources.jar)
+          curl -sSf -u "$JAHIA_USER" -X POST -F "bundle=@$jar" -F start=true "$JAHIA_HOST/modules/api/bundles"
+
+      - name: Check the bundles
+        run: |
+          for bundle in org.jahia.modules.javascript/classic-travel org.jahia.modules.javascript/classic-weather; do
+            echo "$bundle: $(curl -sSf -u "$JAHIA_USER" "$JAHIA_HOST/modules/api/bundles/$bundle/*/_info" | jq -c '[.. | .moduleState? | select(.)]')"
+          done
