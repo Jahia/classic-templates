@@ -1,33 +1,38 @@
 #!/usr/bin/env python3
-"""Exports the classic-dev demo site into the pre-packaged project of packages/prepackaged-site.
+"""Exports a demo site into its pre-packaged project (packages/prepackaged-site for classic-dev,
+packages/prepackaged-skylantern for skylantern).
 
-    python3 scripts/export-prepackaged.py [--site classic-dev] [--from-zip export.zip] [--check]
+    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern] [--from-zip export.zip] [--check]
 
-The pre-packaged project must install on an instance that has only the classic-templates template
-set (plus the platform modules default, siteSettings and site-settings-seo), so the script keeps
-the content of the template set only:
+A pre-packaged project must install on an instance that has only the modules of this repository it
+depends on (plus the platform modules default, siteSettings and site-settings-seo), so the script
+keeps the content of those modules only. What each site keeps is described in PROFILES below.
 
   1. Logs in once (one HTTP session for every call) and exports the site with its live content and
      without users: GET /cms/export/default/<site>_export.zip?exportformat=site&live=true&users=false.
      Only the inner <site>.zip is kept (never roles.zip or mounts.zip). --from-zip reads a
      previously downloaded export instead.
-  2. Removes, in repository.xml and live-repository.xml alike:
+  2. Rewrites the add-on content that has an equivalent in the template set (the profile's
+     conversions: the jsfaq questions of skylantern become accordions).
+  3. Removes, in repository.xml and live-repository.xml alike:
      - every node whose primary type or one of its mixins belongs to a namespace that neither the
-       platform nor classic-templates declares (the allow-list is read from the template set's CND
-       files: add-on modules such as Formidable, jsfaq, js-media-gallery, js-store-locator or
-       classic-travel are left out whatever their prefixes);
-     - the pages and folders that exist only to show add-ons (SITE_ONLY_FOR_ADDONS below);
+       platform nor the profile's packages declare (the allow-list is read from their CND files:
+       add-on modules such as Formidable, jsfaq, js-media-gallery or js-store-locator are left out
+       whatever their prefixes);
+     - the pages, folders and items that exist only to show add-ons (the profile's
+       only_for_addons);
      - every free zone that held nothing but removed nodes;
      - every reference to a removed node (path tokens of reference properties). A link item left
        without a target is removed; another node with an internal link and no target left gets
        the link type "none".
-     It fails when a remaining value still names a removed path or uuid.
-  3. Adjusts the few demo texts that describe add-on content (TEXT_EDITS below).
-  4. Rewrites site.properties: the template set and the three platform modules as the only
-     installed modules, server name localhost, not the default site of the instance.
-  5. Writes the result unzipped to packages/prepackaged-site/src/main/<site>/ (site.properties,
+     It fails when a remaining value still names a removed path or uuid, or when the export
+     carries a user (a member of a site group comes with their profile and password history).
+  4. Adjusts the demo texts that describe add-on content (the profile's text_edits).
+  5. Rewrites site.properties: the profile's installed modules only, server name localhost, not the
+     default site of the instance.
+  6. Writes the result unzipped to packages/<package>/src/main/<site>/ (site.properties,
      repository.xml, live-repository.xml, content/, live-content/), in Jahia's own XML layout, and
-     the export descriptor to packages/prepackaged-site/src/main/prepackagedSites/export.properties.
+     the export descriptor to packages/<package>/src/main/prepackagedSites/export.properties.
      The output only depends on the site content: running the script twice gives the same files.
 
 --check exports to a temporary folder and exits 1 when the result differs from the committed one.
@@ -53,8 +58,7 @@ URL = os.environ.get("JAHIA_URL", "http://localhost:8080").rstrip("/")
 USER = os.environ.get("JAHIA_USER", "root:root1234")
 
 REPO = Path(__file__).resolve().parent.parent
-TEMPLATE_SET = REPO / "packages" / "template-set"
-PACKAGE = REPO / "packages" / "prepackaged-site"
+PACKAGES = REPO / "packages"
 
 NS = {"j": "http://www.jahia.org/jahia/1.0", "jcr": "http://www.jcp.org/jcr/1.0"}
 J = "{%s}" % NS["j"]
@@ -63,39 +67,146 @@ JCR = "{%s}" % NS["jcr"]
 # JCR built-in prefixes, declared by the repository itself rather than by a CND file
 BUILT_IN_PREFIXES = {"nt", "mix", "jcr", "rep"}
 
-# Modules a site of the pre-packaged project runs with: the template set and the platform
-# modules it needs, nothing else
-INSTALLED_MODULES = ["classic-templates", "default", "siteSettings", "site-settings-seo"]
+PLATFORM_MODULES = ["default", "siteSettings", "site-settings-seo"]
 
-# Site-relative paths of nodes that exist only to show add-on modules
-SITE_ONLY_FOR_ADDONS = ["home/practical", "contents/forms", "contents/places"]
+# An export made with users=false still embeds every user who is a member of a site group, with
+# their profile and password history: the script refuses to package one
+USER_TYPE = "jnt:user"
 
-# Exact text replacements in property values (rich text bodies, page descriptions) that described
-# add-on content. A replacement whose text is not found is reported, never guessed.
-TEXT_EDITS = [
-    (
-        "accessibility statement (en)",
-        "<li>The contact form comes from the Formidable module, which this audit did not review in"
-        " depth; automated tests report no error on it.</li>",
-        "",
-    ),
-    (
-        "accessibility statement (fr)",
-        "<li>Le formulaire de contact provient du module Formidable, que cet audit n'a pas examiné en"
-        " détail ; les tests automatiques n'y relèvent aucune erreur.</li>",
-        "",
-    ),
-    (
-        "contact page description (en)",
-        "opening hours and directions to the studio, or write to us with the form below.",
-        "opening hours and directions to the studio.",
-    ),
-    (
-        "contact page description (fr)",
-        "horaires et accès au studio, ou écrivez-nous avec le formulaire de cette page.",
-        "horaires et accès au studio.",
-    ),
-]
+# One profile per pre-packaged site:
+#   package          the folder under packages/ that receives the export
+#   sources          the packages whose CND namespaces the site keeps
+#   installed        the modules the imported site runs with (site.properties), nothing else
+#   only_for_addons  site-relative paths of nodes that exist only to show add-on modules
+#   conversions      site-relative path -> function rewriting add-on content into template set
+#                    content (applied before the removals)
+#   text_edits       exact replacements in property values (rich text bodies, page descriptions,
+#                    card texts) that described add-on content; one not found is reported, never
+#                    guessed
+PROFILES = {
+    "classic-dev": {
+        "package": "prepackaged-site",
+        "sources": ["template-set"],
+        "installed": ["classic-templates"] + PLATFORM_MODULES,
+        "only_for_addons": ["home/practical", "contents/forms", "contents/places"],
+        "conversions": {},
+        "text_edits": [
+            (
+                "accessibility statement (en)",
+                "<li>The contact form comes from the Formidable module, which this audit did not review"
+                " in depth; automated tests report no error on it.</li>",
+                "",
+            ),
+            (
+                "accessibility statement (fr)",
+                "<li>Le formulaire de contact provient du module Formidable, que cet audit n'a pas"
+                " examiné en détail ; les tests automatiques n'y relèvent aucune erreur.</li>",
+                "",
+            ),
+            (
+                "contact page description (en)",
+                "opening hours and directions to the studio, or write to us with the form below.",
+                "opening hours and directions to the studio.",
+            ),
+            (
+                "contact page description (fr)",
+                "horaires et accès au studio, ou écrivez-nous avec le formulaire de cette page.",
+                "horaires et accès au studio.",
+            ),
+        ],
+    },
+    "skylantern": {
+        "package": "prepackaged-skylantern",
+        "sources": ["template-set", "travel"],
+        "installed": ["classic-templates", "classic-travel"] + PLATFORM_MODULES,
+        # The newsletter and contact forms (Formidable) and the sales offices (js-store-locator)
+        "only_for_addons": ["contents/forms", "contents/offices"],
+        # The help centre questions (jsfaq) become accordions of the template set
+        "conversions": {"home/help/faq/main/questions": "jsfaq_to_accordions"},
+        "text_edits": [
+            (
+                "FAQ introduction (en)",
+                "<p>Search the questions, or open a topic.",
+                "<p>Open a topic to read its questions.",
+            ),
+            (
+                "FAQ introduction (fr)",
+                "<p>Cherchez parmi les questions, ou ouvrez un thème.",
+                "<p>Ouvrez un thème pour lire ses questions.",
+            ),
+            (
+                "contact page description (en)",
+                "customer service hours, phone numbers by market, our sales offices in Asia on a map"
+                " and a form to write to us.",
+                "customer service phone numbers and opening hours for Hong Kong, Japan, South Korea,"
+                " Taiwan and Southeast Asia, or write by email.",
+            ),
+            (
+                "contact page description (fr)",
+                "horaires du service client, numéros par pays, nos agences en Asie sur une carte et"
+                " un formulaire pour nous écrire.",
+                "numéros et horaires du service client pour Hong Kong, le Japon, la Corée du Sud,"
+                " Taïwan et l'Asie du Sud-Est, ou par e-mail.",
+            ),
+            ("about card (en)", "Phone, offices and a form to write to us.", "Service hours and phone numbers."),
+            ("about card (fr)", "Téléphone, agences et formulaire pour nous écrire.",
+             "Horaires du service et numéros de téléphone."),
+            ("help card (en)", "Phone numbers, offices and our form.", "Phone numbers and service hours."),
+            ("help card (fr)", "Téléphones, agences et formulaire.", "Téléphones et horaires du service."),
+            (
+                "privacy page description (en)",
+                "handles personal data: newsletter and contact forms, purposes, retention, your rights"
+                " and no tracking cookie.",
+                "handles personal data: it has no form and collects none, sets no tracking cookie,"
+                " and how to exercise your rights.",
+            ),
+            (
+                "privacy page description (fr)",
+                "traite vos données : formulaires de lettre et de contact, finalités, conservation,"
+                " droits, aucun traceur.",
+                "traite vos données : aucun formulaire, aucune donnée recueillie, aucun traceur, et"
+                " comment exercer vos droits.",
+            ),
+            (
+                "privacy policy (en)",
+                re.compile(r"<p>This demonstration site collects personal data through two forms only:.*?"
+                           r"They are not shared with anyone\.</p>", re.S),
+                "<p>This demonstration site has no form: it collects no personal data.</p>",
+            ),
+            (
+                "privacy policy (fr)",
+                re.compile(r"<p>Ce site de démonstration recueille des données personnelles par deux"
+                           r" formulaires seulement :.*?Elles ne sont transmises à personne\.</p>", re.S),
+                "<p>Ce site de démonstration n'a aucun formulaire : il ne recueille aucune donnée"
+                " personnelle.</p>",
+            ),
+            (
+                "accessibility statement scope (en)",
+                "The content of this site and the add-on modules it uses have <strong>not been audited"
+                " yet</strong>",
+                "The content of this site has <strong>not been audited yet</strong>",
+            ),
+            (
+                "accessibility statement scope (fr)",
+                "Les contenus de ce site et les modules complémentaires qu'il utilise <strong>n'ont pas"
+                " encore été audités</strong>",
+                "Les contenus de ce site <strong>n'ont pas encore été audités</strong>",
+            ),
+            (
+                "accessibility statement add-ons (en)",
+                re.compile(r"<li>The FAQ, the map of our sales offices and the forms come from add-on"
+                           r" modules.*?gives the same information\.</li>", re.S),
+                "",
+            ),
+            (
+                "accessibility statement add-ons (fr)",
+                re.compile(r"<li>La FAQ, la carte de nos agences et les formulaires proviennent de"
+                           r" modules complémentaires.*?donne les mêmes informations\.</li>", re.S),
+                "",
+            ),
+        ],
+    },
+}
 
 # ---------------------------------------------------------------------------------------------
 # Export download (one session)
@@ -131,12 +242,16 @@ def read_export(outer_bytes, site):
 # Namespaces
 
 
-def allowed_prefixes():
-    """Prefixes declared by the template set's CND files, plus the JCR built-ins."""
+def allowed_prefixes(sources):
+    """Prefixes declared by the CND files of the given packages, plus the JCR built-ins."""
     prefixes = set(BUILT_IN_PREFIXES)
-    cnds = list((TEMPLATE_SET / "settings").glob("*.cnd")) + list((TEMPLATE_SET / "src").rglob("*.cnd"))
-    if not cnds:
-        sys.exit(f"No CND file found under {TEMPLATE_SET}")
+    cnds = []
+    for source in sources:
+        folder = PACKAGES / source
+        found = list((folder / "settings").glob("*.cnd")) + list((folder / "src").rglob("*.cnd"))
+        if not found:
+            sys.exit(f"No CND file found under {folder}")
+        cnds += found
     for cnd in cnds:
         prefixes.update(re.findall(r"<\s*([A-Za-z][\w-]*)\s*=\s*'[^']+'\s*>", cnd.read_text(encoding="utf-8")))
     return prefixes
@@ -203,6 +318,92 @@ def parse(data):
 
 
 # ---------------------------------------------------------------------------------------------
+# Conversions: add-on content rewritten as template set content
+
+# Attributes any node carries whatever its type: identity, language, dates and publication state
+BOOKKEEPING = {JCR + "uuid", JCR + "language", JCR + "created", JCR + "createdBy", JCR + "lastModified",
+               JCR + "lastModifiedBy", J + "lastPublished", J + "lastPublishedBy", J + "originWS", J + "published"}
+
+
+def retyped(source, primary_type, renames, added=None):
+    """A childless copy of source as a primary_type node. It keeps the bookkeeping attributes of
+    source (the uuid included, so both workspaces stay paired) and its properties listed in
+    renames (old key -> new key, None drops it). Any other property of source stops the script:
+    content is never lost silently."""
+    attrs = {JCR + "primaryType": primary_type, **(added or {})}
+    for key, value in source.attrib.items():
+        if key in BOOKKEEPING:
+            attrs[key] = value
+        elif key in renames:
+            if renames[key]:
+                attrs[renames[key]] = value
+        elif key != JCR + "primaryType":
+            sys.exit(f"Cannot convert {source.tag}: unexpected property {qname(key)}")
+    element = ET.Element(source.tag)
+    for key in sorted(attrs, key=qname):
+        element.set(key, attrs[key])
+    return element
+
+
+def translations(source, renames):
+    for child in source:
+        if is_translation(child):
+            yield retyped(child, "jnt:translation", renames)
+
+
+def jsfaq_to_accordions(zone):
+    """The free zone holding a jsfaq FAQ page becomes one accordion per FAQ section, in its place:
+    the section title is the accordion heading, each question an entry and its answer the entry
+    body. The FAQ page's own heading is dropped (the sections carry the headings)."""
+    content = [c for c in zone if not is_translation(c)]
+    if len(content) != 1 or content[0].get(JCR + "primaryType") != "jsfaqnt:faqPage":
+        sys.exit("The FAQ free zone does not hold exactly one jsfaq FAQ page")
+    accordions = []
+    for section in content[0]:
+        if is_translation(section):
+            continue
+        if section.get(JCR + "primaryType") != "jsfaqnt:faqSection":
+            sys.exit(f"Unexpected {section.get(JCR + 'primaryType')} in the FAQ page")
+        accordion = retyped(section, "ctpl:accordion", {}, {"ctplSurface": zone.get("ctplSurface", "default")})
+        accordion.extend(translations(section, {JCR + "title": JCR + "title", "sectionTitle": None}))
+        for item in section:
+            if is_translation(item):
+                continue
+            if item.get(JCR + "primaryType") != "jsfaqnt:faqItem":
+                sys.exit(f"Unexpected {item.get(JCR + 'primaryType')} in a FAQ section")
+            for tr in item:
+                if is_translation(tr) and tr.get(JCR + "title") != tr.get("question"):
+                    sys.exit(f"FAQ item {item.tag}: its title and its question differ")
+            entry = retyped(item, "ctpl:accordionItem", {}, {"openByDefault": "false"})
+            entry.extend(translations(item, {JCR + "title": JCR + "title", "question": None, "answer": "body"}))
+            accordion.append(entry)
+        accordions.append(accordion)
+    return accordions
+
+
+CONVERSIONS = {"jsfaq_to_accordions": jsfaq_to_accordions}
+
+
+def apply_conversions(root, site, conversions, done):
+    site_node = root.find(f"sites/{site}")
+    for rel, name in conversions.items():
+        parent = site_node.find(rel.rsplit("/", 1)[0])
+        zone = site_node.find(rel)
+        if zone is None:
+            sys.exit(f"Nothing to convert at {rel}")
+        replacement = CONVERSIONS[name](zone)
+        taken = {c.tag for c in parent if c is not zone}
+        clashes = [e.tag for e in replacement if e.tag in taken]
+        if clashes:
+            sys.exit(f"{rel}: converted nodes would replace {', '.join(clashes)}")
+        index = list(parent).index(zone)
+        parent.remove(zone)
+        for offset, element in enumerate(replacement):
+            parent.insert(index + offset, element)
+        done.append(f"{rel}: {name} ({len(replacement)} nodes)")
+
+
+# ---------------------------------------------------------------------------------------------
 # Stripping
 
 
@@ -211,10 +412,11 @@ def is_translation(element):
 
 
 class Stripper:
-    def __init__(self, root, site, allowed):
+    def __init__(self, root, site, allowed, only_for_addons):
         self.root = root
         self.site = site
         self.allowed = allowed
+        self.only_for_addons = only_for_addons
         self.parents = {c: p for p in root.iter() for c in p}
         self.paths = {}
         self._index(root, "")
@@ -249,7 +451,7 @@ class Stripper:
 
     def strip(self):
         site = self.site_node()
-        for rel in SITE_ONLY_FOR_ADDONS:
+        for rel in self.only_for_addons:
             node = site.find(rel)
             if node is not None:
                 self.remove(node, "only shows add-ons")
@@ -327,12 +529,16 @@ class Stripper:
         return problems
 
 
-def apply_text_edits(root, applied):
+def apply_text_edits(root, text_edits, applied):
     for element in root.iter():
         for key, value in list(element.attrib.items()):
             new = value
-            for label, old, replacement in TEXT_EDITS:
-                if old in new:
+            for label, old, replacement in text_edits:
+                if isinstance(old, re.Pattern):
+                    new, count = old.subn(replacement, new)
+                    if count:
+                        applied.add(label)
+                elif old in new:
                     new = new.replace(old, replacement)
                     applied.add(label)
             if new != value:
@@ -363,17 +569,17 @@ def write_properties(props, header):
     return "\n".join(lines) + "\n"
 
 
-def site_properties(text, site):
+def site_properties(text, site, installed):
     props = {k: v for k, v in read_properties(text).items() if not k.startswith("installedModules.")}
     if props.get("sitekey") != site:
         sys.exit(f"site.properties describes {props.get('sitekey')}, not {site}")
-    for i, module in enumerate(INSTALLED_MODULES, start=1):
+    for i, module in enumerate(installed, start=1):
         props[f"installedModules.{i}"] = module
     props["siteservername"] = "localhost"
     props["siteservernamealiases"] = ""
     # Imported next to other sites, the demo must not take over the instance's default site
     props["defaultSite"] = "false"
-    return write_properties(props, "classic-dev demo site, written by scripts/export-prepackaged.py")
+    return write_properties(props, f"{site} demo site, written by scripts/export-prepackaged.py")
 
 
 def export_descriptor(text, repository_xml):
@@ -392,9 +598,9 @@ def export_descriptor(text, repository_xml):
 # ---------------------------------------------------------------------------------------------
 
 
-def build(files, descriptor, site, out_site, out_descriptor):
-    allowed = allowed_prefixes()
-    report = {"allowed": sorted(allowed)}
+def build(files, descriptor, site, profile, out_site, out_descriptor):
+    allowed = allowed_prefixes(profile["sources"])
+    report = {"allowed": sorted(allowed), "conversions": []}
     texts = {}
     removed_paths = set()
     applied = set()
@@ -402,12 +608,19 @@ def build(files, descriptor, site, out_site, out_descriptor):
         if name not in files:
             sys.exit(f"The site export has no {name}")
         root = parse(files[name])
-        stripper = Stripper(root, site, allowed)
+        converted = []
+        apply_conversions(root, site, profile["conversions"], converted)
+        report["conversions"] += [f"{name}: {c}" for c in converted]
+        stripper = Stripper(root, site, allowed, profile["only_for_addons"])
         stripper.strip()
-        apply_text_edits(root, applied)
+        apply_text_edits(root, profile["text_edits"], applied)
         problems = stripper.verify()
+        problems += [f"user {qname(e.tag)}: remove them from the site's groups, a pre-packaged site never"
+                     " carries users" for e in root.iter() if e.get(JCR + "primaryType") == USER_TYPE]
+        problems += [f"a value still names the converted {rel}" for rel in profile["conversions"]
+                     if any(f"/sites/{site}/{rel}" in v for e in root.iter() for v in e.attrib.values())]
         if problems:
-            sys.exit(f"{name}: references left to removed content:\n  " + "\n  ".join(problems[:40]))
+            sys.exit(f"{name}: cannot be packaged:\n  " + "\n  ".join(problems[:40]))
         text = serialize(root)
         reparsed = parse(text.encode("utf-8"))
         if serialize(reparsed) != text:
@@ -416,14 +629,14 @@ def build(files, descriptor, site, out_site, out_descriptor):
         removed_paths |= set(stripper.removed)
         report[name] = stripper
     report["text_edits"] = applied
-    missing = [label for label, _, _ in TEXT_EDITS if label not in applied]
+    missing = [label for label, _, _ in profile["text_edits"] if label not in applied]
 
     if out_site.exists():
         shutil.rmtree(out_site)
     out_site.mkdir(parents=True)
     (out_site / "repository.xml").write_text(texts["repository.xml"], encoding="utf-8")
     (out_site / "live-repository.xml").write_text(texts["live-repository.xml"], encoding="utf-8")
-    (out_site / "site.properties").write_text(site_properties(files["site.properties"].decode("latin-1"), site),
+    (out_site / "site.properties").write_text(site_properties(files["site.properties"].decode("latin-1"), site, profile["installed"]),
                                               encoding="latin-1")
     skipped_binaries = 0
     for name in sorted(files):
@@ -446,6 +659,8 @@ def build(files, descriptor, site, out_site, out_descriptor):
 
 def print_report(report, site):
     print(f"Allowed namespaces: {', '.join(report['allowed'])}")
+    for line in report["conversions"]:
+        print(f"Converted in {line}")
     for name in ("repository.xml", "live-repository.xml"):
         s = report[name]
         prefix_len = len(f"/sites/{site}/")
@@ -475,7 +690,8 @@ def same_tree(a, b):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    parser.add_argument("--site", default="classic-dev", help="site key to export (default: classic-dev)")
+    parser.add_argument("--site", default="classic-dev", choices=sorted(PROFILES),
+                        help="site key to export (default: classic-dev)")
     parser.add_argument("--from-zip", type=Path, help="use this downloaded export instead of calling Jahia")
     parser.add_argument("--save-zip", type=Path, help="also save the downloaded export to this file")
     parser.add_argument("--check", action="store_true",
@@ -490,18 +706,20 @@ def main():
             args.save_zip.write_bytes(outer)
     files, descriptor = read_export(outer, args.site)
 
-    out_site = PACKAGE / "src" / "main" / args.site
-    out_descriptor = PACKAGE / "src" / "main" / "prepackagedSites" / "export.properties"
+    profile = PROFILES[args.site]
+    package = PACKAGES / profile["package"]
+    out_site = package / "src" / "main" / args.site
+    out_descriptor = package / "src" / "main" / "prepackagedSites" / "export.properties"
     if args.check:
         with tempfile.TemporaryDirectory() as tmp:
             tmp_site = Path(tmp) / "site"
             tmp_descriptor = Path(tmp) / "export.properties"
-            report = build(files, descriptor, args.site, tmp_site, tmp_descriptor)
+            report = build(files, descriptor, args.site, profile, tmp_site, tmp_descriptor)
             print_report(report, args.site)
             same = same_tree(tmp_site, out_site) and filecmp.cmp(tmp_descriptor, out_descriptor, shallow=False)
             print("\nUp to date." if same else "\nThe committed pre-packaged site differs from the export.")
             sys.exit(0 if same else 1)
-    report = build(files, descriptor, args.site, out_site, out_descriptor)
+    report = build(files, descriptor, args.site, profile, out_site, out_descriptor)
     print_report(report, args.site)
     print(f"\nWritten to {out_site.relative_to(REPO)} and {out_descriptor.relative_to(REPO)}")
 

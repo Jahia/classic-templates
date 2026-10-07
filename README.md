@@ -1,7 +1,7 @@
 # Classic Templates
 
 A themeable Jahia JavaScript template set with the standard building blocks of a corporate or
-institutional website, a companion module for travel content, and a pre-packaged demo site. Every
+institutional website, a companion module for travel content, and two pre-packaged demo sites. Every
 text a visitor reads is contributed content, in every language of the site, and the look comes
 entirely from CSS design tokens: a site switches theme, or light and dark, from its settings. Pages
 are accessible (WCAG 2.1 AA, RGAA 4.1.2), describe themselves to search engines (JSON-LD) and show a
@@ -15,13 +15,14 @@ preview with an image when they are shared (Open Graph, Twitter card).
 
 ## What is in this repository
 
-The repository holds three packages, built together and released at the same version.
+The repository holds four packages, built together and released at the same version.
 
-| Package                                                   | Maven coordinates                                                                            | What it is                                                                                                                                                             |
-| --------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`packages/template-set`](packages/template-set/)         | `org.jahia.modules.javascript:classic-templates` (`.tgz`)                                    | The **classic-templates** template set: header, footer, breadcrumb, page templates, reusable sections, news and articles, four themes in light and dark                |
-| [`packages/travel`](packages/travel/)                     | `org.jahia.modules.javascript:classic-travel` (`.tgz`)                                       | The **classic-travel** module: destinations, fare offers, fare lists, destination grids and travel tools, for sites built on the template set                          |
-| [`packages/prepackaged-site`](packages/prepackaged-site/) | `org.jahia.community:classic-templates-prepackaged-website` (`.jar`, and an `import` `.zip`) | The `classic-dev` demo site as a **pre-packaged project**: 19 pages in English and French using every section of the template set, ready to import from Administration |
+| Package                                                               | Maven coordinates                                                                            | What it is                                                                                                                                                                                                              |
+| --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`packages/template-set`](packages/template-set/)                     | `org.jahia.modules.javascript:classic-templates` (`.tgz`)                                    | The **classic-templates** template set: header, footer, breadcrumb, page templates, reusable sections, news and articles, four themes in light and dark                                                                 |
+| [`packages/travel`](packages/travel/)                                 | `org.jahia.modules.javascript:classic-travel` (`.tgz`)                                       | The **classic-travel** module: destinations, fare offers, fare lists, destination grids and travel tools, for sites built on the template set                                                                           |
+| [`packages/prepackaged-site`](packages/prepackaged-site/)             | `org.jahia.community:classic-templates-prepackaged-website` (`.jar`, and an `import` `.zip`) | The `classic-dev` demo site as a **pre-packaged project**: 19 pages in English and French using every section of the template set, ready to import from Administration                                                  |
+| [`packages/prepackaged-skylantern`](packages/prepackaged-skylantern/) | `org.jahia.community:skylantern-prepackaged-website` (`.jar`, and an `import` `.zip`)        | The `skylantern` demo site (Skylantern Airways, a fictional airline) as a **pre-packaged project**: 36 pages in English and French with destinations and fares from classic-travel, ready to import from Administration |
 
 Shared at the root: the documentation for editors and administrators ([`docs/`](docs/README.md)),
 the demo seeding scripts ([`scripts/`](scripts/)), the Cypress end-to-end tests ([`tests/`](tests/)),
@@ -46,6 +47,10 @@ Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later.
   `classic-templates-prepackaged-website-<version>-import.zip` from the release and pass its
   `classic-dev.zip` to `importSite` as an attached file. See the
   [pre-packaged site README](packages/prepackaged-site/README.md).
+- **Pre-packaged airline site.** The same way with classic-travel installed too and
+  `skylantern-prepackaged-website-<version>.jar`: **Skylantern Airways demo site (skylantern) -
+  pre-packaged**, or `skylantern.zip` from `skylantern-prepackaged-website-<version>-import.zip`
+  with the provisioning API. See the [Skylantern package README](packages/prepackaged-skylantern/README.md).
 
 ## Demo sites
 
@@ -62,6 +67,7 @@ and Pillow, and read `JAHIA_URL` and `JAHIA_USER` (defaults `http://localhost:80
 | `python3 scripts/seed-addons.py --contact-only --site classic-dev` | Enables Formidable on a site and adds a contact form to its contact page                                                                                                                                                                                                                                               |
 | `python3 scripts/seed-travel-test-site.py`                         | Builds the `ctrv-test` site: classic-travel destinations, fare offers, a fare list, a destination grid and travel tools, in English and French                                                                                                                                                                         |
 | `python3 scripts/export-prepackaged.py`                            | Exports `classic-dev` into `packages/prepackaged-site/src/main/classic-dev/`, keeping the template set's content only (`--check` tells whether the committed export is up to date)                                                                                                                                     |
+| `python3 scripts/export-prepackaged.py --site skylantern`          | Exports `skylantern` into `packages/prepackaged-skylantern/src/main/skylantern/`, keeping the content of the template set and classic-travel (the site itself is seeded from its own demo repository)                                                                                                                  |
 
 ## Documentation
 
@@ -75,7 +81,8 @@ The documentation for editors and site administrators is in [`docs/`](docs/READM
   [add-on modules](docs/guides/add-ons.md), [questions and answers](docs/guides/faq.md).
 - **Component reference:** [all components](docs/components/index.md).
 - **Packages:** [template set](packages/template-set/README.md),
-  [classic-travel](packages/travel/README.md), [pre-packaged site](packages/prepackaged-site/README.md).
+  [classic-travel](packages/travel/README.md), [pre-packaged site](packages/prepackaged-site/README.md),
+  [Skylantern pre-packaged site](packages/prepackaged-skylantern/README.md).
 
 ## Build and develop
 
@@ -83,15 +90,17 @@ To build: Node.js 22 and Yarn 4 (pinned in `.yarn/releases`; enable it with `cor
 and for the Maven build Java 17 and Maven 3.9.
 
 ```bash
-mvn clean install   # the three packages, as the CI builds them
+mvn clean install   # the four packages, as the CI builds them
 ```
 
-| Artifact                                                                               | Package                    |
-| -------------------------------------------------------------------------------------- | -------------------------- |
-| `packages/template-set/target/classic-templates-<version>.tgz`                         | template set               |
-| `packages/travel/target/classic-travel-<version>.tgz`                                  | classic-travel             |
-| `packages/prepackaged-site/target/classic-templates-prepackaged-website-<version>.jar` | pre-packaged site (module) |
-| `packages/prepackaged-site/target/prepackaged/classic-dev.zip` (classifier `import`)   | pre-packaged site (import) |
+| Artifact                                                                                  | Package                    |
+| ----------------------------------------------------------------------------------------- | -------------------------- |
+| `packages/template-set/target/classic-templates-<version>.tgz`                            | template set               |
+| `packages/travel/target/classic-travel-<version>.tgz`                                     | classic-travel             |
+| `packages/prepackaged-site/target/classic-templates-prepackaged-website-<version>.jar`    | pre-packaged site (module) |
+| `packages/prepackaged-site/target/prepackaged/classic-dev.zip` (classifier `import`)      | pre-packaged site (import) |
+| `packages/prepackaged-skylantern/target/skylantern-prepackaged-website-<version>.jar`     | Skylantern site (module)   |
+| `packages/prepackaged-skylantern/target/prepackaged/skylantern.zip` (classifier `import`) | Skylantern site (import)   |
 
 Each JavaScript package is a standalone Yarn project: run Yarn from its folder.
 
@@ -113,6 +122,7 @@ packages/
   template-set/       classic-templates: src/, settings/, static/, its build checks (scripts/), pom.xml
   travel/             classic-travel: src/, settings/, static/, its build checks (scripts/), pom.xml
   prepackaged-site/   the classic-dev export (src/main/classic-dev/), its label, pom.xml
+  prepackaged-skylantern/  the skylantern export (src/main/skylantern/), its label, pom.xml
 scripts/              demo seeding and the pre-packaged site export
 docs/                 documentation for editors and administrators
 tests/                Cypress end-to-end tests (separate npm project)
@@ -146,7 +156,7 @@ nightly against the release and snapshot Jahia images with the latest published 
 
 ## Releases
 
-The three packages share one version, set in the root `pom.xml`; a release publishes all three.
+The four packages share one version, set in the root `pom.xml`; a release publishes all four.
 The changelog is written with chachalog: a user-facing change
 adds a fragment under `.chachalog/` (see `.github/instructions/changelog.instructions.md`), and the
 release turns the fragments into a section of [CHANGELOG.md](CHANGELOG.md). classic-travel's history
