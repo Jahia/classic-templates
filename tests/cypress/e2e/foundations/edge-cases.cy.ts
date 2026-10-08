@@ -80,10 +80,11 @@ describe('Foundations - fallbacks and site look', () => {
         accent().should('eq', 'rgb(11, 58, 102)')
     })
 
-    // Each of these themes sets its own emphasis and action colours (coral for sage, green for slate).
+    // Each of these themes sets its own emphasis and action colours (coral for sage, green for slate, crimson for graphite).
     const emphasisThemes = [
         { theme: 'sage', highlight: 'rgb(178, 60, 36)', accent: 'rgb(14, 92, 85)', action: 'rgb(178, 60, 36)' },
         { theme: 'slate', highlight: 'rgb(23, 112, 61)', accent: 'rgb(42, 56, 80)', action: 'rgb(23, 112, 61)' },
+        { theme: 'graphite', highlight: 'rgb(176, 18, 47)', accent: 'rgb(58, 58, 56)', action: 'rgb(176, 18, 47)' },
     ]
     emphasisThemes.forEach(({ theme, highlight, accent: expectedAccent, action }) => {
         it(`applies the ${theme} theme with its own emphasis colour in light and dark`, () => {

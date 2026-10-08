@@ -10,8 +10,8 @@
  * `color-scheme`: the visitor's system preference by default, or the site's choice stamped on
  * <html data-ctpl-scheme="light|dark"> by the Layout. So dark mode is never written twice.
  *
- * Themes: <html data-ctpl-theme="ocean|terracotta|horizon|sage|slate"> (from the site settings)
- * overrides tier 2 only.
+ * Themes: <html data-ctpl-theme="ocean|terracotta|horizon|sage|slate|graphite"> (from the site
+ * settings) overrides tier 2 only.
  * Contrast of every theme x scheme pair is checked by `yarn check:contrast`.
  *
  * Breakpoints cannot be custom properties (they are not allowed in @media). The module uses two:
@@ -139,6 +139,27 @@
   --ctpl-emerald-200: #99e4b5;
   --ctpl-emerald-700: #17703d;
   --ctpl-emerald-800: #115630;
+
+  /* Graphite theme: true charcoal neutrals (no blue or green cast), a crimson for calls to action. */
+  --ctpl-graphite-25: #fbfbfa;
+  --ctpl-graphite-50: #f4f4f3;
+  --ctpl-graphite-100: #e9e9e7;
+  --ctpl-graphite-200: #d8d8d5;
+  --ctpl-graphite-300: #bdbdb9;
+  --ctpl-graphite-400: #8f8f8b;
+  --ctpl-graphite-500: #6c6c68;
+  --ctpl-graphite-600: #52524f;
+  --ctpl-graphite-700: #3a3a38;
+  --ctpl-graphite-800: #262625;
+  --ctpl-graphite-850: #1d1d1c;
+  --ctpl-graphite-900: #141413;
+  --ctpl-graphite-ink: #1c1c1b;
+  --ctpl-graphite-deep: #2a2a29;
+  --ctpl-graphite-line: #3d3d3b;
+  --ctpl-crimson-200: #ffbcc6;
+  --ctpl-crimson-300: #ff8c9d;
+  --ctpl-crimson-700: #b0122f;
+  --ctpl-crimson-800: #8a0d24;
 
   --ctpl-stack-sans:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -363,6 +384,34 @@
   --ctpl-heading-tracking: -0.015em;
   --ctpl-radius-md: 0.25rem;
   --ctpl-radius-lg: 0.5rem;
+}
+
+/* ---- Theme: graphite (charcoal neutrals, crimson calls to action and emphasis, sans headings) -- */
+:root[data-ctpl-theme="graphite"] {
+  --ctpl-color-surface-page: light-dark(var(--ctpl-graphite-25), var(--ctpl-graphite-900));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-graphite-850));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-graphite-50), var(--ctpl-graphite-850));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-graphite-800), var(--ctpl-graphite-100));
+  --ctpl-color-text: light-dark(var(--ctpl-graphite-ink), var(--ctpl-graphite-50));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-graphite-600), var(--ctpl-graphite-300));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-graphite-50), var(--ctpl-graphite-800));
+  --ctpl-color-border: light-dark(var(--ctpl-graphite-200), var(--ctpl-graphite-line));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-graphite-500), var(--ctpl-graphite-400));
+  --ctpl-color-accent: light-dark(var(--ctpl-graphite-700), var(--ctpl-graphite-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-graphite-800), var(--ctpl-graphite-200));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-graphite-100), var(--ctpl-graphite-deep));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-graphite-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-crimson-700), var(--ctpl-crimson-300));
+  --ctpl-color-highlight: light-dark(var(--ctpl-crimson-700), var(--ctpl-crimson-300));
+  --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-graphite-900));
+  --ctpl-color-action: light-dark(var(--ctpl-crimson-700), var(--ctpl-crimson-300));
+  --ctpl-color-action-hover: light-dark(var(--ctpl-crimson-800), var(--ctpl-crimson-200));
+  --ctpl-color-text-on-action: light-dark(var(--ctpl-white), var(--ctpl-graphite-900));
+  --ctpl-font-heading: var(--ctpl-stack-sans);
+  --ctpl-heading-weight: 700;
+  --ctpl-heading-tracking: -0.015em;
+  --ctpl-radius-md: 0.1875rem;
+  --ctpl-radius-lg: 0.375rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
