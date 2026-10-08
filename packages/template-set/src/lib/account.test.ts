@@ -13,7 +13,7 @@ describe("safeLocalPath", () => {
     "https://evil.example.com/x",
     "http://evil.example.com",
     "//evil.example.com/x",
-    "/\\evil.example.com",
+    String.raw`/\evil.example.com`,
     "javascript:alert(1)",
     "data:text/html,x",
     "relative/path",
