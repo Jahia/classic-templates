@@ -54,9 +54,10 @@ Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later.
 
 ## Demo sites
 
-The scripts in [`scripts/`](scripts/) build demonstration sites on a local Jahia. They need Python 3
-and Pillow, and read `JAHIA_URL` and `JAHIA_USER` (defaults `http://localhost:8080`,
-`root:root1234`). Each one reuses a single HTTP session.
+The scripts in [`scripts/`](scripts/) build demonstration sites on a local Jahia, or on a Jahia Cloud
+instance. They need Python 3 and Pillow, and read `JAHIA_URL` and `JAHIA_USER` (defaults
+`http://localhost:8080`, `root:root1234`). Each one reuses a single HTTP session, also on a cluster
+(where the session cookie is `DISTRIBUTED_JSESSIONID`), so a run never opens one session per call.
 
 | Script                                                             | What it does                                                                                                                                                                                                                                                                                                           |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

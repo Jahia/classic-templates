@@ -27,7 +27,9 @@ below.
 `python3 scripts/seed-demo.py --recreate` rebuilds the local `classic-dev` site from the template
 set (so `import.xml` runs) and fills it: 3-level EN/FR page tree, two pages hidden from the menu,
 header utility links, footer columns, legal and social links, published. `pages-to-review.json`
-lists its pages for the site review.
+lists its pages for the site review. Against a cluster (Jahia Cloud) the script keeps one session
+through the `DISTRIBUTED_JSESSIONID` cookie; publish calls always pass the site's languages, since a
+publication without languages answers true and publishes nothing.
 
 ## Pre-packaged site
 

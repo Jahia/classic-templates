@@ -123,8 +123,8 @@ Airways demo site (skylantern) - pre-packaged**. You get 36 pages in English and
 destinations, fare offers, travel advisories and the Horizon theme. See the
 [Skylantern package README](../../packages/prepackaged-skylantern/README.md).
 
-Two scripts in the repository's `scripts/` folder build demonstration sites on a local Jahia. They are
-meant for evaluating the template set, not for production sites. They need Python 3 and the
+Two scripts in the repository's `scripts/` folder build demonstration sites on a local Jahia or on a
+Jahia Cloud instance. They are meant for evaluating the template set, not for production sites. They need Python 3 and the
 Pillow library (they generate the demo images), and they read `JAHIA_URL` and `JAHIA_USER` from the
 environment (defaults: `http://localhost:8080` and `root:root1234`).
 
@@ -132,7 +132,8 @@ environment (defaults: `http://localhost:8080` and `root:root1234`).
   in English and French, header and footer links, images, every section type, news items and
   articles with content lists, a site map page and an example accessibility statement, all
   published. `--recreate` **deletes the site first** if it exists. `--sections-only` only adds the
-  example sections to an existing site and never changes existing content.
+  example sections to an existing site and never changes existing content. Both also set the
+  site's default share image and publish it in every language of the site.
 - `python3 scripts/seed-addons.py` builds the `classic-addons` site, with components of other
   modules placed in free zones: a FAQ, an image gallery, a store locator and a contact form. The
   modules `jsfaq`, `js-media-gallery`, `js-store-locator` and `formidable-elements` must be
