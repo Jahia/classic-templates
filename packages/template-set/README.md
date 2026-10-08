@@ -26,7 +26,7 @@ light and dark, from its settings, with no code change.
   small screens.
 - **News and articles.** Stored in content folders, each with its own page, listed as cards or
   compact rows by content lists that filter by folder, category and language.
-- **Themes.** Four themes (Classic, Ocean, Terracotta, Horizon), each in light and dark, chosen per site.
+- **Themes.** Six themes (Classic, Ocean, Terracotta, Horizon, Sage, Slate), each in light and dark, chosen per site.
   Visitors get their system's scheme unless the site forces one. Contrast is checked for every
   theme and scheme.
 - **Accessible by default.** WCAG 2.1 AA and RGAA 4.1.2 audited. Skip link, landmarks, strict
@@ -93,6 +93,8 @@ choose a "Theme" and "Light or dark". "Automatic" follows each visitor's system 
 | Ocean (teal)              | ![Ocean, light](../../docs/images/theme-ocean-light.png)           | ![Ocean, dark](../../docs/images/theme-ocean-dark.png)           |
 | Terracotta (warm)         | ![Terracotta, light](../../docs/images/theme-terracotta-light.png) | ![Terracotta, dark](../../docs/images/theme-terracotta-dark.png) |
 | Horizon (navy and orange) | ![Horizon, light](../../docs/images/theme-horizon-light.png)       | ![Horizon, dark](../../docs/images/theme-horizon-dark.png)       |
+| Sage (green and coral)    | ![Sage, light](../../docs/images/theme-sage-light.png)             | ![Sage, dark](../../docs/images/theme-sage-dark.png)             |
+| Slate (ink and green)     | ![Slate, light](../../docs/images/theme-slate-light.png)           | ![Slate, dark](../../docs/images/theme-slate-dark.png)           |
 
 Components never contain a colour, font or shadow value. They read semantic CSS custom properties
 (`--ctpl-color-text`, `--ctpl-color-accent`, `--ctpl-color-highlight`, ...) defined in `src/templates/tokens.css`, in three

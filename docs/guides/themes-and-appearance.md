@@ -14,12 +14,12 @@ The look of the site is set on the site itself, not on a page:
 
 The **Site look** section has three fields:
 
-| Field                   | Values                                                                     | Default                                                                                                                         |
-| ----------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| **Theme**               | Classic (navy), Ocean (teal), Terracotta (warm), Horizon (navy and orange) | Classic (navy)                                                                                                                  |
-| **Light or dark**       | Automatic, Always light, Always dark                                       | Automatic                                                                                                                       |
-| **Default share image** | An image from the media library                                            | The picture shown when a page without its own image is shared ([Sharing on social networks](seo.md#sharing-on-social-networks)) |
-| **Show the breadcrumb** | ticked or not                                                              | ticked                                                                                                                          |
+| Field                   | Values                                                                                                                    | Default                                                                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Theme**               | Classic (navy), Ocean (teal), Terracotta (warm), Horizon (navy and orange), Sage (green and coral), Slate (ink and green) | Classic (navy)                                                                                                                  |
+| **Light or dark**       | Automatic, Always light, Always dark                                                                                      | Automatic                                                                                                                       |
+| **Default share image** | An image from the media library                                                                                           | The picture shown when a page without its own image is shared ([Sharing on social networks](seo.md#sharing-on-social-networks)) |
+| **Show the breadcrumb** | ticked or not                                                                                                             | ticked                                                                                                                          |
 
 ## Theme
 
@@ -32,10 +32,12 @@ and no layout: every page keeps its sections, text and images.
 | **Ocean (teal)**              | ![Ocean theme, light](../images/theme-ocean-light.png)           | ![Ocean theme, dark](../images/theme-ocean-dark.png)           |
 | **Terracotta (warm)**         | ![Terracotta theme, light](../images/theme-terracotta-light.png) | ![Terracotta theme, dark](../images/theme-terracotta-dark.png) |
 | **Horizon (navy and orange)** | ![Horizon theme, light](../images/theme-horizon-light.png)       | ![Horizon theme, dark](../images/theme-horizon-dark.png)       |
+| **Sage (green and coral)**    | ![Sage theme, light](../images/theme-sage-light.png)             | ![Sage theme, dark](../images/theme-sage-dark.png)             |
+| **Slate (ink and green)**     | ![Slate theme, light](../images/theme-slate-light.png)           | ![Slate theme, dark](../images/theme-slate-dark.png)           |
 
 Every theme is checked for sufficient text contrast (WCAG 2.1 AA) in both light and dark.
 
-Each theme also has an **emphasis colour**, used for values that must stand out, such as key figures and prices. It is the theme's main colour in Classic, Ocean and Terracotta, and an orange in Horizon. Horizon is designed light first: its dark version keeps the same navy, teal and orange family.
+Each theme also has an **emphasis colour**, used for values that must stand out, such as key figures and prices. It is the theme's main colour in Classic, Ocean and Terracotta, an orange in Horizon, a coral in Sage and a green in Slate. Horizon is designed light first: its dark version keeps the same navy, teal and orange family. Sage is calm and rounded, with serif headings; Slate is crisper, with sans-serif headings and squarer shapes.
 
 ## Light or dark
 

@@ -10,8 +10,8 @@
  * `color-scheme`: the visitor's system preference by default, or the site's choice stamped on
  * <html data-ctpl-scheme="light|dark"> by the Layout. So dark mode is never written twice.
  *
- * Themes: <html data-ctpl-theme="ocean|terracotta|horizon"> (from the site settings) overrides tier 2
- * only.
+ * Themes: <html data-ctpl-theme="ocean|terracotta|horizon|sage|slate"> (from the site settings)
+ * overrides tier 2 only.
  * Contrast of every theme x scheme pair is checked by `yarn check:contrast`.
  *
  * Breakpoints cannot be custom properties (they are not allowed in @media). The module uses two:
@@ -96,6 +96,45 @@
   --ctpl-lagoon-700: #0e6e8c;
   --ctpl-ember-300: #f7a26b;
   --ctpl-ember-700: #b4410f;
+
+  /* Sage theme: a deep green-teal on soft green-tinted surfaces, a warm coral for emphasis. */
+  --ctpl-sage-25: #fafcfb;
+  --ctpl-sage-50: #f0f6f3;
+  --ctpl-sage-100: #e2eee9;
+  --ctpl-sage-200: #cfe0d9;
+  --ctpl-sage-300: #75cdbd;
+  --ctpl-sage-400: #8aa69d;
+  --ctpl-sage-500: #5f7c73;
+  --ctpl-sage-600: #4a645d;
+  --ctpl-sage-700: #0e5c55;
+  --ctpl-sage-800: #0a4540;
+  --ctpl-sage-850: #0f2623;
+  --ctpl-sage-900: #0a1a18;
+  --ctpl-sage-ink: #1a332f;
+  --ctpl-sage-mist: #a9c4bc;
+  --ctpl-sage-pine: #0f3430;
+  --ctpl-sage-lagoon: #a6e3d7;
+  --ctpl-coral-300: #ffa58c;
+  --ctpl-coral-700: #b23c24;
+
+  /* Slate theme: a deep slate ink on cool neutral surfaces, a confident green for emphasis. */
+  --ctpl-granite-25: #fbfcfd;
+  --ctpl-granite-50: #f3f5f8;
+  --ctpl-granite-100: #e8ecf2;
+  --ctpl-granite-200: #d7dde6;
+  --ctpl-granite-300: #b6c5de;
+  --ctpl-granite-400: #7d8aa0;
+  --ctpl-granite-500: #657289;
+  --ctpl-granite-600: #475266;
+  --ctpl-granite-700: #2a3850;
+  --ctpl-granite-800: #1a2539;
+  --ctpl-granite-850: #161d29;
+  --ctpl-granite-900: #0f141d;
+  --ctpl-granite-ink: #18202e;
+  --ctpl-granite-pale: #d3deef;
+  --ctpl-granite-deep: #1e2a3d;
+  --ctpl-emerald-300: #5fd08a;
+  --ctpl-emerald-700: #17703d;
 
   --ctpl-stack-sans:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -258,6 +297,54 @@
   --ctpl-heading-tracking: -0.015em;
   --ctpl-radius-md: 0.625rem;
   --ctpl-radius-lg: 1.25rem;
+}
+
+/* ---- Theme: sage (deep green-teal, soft green surfaces, coral emphasis, serif headings) ------ */
+:root[data-ctpl-theme="sage"] {
+  --ctpl-color-surface-page: light-dark(var(--ctpl-sage-25), var(--ctpl-sage-900));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-sage-850));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-sage-50), var(--ctpl-sage-850));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-sage-pine), var(--ctpl-sage-100));
+  --ctpl-color-text: light-dark(var(--ctpl-sage-ink), var(--ctpl-sage-50));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-sage-600), var(--ctpl-sage-mist));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-sage-50), var(--ctpl-sage-pine));
+  --ctpl-color-border: light-dark(var(--ctpl-sage-200), var(--ctpl-sage-ink));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-sage-500), var(--ctpl-sage-400));
+  --ctpl-color-accent: light-dark(var(--ctpl-sage-700), var(--ctpl-sage-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-sage-800), var(--ctpl-sage-lagoon));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-sage-100), var(--ctpl-sage-pine));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-sage-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-sage-700), var(--ctpl-sage-300));
+  --ctpl-color-highlight: light-dark(var(--ctpl-coral-700), var(--ctpl-coral-300));
+  --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-sage-900));
+  --ctpl-heading-weight: 600;
+  --ctpl-radius-md: 0.625rem;
+  --ctpl-radius-lg: 1.25rem;
+}
+
+/* ---- Theme: slate (deep slate ink, cool neutral surfaces, green emphasis, sans headings) ----- */
+:root[data-ctpl-theme="slate"] {
+  --ctpl-color-surface-page: light-dark(var(--ctpl-white), var(--ctpl-granite-900));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-granite-850));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-granite-50), var(--ctpl-granite-850));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-granite-800), var(--ctpl-granite-100));
+  --ctpl-color-text: light-dark(var(--ctpl-granite-ink), var(--ctpl-granite-50));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-granite-600), var(--ctpl-granite-300));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-granite-50), var(--ctpl-granite-800));
+  --ctpl-color-border: light-dark(var(--ctpl-granite-200), var(--ctpl-granite-700));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-granite-500), var(--ctpl-granite-400));
+  --ctpl-color-accent: light-dark(var(--ctpl-granite-700), var(--ctpl-granite-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-granite-800), var(--ctpl-granite-pale));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-granite-100), var(--ctpl-granite-deep));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-granite-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-emerald-700), var(--ctpl-emerald-300));
+  --ctpl-color-highlight: light-dark(var(--ctpl-emerald-700), var(--ctpl-emerald-300));
+  --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-granite-900));
+  --ctpl-font-heading: var(--ctpl-stack-sans);
+  --ctpl-heading-weight: 700;
+  --ctpl-heading-tracking: -0.015em;
+  --ctpl-radius-md: 0.25rem;
+  --ctpl-radius-lg: 0.5rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
