@@ -962,8 +962,15 @@ def seed_share_image(site):
     image = f"{site}/files/demo/abstract-blue.jpg"
     if not exists(image):
         return
+    # A site created by this script (or by createSite) has no ctplmix:siteSettings yet: the property
+    # does not exist on the node until the mixin is added, and setting it would fail.
+    gql('mutation($p:String!){jcr{mutateNode(pathOrId:$p){addMixins(mixins:["ctplmix:siteSettings"])}}}', {"p": site})
     set_props(site, [{"name": "ctplShareImage", "type": "WEAKREFERENCE", "value": uuid_at(image)}])
-    gql('mutation($s:String!){jcr{mutateNode(pathOrId:$s){publish(publishSubNodes:false,includeSubTree:false)}}}', {"s": site})
+    langs = gql('query($p:String!){jcr{nodeByPath(path:$p){property(name:"j:languages"){values}}}}', {"p": site})
+    languages = ((langs["jcr"]["nodeByPath"] or {}).get("property") or {}).get("values") or ["en"]
+    # A publication without languages answers true and publishes nothing.
+    gql('mutation($s:String!,$l:[String]){jcr{mutateNode(pathOrId:$s){publish(languages:$l,publishSubNodes:false,includeSubTree:false)}}}',
+        {"s": site, "l": languages})
 
 
 def seed_listing_pages(site):
