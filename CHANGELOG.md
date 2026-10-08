@@ -1,5 +1,19 @@
 # classic-templates Changelog
 
+## 0.6.0
+
+### New Features
+
+* Added a Graphite theme (true charcoal neutrals with crimson call-to-action buttons and emphasis, sans-serif headings and squared corners), in light and dark and checked for WCAG 2.1 AA contrast; choose it under Site look > Theme
+
+### Bug Fixes
+
+* Pull requests that change no package (documentation, changelog, harness, demo scripts) no longer wait for the build and the integration tests, and a newer run cancels an obsolete one
+
+* The demo instance deployment runs only from the demo branches, so a change merged into main no longer replaces the build shown on the demo instance
+
+* The demo seeding script works against a Jahia Cloud cluster with a single session, and on a newly created site it now sets the default share image and publishes it in every site language
+
 ## 0.5.0
 
 ### New Features
