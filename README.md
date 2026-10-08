@@ -150,9 +150,16 @@ JAHIA_URL=http://localhost:8080 SUPER_USER_PASSWORD=root1234 yarn e2e:ci
 Each suite (smoke, foundations, chrome, content, sections, editorial) creates its own site on the
 template set, covers the happy path, authorization and edge cases, and deletes the site afterwards.
 In CI the suites run through the shared Jahia integration-test workflow, which installs every
-SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`), on every change, and
-nightly against the release and snapshot Jahia images with the latest published snapshots
+SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`), on every change to the
+code, and nightly against the release and snapshot Jahia images with the latest published snapshots
 (`tests/provisioning-manifest-snapshot.yml`).
+
+A pull request that changes no package skips the build, Sonar and the integration tests (about 23
+minutes); only the light checks run. That covers Markdown, `docs/`, the changelog, the agent harness
+(`.agents/`), the demo scripts (`scripts/`) and the demo deployment workflow. A new push to a pull
+request cancels its previous run, and a newer push to `main` cancels the older `main` run, except the
+commit that moves `main` to the next SNAPSHOT after a release (message starting with
+`chore: next development version`): the release packages come from the release commit's run.
 
 ### Demo instance
 
