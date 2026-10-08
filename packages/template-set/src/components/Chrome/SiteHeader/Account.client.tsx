@@ -33,7 +33,7 @@ const nameOf = (answer: unknown): string | undefined => {
  * session cookie) and swaps the sign-in link for the name and the sign-out link. A failed or
  * refused request leaves the sign-in link, which is always correct for someone not recognised.
  */
-export default function Account({ signInHref, signOutHref, graphqlUrl }: Props) {
+export default function Account({ signInHref, signOutHref, graphqlUrl }: Readonly<Props>) {
   const { t } = useTranslation("classic-templates");
   const [name, setName] = useState<string>();
 
