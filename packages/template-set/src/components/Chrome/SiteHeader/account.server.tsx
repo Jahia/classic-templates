@@ -2,8 +2,8 @@ import { Island, buildNodeUrl, jahiaComponent, server } from "@jahia/javascript-
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { JCRSiteNode } from "org.jahia.services.content.decorator";
 import type { RenderContext } from "org.jahia.services.render";
-import { accountUrls } from "../../../lib/account.js";
-import { asSystem, guestCanRead } from "../../../lib/access.js";
+import { accountUrls, safeLocalPath } from "../../../lib/account.js";
+import { asGuest, guestCanRead, pageUrlById } from "../../../lib/access.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
 import Account from "./Account.client.jsx";
 import type { Props } from "./types.js";
@@ -25,18 +25,32 @@ const landingUrl = (
   locale: unknown,
 ): string => {
   if (header.hasProperty("accountLanding")) {
-    const identifier = header.getProperty("accountLanding").getString();
-    try {
-      server.render.addCacheDependency({ uuid: identifier }, renderContext);
-    } catch {
-      // Not readable by the rendering user: the system lookup below still finds it.
-    }
-    const picked = asSystem(renderContext.getWorkspace(), locale, (session) =>
-      buildNodeUrl(session.getNodeByIdentifier(identifier) as JCRNodeWrapper),
+    const picked = pageUrlById(
+      header.getProperty("accountLanding").getString(),
+      renderContext,
+      locale,
     );
     if (picked) return picked;
   }
   return buildNodeUrl(mainNode);
+};
+
+/**
+ * The site's own sign-in page, when the editor picked one and a guest can read it in live (a page
+ * that is deleted, or not published yet, would turn the entry into a dead link: the platform's login
+ * route is the answer then). Looked up as the guest, so the answer is the same whoever renders the
+ * shared header first.
+ */
+const signInPageUrl = (
+  header: JCRNodeWrapper,
+  renderContext: RenderContext,
+  locale: unknown,
+): string | undefined => {
+  if (!header.hasProperty("signInPage")) return undefined;
+  const identifier = header.getProperty("signInPage").getString();
+  const url = pageUrlById(identifier, renderContext, locale);
+  const path = asGuest((session) => session.getNodeByIdentifier(identifier).getPath());
+  return url && path ? url : undefined;
 };
 
 /**
@@ -68,7 +82,18 @@ jahiaComponent(
     // After signing out the visitor is a guest: send them to the page only if a guest can read it.
     const home = chromeOwner(site);
     const leaving = guestCanRead(mainNode.getPath()) ? buildNodeUrl(mainNode) : buildNodeUrl(home);
-    const urls = accountUrls(renderContext.getRequest().getContextPath(), landing, leaving);
+    const signInPage = signInPageUrl(currentNode, renderContext, currentResource.getLocale());
+    // On the sign-in page itself there is nowhere to "come back" to: its form falls back to the landing page or home.
+    const onSignInPage =
+      signInPage !== undefined && safeLocalPath(signInPage) === buildNodeUrl(mainNode);
+    const comeBack =
+      onSignInPage && !currentNode.hasProperty("accountLanding") ? undefined : landing;
+    const urls = accountUrls(
+      renderContext.getRequest().getContextPath(),
+      comeBack,
+      leaving,
+      signInPage,
+    );
 
     return (
       <div data-testid="ctpl-account" data-ctpl-account>

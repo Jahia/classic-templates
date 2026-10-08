@@ -14,6 +14,7 @@ export const Tile = ({
   href,
   text,
   icon,
+  badge,
   testId,
   children,
 }: {
@@ -22,12 +23,15 @@ export const Tile = ({
   href?: string;
   text?: string;
   icon?: ReactNode;
+  /** A small status shown above the heading (the "Members only" badge). */
+  badge?: ReactNode;
   testId: string;
   children?: ReactNode;
 }) => (
   <article className={classes.tile} data-testid={testId}>
     <div className={classes.content}>
       {icon && <div className={classes.icon}>{icon}</div>}
+      {badge && <p className={classes.badge}>{badge}</p>}
       {heading && (
         <Heading className={classes.title}>
           {href ? (

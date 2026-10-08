@@ -1,0 +1,13 @@
+.editNote {
+  margin-block: var(--ctpl-space-3) 0;
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-sm);
+}
+
+/* The sign-in panel of a members-only page: the notice sits where the page's sections would. */
+.gate {
+  padding-block: var(--ctpl-space-6);
+}

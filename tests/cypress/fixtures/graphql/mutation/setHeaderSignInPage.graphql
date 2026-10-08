@@ -1,0 +1,12 @@
+mutation setHeaderSignInPage($headerPath: String!, $signIn: String!) {
+    jcr {
+        mutateNode(pathOrId: $headerPath) {
+            setPropertiesBatch(properties: [{ name: "showAccount", value: "true" }]) {
+                path
+            }
+            signInPage: mutateProperty(name: "signInPage") {
+                setValue(value: $signIn, type: WEAKREFERENCE)
+            }
+        }
+    }
+}

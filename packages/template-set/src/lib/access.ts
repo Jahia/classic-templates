@@ -1,5 +1,6 @@
-import { server } from "@jahia/javascript-modules-library";
-import type { JCRSessionWrapper } from "org.jahia.services.content";
+import { buildNodeUrl, server } from "@jahia/javascript-modules-library";
+import type { JCRNodeWrapper, JCRSessionWrapper } from "org.jahia.services.content";
+import type { RenderContext } from "org.jahia.services.render";
 
 /**
  * Runs `read` in a JCR session of the guest user on the live workspace, whoever renders the page.
@@ -52,4 +53,25 @@ export const asSystem = <T>(
   } catch {
     return undefined;
   }
+};
+
+/**
+ * The address of the page with this identifier, whoever renders: registers it as a cache
+ * dependency, then looks it up in a system session so a page the rendering user cannot read (a
+ * members area) still yields its address. Public by design: it is the page an editor chose to point
+ * to from public content. Undefined when the page is gone or not published yet.
+ */
+export const pageUrlById = (
+  identifier: string,
+  renderContext: RenderContext,
+  locale: unknown,
+): string | undefined => {
+  try {
+    server.render.addCacheDependency({ uuid: identifier }, renderContext);
+  } catch {
+    // Not readable by the rendering user: the system lookup below still finds it.
+  }
+  return asSystem(renderContext.getWorkspace(), locale, (session) =>
+    buildNodeUrl(session.getNodeByIdentifier(identifier) as JCRNodeWrapper),
+  );
 };

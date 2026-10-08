@@ -20,6 +20,26 @@
     "signOut": "Sign out",
     "signedInAs": "Signed in as"
   },
+  "signin": {
+    "formLabel": "Sign in",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "rejected": "The username or password is not right. Check them and try again.",
+    "unknown": "Signing in did not work. Try again in a moment.",
+    "signedInAs": "You are signed in as {{name}}.",
+    "continue": "Continue"
+  },
+  "members": {
+    "badge": "Members only",
+    "title": "Members only",
+    "newsNotice": "This news item is reserved for members. Sign in to read it.",
+    "articleNotice": "This article is reserved for members. Sign in to read it.",
+    "pageNotice": "This page is reserved for members. Sign in to see it.",
+    "editNote": "Members only: visitors who are not signed in see the teaser, a notice and a sign-in form instead of the body.",
+    "pageEditNote": "Members only page: visitors who are not signed in see the title, a notice and a sign-in form instead of the sections below."
+  },
   "links": {
     "label": "Links"
   },

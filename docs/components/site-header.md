@@ -26,14 +26,15 @@ The header area can also hold a [notice bar](notice-bar.md), above or below the 
 
 ### Site header
 
-| Label as shown in the editor | What it does                                                                                 | Notes                                                           |
-| ---------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Logo                         | Logo shown at the top left, linking to the home page.                                        | Optional. An SVG or a PNG about 44 pixels high works best.      |
-| Logo for dark mode           | A light-coloured version of the logo, used when the site shows in dark mode.                 | Optional. Only used when **Logo** is set too.                   |
-| Brand name                   | Name shown next to the logo.                                                                 | Per language. Leave empty to use the site title.                |
-| Show the brand name          | Shows the brand name next to the logo.                                                       | Default: on. Untick it when the logo already contains the name. |
-| Show a sign-in entry         | Adds "Sign in" to the utility bar; signed-in visitors see their name and "Sign out" instead. | Default: off. See [Sign-in entry](#sign-in-entry).              |
-| Page after sign-in           | The page visitors land on once signed in, for example a members area.                        | Optional. Empty: the page the visitor was on.                   |
+| Label as shown in the editor | What it does                                                                                       | Notes                                                           |
+| ---------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Logo                         | Logo shown at the top left, linking to the home page.                                              | Optional. An SVG or a PNG about 44 pixels high works best.      |
+| Logo for dark mode           | A light-coloured version of the logo, used when the site shows in dark mode.                       | Optional. Only used when **Logo** is set too.                   |
+| Brand name                   | Name shown next to the logo.                                                                       | Per language. Leave empty to use the site title.                |
+| Show the brand name          | Shows the brand name next to the logo.                                                             | Default: on. Untick it when the logo already contains the name. |
+| Show a sign-in entry         | Adds "Sign in" to the utility bar; signed-in visitors see their name and "Sign out" instead.       | Default: off. See [Sign-in entry](#sign-in-entry).              |
+| Page after sign-in           | The page visitors land on once signed in, for example a members area.                              | Optional. Empty: the page the visitor was on.                   |
+| Sign-in page                 | A page of the site with a [Sign-in form](sign-in.md), used instead of the platform's login screen. | Optional. Empty: the platform's login screen.                   |
 
 ### Utility links
 
@@ -85,8 +86,9 @@ On large screens:
 
 Switch on **Show a sign-in entry** (in the header's edit form, from the home page) when your site has a members area, an intranet or any content for signed-in visitors. Leave it off for a fully public site.
 
-- A visitor who is not signed in sees **Sign in** (in French, **Se connecter**). It opens the platform's own login page, and brings the visitor back to the page they were on once signed in.
+- A visitor who is not signed in sees **Sign in** (in French, **Se connecter**). It opens the platform's own login page, or your own sign-in page when you pick one in **Sign-in page**, and brings the visitor back to the page they were on once signed in.
 - A signed-in visitor sees their **name** and **Sign out** instead, on every page. After signing out they come back to the page they were on, or to the home page when that page is not open to the public.
+- **Sign-in page** keeps visitors in your design: create a page with a [Sign-in form](sign-in.md) section, pick it here, and the entry opens it with the page to come back to in its address. The page must be published, or the entry falls back to the platform's login screen. See [Members-only content](../guides/members-only-content.md).
 - **Page after sign-in** overrides the page to come back to: pick your members area and every sign-in lands there. The page can be restricted to signed-in users: that is the point.
 - There is **no link to maintain**: the sign-in and sign-out addresses belong to the platform, not to your content. Do not add a "Sign in" link to the utility links, and do not paste the address of your Jahia login page into an external link: it only works on that one server, and breaks when the site is copied to another environment. Switch this option on instead.
 - The header is the same for everybody (it is cached as one piece): a small script asks the platform who the visitor is and swaps "Sign in" for the name. For a split second a signed-in visitor can still see "Sign in". Without JavaScript the visitor always sees "Sign in", which is always correct for someone the site does not recognise.

@@ -38,7 +38,7 @@ classic-travel has its own page: [`travel.md`](travel.md).
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:heroCarousel`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`                                                                                       |
+| Content                                    | `ctpl:heroBanner`, `ctpl:heroCarousel`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`, `ctpl:signIn`                                                                        |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -439,6 +439,57 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   the mixin flushes the pages of the folder's items, verified by the Cypress edge case), on the
   listing page found and on every page linked. Nothing above the site node is read. A listing page
   published after its folder only shows once the folder (or the item) is published again.
+
+## Members-only content (0.7.0)
+
+Some content is public, some needs a signed-in visitor, and a visitor who is not signed in is never
+sent to Jahia's login screen or to a 404: they get the public face and a sign-in form. Decision of
+2026-10-08, replicated from the Comeos site (`mdlnt:event.mdl:isPublic`, `fullPageRestricted`), generalised.
+User-facing description: `docs/guides/members-only-content.md`.
+
+- **Flags (presentation, not ACL):** `ctplmix:membersOnly` (`extends = ctplmix:editorialItem`, property
+  `ctplMembersOnly`, default true once the mixin is added) on news and articles; `ctplMembersOnly` in
+  `ctplmix:pageOptions` on pages. The page flag is **inherited** by every page below (`lib/pageGate.ts`,
+  `nearestFlagged` in `lib/members.ts`, unit-tested); every page looked at is a cache dependency, so
+  un-flagging a parent refreshes its sub-pages (checked: a public sub-page turns gated and back within 2 s
+  of the parent's publication).
+- **Items:** the main-resource template renders `fullPageMembers` (cached `cache.perUser`) for a flagged
+  item, `fullPage` (shared cache) for the others. `fullPageMembers`: a signed-in visitor or edit mode gets
+  the body (`ItemBody`), anyone else `RestrictedPage` (meta line with the badge, h1, teaser, image,
+  `MembersNotice` with the sign-in form). The shared `fullPage` view never renders the body of a flagged item
+  (reached through `.fullPage.html.ajax` it gives the teaser page to everybody, members included). Cards,
+  rows and tiles carry `MembersBadge` (text and lock icon, never the icon alone).
+- **Pages:** `PageAreas` replaces the `Area`s of the three page templates. Gated: `Render node view="membersGate"
+parameters={{ areas }}` (view of `jnt:page`, `cache.perUser`): signed in gets the heading and the areas, a guest
+  the heading (visible even when "hide title" is on, since the hero is not rendered), `MembersNotice` and the form.
+  Edit mode renders the areas inline with a note (a nested `Render` of the page would add a second Page Builder
+  marker). The `<h1>` is rendered by `PageAreas`/the gate view, not by the templates, for that reason.
+- **Why per-user views and not the ACL key.** The page template and the main-resource template sit in a cache
+  every visitor reads; the only place that may tell visitors apart is a view cached per user, and only flagged
+  items and pages pay for it (guests share one `guest` fragment). Checked on 8.2.3.2 (groups-signature ACL key):
+  guest and a plain member alternate on the same cold URLs in both orders, and after publication, with the right
+  output every time. With `cache.perUser` removed the same tests still pass here, because the ACL key already
+  separates a guest from a registered user as soon as any node grants `g:users` (the demo's area ACLs do): the
+  attribute is kept because the template set cannot know that is true of a deployment (legacy ACL key generator,
+  a site with no group ACE).
+- **Sign-in form** (`ctpl:signIn`, `Content/SignIn`): a section type and the island `SignInForm.client.tsx`,
+  also used by the notices (`SignInPanel`). It posts to `<contextPath>/cms/login?restMode=true&site=<key>` (`loginRoute`
+  in `lib/account.ts`), reads "OK" / "unauthorized" (`loginOutcome`, `lib/signin.ts`), then navigates in the browser:
+  `redirect` query parameter (kept only if `safeLocalPath`), else the current page (`stay`, teasers) or the server's
+  fallback (the section's `afterSignIn`, else home). All three are read in the browser because the cached page has no
+  query string. The section view is `cache.perUser` (a signed-in visitor sees who they are, "Continue", "Sign out"); in
+  edit mode it shows the form disabled. Needs JavaScript.
+- **Header:** `signInPage` on `ctpl:siteHeader`; `accountUrls(..., signInPage)` builds `<page>?redirect=<landing or
+current page>`; no redirect on the sign-in page itself unless `accountLanding` is set; the page must be readable by a
+  guest in live (`asGuest`) or the entry falls back to `/cms/login`.
+- **What is protected (checked as a guest on the local Jahia, Arvela seed):** areas of a gated page restricted with an
+  ACL (`g:users` reader, site administrators, privileged) answer "not found" at their address and through GraphQL;
+  the page node stays readable (that is what gives a guest the form, not a 404). **The body of a flagged item is only
+  hidden**: a guest reads it through GraphQL `nodeByPath` on the live workspace (an ACL on the item would remove its
+  teaser, card and listing for guests too). Areas created after the flag are not restricted. A server-side listener
+  applying the ACL when the option is switched on is an open point.
+- Not done: JSON-LD `isAccessibleForFree: false` for flagged items; a badge on the notice bar's items; Cypress specs
+  could not be run against the shared local Jahia (see `tests/cypress/e2e/members-only/`).
 
 ## Structured data (JSON-LD)
 

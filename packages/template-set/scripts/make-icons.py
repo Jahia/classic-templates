@@ -208,6 +208,16 @@ def hero_carousel(d, p):
         d.ellipse(p(x - 1, 25, x + 1, 27), fill=INK)
 
 
+def sign_in(d, p):
+    # A padlock: a shackle over a body with a keyhole.
+    d.arc(p(10, 4, 22, 18), start=180, end=360, fill=INK, width=w(3))
+    d.line(p(10, 11, 10, 14), fill=INK, width=w(3))
+    d.line(p(22, 11, 22, 14), fill=INK, width=w(3))
+    d.rounded_rectangle(p(6, 14, 26, 28), radius=2 * S, fill=INK)
+    d.ellipse(p(14, 18, 18, 22), fill=(255, 255, 255, 255))
+    d.rectangle(p(15, 21, 17, 25), fill=(255, 255, 255, 255))
+
+
 ICONS = {
     "ctpl_news": news,
     "ctpl_article": article,
@@ -238,6 +248,7 @@ ICONS = {
     "ctpl_tab": tab,
     "ctpl_noticeBar": notice_bar,
     "ctpl_heroCarousel": hero_carousel,
+    "ctpl_signIn": sign_in,
 }
 
 if __name__ == "__main__":

@@ -76,6 +76,16 @@
   font-size: var(--ctpl-text-sm);
 }
 
+/* ---- Members only: edit-mode note ---------------------------------------------------------------- */
+.editNote {
+  margin-block: 0;
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-sm);
+}
+
 /* ---- Card --------------------------------------------------------------------------------- */
 .card {
   position: relative;
