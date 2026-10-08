@@ -1,0 +1,6 @@
+// A page section of hand-picked destinations shown as a mosaic of cards. Its heading is the
+// optional jcr:title (an h2). destinations is the editor's selection, in the order picked: the
+// first four are shown, any further pick is ignored. A destination that no longer resolves
+// (deleted, not yet published) is skipped. The namespaces are declared in settings/definitions.cnd.
+[ctrv:mosaic] > jnt:content, mix:title, ctrvmix:pageComponent, ctplmix:sectionStyle
+ - destinations (weakreference, picker[type='editorial']) mandatory multiple < ctrv:destination

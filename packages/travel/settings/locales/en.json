@@ -51,6 +51,28 @@
     "conditions": "Fare conditions",
     "aboutDestination": "About the destination"
   },
+  "mosaic": {
+    "empty": "Pick one to four destinations: the mosaic shows nothing on the live site until then.",
+    "leftOut_one": "{{count}} picked destination is left out: a mosaic shows four at most, and leaves out a destination with no title in this language, deleted or not published yet.",
+    "leftOut_other": "{{count}} picked destinations are left out: a mosaic shows four at most, and leaves out a destination with no title in this language, deleted or not published yet."
+  },
+  "weather": {
+    "now": "Weather now:",
+    "kind": {
+      "clear": "Clear",
+      "partlyCloudy": "Partly cloudy",
+      "overcast": "Overcast",
+      "fog": "Fog",
+      "drizzle": "Drizzle",
+      "rain": "Rain",
+      "freezingRain": "Freezing rain",
+      "snow": "Snow",
+      "rainShowers": "Showers",
+      "snowShowers": "Snow showers",
+      "thunderstorm": "Thunderstorm",
+      "unknown": "Weather"
+    }
+  },
   "list": {
     "empty": "Nothing to show yet.",
     "startMissing": "The start folder is set but cannot be found here (deleted, or not published yet): the list shows nothing on the live site.",

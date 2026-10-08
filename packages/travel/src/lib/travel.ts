@@ -1,7 +1,7 @@
 import { server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
-import { readNumber, readReference, readString } from "./props.js";
+import { readNumber, readReference, readReferences, readString } from "./props.js";
 import type { DestinationEntry, FareEntry } from "./select.js";
 
 /** What cards and lists show of a destination, read from its node. */
@@ -15,6 +15,9 @@ export interface DestinationData {
   price?: number;
   currency?: string;
   priceNote?: string;
+  /** Decimal degrees; the weather chip of the mosaic needs both. */
+  latitude?: number;
+  longitude?: number;
 }
 
 /**
@@ -37,6 +40,8 @@ export const readDestination = (
     price: readNumber(node, "price"),
     currency: readString(node, "currency"),
     priceNote: readString(node, "priceNote"),
+    latitude: readNumber(node, "latitude"),
+    longitude: readNumber(node, "longitude"),
   };
 };
 
@@ -76,16 +81,7 @@ export const destinationEntry = (
 });
 
 /** The destinations a destination page links to, when they resolve here (W5: no null entries). */
-export const relatedDestinations = (node: JCRNodeWrapper): JCRNodeWrapper[] => {
-  if (!node.hasProperty("relatedDestinations")) return [];
-  const related: JCRNodeWrapper[] = [];
-  for (const value of node.getProperty("relatedDestinations").getValues()) {
-    try {
-      const target = (value as unknown as { getNode(): JCRNodeWrapper | null }).getNode();
-      if (target && target.getIdentifier() !== node.getIdentifier()) related.push(target);
-    } catch {
-      // deleted, or not published in this workspace
-    }
-  }
-  return related;
-};
+export const relatedDestinations = (node: JCRNodeWrapper): JCRNodeWrapper[] =>
+  readReferences(node, "relatedDestinations").filter(
+    (target) => target.getIdentifier() !== node.getIdentifier(),
+  );

@@ -31,3 +31,21 @@ export const readReference = (node: JCRNodeWrapper, name: string): JCRNodeWrappe
     return undefined;
   }
 };
+
+/**
+ * The nodes a multiple weakreference property of `node` points at, in order, leaving out those
+ * that do not resolve here (deleted, or not published in this workspace).
+ */
+export const readReferences = (node: JCRNodeWrapper, name: string): JCRNodeWrapper[] => {
+  if (!node.hasProperty(name)) return [];
+  const nodes: JCRNodeWrapper[] = [];
+  for (const value of node.getProperty(name).getValues()) {
+    try {
+      const target = (value as unknown as { getNode(): JCRNodeWrapper | null }).getNode();
+      if (target) nodes.push(target);
+    } catch {
+      // deleted, or not published in this workspace
+    }
+  }
+  return nodes;
+};

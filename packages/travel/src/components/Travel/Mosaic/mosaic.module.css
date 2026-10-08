@@ -1,0 +1,172 @@
+/* The destination mosaic (Figma Avitron, "Destination mosaic"): one to four photo cards on a grid
+   of four columns and two rows. One card fills the grid, two share it, three and four keep the
+   first card on the left half and split the right half. On small screens the cards stack. */
+
+.mosaic {
+  display: grid;
+  gap: var(--ctpl-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mosaic > li {
+  display: flex;
+  min-height: 14rem;
+}
+.mosaic > li > * {
+  flex: 1;
+}
+
+@media (min-width: 48rem) {
+  .mosaic {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    aspect-ratio: 960 / 452;
+  }
+  .mosaic > li {
+    min-height: 0;
+  }
+  .mosaic > li:first-child,
+  .mosaic[data-count="2"] > li {
+    grid-row: span 2;
+    grid-column: span 2;
+  }
+  .mosaic[data-count="1"] > li {
+    grid-column: 1 / -1;
+  }
+  .mosaic[data-count="3"] > li:not(:first-child),
+  .mosaic[data-count="4"] > li:nth-child(2) {
+    grid-column: span 2;
+  }
+}
+
+/* ---- Card: photo, gradient, then the text at the bottom ------------------------------------ */
+/* The photo, the gradient and the hover wash sit behind the text in the card's own stacking
+   context (isolation), in that order, so the gradient always covers the photo and the stretched
+   link covers them all. */
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: calc(var(--ctpl-space-4) + var(--ctpl-space-1));
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-surface-inverse);
+  color: var(--ctpl-color-text-on-overlay);
+  transition: box-shadow var(--ctpl-duration-base) var(--ctpl-ease);
+}
+.card:focus-within {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.photo {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 5%,
+    transparent 37.3%,
+    color-mix(in srgb, var(--ctpl-color-shadow) 78%, transparent)
+  );
+}
+/* Hover and focus (Figma "State=Hover"): a blue wash over the photo, a light inner border, a
+   deeper shadow, and the weather chip. */
+.card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--ctpl-color-accent) 25%, transparent);
+  box-shadow: inset 0 0 0 var(--ctpl-border-width)
+    color-mix(in srgb, var(--ctpl-color-text-on-overlay) 60%, transparent);
+  opacity: 0;
+  transition: opacity var(--ctpl-duration-base) var(--ctpl-ease);
+}
+.card:hover,
+.card:focus-within {
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--ctpl-color-shadow) 45%, transparent);
+}
+.card:hover::after,
+.card:focus-within::after {
+  opacity: 1;
+}
+
+/* The gradient alone leaves small text unreadable over a bright photo (a short card ends its
+   gradient lower than a tall one): a soft shadow keeps the text legible on any photo. */
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ctpl-space-1);
+  text-shadow: 0 1px 3px color-mix(in srgb, var(--ctpl-color-shadow) 70%, transparent);
+}
+.details > * {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+/* Never truncated: a cut text hides content, worse with larger text spacing (RGAA 10.12). */
+.country {
+  color: color-mix(in srgb, var(--ctpl-color-text-on-overlay) 84%, transparent);
+  font-size: var(--ctpl-text-xs);
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.place {
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-xl);
+  font-weight: var(--ctpl-font-weight-normal);
+  line-height: var(--ctpl-leading-tight);
+}
+.large .place {
+  font-size: var(--ctpl-text-2xl);
+}
+.place a {
+  color: var(--ctpl-color-text-on-overlay);
+  text-decoration: none;
+}
+
+/* ---- Weather chip (WeatherChip.client.tsx), top right while the card is hovered or focused ---- */
+/* Above the stretched link, so it lets the pointer through: a click on it opens the destination. */
+.chip {
+  position: absolute;
+  top: calc(var(--ctpl-space-4) + var(--ctpl-space-1));
+  right: calc(var(--ctpl-space-4) + var(--ctpl-space-1));
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 7px 10px;
+  border-radius: var(--ctpl-radius-pill);
+  background: color-mix(in srgb, var(--ctpl-color-surface-raised) 91%, transparent);
+  color: var(--ctpl-color-text);
+  font-size: var(--ctpl-text-xs);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--ctpl-duration-base) var(--ctpl-ease);
+}
+.card:hover .chip,
+.card:focus-within .chip {
+  opacity: 1;
+}
+.emoji {
+  font-size: 14px;
+}
+.condition {
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.temp {
+  font-weight: var(--ctpl-font-weight-bold);
+}

@@ -32,14 +32,14 @@ Modules, or the provisioning API: `- enable: "classic-travel"` with `site: "<sit
 
 ## Content types
 
-| Type                                          | What it is                                                                                                                                    | Where it goes                                                            |
-| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Destination (`ctrv:destination`)              | A city served: airport code, country, region, teaser, description, image, "from" price and its note, key facts, related destinations          | A content folder. Own page; cards in destination grids and content lists |
-| Fare offer (`ctrv:fareOffer`)                 | A fare to one destination: departure city, cabin, price, travel period, end of sale, conditions, call to action                               | A content folder. Own page; cards in fare lists and content lists        |
-| Fare list (`ctrv:fareList`)                   | A section listing fare offers under a folder, by region of the destination, sorted by price, end of sale or destination; ended sales left out | Page areas, columns and free zones of classic-templates pages            |
-| Destination grid (`ctrv:destinationGrid`)     | A section listing destinations under a folder, by region, from A to Z, with their "from" price                                                | Page areas, columns and free zones                                       |
-| Destination mosaic (`ctrv:destinationMosaic`) | A section of 1 to 4 picked destinations as large photo cards, each with its live weather when classic-weather is installed                    | Page areas, columns and free zones                                       |
-| Travel tools (`ctrv:travelTools`)             | A section of tools (book, manage, check in), each a tab with its text and link, and a notice shown to every visitor                           | Page areas, columns and free zones                                       |
+| Type                                      | What it is                                                                                                                                    | Where it goes                                                            |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| Destination (`ctrv:destination`)          | A city served: airport code, country, region, teaser, description, image, "from" price and its note, key facts, related destinations          | A content folder. Own page; cards in destination grids and content lists |
+| Fare offer (`ctrv:fareOffer`)             | A fare to one destination: departure city, cabin, price, travel period, end of sale, conditions, call to action                               | A content folder. Own page; cards in fare lists and content lists        |
+| Fare list (`ctrv:fareList`)               | A section listing fare offers under a folder, by region of the destination, sorted by price, end of sale or destination; ended sales left out | Page areas, columns and free zones of classic-templates pages            |
+| Destination grid (`ctrv:destinationGrid`) | A section listing destinations under a folder, by region, from A to Z, with their "from" price                                                | Page areas, columns and free zones                                       |
+| Destination mosaic (`ctrv:mosaic`)        | A section of 1 to 4 picked destinations as large photo cards, each with its live weather when classic-weather is installed                    | Page areas, columns and free zones                                       |
+| Travel tools (`ctrv:travelTools`)         | A section of tools (book, manage, check in), each a tab with its text and link, and a notice shown to every visitor                           | Page areas, columns and free zones                                       |
 
 Destinations and fare offers are also listable by the classic-templates **Content list**
 (`ctpl:jcrQuery`: pick "Destination" or "Fare offer" as the content to list), in cards or as a

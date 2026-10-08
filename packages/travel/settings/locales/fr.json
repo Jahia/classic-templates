@@ -51,6 +51,28 @@
     "conditions": "Conditions tarifaires",
     "aboutDestination": "À propos de la destination"
   },
+  "mosaic": {
+    "empty": "Choisissez une à quatre destinations : d'ici là, la mosaïque n'affiche rien sur le site en ligne.",
+    "leftOut_one": "{{count}} destination choisie est ignorée : une mosaïque en affiche quatre au plus, et ignore une destination sans titre dans cette langue, supprimée ou pas encore publiée.",
+    "leftOut_other": "{{count}} destinations choisies sont ignorées : une mosaïque en affiche quatre au plus, et ignore une destination sans titre dans cette langue, supprimée ou pas encore publiée."
+  },
+  "weather": {
+    "now": "Météo actuelle :",
+    "kind": {
+      "clear": "Dégagé",
+      "partlyCloudy": "Éclaircies",
+      "overcast": "Couvert",
+      "fog": "Brouillard",
+      "drizzle": "Bruine",
+      "rain": "Pluie",
+      "freezingRain": "Pluie verglaçante",
+      "snow": "Neige",
+      "rainShowers": "Averses",
+      "snowShowers": "Averses de neige",
+      "thunderstorm": "Orage",
+      "unknown": "Météo"
+    }
+  },
   "list": {
     "empty": "Rien à afficher pour le moment.",
     "startMissing": "Le dossier de départ est défini mais introuvable ici (supprimé, ou pas encore publié) : la liste n'affiche rien sur le site en ligne.",
