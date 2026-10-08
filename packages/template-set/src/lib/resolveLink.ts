@@ -42,44 +42,49 @@ export interface LinkState {
  * Pass `renderContext` when the caller shows the target's title: the target is then declared as a
  * cache dependency, so renaming the target page refreshes the cached link.
  */
-export const resolveLink = (node: JCRNodeWrapper, renderContext?: RenderContext): LinkState => {
-  const type = read(node, "j:linkType");
-  if (type === "internal") {
-    if (!node.hasProperty("j:linknode")) return { missingTarget: true };
-    const reference = node.getProperty("j:linknode");
-    try {
-      const target = reference.getNode() as JCRNodeWrapper;
-      if (renderContext) server.render.addCacheDependency({ node: target }, renderContext);
-      return {
-        link: {
-          href: buildNodeUrl(target),
-          external: false,
-          targetTitle: read(target, "jcr:title"),
-        },
-        missingTarget: false,
-      };
-    } catch {
-      // Target deleted, or not published / not readable by this visitor in this workspace. The
-      // fragment still depends on it: publishing the page, or opening its access, must replace the
-      // cached "no link" with the link (a dependency recorded only on success never fires). A guest
-      // cannot resolve the identifier itself, so the path is looked up outside the visitor's rights.
-      if (renderContext) {
-        const path = asSystem(renderContext.getWorkspace(), node.getSession().getLocale(), (s) =>
-          s.getNodeByIdentifier(reference.getString()).getPath(),
-        );
-        if (path) server.render.addCacheDependency({ path }, renderContext);
-      }
-      return { missingTarget: true };
-    }
-  }
-  if (type === "external") {
-    const url = read(node, "j:url")?.trim();
-    if (!url) return { missingTarget: true };
-    if (!isSafeExternalUrl(url)) return { missingTarget: true };
+/** An internal link: the target page, and a cache dependency on it whether or not it resolves. */
+const resolveInternal = (node: JCRNodeWrapper, renderContext?: RenderContext): LinkState => {
+  if (!node.hasProperty("j:linknode")) return { missingTarget: true };
+  const reference = node.getProperty("j:linknode");
+  try {
+    const target = reference.getNode() as JCRNodeWrapper;
+    if (renderContext) server.render.addCacheDependency({ node: target }, renderContext);
     return {
-      link: { href: url, external: true, targetTitle: read(node, "j:linkTitle") },
+      link: {
+        href: buildNodeUrl(target),
+        external: false,
+        targetTitle: read(target, "jcr:title"),
+      },
       missingTarget: false,
     };
+  } catch {
+    // Target deleted, or not published / not readable by this visitor in this workspace. The
+    // fragment still depends on it: publishing the page, or opening its access, must replace the
+    // cached "no link" with the link (a dependency recorded only on success never fires). A guest
+    // cannot resolve the identifier itself, so the path is looked up outside the visitor's rights.
+    if (renderContext) {
+      const path = asSystem(renderContext.getWorkspace(), node.getSession().getLocale(), (s) =>
+        s.getNodeByIdentifier(reference.getString()).getPath(),
+      );
+      if (path) server.render.addCacheDependency({ path }, renderContext);
+    }
+    return { missingTarget: true };
   }
+};
+
+/** An external link: a safe absolute URL, else no link. */
+const resolveExternal = (node: JCRNodeWrapper): LinkState => {
+  const url = read(node, "j:url")?.trim();
+  if (!url || !isSafeExternalUrl(url)) return { missingTarget: true };
+  return {
+    link: { href: url, external: true, targetTitle: read(node, "j:linkTitle") },
+    missingTarget: false,
+  };
+};
+
+export const resolveLink = (node: JCRNodeWrapper, renderContext?: RenderContext): LinkState => {
+  const type = read(node, "j:linkType");
+  if (type === "internal") return resolveInternal(node, renderContext);
+  if (type === "external") return resolveExternal(node);
   return { missingTarget: false };
 };
