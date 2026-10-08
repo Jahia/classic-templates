@@ -2,6 +2,7 @@ import { buildNodeUrl, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { readString as read } from "./props.js";
+import { titleOf } from "./title.js";
 
 import { isSafeExternalUrl } from "./urls.js";
 
@@ -11,7 +12,10 @@ export interface ResolvedLink {
   href: string;
   /** True for a contributed URL; views add rel="noopener" when it opens a new tab. */
   external: boolean;
-  /** Title of the target page (internal) or the link title (external), if any. */
+  /**
+   * Title of the target page (internal, in the site's default language when not translated yet)
+   * or the link title (external), if any.
+   */
   targetTitle?: string;
 }
 
@@ -50,7 +54,7 @@ export const resolveLink = (node: JCRNodeWrapper, renderContext?: RenderContext)
         link: {
           href: buildNodeUrl(target),
           external: false,
-          targetTitle: read(target, "jcr:title"),
+          targetTitle: titleOf(target),
         },
         missingTarget: false,
       };

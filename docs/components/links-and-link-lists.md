@@ -25,11 +25,11 @@ Add, remove and reorder the links of the list in Page Builder or jContent. The o
 
 ### Link
 
-| Label as shown in the editor | What it does                                                                | Notes                                                                                                                                                |
-| ---------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Title                        | The text of the link.                                                       | Per language. Optional for a page of this site: the link then shows the page's title.                                                                |
-| Link                         | Where the link goes: **No link**, **Page of this site** or **Web address**. | Default: No link. Choosing **Page of this site** adds a page picker; choosing **Web address** adds an address field. The target is set per language. |
-| Open in a new tab            | Opens the link in a new browser tab.                                        | Default: off. Screen readers hear "(opens in a new tab)" after the link text.                                                                        |
+| Label as shown in the editor | What it does                                                                | Notes                                                                                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Title                        | The text of the link.                                                       | Per language. Optional for a page of this site: the link then shows the page's title (in the site's default language while that page is not translated). |
+| Link                         | Where the link goes: **No link**, **Page of this site** or **Web address**. | Default: No link. Choosing **Page of this site** adds a page picker; choosing **Web address** adds an address field. The target is set per language.     |
+| Open in a new tab            | Opens the link in a new browser tab.                                        | Default: off. Screen readers hear "(opens in a new tab)" after the link text.                                                                            |
 
 ## How it behaves
 
@@ -62,4 +62,4 @@ Add, remove and reorder the links of the list in Page Builder or jContent. The o
 
 ## In other languages
 
-The link title and the link target are both per language. The link type (No link, Page of this site, Web address) is shared by all languages. After adding a language, set the target of each link in that language: the edit-mode hint "No link target in this language" points to the links still missing one.
+The link title and the link target are both per language. The link type (No link, Page of this site, Web address) is shared by all languages. After adding a language, set the target of each link in that language: the edit-mode hint "No link target in this language" points to the links still missing one. Links without a title of their own show the target page's title in the site's default language until that page is translated, so translate the page titles too.

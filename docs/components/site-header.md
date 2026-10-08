@@ -98,5 +98,5 @@ If a visitor's browser does not run JavaScript, the menu still works: on small s
 ## In other languages
 
 - The brand name and the utility link titles and targets are per language. The logos and the menu depth are shared.
-- The menu shows each page's title in the visitor's language. A page with no title in that language shows its technical name in the menu: translate every page title.
+- The menu shows each page's title in the visitor's language. A page with no title in that language shows its title in the site's default language until it is translated; only a page with no title at all shows its technical name.
 - The language switcher only offers a language once the current page is translated into it.

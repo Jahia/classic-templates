@@ -125,7 +125,10 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   `jmix:externalLink` (`j:url`, `j:linkTitle`). Works on our own types, in the Content Editor, over
   GraphQL and in live rendering. The label is our own field (`ctaLabel (string) i18n` on
   `ctplmix:cta` = `linkTo` + label); `ctpl:link` (list item) = `mix:title` + `ctplmix:linkTo`, and
-  an internal link without a title falls back to the target page's title.
+  an internal link without a title falls back to the target page's title. Every label read from
+  a page title (links, cards, menu, site map, breadcrumb) goes through `lib/title.ts`: the title in
+  the rendering language, else in the site's default language (read through a session in that
+  language), so a newly added language never shows system names or URLs as labels.
 
 - **The call to action is one reusable mixin, used two ways.** `ctplmix:cta` is a supertype where
   the component places the button in its own layout (hero banner, image and text, content list),
