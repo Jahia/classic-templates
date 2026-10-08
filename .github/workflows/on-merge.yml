@@ -1,5 +1,5 @@
 # Runs on every push to main: build, SBOM, integration tests, then publish the snapshots of the
-# three packages (template set, classic-travel, pre-packaged site) to Nexus.
+# packages (template set, classic-travel, the two pre-packaged sites) to Nexus.
 name: On merge to main
 
 on:
@@ -9,6 +9,13 @@ on:
       - "main"
     tags-ignore:
       - "**"
+
+# A newer push to main makes an older run obsolete (it builds and publishes older packages): cancel
+# it. The exception is the commit that moves main to the next SNAPSHOT right after a release: the
+# release packages come from the release commit's run, which must finish.
+concurrency:
+  group: on-merge-${{ github.ref }}
+  cancel-in-progress: "${{ !startsWith(github.event.head_commit.message, 'chore: next development version') }}"
 
 jobs:
   update-signature:
