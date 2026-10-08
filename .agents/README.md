@@ -3,12 +3,13 @@
 How to work on this repository with an AI agent. It holds four packages, built by the root
 `pom.xml` and released at one version:
 
-| Package                     | What it is                                                                 | Work from                       |
-| --------------------------- | -------------------------------------------------------------------------- | ------------------------------- |
-| `packages/template-set`     | The classic-templates template set (`ctpl`, `ctplmix`)                     | `packages/template-set`         |
-| `packages/travel`           | classic-travel (`ctrv`, `ctrvmix`), a module depending on the template set | `packages/travel`               |
-| `packages/weather`          | classic-weather, the Java `weather` action of the destination mosaic       | `packages/weather` (Maven)      |
-| `packages/prepackaged-site` | The `classic-dev` demo site as a pre-packaged project                      | `scripts/export-prepackaged.py` |
+| Package                           | What it is                                                                 | Work from                                         |
+| --------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------- |
+| `packages/template-set`           | The classic-templates template set (`ctpl`, `ctplmix`)                     | `packages/template-set`                           |
+| `packages/travel`                 | classic-travel (`ctrv`, `ctrvmix`), a module depending on the template set | `packages/travel`                                 |
+| `packages/weather`                | classic-weather, the Java `weather` action of the destination mosaic       | `packages/weather` (Maven)                        |
+| `packages/prepackaged-site`       | The `classic-dev` demo site as a pre-packaged project                      | `scripts/export-prepackaged.py`                   |
+| `packages/prepackaged-skylantern` | The `skylantern` demo site (a fictional airline) as a pre-packaged project | `scripts/export-prepackaged.py --site skylantern` |
 
 Demo seeding scripts (`scripts/`), Cypress tests (`tests/`), documentation (`docs/`) and CI are
 shared at the root.
@@ -53,4 +54,4 @@ use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` an
 7. Deploy after each component: `yarn build && yarn deploy` from the package folder. Never run `yarn dev` from an agent.
 8. The four packages share the version of the root `pom.xml`; never give one package its own version.
 9. classic-weather is optional for classic-travel: a site without it shows no weather, and nothing else changes. Keep the action name `weather` and its answer (`tempC`, `weatherCode`) in step with `packages/travel/src/lib/weather.ts`.
-10. The pre-packaged site holds the template set's content only: regenerate it with `scripts/export-prepackaged.py`, never edit its XML by hand.
+10. A pre-packaged site holds the content of this repository's modules only (classic-dev: the template set; skylantern: the template set and classic-travel): regenerate it with `scripts/export-prepackaged.py [--site skylantern]`, never edit its XML by hand. What each site keeps, converts and rewrites is its profile in that script.

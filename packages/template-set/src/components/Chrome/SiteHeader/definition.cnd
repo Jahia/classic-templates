@@ -9,11 +9,15 @@
 // The site header, shared by every page: a utility bar of links (right-aligned, above), then the
 // logo and the main navigation. A singleton seeded in the home page's header area, hence hidden
 // from the content type picker; its children stay selectable in Page Builder.
+// showAccount adds a sign-in / sign-out entry to the utility bar. Its URLs are platform routes
+// (login and logout), not contributed links: accountLanding only names the page to come back to.
 [ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType
  - logo (weakreference, picker[type='image']) < jmix:image
  - logoDark (weakreference, picker[type='image']) < jmix:image
  - brandName (string) i18n
  - showBrandName (boolean) = true autocreated
+ - showAccount (boolean) = false autocreated
+ - accountLanding (weakreference, picker[type='page']) < jnt:page
  + utilityLinks (ctpl:linkList) = ctpl:linkList autocreated
  + languageSwitcher (ctpl:languageSwitcher) = ctpl:languageSwitcher autocreated
  + navigation (ctpl:mainNavigation) = ctpl:mainNavigation autocreated

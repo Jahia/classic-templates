@@ -1,0 +1,28 @@
+/* Same quiet link as the utility links next to it. */
+.link {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+.link:hover {
+  color: var(--ctpl-color-link-hover);
+  text-decoration-color: currentColor;
+}
+
+.signedIn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-3);
+}
+.name {
+  max-width: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ctpl-color-text);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+/* A hairline between the name and the sign-out link. */
+.name + .link {
+  padding-inline-start: var(--ctpl-space-3);
+  border-inline-start: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}

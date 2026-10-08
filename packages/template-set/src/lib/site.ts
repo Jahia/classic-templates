@@ -3,7 +3,7 @@ import type { JCRSiteNode } from "org.jahia.services.content.decorator";
 import type { RenderContext } from "org.jahia.services.render";
 
 /** Themes declared by the ctplmix:siteSettings choicelist, besides the implicit default. */
-const THEMES = new Set(["ocean", "terracotta", "horizon"]);
+const THEMES = new Set(["ocean", "terracotta", "horizon", "sage", "slate"]);
 const SCHEMES = new Set(["light", "dark"]);
 
 export interface SiteLook {

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The skylantern demo site (Skylantern Airways, a fictional airline) as a pre-packaged project. The
+  site export lives unzipped in src/main/skylantern (written by scripts/export-prepackaged.py at the
+  repository root, with the site option set to skylantern); the build zips it into skylantern.zip,
+  wraps it with src/main/prepackagedSites/export.properties into
+  META-INF/prepackagedSites/skylantern.zip of the bundle, and attaches that zip with the classifier
+  `import`. Administration > Projects then offers it under "Import prepackaged project".
+  The groupId is org.jahia.community: the bundle carries no Jahia signature.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>classic-templates-root</artifactId>
+    <groupId>org.jahia.modules.javascript</groupId>
+    <version>0.6.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <groupId>org.jahia.community</groupId>
+  <artifactId>skylantern-prepackaged-website</artifactId>
+  <name>Skylantern Airways pre-packaged website</name>
+  <packaging>bundle</packaging>
+  <description>The Skylantern Airways demo site of the classic-templates template set and the classic-travel module, as a pre-packaged project to import.</description>
+
+  <properties>
+    <jahia-module-type>system</jahia-module-type>
+    <jahia-depends>default,classic-templates,classic-travel</jahia-depends>
+    <prepackaged.site>skylantern</prepackaged.site>
+    <sonar.tests />
+  </properties>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>${project.build.directory}/prepackaged</directory>
+        <includes>
+          <include>${prepackaged.site}.zip</include>
+        </includes>
+        <targetPath>META-INF/prepackagedSites</targetPath>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>build-prepackaged-site</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <target>
+                <zip destfile="${project.build.directory}/prepackaged-site/${prepackaged.site}.zip" basedir="${basedir}/src/main/${prepackaged.site}" />
+                <zip destfile="${project.build.directory}/prepackaged/${prepackaged.site}.zip">
+                  <fileset dir="${project.build.directory}/prepackaged-site" />
+                  <fileset dir="${basedir}/src/main/prepackagedSites" includes="export.properties" />
+                </zip>
+                <delete dir="${project.build.directory}/prepackaged-site" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-import-zip</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.directory}/prepackaged/${prepackaged.site}.zip</file>
+                  <type>zip</type>
+                  <classifier>import</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

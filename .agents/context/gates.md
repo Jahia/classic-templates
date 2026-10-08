@@ -11,7 +11,7 @@ below.
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------ |
 | Type-check + build  | `yarn build`                                                                                                                                                                                                                                                                                                 | exit 0, `dist/package.tgz` produced                          |
 | Unit tests          | `TZ=UTC yarn test:unit` (also run under another time zone when touching dates)                                                                                                                                                                                                                               | all pass                                                     |
-| Maven build (as CI) | `JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn -B clean install` (repository root, the four packages; the classic-weather unit tests run here)                                                                                                                                                               | `packages/*/target/` holds the two `.tgz` and the two `.jar` |
+| Maven build (as CI) | `JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn -B clean install` (repository root, the five packages; the classic-weather unit tests run here)                                                                                                                                                               | `packages/*/target/` holds the two `.tgz` and the two `.jar` |
 | Lint + format       | `yarn lint && yarn prettier --check .` (and in `tests/`: `yarn lint`)                                                                                                                                                                                                                                        | no error                                                     |
 | CND                 | `node $AISTARTUPKIT/.claude/skills/jahia-dev-review-cnd/scripts/check-cnd.mjs .` (one path argument; it walks the tree)                                                                                                                                                                                      | PASS                                                         |
 | No literal colours  | `yarn check:tokens`                                                                                                                                                                                                                                                                                          | no literal colour outside `src/templates/tokens.css`         |
@@ -32,11 +32,17 @@ lists its pages for the site review.
 ## Pre-packaged site
 
 `python3 scripts/export-prepackaged.py` rewrites `packages/prepackaged-site/src/main/classic-dev/`
-from the local `classic-dev` site (seeded and published first); `--check` exits 1 when the committed
-export is not up to date. After a change, import the built zip under another site key on a local
-instance (copy `target/prepackaged/classic-dev.zip`, rename `/sites/classic-dev/`, the root element
-and `sitekey` in the inner zip, `importSite` through the provisioning API), check every page EN and
-FR answers 200 with one `<h1>`, then delete that site. Never import over `classic-dev` itself.
+from the local `classic-dev` site (seeded and published first), and with `--site skylantern`
+`packages/prepackaged-skylantern/src/main/skylantern/` from the local `skylantern` site; `--check`
+exits 1 when the committed export is not up to date. The script refuses an export that carries a
+user: a user added to a site group travels with the site, profile included; remove them from the
+group first. After a change, import the built zip under another site key on a local instance (copy
+`target/prepackaged/<site>.zip`, rename `/sites/<site>/` paths, the site's root element (found by
+its indentation, a nested `<sites>` sits under the groups) and `sitekey` in the inner zip, keep
+folders that share the site's name such as `files/skylantern`, `importSite` through the provisioning
+API), check every page EN and FR answers 200 with one `<h1>` (Skylantern: `tools/check-pages.py
+--site <key>` and `tools/check-breadcrumbs.py` of the skylantern-demo repository), the theme and
+the Open Graph tags, then delete that site. Never import over the real site itself.
 
 ## Images in tests
 

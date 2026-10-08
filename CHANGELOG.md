@@ -1,5 +1,19 @@
 # classic-templates Changelog
 
+## 0.5.0
+
+### New Features
+
+* Added a sign-in / sign-out entry to the site header: switch on "Show a sign-in entry" in the header's edit form and the utility bar offers "Sign in" to guests and the visitor's name with "Sign out" once signed in. Its addresses are the platform's own login and logout routes, built from the request's context path with a site-relative redirect (the page being viewed, or the new optional "Page after sign-in"), so nothing is tied to one server and nothing needs to be contributed as an external link. The header stays one cached fragment: a small island asks the platform who the visitor is. Also fixed: a link to a page that guests cannot read stayed cached as a plain label after the page was published or opened to everyone
+
+* Added two themes, Sage (deep green-teal on soft green surfaces, with coral buttons and emphasis) and Slate (deep slate ink on cool neutral surfaces, with green buttons and emphasis), each in light and dark and checked for WCAG 2.1 AA contrast; choose them under Site look > Theme. Themes can now colour call-to-action buttons separately from links and navigation (new action colour role, equal to the accent in the other themes, so they look the same)
+
+* New pre-packaged Skylantern Airways demo site (skylantern-prepackaged-website): a fictional airline in English and French, ready to import from Administration > Projects once classic-templates and classic-travel are installed
+
+### Bug Fixes
+
+* Menus, links, cards, the site map and the breadcrumb show a page's title in the site's default language while that page is not translated yet, instead of its system name or address
+
 ## 0.4.0
 
 * classic-travel and a pre-packaged demo site now ship from this repository with the template set, at the same version: install classic-templates-prepackaged-website and import the classic-dev demo site from Administration > Projects, with no other module needed
