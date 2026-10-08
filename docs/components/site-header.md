@@ -8,7 +8,7 @@ Types: `ctpl:siteHeader` (Site header), with its parts `ctpl:linkList` (utility 
 
 The header shared by every page of the site. From top to bottom:
 
-- a thin **utility bar**, aligned to the right, with a few utility links and the **language switcher**;
+- a thin **utility bar**, aligned to the right, with a few utility links, the **language switcher** and, if you switch it on, the **sign-in entry**;
 - the **logo** (or brand name), linking to the home page;
 - the **main navigation**, the site menu, built from the pages of the site.
 
@@ -26,12 +26,14 @@ The header area can also hold a [notice bar](notice-bar.md), above or below the 
 
 ### Site header
 
-| Label as shown in the editor | What it does                                                                 | Notes                                                           |
-| ---------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Logo                         | Logo shown at the top left, linking to the home page.                        | Optional. An SVG or a PNG about 44 pixels high works best.      |
-| Logo for dark mode           | A light-coloured version of the logo, used when the site shows in dark mode. | Optional. Only used when **Logo** is set too.                   |
-| Brand name                   | Name shown next to the logo.                                                 | Per language. Leave empty to use the site title.                |
-| Show the brand name          | Shows the brand name next to the logo.                                       | Default: on. Untick it when the logo already contains the name. |
+| Label as shown in the editor | What it does                                                                                 | Notes                                                           |
+| ---------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| Logo                         | Logo shown at the top left, linking to the home page.                                        | Optional. An SVG or a PNG about 44 pixels high works best.      |
+| Logo for dark mode           | A light-coloured version of the logo, used when the site shows in dark mode.                 | Optional. Only used when **Logo** is set too.                   |
+| Brand name                   | Name shown next to the logo.                                                                 | Per language. Leave empty to use the site title.                |
+| Show the brand name          | Shows the brand name next to the logo.                                                       | Default: on. Untick it when the logo already contains the name. |
+| Show a sign-in entry         | Adds "Sign in" to the utility bar; signed-in visitors see their name and "Sign out" instead. | Default: off. See [Sign-in entry](#sign-in-entry).              |
+| Page after sign-in           | The page visitors land on once signed in, for example a members area.                        | Optional. Empty: the page the visitor was on.                   |
 
 ### Utility links
 
@@ -79,6 +81,19 @@ On large screens:
 - The Escape key closes the panel and returns to its arrow button. A click elsewhere, or moving the focus out of the entry, closes it too.
 - The entry of the current page (and its parent entries) is highlighted.
 
+### Sign-in entry
+
+Switch on **Show a sign-in entry** (in the header's edit form, from the home page) when your site has a members area, an intranet or any content for signed-in visitors. Leave it off for a fully public site.
+
+- A visitor who is not signed in sees **Sign in** (in French, **Se connecter**). It opens the platform's own login page, and brings the visitor back to the page they were on once signed in.
+- A signed-in visitor sees their **name** and **Sign out** instead, on every page. After signing out they come back to the page they were on, or to the home page when that page is not open to the public.
+- **Page after sign-in** overrides the page to come back to: pick your members area and every sign-in lands there. The page can be restricted to signed-in users: that is the point.
+- There is **no link to maintain**: the sign-in and sign-out addresses belong to the platform, not to your content. Do not add a "Sign in" link to the utility links, and do not paste the address of your Jahia login page into an external link: it only works on that one server, and breaks when the site is copied to another environment. Switch this option on instead.
+- The header is the same for everybody (it is cached as one piece): a small script asks the platform who the visitor is and swaps "Sign in" for the name. For a split second a signed-in visitor can still see "Sign in". Without JavaScript the visitor always sees "Sign in", which is always correct for someone the site does not recognise.
+- In Page Builder the entry shows as plain text "Sign in": editors are signed in, and clicking it would take them away from the editing frame.
+
+**Links to pages that are not open to everyone.** A guest never gets a working link to a page they may not open (it would lead to "page not found"). In the main menu such a page is left out for that guest. A utility link to it shows its title as plain text, without a link; a utility link without a title shows nothing. Signed-in visitors who may open the page see the real link, and the header is cached separately for each kind of visitor, so one never receives the other's version. To show a **Members area** link only to signed-in visitors, restrict the link node itself to the **Users** group (its access rights in jContent): guests then do not see it at all.
+
 ### Mobile menu
 
 ![The header on a phone: the utility links and language buttons on top, the brand name and a "Menu" button, and the open menu listing About us, Services, News and Contact, with arrow buttons next to the entries that have subpages](../images/menu-mobile.png)
@@ -92,11 +107,12 @@ If a visitor's browser does not run JavaScript, the menu still works: on small s
 - Keep level 1 short: five to seven entries read well on a laptop. Group the rest under them.
 - Give pages short menu-friendly titles. The page title is also the menu entry.
 - Use the utility links for a handful of shortcuts (contact, customer area). They are not a second menu.
+- Use the sign-in entry rather than a link to a login page, and set **Page after sign-in** to your members area.
 - Upload a logo about 44 pixels high, and a light version for dark mode if your logo is dark.
 - Untick **Show the brand name** only if the name is readable in the logo itself.
 
 ## In other languages
 
-- The brand name and the utility link titles and targets are per language. The logos and the menu depth are shared.
+- The brand name and the utility link titles and targets are per language. The logos, the menu depth, the sign-in switch and the page after sign-in are shared. The words "Sign in", "Sign out" and "Signed in as" follow the visitor's language.
 - The menu shows each page's title in the visitor's language. A page with no title in that language shows its technical name in the menu: translate every page title.
 - The language switcher only offers a language once the current page is translated into it.

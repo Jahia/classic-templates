@@ -5,4 +5,6 @@ export interface Props {
   logoDark?: JCRNodeWrapper;
   brandName?: string;
   showBrandName?: boolean;
+  showAccount?: boolean;
+  accountLanding?: JCRNodeWrapper;
 }

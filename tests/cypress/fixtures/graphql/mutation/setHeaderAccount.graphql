@@ -1,0 +1,12 @@
+mutation setHeaderAccount($headerPath: String!, $show: String!, $landing: String!) {
+    jcr {
+        mutateNode(pathOrId: $headerPath) {
+            setPropertiesBatch(properties: [{ name: "showAccount", value: $show }]) {
+                path
+            }
+            landing: mutateProperty(name: "accountLanding") {
+                setValue(value: $landing, type: WEAKREFERENCE)
+            }
+        }
+    }
+}

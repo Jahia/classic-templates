@@ -1,6 +1,7 @@
 import { buildNodeUrl, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
+import { asSystem } from "./access.js";
 import { readString as read } from "./props.js";
 
 import { isSafeExternalUrl } from "./urls.js";
@@ -31,8 +32,10 @@ export interface LinkState {
  * in the language of the current session.
  *
  * - "internal": the picked page or content (j:linknode) through buildNodeUrl, so vanity URLs and
- *   the current language are honoured. A target that was deleted or is not visible in this
- *   workspace yields no link, never a broken one.
+ *   the current language are honoured. A target that was deleted, is not published yet, or that
+ *   the visitor may not read yields no link, never a broken one: a guest never gets a link to a
+ *   members-only page. The cached fragment is varied by the visitor's groups by Jahia itself (the
+ *   groups signature of its ACL cache key), so a signed-in visitor's link is not served to a guest.
  * - "external": the contributed URL (j:url), only if its scheme is allow-listed.
  * - "none" or unset: no link.
  *
@@ -43,8 +46,9 @@ export const resolveLink = (node: JCRNodeWrapper, renderContext?: RenderContext)
   const type = read(node, "j:linkType");
   if (type === "internal") {
     if (!node.hasProperty("j:linknode")) return { missingTarget: true };
+    const reference = node.getProperty("j:linknode");
     try {
-      const target = node.getProperty("j:linknode").getNode() as JCRNodeWrapper;
+      const target = reference.getNode() as JCRNodeWrapper;
       if (renderContext) server.render.addCacheDependency({ node: target }, renderContext);
       return {
         link: {
@@ -55,7 +59,16 @@ export const resolveLink = (node: JCRNodeWrapper, renderContext?: RenderContext)
         missingTarget: false,
       };
     } catch {
-      // Target deleted, or not published / not readable in this workspace.
+      // Target deleted, or not published / not readable by this visitor in this workspace. The
+      // fragment still depends on it: publishing the page, or opening its access, must replace the
+      // cached "no link" with the link (a dependency recorded only on success never fires). A guest
+      // cannot resolve the identifier itself, so the path is looked up outside the visitor's rights.
+      if (renderContext) {
+        const path = asSystem(renderContext.getWorkspace(), node.getSession().getLocale(), (s) =>
+          s.getNodeByIdentifier(reference.getString()).getPath(),
+        );
+        if (path) server.render.addCacheDependency({ path }, renderContext);
+      }
       return { missingTarget: true };
     }
   }
