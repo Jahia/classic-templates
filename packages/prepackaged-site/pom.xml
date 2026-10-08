@@ -12,7 +12,7 @@
   <parent>
     <artifactId>classic-templates-root</artifactId>
     <groupId>org.jahia.modules.javascript</groupId>
-    <version>0.6.0-SNAPSHOT</version>
+    <version>0.6.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>org.jahia.community</groupId>
