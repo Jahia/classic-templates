@@ -1,6 +1,6 @@
 {
   "name": "classic-travel",
-  "version": "0.5.0",
+  "version": "0.6.0-SNAPSHOT",
   "description": "Travel content types (destinations, fare offers, fare and destination lists, travel tools) for sites built on the classic-templates template set",
   "license": "MIT",
   "type": "module",
