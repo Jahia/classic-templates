@@ -178,6 +178,44 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   is marked in the browser because the header is one cached fragment shared by every page.
 - **Language switcher:** only languages the page exists in; `cache.mainResource` on its view so
   each page gets its own links inside the shared header (verified per page, EN and FR).
+- **Account entry** (sign in / sign out): `showAccount` (boolean, off) and `accountLanding` (page
+  picker) on `ctpl:siteHeader`; the entry renders in the utility bar through the header's own
+  `account` view (`Render node={currentNode} view="account"`, `account.server.tsx`), not a new child
+  node, so existing headers need no migration. In edit mode the default view prints a plain "Sign in"
+  instead (a nested `Render` of the same node adds a second Page Builder marker).
+  - **URLs are platform routes, never contributed links:** `<contextPath>/cms/login?redirect=<path>`
+    and `<contextPath>/cms/logout?redirect=<path>` (`src/lib/account.ts`; context path from
+    `renderContext.getRequest().getContextPath()`). The `redirect` is only ever a site-relative path
+    from `buildNodeUrl` (`safeLocalPath` refuses a scheme, `//host`, a backslash, whitespace).
+    Jahia's `Login` accepts a redirect on the request's own host or an `authorizedRedirectHosts` entry
+    (an absolute URL on another host still signs the user in but answers a bare 200 "OK" with no
+    redirect, checked on 8.2.3.2), and `Logout` only follows a redirect that resolves to a node, else
+    goes to `/`; both are open-redirect safe, but a
+    site-relative path is the one form that survives a change of server name. A contributed absolute
+    `http://<instance>/cms/login` external link works on one instance only: use the option instead.
+  - **Cache:** the header is one shared fragment, so the server output never depends on the user.
+    The server renders the guest version ("Sign in" link) plus the island `Account.client.tsx`,
+    which POSTs `{ currentUser { username displayName } }` to `<contextPath>/modules/graphql` (same
+    origin, session cookie; the browser adds the `Origin` header the endpoint requires) and swaps in
+    the name and "Sign out" when the user is not `guest`; any failure keeps the sign-in link. The
+    view has `cache.mainResource` (as the language switcher): the way back is the page being
+    viewed, per page. The sign-in destination (`accountLanding`) is resolved in a system session
+    (`asSystem` in `src/lib/access.ts`): it is typically a members page a guest cannot read, and a
+    guest-rendered fragment must still carry it; the address is what the editor chose to publish in
+    a public link. After sign-out the way back is the viewed page only when a guest can read it
+    (`guestCanRead`, via `server.jcr.doExecuteAsGuest`), else the home page.
+- **Links to pages the visitor cannot read (verified on 8.2.3.2, groups-signature ACL key):** Jahia's
+  default `AclCacheKeyPartGenerator` (`useGroupsSignature=true`) keys every fragment on the
+  visitor's principals that carry an ACE somewhere, so a header rendered for a member and one
+  rendered for a guest are different fragments whenever any page grants or denies access to a
+  group. A link or menu entry to a members page is therefore not served to a guest, in either order
+  (tested: root and a plain member first, then a guest, and the reverse). What did go wrong: a
+  `ctpl:link` whose target a guest cannot read registered no cache dependency (only a successful
+  lookup did), so "no link" stayed cached after the page was opened or published. `resolveLink` now
+  depends on the target's path, looked up in a system session. If a deployment switches to
+  `org.jahia.aclCacheKeyPartGenerator.implementation=legacyAclCacheKeyPartGenerator` (node-level
+  roles only), the ACL key no longer sees the target: add `cache.dependsOnReference: "j:linknode"`
+  to the link view, and `cache.dependsOnVisibilityOf` to the menu. Not added: untestable here.
 - **Breadcrumb** (Tier 1, `src/templates/Breadcrumb.tsx`): rendered by the page shell between the
   header and `<main>` (the skip link jumps over it), not a droppable type: it has nothing to
   contribute but page titles. Home first, the page tree down to the current page (marked

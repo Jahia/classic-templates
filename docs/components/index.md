@@ -32,7 +32,7 @@ Both already exist on every site and appear on every page. You edit them from th
 
 | Component   | What it is for                                                                                        | Where it goes                                | Page                             |
 | ----------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------- | -------------------------------- |
-| Site header | Logo, utility links, language switcher and the main navigation (up to 3 levels).                      | Header area of the home page                 | [site-header.md](site-header.md) |
+| Site header | Logo, utility links, language switcher, optional sign-in / sign-out entry and the main navigation.    | Header area of the home page                 | [site-header.md](site-header.md) |
 | Site footer | Site name, tagline, link columns, copyright, legal and social links.                                  | Footer area of the home page                 | [site-footer.md](site-footer.md) |
 | Breadcrumb  | The trail from the home page to the current page. Not a component: switched on the site and per page. | Every page except home, set by the templates | [breadcrumb.md](breadcrumb.md)   |
 

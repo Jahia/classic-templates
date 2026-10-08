@@ -15,6 +15,11 @@
   "lang": {
     "label": "Language"
   },
+  "account": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signedInAs": "Signed in as"
+  },
   "links": {
     "label": "Links"
   },

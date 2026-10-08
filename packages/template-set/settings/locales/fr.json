@@ -15,6 +15,11 @@
   "lang": {
     "label": "Langue"
   },
+  "account": {
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "signedInAs": "Connecté en tant que"
+  },
   "links": {
     "label": "Liens"
   },

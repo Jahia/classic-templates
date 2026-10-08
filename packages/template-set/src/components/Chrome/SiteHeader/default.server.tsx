@@ -1,9 +1,11 @@
 import {
+  Render,
   RenderChild,
   buildNodeUrl,
   jahiaComponent,
   server,
 } from "@jahia/javascript-modules-library";
+import { useTranslation } from "react-i18next";
 import { readPositive } from "../../../lib/props.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
 import type { Props } from "./types.js";
@@ -13,13 +15,21 @@ import classes from "./site-header.module.css";
  * The site header: utility links and the language switcher in a bar above (right-aligned), then
  * the logo linking to the home page and the main navigation.
  *
+ * Account entry (optional, "Show a sign-in entry"): "Sign in" for a guest, the visitor's name and
+ * "Sign out" once signed in. It is its own view of this node (account.server.tsx) so that its
+ * fragment can vary by page while the rest of the header stays one shared cached fragment.
+ *
  * Logo: the light version, plus an optional dark version swapped in by CSS when the page is dark
  * (forced by the site or following the visitor). With the brand name shown, the image is
  * decorative (alt=""); without it, the image carries the brand name as its alt text.
  */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:siteHeader", displayName: "Site header" },
-  ({ logo, logoDark, brandName, showBrandName }: Props, { renderContext }) => {
+  (
+    { logo, logoDark, brandName, showBrandName, showAccount }: Props,
+    { currentNode, renderContext },
+  ) => {
+    const { t } = useTranslation("classic-templates");
     const site = pageSite(renderContext);
     server.render.addCacheDependency({ node: site }, renderContext); // brand falls back to the site title
     const home = chromeOwner(site);
@@ -35,6 +45,14 @@ jahiaComponent(
           <div className={`ctpl-container ${classes.utilityInner}`}>
             <RenderChild name="utilityLinks" view="inline" />
             <RenderChild name="languageSwitcher" />
+            {showAccount &&
+              (renderContext.isEditMode() ? (
+                // Not rendered through the account view: that would wrap the header in a second
+                // Page Builder selection marker. Editors see what visitors get, as plain text.
+                <span data-testid="ctpl-account-preview">{t("account.signIn")}</span>
+              ) : (
+                <Render node={currentNode} view="account" />
+              ))}
           </div>
         </div>
         <div className={`ctpl-container ${classes.bar}`}>

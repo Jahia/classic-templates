@@ -17,7 +17,8 @@ light and dark, from its settings, with no code change.
 ## Highlights
 
 - **Complete site chrome.** A header with a logo (with an optional dark-mode variant), a brand
-  name, a menu built from the page tree three levels deep, utility links and a language switcher.
+  name, a menu built from the page tree three levels deep, utility links, a language switcher and an
+  optional sign-in / sign-out entry (one switch, no link to maintain).
   A footer with a tagline, link columns, legal and social links and a copyright line. A breadcrumb
   trail. Header and footer are shared by every page and edited on the home page.
 - **Reusable sections.** Hero banner, image and text, rich text, columns, card grid (cards, icon
@@ -44,28 +45,28 @@ light and dark, from its settings, with no code change.
 
 ## Components
 
-| Component         | What it is for                                                | Docs                                                                  |
-| ----------------- | ------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Site header       | Logo, brand name, main menu, utility links, language switcher | [site-header](../../docs/components/site-header.md)                   |
-| Site footer       | Tagline, link columns, legal and social links, copyright      | [site-footer](../../docs/components/site-footer.md)                   |
-| Breadcrumb        | The trail from home to the current page, above the content    | [breadcrumb](../../docs/components/breadcrumb.md)                     |
-| Hero banner       | The banner at the top of a page: photo, split or plain        | [hero-banner](../../docs/components/hero-banner.md)                   |
-| Hero carousel     | Hero banners shown one at a time, autoplay off by default     | [hero-carousel](../../docs/components/hero-carousel.md)               |
-| Image and text    | An image beside a heading, rich text and a button             | [image-and-text](../../docs/components/image-and-text.md)             |
-| Rich text         | A heading and formatted text, at reading width or wide        | [rich-text](../../docs/components/rich-text.md)                       |
-| Columns           | Two, three or four columns of sections                        | [columns](../../docs/components/columns.md)                           |
-| Card grid         | Hand-picked cards, icon tiles or a logo strip                 | [card-grid](../../docs/components/card-grid.md)                       |
-| Accordion         | Entries that open and close, such as questions and answers    | [accordion](../../docs/components/accordion.md)                       |
-| Key figures       | A row of figures with their labels                            | [key-figures](../../docs/components/key-figures.md)                   |
-| Quote             | A quotation with the person's name, role and portrait         | [quote](../../docs/components/quote.md)                               |
-| Link list         | A list of links: a section, a bar or a footer column          | [links-and-link-lists](../../docs/components/links-and-link-lists.md) |
-| Content list      | News or articles found automatically, sorted and filtered     | [content-list](../../docs/components/content-list.md)                 |
-| Notice bar        | A slim band of the latest items as dated links, dismissible   | [notice-bar](../../docs/components/notice-bar.md)                     |
-| News and articles | Editorial items with their own page, card and compact views   | [news-and-articles](../../docs/components/news-and-articles.md)       |
-| Site map          | Every page of the site as nested lists                        | [site-map](../../docs/components/site-map.md)                         |
-| Tabs              | Tabs, each holding its own sections                           | [tabs](../../docs/components/tabs.md)                                 |
-| Free zone         | A section for components of other modules                     | [free-zone](../../docs/components/free-zone.md)                       |
-| Call to action    | The optional button any section can end with                  | [call-to-action](../../docs/components/call-to-action.md)             |
+| Component         | What it is for                                                               | Docs                                                                  |
+| ----------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| Site header       | Logo, brand name, main menu, utility links, language switcher, sign-in entry | [site-header](../../docs/components/site-header.md)                   |
+| Site footer       | Tagline, link columns, legal and social links, copyright                     | [site-footer](../../docs/components/site-footer.md)                   |
+| Breadcrumb        | The trail from home to the current page, above the content                   | [breadcrumb](../../docs/components/breadcrumb.md)                     |
+| Hero banner       | The banner at the top of a page: photo, split or plain                       | [hero-banner](../../docs/components/hero-banner.md)                   |
+| Hero carousel     | Hero banners shown one at a time, autoplay off by default                    | [hero-carousel](../../docs/components/hero-carousel.md)               |
+| Image and text    | An image beside a heading, rich text and a button                            | [image-and-text](../../docs/components/image-and-text.md)             |
+| Rich text         | A heading and formatted text, at reading width or wide                       | [rich-text](../../docs/components/rich-text.md)                       |
+| Columns           | Two, three or four columns of sections                                       | [columns](../../docs/components/columns.md)                           |
+| Card grid         | Hand-picked cards, icon tiles or a logo strip                                | [card-grid](../../docs/components/card-grid.md)                       |
+| Accordion         | Entries that open and close, such as questions and answers                   | [accordion](../../docs/components/accordion.md)                       |
+| Key figures       | A row of figures with their labels                                           | [key-figures](../../docs/components/key-figures.md)                   |
+| Quote             | A quotation with the person's name, role and portrait                        | [quote](../../docs/components/quote.md)                               |
+| Link list         | A list of links: a section, a bar or a footer column                         | [links-and-link-lists](../../docs/components/links-and-link-lists.md) |
+| Content list      | News or articles found automatically, sorted and filtered                    | [content-list](../../docs/components/content-list.md)                 |
+| Notice bar        | A slim band of the latest items as dated links, dismissible                  | [notice-bar](../../docs/components/notice-bar.md)                     |
+| News and articles | Editorial items with their own page, card and compact views                  | [news-and-articles](../../docs/components/news-and-articles.md)       |
+| Site map          | Every page of the site as nested lists                                       | [site-map](../../docs/components/site-map.md)                         |
+| Tabs              | Tabs, each holding its own sections                                          | [tabs](../../docs/components/tabs.md)                                 |
+| Free zone         | A section for components of other modules                                    | [free-zone](../../docs/components/free-zone.md)                       |
+| Call to action    | The optional button any section can end with                                 | [call-to-action](../../docs/components/call-to-action.md)             |
 
 Shared settings used across components: [section backgrounds](../../docs/components/section-style.md)
 and [images and their alternatives](../../docs/components/images.md).
