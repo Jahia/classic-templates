@@ -80,12 +80,12 @@ describe('Foundations - fallbacks and site look', () => {
         accent().should('eq', 'rgb(11, 58, 102)')
     })
 
-    // Each of these themes sets its own emphasis colour (coral for sage, green for slate), light first.
+    // Each of these themes sets its own emphasis and action colours (coral for sage, green for slate).
     const emphasisThemes = [
-        { theme: 'sage', highlight: 'rgb(178, 60, 36)', accent: 'rgb(14, 92, 85)' },
-        { theme: 'slate', highlight: 'rgb(23, 112, 61)', accent: 'rgb(42, 56, 80)' },
+        { theme: 'sage', highlight: 'rgb(178, 60, 36)', accent: 'rgb(14, 92, 85)', action: 'rgb(178, 60, 36)' },
+        { theme: 'slate', highlight: 'rgb(23, 112, 61)', accent: 'rgb(42, 56, 80)', action: 'rgb(23, 112, 61)' },
     ]
-    emphasisThemes.forEach(({ theme, highlight, accent: expectedAccent }) => {
+    emphasisThemes.forEach(({ theme, highlight, accent: expectedAccent, action }) => {
         it(`applies the ${theme} theme with its own emphasis colour in light and dark`, () => {
             cy.login()
             setLook(theme, 'light')
@@ -97,6 +97,9 @@ describe('Foundations - fallbacks and site look', () => {
                 probe.style.color = 'var(--ctpl-color-highlight)'
                 win.document.body.append(probe)
                 expect(win.getComputedStyle(probe).color).to.eq(highlight)
+                // The action role colours the buttons; it is its own colour here, not the accent.
+                probe.style.color = 'var(--ctpl-color-action)'
+                expect(win.getComputedStyle(probe).color).to.eq(action)
                 probe.remove()
             })
             accent().should('eq', expectedAccent)

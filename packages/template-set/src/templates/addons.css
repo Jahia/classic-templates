@@ -16,9 +16,9 @@
   --fmdb-btn-padding: var(--ctpl-space-3) var(--ctpl-space-5);
   --fmdb-btn-focus-outline-color: var(--ctpl-color-focus);
   --fmdb-btn-focus-outline-width: var(--ctpl-border-width-accent);
-  --fmdb-btn-primary-bg: var(--ctpl-color-accent);
-  --fmdb-btn-primary-hover-bg: var(--ctpl-color-accent-hover);
-  --fmdb-btn-primary-color: var(--ctpl-color-text-on-accent);
+  --fmdb-btn-primary-bg: var(--ctpl-color-action);
+  --fmdb-btn-primary-hover-bg: var(--ctpl-color-action-hover);
+  --fmdb-btn-primary-color: var(--ctpl-color-text-on-action);
   --fmdb-btn-secondary-bg: var(--ctpl-color-surface-raised);
   --fmdb-btn-secondary-hover-bg: var(--ctpl-color-surface-sunken);
   --fmdb-btn-secondary-color: var(--ctpl-color-text);

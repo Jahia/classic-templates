@@ -115,7 +115,9 @@
   --ctpl-sage-pine: #0f3430;
   --ctpl-sage-lagoon: #a6e3d7;
   --ctpl-coral-300: #ffa58c;
+  --ctpl-coral-200: #ffc9ba;
   --ctpl-coral-700: #b23c24;
+  --ctpl-coral-800: #8f2f1c;
 
   /* Slate theme: a deep slate ink on cool neutral surfaces, a confident green for emphasis. */
   --ctpl-granite-25: #fbfcfd;
@@ -134,7 +136,9 @@
   --ctpl-granite-pale: #d3deef;
   --ctpl-granite-deep: #1e2a3d;
   --ctpl-emerald-300: #5fd08a;
+  --ctpl-emerald-200: #99e4b5;
   --ctpl-emerald-700: #17703d;
+  --ctpl-emerald-800: #115630;
 
   --ctpl-stack-sans:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -169,6 +173,14 @@
      theme block overrides the accent. */
   --ctpl-color-highlight: var(--ctpl-color-accent);
   --ctpl-color-text-on-highlight: var(--ctpl-color-text-on-accent);
+
+  /* Action: the filled and outlined call-to-action buttons (the shared Cta, the Formidable submit
+     button). Every theme gets the accent unless it sets its own (sage and slate do), so links and
+     navigation keep the accent while a theme can colour its buttons differently. The aliases
+     resolve on <html>, where the theme block overrides the accent. */
+  --ctpl-color-action: var(--ctpl-color-accent);
+  --ctpl-color-action-hover: var(--ctpl-color-accent-hover);
+  --ctpl-color-text-on-action: var(--ctpl-color-text-on-accent);
 
   --ctpl-color-success: light-dark(var(--ctpl-green-700), var(--ctpl-green-300));
   --ctpl-color-success-surface: light-dark(var(--ctpl-green-50), var(--ctpl-green-900));
@@ -317,6 +329,9 @@
   --ctpl-color-focus: light-dark(var(--ctpl-sage-700), var(--ctpl-sage-300));
   --ctpl-color-highlight: light-dark(var(--ctpl-coral-700), var(--ctpl-coral-300));
   --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-sage-900));
+  --ctpl-color-action: light-dark(var(--ctpl-coral-700), var(--ctpl-coral-300));
+  --ctpl-color-action-hover: light-dark(var(--ctpl-coral-800), var(--ctpl-coral-200));
+  --ctpl-color-text-on-action: light-dark(var(--ctpl-white), var(--ctpl-sage-900));
   --ctpl-heading-weight: 600;
   --ctpl-radius-md: 0.625rem;
   --ctpl-radius-lg: 1.25rem;
@@ -340,6 +355,9 @@
   --ctpl-color-focus: light-dark(var(--ctpl-emerald-700), var(--ctpl-emerald-300));
   --ctpl-color-highlight: light-dark(var(--ctpl-emerald-700), var(--ctpl-emerald-300));
   --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-granite-900));
+  --ctpl-color-action: light-dark(var(--ctpl-emerald-700), var(--ctpl-emerald-300));
+  --ctpl-color-action-hover: light-dark(var(--ctpl-emerald-800), var(--ctpl-emerald-200));
+  --ctpl-color-text-on-action: light-dark(var(--ctpl-white), var(--ctpl-granite-900));
   --ctpl-font-heading: var(--ctpl-stack-sans);
   --ctpl-heading-weight: 700;
   --ctpl-heading-tracking: -0.015em;

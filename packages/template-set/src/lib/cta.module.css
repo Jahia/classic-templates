@@ -18,21 +18,21 @@
 }
 
 .primary {
-  background: var(--ctpl-color-accent);
-  color: var(--ctpl-color-text-on-accent);
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
 }
 .primary:hover {
-  background: var(--ctpl-color-accent-hover);
-  color: var(--ctpl-color-text-on-accent);
+  background: var(--ctpl-color-action-hover);
+  color: var(--ctpl-color-text-on-action);
 }
 
 .secondary {
-  border-color: var(--ctpl-color-accent);
-  color: var(--ctpl-color-accent);
+  border-color: var(--ctpl-color-action);
+  color: var(--ctpl-color-action);
 }
 .secondary:hover {
   background: var(--ctpl-color-accent-subtle);
-  color: var(--ctpl-color-accent-hover);
+  color: var(--ctpl-color-action-hover);
 }
 
 /* Over a photo the overlay guarantees contrast for light text, so the button is light too. */

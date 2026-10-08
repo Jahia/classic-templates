@@ -97,7 +97,7 @@ choose a "Theme" and "Light or dark". "Automatic" follows each visitor's system 
 | Slate (ink and green)     | ![Slate, light](../../docs/images/theme-slate-light.png)           | ![Slate, dark](../../docs/images/theme-slate-dark.png)           |
 
 Components never contain a colour, font or shadow value. They read semantic CSS custom properties
-(`--ctpl-color-text`, `--ctpl-color-accent`, `--ctpl-color-highlight`, ...) defined in `src/templates/tokens.css`, in three
+(`--ctpl-color-text`, `--ctpl-color-accent`, `--ctpl-color-action` for buttons, `--ctpl-color-highlight`, ...) defined in `src/templates/tokens.css`, in three
 tiers: primitives, semantic roles in `light-dark()` pairs, and a few component settings. A theme is
 a set of overrides of the semantic tokens under `[data-ctpl-theme="<name>"]`. Adding one means
 adding its tokens, its value to the site-settings choice list (with EN and FR labels), and running

@@ -74,6 +74,7 @@ Layout (only known values; the default look stamps nothing).
   so every theme has it; a theme that wants its own sets it (horizon: an orange, light first, with
   its own surfaces, text and borders). The alias resolves on `<html>`, where the theme block
   overrides the accent, so no theme has to repeat it. Sage (coral) and slate (green) also set their own.
+- **Action role:** `--ctpl-color-action` (+ `-hover`, `--ctpl-color-text-on-action`) is for the call-to-action buttons (`lib/cta.module.css`, the Formidable primary button in `addons.css`). Aliased to the accent in `:root`, like the emphasis role, so only a theme that wants other button colours sets it (sage: coral, slate: green). Links, navigation, tabs and indicators keep the accent. `check-contrast.mjs` covers it for every theme and scheme.
 - **Contrast** is checked by `yarn check:contrast` for every theme × scheme (30 pairs each), and
   literal colours outside `tokens.css` by `yarn check:tokens`. Both were shown to fail on a
   deliberately broken token before being trusted.

@@ -39,6 +39,10 @@ Every theme is checked for sufficient text contrast (WCAG 2.1 AA) in both light 
 
 Each theme also has an **emphasis colour**, used for values that must stand out, such as key figures and prices. It is the theme's main colour in Classic, Ocean and Terracotta, an orange in Horizon, a coral in Sage and a green in Slate. Horizon is designed light first: its dark version keeps the same navy, teal and orange family. Sage is calm and rounded, with serif headings; Slate is crisper, with sans-serif headings and squarer shapes.
 
+### Accent and action
+
+A theme has two main colours. The **accent** colours links, navigation, tabs and tinted backgrounds. The **action** colours the call-to-action buttons (the filled and the outlined button of a section, the submit button of a form). In Classic, Ocean, Terracotta and Horizon the two are the same colour. Sage uses a deep green-teal accent with coral buttons, and Slate a slate-ink accent with green buttons, so the buttons stand out from the text links.
+
 ## Light or dark
 
 - **Automatic**: each visitor sees the site in light or dark according to the setting of their own
