@@ -160,7 +160,10 @@ minutes); only the light checks run. That covers Markdown, `docs/`, the changelo
 (`.agents/`), the demo scripts (`scripts/`) and the demo deployment workflow. A new push to a pull
 request cancels its previous run, and a newer push to `main` cancels the older `main` run, except the
 commit that moves `main` to the next SNAPSHOT after a release (message starting with
-`chore: next development version`): the release packages come from the release commit's run.
+`chore: next development version`): the release packages come from the release commit's run. That
+exception protects a release run that has started, not one still waiting: GitHub keeps one waiting
+run per group and replaces it with the newer one. Push the next-SNAPSHOT commit only once the release
+commit's run is in progress (or re-run it if it was replaced).
 
 ### Demo instance
 
