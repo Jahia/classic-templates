@@ -9,7 +9,7 @@ preview with an image when they are shared (Open Graph, Twitter card).
 
 ![The demo home page in the Classic theme](docs/images/home.png)
 
-> **Latest release:** [0.4.0](https://github.com/Jahia/classic-templates/releases/tag/0_4_0) (October 2026).
+> **Latest release:** [0.5.0](https://github.com/Jahia/classic-templates/releases/tag/0_5_0) (October 2026).
 > Every version is described in the [changelog](CHANGELOG.md); `main` holds the next version in
 > development.
 
@@ -54,9 +54,10 @@ Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later.
 
 ## Demo sites
 
-The scripts in [`scripts/`](scripts/) build demonstration sites on a local Jahia. They need Python 3
-and Pillow, and read `JAHIA_URL` and `JAHIA_USER` (defaults `http://localhost:8080`,
-`root:root1234`). Each one reuses a single HTTP session.
+The scripts in [`scripts/`](scripts/) build demonstration sites on a local Jahia, or on a Jahia Cloud
+instance. They need Python 3 and Pillow, and read `JAHIA_URL` and `JAHIA_USER` (defaults
+`http://localhost:8080`, `root:root1234`). Each one reuses a single HTTP session, also on a cluster
+(where the session cookie is `DISTRIBUTED_JSESSIONID`), so a run never opens one session per call.
 
 | Script                                                             | What it does                                                                                                                                                                                                                                                                                                           |
 | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -150,9 +151,24 @@ JAHIA_URL=http://localhost:8080 SUPER_USER_PASSWORD=root1234 yarn e2e:ci
 Each suite (smoke, foundations, chrome, content, sections, editorial) creates its own site on the
 template set, covers the happy path, authorization and edge cases, and deletes the site afterwards.
 In CI the suites run through the shared Jahia integration-test workflow, which installs every
-SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`), on every change, and
-nightly against the release and snapshot Jahia images with the latest published snapshots
+SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`), on every change to the
+code, and nightly against the release and snapshot Jahia images with the latest published snapshots
 (`tests/provisioning-manifest-snapshot.yml`).
+
+A pull request that changes no package skips the build, Sonar and the integration tests (about 23
+minutes); only the light checks run. That covers Markdown, `docs/`, the changelog, the agent harness
+(`.agents/`), the demo scripts (`scripts/`) and the demo deployment workflow. A new push to a pull
+request cancels its previous run, and a newer push to `main` cancels the older `main` run, except the
+commit that moves `main` to the next SNAPSHOT after a release (message starting with
+`chore: next development version`): the release packages come from the release commit's run.
+
+### Demo instance
+
+`.github/workflows/demo-deploy.yml` builds classic-travel (and classic-weather, when its Java sources
+exist) and deploys them to the demo cloud instance named by the repository variable
+`DEMO_JAHIA_HOST`. It runs on pushes to the demo branches (`demo-live`, `demo-fallback`) and on
+demand, never on pushes to `main`: a `main` build carries a higher version and would replace the demo
+branch's build, which Jahia then refuses to start again.
 
 ## Releases
 

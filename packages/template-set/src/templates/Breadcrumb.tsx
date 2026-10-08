@@ -4,6 +4,7 @@ import type { RenderContext } from "org.jahia.services.render";
 import { useTranslation } from "react-i18next";
 import { readString } from "../lib/props.js";
 import { chromeOwner, pageSite } from "../lib/site.js";
+import { titleOf } from "../lib/title.js";
 import { type Trail, type TrailTree, buildTrail } from "../lib/trail.js";
 import classes from "./breadcrumb.module.css";
 
@@ -27,7 +28,7 @@ const jcrTree = (renderContext: RenderContext): TrailTree<JCRNodeWrapper> => {
         return undefined; // not readable here: the trail stops at the readable part
       }
     },
-    title: (node) => readString(node, "jcr:title"),
+    title: (node) => titleOf(node),
     name: (node) => node.getName(),
     href: (node) => {
       depend(node);
