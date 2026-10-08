@@ -106,7 +106,7 @@ image** when it only decorates. See [Images](../components/images.md).
 ### How do I change the theme?
 
 In jContent, edit the site node and switch on **Site look**. Pick a **Theme** (Classic (navy),
-Ocean (teal), Terracotta (warm), Horizon (navy and orange), Sage (green and coral) or Slate (ink and green)) and a **Light or dark** setting, save, and publish the site. See
+Ocean (teal), Terracotta (warm), Horizon (navy and orange), Sage (green and coral), Slate (ink and green) or Graphite (charcoal and crimson)) and a **Light or dark** setting, save, and publish the site. See
 [Themes and appearance](themes-and-appearance.md).
 
 ### Why does the site look dark for some visitors and light for others?

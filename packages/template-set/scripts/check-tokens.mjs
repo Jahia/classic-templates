@@ -13,7 +13,7 @@ const root = new URL("../src", import.meta.url).pathname;
 const TOKENS = join(root, "templates", "tokens.css");
 const LITERAL = /#[0-9a-f]{3,8}\b|\b(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch)\(/gi;
 const PRIMITIVE =
-  /var\(--ctpl-(?:(?:slate|navy|teal|clay|green|amber|red|sky|ink|lagoon|ember)-\d+|white|black|stack-[a-z]+)\b/g;
+  /var\(--ctpl-(?:(?:slate|navy|teal|clay|green|amber|red|sky|ink|lagoon|ember|sage|coral|granite|emerald|graphite|crimson)-\d+|white|black|stack-[a-z]+)\b/g;
 
 const cssFiles = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
