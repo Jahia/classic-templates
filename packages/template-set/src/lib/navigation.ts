@@ -3,6 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { readString as str } from "./props.js";
 import { pathRegex } from "./query.js";
+import { titleOf } from "./title.js";
 import { isSafeExternalUrl } from "./urls.js";
 
 /** One entry of the main menu. `href` is undefined for a menu label (jnt:navMenuText). */
@@ -28,13 +29,14 @@ const hiddenFromNav = (node: JCRNodeWrapper): boolean =>
 /**
  * Title and URL of a menu item, for the four item types Jahia offers under a page:
  * a page, a menu label (no link), a link to another node, and an external link (whose URL must
- * use an allow-listed scheme, otherwise the item becomes a plain label).
+ * use an allow-listed scheme, otherwise the item becomes a plain label). A title not translated
+ * yet shows in the site's default language; the system name is the last resort.
  */
 const describe = (
   node: JCRNodeWrapper,
   renderContext: RenderContext,
 ): { title: string; href?: string } => {
-  const title = str(node, "jcr:title");
+  const title = titleOf(node);
   if (node.isNodeType("jnt:page"))
     return { title: title ?? node.getName(), href: buildNodeUrl(node) };
   if (node.isNodeType("jnt:nodeLink")) {
@@ -43,7 +45,7 @@ const describe = (
       // The target often lives outside the home tree: declare it, or a rename leaves the menu stale.
       server.render.addCacheDependency({ node: target }, renderContext);
       return {
-        title: title ?? str(target, "jcr:title") ?? target.getName(),
+        title: title ?? titleOf(target) ?? target.getName(),
         href: buildNodeUrl(target),
       };
     } catch {

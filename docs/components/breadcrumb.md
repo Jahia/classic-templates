@@ -24,7 +24,7 @@ You control it with two switches, and one setting on content folders:
 
 - The trail starts with the home page, then lists the pages between the home page and the current page, and ends with the current page. The current page is not a link.
 - The first entry always reads **Home** (**Accueil** in French), whatever the home page's title: that title is often written for search engines ("Flights from Hong Kong across Asia") and would make every trail long. It still links to the home page.
-- Each other entry uses the page's title in the current language. A parent page with no title in that language is left out of the trail.
+- Each other entry uses the page's title in the current language, or its title in the site's default language while the page is not translated. A parent page with no title in either language is left out of the trail.
 - Pages hidden from the navigation still appear in the trail of their subpages.
 - **News items, articles and other items stored in content folders** have no place in the page tree. Their trail goes through the page that lists them, when their folder names it (see below): Home > News > the item, or Home > About > Media room > the item. Otherwise it reads Home > the item. The content folders themselves are never shown.
 - **Home page:** no breadcrumb.
@@ -45,7 +45,7 @@ Every item of the folder now gets the trail Home > the pages above that page > t
 
 - Only a page of the same site counts. A page of another site, or one that is not published yet, is ignored, and the trail reads Home > the item.
 - When the home page lists the folder, the trail stays Home > the item.
-- A listing page with no title in a language is left out of that language's trail, like any page.
+- A listing page with no title, neither in that language nor in the site's default language, is left out of the trail, like any page.
 - Publish the listing page before or with the folder: the item pages follow as soon as the folder is published, without republishing each item.
 - **In edit mode**, the page of an item whose folder names no listing page shows a short reminder under the breadcrumb. Visitors never see it.
 
@@ -58,4 +58,4 @@ Every item of the folder now gets the trail Home > the pages above that page > t
 
 ## In other languages
 
-The trail uses the page titles of each language. Translate the titles of all parent pages: an untranslated page drops out of the trail in that language.
+The trail uses the page titles of each language. A parent page not translated yet shows its title in the site's default language: translate the titles of all parent pages so the trail reads in one language.

@@ -47,4 +47,4 @@ If a page is marked "no index" with Jahia's sitemap module, it is left out of th
 
 ## In other languages
 
-Only the title of the section is per language. The entries show each page's title in the visitor's language: a page with no title in that language shows its technical name, so translate every page title.
+Only the title of the section is per language. The entries show each page's title in the visitor's language: a page with no title in that language shows its title in the site's default language until it is translated.

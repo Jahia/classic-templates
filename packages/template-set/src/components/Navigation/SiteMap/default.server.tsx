@@ -2,9 +2,9 @@ import { buildNodeUrl, jahiaComponent } from "@jahia/javascript-modules-library"
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading } from "../../../lib/Heading.js";
 import { buildSiteMap, type NavItem } from "../../../lib/navigation.js";
-import { readString } from "../../../lib/props.js";
 import { Section } from "../../../lib/Section.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
+import { titleOf } from "../../../lib/title.js";
 import type { Props } from "./types.js";
 import classes from "./site-map.module.css";
 
@@ -29,7 +29,7 @@ jahiaComponent(
     const home = chromeOwner(pageSite(renderContext));
     const tree: NavItem = {
       id: home.getIdentifier(),
-      title: readString(home, "jcr:title") ?? home.getName(),
+      title: titleOf(home) ?? home.getName(),
       href: buildNodeUrl(home),
       children: buildSiteMap(home, Number(depth) || 5, renderContext),
     };

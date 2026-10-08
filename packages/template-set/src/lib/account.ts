@@ -21,7 +21,7 @@ export const safeLocalPath = (url: string | undefined): string | undefined => {
   if (!url || url.length > 2048) return undefined;
   if (!url.startsWith("/") || url.startsWith("//")) return undefined;
   // eslint-disable-next-line no-control-regex -- control characters are exactly what is refused
-  if (/[\\\s\u0000-\u001f\u007f]/.test(url)) return undefined;
+  if (/[\\\u0000-\u001f\u007f]/.test(url) || /\s/.test(url)) return undefined;
   return url;
 };
 
@@ -53,7 +53,8 @@ export const accountUrls = (
   const base = normalise(contextPath);
   const withRedirect = (route: string, target: string | undefined) => {
     const safe = safeLocalPath(target);
-    return `${base}${route}${safe ? `?redirect=${encodeURIComponent(safe)}` : ""}`;
+    const query = safe ? `?redirect=${encodeURIComponent(safe)}` : "";
+    return `${base}${route}${query}`;
   };
   return {
     signIn: withRedirect(LOGIN, signInTo),
