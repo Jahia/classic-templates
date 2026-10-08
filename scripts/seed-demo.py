@@ -60,7 +60,9 @@ _auth = "Basic " + base64.b64encode(USER.encode()).decode()
 
 def _request(path, data=None, headers=None):
     req = urllib.request.Request(URL + path, data=data, headers=headers or {})
-    if not any(c.name == "JSESSIONID" for c in _jar):
+    # Basic auth only until the login session exists: JSESSIONID on a single node, DISTRIBUTED_JSESSIONID
+    # on a Jahia Cloud cluster. Sending it on every call opens new sessions (licence cap on demo instances).
+    if not any(c.name.endswith("JSESSIONID") for c in _jar):
         req.add_header("Authorization", _auth)
     with _http.open(req, timeout=120) as res:
         return res.read().decode()
