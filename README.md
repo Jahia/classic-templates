@@ -154,6 +154,14 @@ SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`), o
 nightly against the release and snapshot Jahia images with the latest published snapshots
 (`tests/provisioning-manifest-snapshot.yml`).
 
+### Demo instance
+
+`.github/workflows/demo-deploy.yml` builds classic-travel (and classic-weather, when its Java sources
+exist) and deploys them to the demo cloud instance named by the repository variable
+`DEMO_JAHIA_HOST`. It runs on pushes to the demo branches (`demo-live`, `demo-fallback`) and on
+demand, never on pushes to `main`: a `main` build carries a higher version and would replace the demo
+branch's build, which Jahia then refuses to start again.
+
 ## Releases
 
 The four packages share one version, set in the root `pom.xml`; a release publishes all four.
