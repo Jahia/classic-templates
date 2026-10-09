@@ -176,16 +176,19 @@ branch's build, which Jahia then refuses to start again.
 ## Releases
 
 The four packages share one version, set in the root `pom.xml`; a release publishes all four.
-The changelog is written with chachalog: a user-facing change
+The changelog is written with chachalog: every change
 adds a fragment under `.chachalog/` (see `.github/instructions/changelog.instructions.md`), and the
 release turns the fragments into a section of [CHANGELOG.md](CHANGELOG.md). classic-travel's history
 before it joined this repository is in [its own changelog](packages/travel/CHANGELOG.md).
 
+The release steps, from the changelog to the Jahia Store submission pack, are in
+[`.agents/context/release.md`](.agents/context/release.md).
+
 ## Contributing
 
 - Pull request titles follow [Conventional Commits](https://www.conventionalcommits.org/).
-- A user-facing change adds a changelog fragment under `.chachalog/`. Never edit a CHANGELOG file
-  by hand.
+- Every change adds a changelog fragment under `.chachalog/`, and updates the README, `docs/` and
+  `.agents/` lines that describe it. Never edit a CHANGELOG file by hand.
 - New template set components follow
   [`.agents/skills/ctpl-add-component/SKILL.md`](.agents/skills/ctpl-add-component/SKILL.md): EN and
   FR labels with tooltips, tokens only, a Cypress suite, and a documentation page under

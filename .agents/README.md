@@ -21,12 +21,13 @@ use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` an
 
 ## Read first
 
-| File                                                                       | What it holds                                                              |
-| -------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [`context/architecture.md`](context/architecture.md)                       | Decisions, type inventory, layout, theming, heading policy, open questions |
-| [`context/travel.md`](context/travel.md)                                   | classic-travel: types, contract with the template set, rules and gates     |
-| [`context/gates.md`](context/gates.md)                                     | The checks a change must pass before it is done, with the exact commands   |
-| [`skills/ctpl-add-component/SKILL.md`](skills/ctpl-add-component/SKILL.md) | The module-specific checklist for adding a component                       |
+| File                                                                       | What it holds                                                                                                |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| [`context/architecture.md`](context/architecture.md)                       | Decisions, type inventory, layout, theming, heading policy, open questions                                   |
+| [`context/travel.md`](context/travel.md)                                   | classic-travel: types, contract with the template set, rules and gates                                       |
+| [`context/gates.md`](context/gates.md)                                     | The checks a change must pass before it is done, with the exact commands                                     |
+| [`context/release.md`](context/release.md)                                 | Releasing: changelog and version, the GitHub release, then the replication kit and the Store submission pack |
+| [`skills/ctpl-add-component/SKILL.md`](skills/ctpl-add-component/SKILL.md) | The module-specific checklist for adding a component                                                         |
 
 ## Skill map (AIStartupKit skills, in the order they are used)
 
