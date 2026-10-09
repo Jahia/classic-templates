@@ -1,5 +1,11 @@
 # classic-templates Changelog
 
+## 0.7.1
+
+* The release checklist says the demo replication kit leaves every running development build (SNAPSHOT) in place, whatever its version, so a release never replaces the demo instance's build from a demo branch; it also says that the release commit's integration tests fail by design (the test provisioning installs development builds only) and that the next development version's run is the check
+
+* The release checklist names the next development version as the next minor (X.(Y+1).0-SNAPSHOT), as every release so far has done
+
 ## 0.7.0
 
 ### New Features
