@@ -1,6 +1,6 @@
 # classic-templates
 
-Monorepo of three Jahia packages, one version (root `pom.xml`):
+Monorepo of four Jahia packages, one version (root `pom.xml`):
 
 - `packages/template-set`: the classic-templates JavaScript template set (React 19, Vite),
   namespaces `ctpl` / `ctplmix`.
@@ -8,6 +8,9 @@ Monorepo of three Jahia packages, one version (root `pom.xml`):
   `ctrvmix`.
 - `packages/prepackaged-site`: the `classic-dev` demo site as a pre-packaged project, written by
   `scripts/export-prepackaged.py`.
+- `packages/prepackaged-skylantern`: the `skylantern` airline demo site (template set and
+  classic-travel) as a pre-packaged project, written by
+  `scripts/export-prepackaged.py --site skylantern`.
 
 Start with [`.agents/README.md`](.agents/README.md): it maps each task to the AIStartupKit skill to
 use, lists the non-negotiables, and links the architecture decisions and the gates a change must

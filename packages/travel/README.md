@@ -1,6 +1,6 @@
 # classic-travel
 
-The **classic-travel** module (`org.jahia.modules.javascript:classic-travel`), one of the three
+The **classic-travel** module (`org.jahia.modules.javascript:classic-travel`), one of the four
 packages of this repository, released at the same version as the template set. Back to the
 [repository README](../../README.md).
 
@@ -27,6 +27,10 @@ is on the [former repository](https://github.com/Jahia/classic-travel/releases))
 Jahia (Administration > Modules), or build it with `yarn build`. Then enable
 **classic-travel** on a site that uses the classic-templates template set (Site settings >
 Modules, or the provisioning API: `- enable: "classic-travel"` with `site: "<siteKey>"`).
+
+For a populated example, import the
+[Skylantern Airways pre-packaged site](../prepackaged-skylantern/README.md): 10 destinations, 6 fare
+offers, fare lists, a destination grid and travel tools, in English and French.
 
 ## Content types
 
@@ -104,7 +108,7 @@ Node 22 and Yarn 4 (the repository's `.yarn/releases`). Run the Yarn commands fr
 yarn install
 yarn build && yarn deploy     # build the package and install it in the local Jahia (http://localhost:8080)
 yarn lint                     # ESLint
-yarn test:unit                # Vitest unit tests (formatting, selection, queries, sanitizer, JSON-LD)
+yarn test:unit                # Vitest unit tests (prices and dates, selection, queries, heading levels, URLs, sanitizer, JSON-LD)
 yarn check:tokens             # no literal colour or primitive token in the stylesheets
 ```
 
@@ -120,7 +124,10 @@ with the repository's [`.agents/README.md`](../../.agents/README.md) and
 ```
 src/
 ├── components/Travel/<Type>/   definition.cnd, types.ts, views and CSS modules per type
-├── lib/                        formatting, selection and query helpers (unit-tested), shared views
+│                               (Destination, DestinationGrid, FareList, FareOffer, TravelTools)
+├── components/Travel/shared/   the card and list views shared by the fare and destination lists
+├── lib/                        formatting, selection, query, heading and URL helpers (unit-tested),
+│                               shared views (heading, image, price, rich text, call to action, JSON-LD)
 settings/                       namespaces and shared mixins, EN/FR labels, locales, type icons
 static/js/travel-tools.js       tabs enhancement
 scripts/                        token gate and icon drawing
