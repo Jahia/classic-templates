@@ -27,7 +27,7 @@ classic-templates, classic-travel and the platform modules `default`, `siteSetti
   (classic-travel), 10 news items (travel advisories and press releases) and 6 articles (careers
   and partner offers), listed by fare lists, a destination grid and content lists, and shown in a
   notice bar;
-- a hero carousel, travel tools (book, manage, check in, flight status) and every section of the
+- a hero carousel, travel tools (book, manage, check in, flight status) and the sections of the
   template set: hero banners, image and text, rich text with tables, columns, card grids, tabs,
   accordions, key figures, quotes and link lists;
 - the shared header (logo, three-level menu, utility links, language switcher, notice bar) and
@@ -36,7 +36,9 @@ classic-templates, classic-travel and the platform modules `default`, `siteSetti
   taxonomy (`skylantern-demo`: careers, partner offers, press releases, travel advisories) used by
   the content lists.
 
-Every name, fare, phone number and text is invented. The site is published (the export carries the
+Every name, fare, phone number and text is invented. The site also declares Chinese (`zh`),
+inactive and with no translation in the package: activate it in the site languages to translate
+the site. The site is published (the export carries the
 live workspace). It is not marked as the default site of the instance (`defaultSite=false` in
 `site.properties`): imported next to other sites, it must not take over the server's root address.
 Its server name is `localhost`, so on a shared instance it renders from its `/sites/skylantern/`

@@ -11,7 +11,8 @@ packaged as a Jahia module so that a populated site can be created in a few clic
 
 ## What the site contains
 
-A fictional web studio in Lyon, in English and French, built only with the template set's own
+A fictional web studio in Lyon, in English and French, in the Ocean theme (light or dark from
+each visitor's system setting), built only with the template set's own
 components, so it imports on an instance that has classic-templates and the platform modules
 `default`, `siteSettings` and `site-settings-seo`, nothing else:
 
@@ -19,11 +20,11 @@ components, so it imports on an instance that has classic-templates and the plat
   and operations, training with workshops, support), news, contact, a help centre, a landing page
   hidden from the menu, a legal notice, a privacy policy, a site map and an example accessibility
   statement;
-- 6 news items and 3 articles in content folders, each with its own page, listed by content lists
-  and a notice bar;
+- 6 news items and 3 articles in content folders, each with its own page, listed by content
+  lists;
 - the shared header (logo, three-level menu, utility links, language switcher) and footer (link
   columns, legal and social links) owned by the home page;
-- every section of the template set in use: hero banners, image and text, rich text with tables,
+- the sections of the template set: hero banners, image and text, rich text with tables,
   columns, card grids (cards, icon tiles, logos), accordions, tabs, key figures, quotes, link lists,
   content lists and the site map;
 - 22 generated images with their text alternatives, and a small demo taxonomy
@@ -37,6 +38,8 @@ settings after the import.
 The `classic-dev` site of a development instance has more: a Practical information page and a
 contact form that show the add-on modules (Formidable, jsfaq, js-media-gallery,
 js-store-locator). They are left out of this package, see [regenerating](#regenerating-the-package).
+The hero carousel, the notice bar and the free zone are not used by this site: the
+[Skylantern Airways package](../prepackaged-skylantern/README.md) shows the first two.
 
 ## Installing
 
