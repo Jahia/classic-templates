@@ -33,7 +33,7 @@ jahiaComponent(
         jcrSession,
         buildListQuery("ctrv:fareOffer", start.getPath()),
         FETCH_LIMIT,
-      ) as JCRNodeWrapper[];
+      );
       const translated = rows.filter((node) => node.hasI18N(locale as never));
       const entries = translated
         .map((node) => fareEntry(node, renderContext))

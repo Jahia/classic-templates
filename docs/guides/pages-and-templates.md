@@ -64,6 +64,10 @@ Every page's edit form offers a **Page options** section. Switch it on to use th
 - **Hide the breadcrumb**: removes the breadcrumb trail from this page only, for example on a
   landing page. It has no effect when the breadcrumb is turned off for the whole site (see
   [Themes and appearance](themes-and-appearance.md#breadcrumb)).
+- **Members only**: reserves the page, and every page below it, for signed-in visitors. Visitors who
+  are not signed in get the header, the page title, a notice and a sign-in form instead of the page's
+  sections. Restrict the page's areas to registered users too if their content must not be readable
+  through other addresses: see [Members-only content](members-only-content.md).
 
 ## Page title and description
 

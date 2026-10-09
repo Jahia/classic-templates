@@ -12,6 +12,7 @@ with the [README](../README.md).
 | ------------------------------------------------------------ | -------------------------------------------------------- |
 | Set up a new site: install, languages, header, footer, theme | [Getting started](guides/getting-started.md)             |
 | Understand page templates, areas and page options            | [Pages and templates](guides/pages-and-templates.md)     |
+| Reserve news, articles and pages for signed-in members       | [Members-only content](guides/members-only-content.md)   |
 | Add, edit, translate and publish content                     | [Editing content](guides/editing-content.md)             |
 | Change the theme, light and dark, section backgrounds        | [Themes and appearance](guides/themes-and-appearance.md) |
 | Make pages accessible, publish an accessibility statement    | [Accessibility](guides/accessibility.md)                 |
@@ -31,7 +32,8 @@ it goes, each field as the editor shows it, how it behaves, and good practice.
   [rich text](components/rich-text.md), [columns](components/columns.md),
   [card grid](components/card-grid.md), [key figures](components/key-figures.md),
   [accordion](components/accordion.md), [tabs](components/tabs.md),
-  [quote](components/quote.md), [site map](components/site-map.md), [free zone](components/free-zone.md).
+  [quote](components/quote.md), [site map](components/site-map.md), [free zone](components/free-zone.md),
+  [sign-in form](components/sign-in.md).
 - **News and lists:** [news and articles](components/news-and-articles.md),
   [content list](components/content-list.md), [notice bar](components/notice-bar.md).
 - **Shared by several components:** [call to action](components/call-to-action.md),

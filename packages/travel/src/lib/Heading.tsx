@@ -43,7 +43,8 @@ export const useHeadingLevel = (node: JCRNodeWrapper): Level => {
 export const useParamHeadingLevel = (): Level => {
   const { currentResource } = useServerContext();
   try {
-    const level = Number(String(currentResource.getModuleParams().get("headingLevel")));
+    const param = currentResource.getModuleParams().get("headingLevel");
+    const level = typeof param === "string" ? Number(param) : 0;
     return clampLevel(level || 3);
   } catch {
     return 3;

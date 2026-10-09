@@ -77,7 +77,7 @@ const menuChildren = (node: JCRNodeWrapper, includeHidden: boolean): JCRNodeWrap
       n.isNodeType("jmix:navMenuItem") &&
       !n.isNodeType("jmix:navMenu") &&
       (includeHidden ? !noIndex(n) : !hiddenFromNav(n)),
-  ) as JCRNodeWrapper[];
+  );
 
 const build = (
   node: JCRNodeWrapper,

@@ -11,6 +11,8 @@
 // from the content type picker; its children stay selectable in Page Builder.
 // showAccount adds a sign-in / sign-out entry to the utility bar. Its URLs are platform routes
 // (login and logout), not contributed links: accountLanding only names the page to come back to.
+// signInPage replaces Jahia's login screen with a page of the site (one holding a ctpl:signIn
+// section): the entry then links to that page, which sends the visitor on to where they came from.
 [ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType
  - logo (weakreference, picker[type='image']) < jmix:image
  - logoDark (weakreference, picker[type='image']) < jmix:image
@@ -18,6 +20,7 @@
  - showBrandName (boolean) = true autocreated
  - showAccount (boolean) = false autocreated
  - accountLanding (weakreference, picker[type='page']) < jnt:page
+ - signInPage (weakreference, picker[type='page']) < jnt:page
  + utilityLinks (ctpl:linkList) = ctpl:linkList autocreated
  + languageSwitcher (ctpl:languageSwitcher) = ctpl:languageSwitcher autocreated
  + navigation (ctpl:mainNavigation) = ctpl:mainNavigation autocreated

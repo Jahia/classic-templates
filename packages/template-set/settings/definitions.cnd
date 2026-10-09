@@ -87,15 +87,26 @@
  - body (string, richtext) i18n
  - publicationDate (date, datepicker)
 
+// Optional "Members only" switch of a news item or an article. Visitors who are not signed in get
+// the item's teaser page (title, date, image, teaser, a notice and a sign-in form) instead of its
+// body, and cards and lists show a "Members only" badge. The flag hides the body from the page; it
+// does not stop the repository from serving it (see docs/guides/members-only-content.md).
+[ctplmix:membersOnly] mixin
+ extends = ctplmix:editorialItem
+ - ctplMembersOnly (boolean) = true autocreated
+
 // ---- Page and site options ----------------------------------------------------------------------
 
 // Optional page settings, offered on every page's edit form. ctplHideBreadcrumb removes the
-// breadcrumb trail from this page only, when the site shows one.
+// breadcrumb trail from this page only, when the site shows one. ctplMembersOnly gates the page and
+// its sub-pages: visitors who are not signed in get the header, the title and a sign-in panel
+// instead of the page's areas.
 [ctplmix:pageOptions] mixin
  extends = jnt:page
  - ctplHideFromNav (boolean) = false autocreated
  - ctplHideTitle (boolean) = false autocreated
  - ctplHideBreadcrumb (boolean) = false autocreated
+ - ctplMembersOnly (boolean) = false autocreated
 
 // Optional setting of a content folder (news, articles, any folder of items with their own page):
 // the page that lists its items. An item's breadcrumb, and its schema.org BreadcrumbList, then go

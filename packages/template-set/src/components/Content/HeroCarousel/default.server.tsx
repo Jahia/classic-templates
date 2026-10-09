@@ -266,7 +266,7 @@ jahiaComponent(
   ) => {
     const slides = getChildNodes(currentNode, -1, 0, (n: JCRNodeWrapper) =>
       n.isNodeType("ctpl:heroBanner"),
-    ) as JCRNodeWrapper[];
+    );
     const view = { node: currentNode, title, hideTitle };
     if (renderContext.isEditMode()) return <EditView {...view} total={slides.length} />;
     if (slides.length === 0) return null;

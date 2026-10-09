@@ -1,0 +1,104 @@
+/* The sign-in form and its panel. Tokens only: the form follows the site's theme and colour scheme. */
+.panel {
+  max-width: 26rem;
+}
+
+.form {
+  display: grid;
+  gap: var(--ctpl-space-4);
+}
+
+.field {
+  display: grid;
+  gap: var(--ctpl-space-1);
+}
+
+.label {
+  color: var(--ctpl-color-text);
+  font-weight: var(--ctpl-font-weight-bold);
+  font-size: var(--ctpl-text-sm);
+}
+
+.input {
+  min-height: 2.75rem;
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  font: inherit;
+}
+.input:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.input[aria-invalid="true"] {
+  border-color: var(--ctpl-color-danger);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: var(--ctpl-space-2) var(--ctpl-space-5);
+  border: 2px solid transparent;
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--ctpl-duration-fast) var(--ctpl-ease);
+}
+.button:hover {
+  background: var(--ctpl-color-action-hover);
+  color: var(--ctpl-color-text-on-action);
+}
+.button:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.error {
+  margin: 0;
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-danger-surface);
+  color: var(--ctpl-color-danger);
+  font-size: var(--ctpl-text-sm);
+}
+
+.signedIn {
+  display: grid;
+  gap: var(--ctpl-space-3);
+}
+.signedInText {
+  margin: 0;
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ctpl-space-4);
+  margin: 0;
+}
+.link {
+  color: var(--ctpl-color-link);
+  text-underline-offset: 0.18em;
+}
+.link:hover {
+  color: var(--ctpl-color-link-hover);
+}
+
+.intro {
+  max-width: var(--ctpl-measure);
+  margin: 0 0 var(--ctpl-space-5);
+  color: var(--ctpl-color-text-muted);
+}

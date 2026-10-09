@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { accountUrls, safeLocalPath } from "./account.js";
+import { accountUrls, loginRoute, safeLocalPath } from "./account.js";
 
 describe("safeLocalPath", () => {
   it("keeps a site-relative path, query string included", () => {
@@ -57,5 +57,45 @@ describe("accountUrls", () => {
     const urls = accountUrls("", "https://evil.example.com/x", "//evil.example.com");
     expect(urls.signIn).toBe("/cms/login");
     expect(urls.signOut).toBe("/cms/logout");
+  });
+});
+
+describe("accountUrls with a sign-in page of the site", () => {
+  const page = "/fr/sites/s/home/connexion.html";
+
+  it("links to the page, carrying where to go as the redirect parameter", () => {
+    const urls = accountUrls("", "/fr/sites/s/home/membres.html", undefined, page);
+    expect(urls.signIn).toBe(`${page}?redirect=%2Ffr%2Fsites%2Fs%2Fhome%2Fmembres.html`);
+  });
+
+  it("links to the bare page when there is nowhere in particular to go", () => {
+    expect(accountUrls("", undefined, undefined, page).signIn).toBe(page);
+  });
+
+  it("does not prefix the page with the context path: it already carries it", () => {
+    expect(accountUrls("/jahia", undefined, undefined, `/jahia${page}`).signIn).toBe(
+      `/jahia${page}`,
+    );
+  });
+
+  it("falls back to Jahia's login route when the page address is not a local path", () => {
+    expect(accountUrls("", "/a.html", undefined, "https://evil.example.com/x").signIn).toBe(
+      "/cms/login?redirect=%2Fa.html",
+    );
+    expect(accountUrls("", undefined, undefined, "//evil.example.com").signIn).toBe("/cms/login");
+  });
+
+  it("leaves the sign-out route alone", () => {
+    expect(accountUrls("", undefined, "/fr/sites/s/home.html", page).signOut).toBe(
+      "/cms/logout?redirect=%2Ffr%2Fsites%2Fs%2Fhome.html",
+    );
+  });
+});
+
+describe("loginRoute", () => {
+  it("is Jahia's login servlet under the context path", () => {
+    expect(loginRoute("")).toBe("/cms/login");
+    expect(loginRoute("/jahia/")).toBe("/jahia/cms/login");
+    expect(loginRoute(undefined)).toBe("/cms/login");
   });
 });
