@@ -1,5 +1,21 @@
 # classic-templates Changelog
 
+## 0.7.0
+
+### New Features
+
+* Members-only content: news items and articles can be reserved for signed-in visitors (the optional "Members only" section of their edit form), and pages and their sub-pages through a new "Members only" page option. Visitors who are not signed in get the title, teaser and image (item) or the title (page), a notice and a sign-in form instead of the body or the sections, and cards and lists show a "Members only" badge. New "Sign-in form" section (`ctpl:signIn`) that signs visitors in without leaving the site, and a new "Sign-in page" option on the site header so the sign-in entry opens that page instead of the platform's login screen
+
+### Bug Fixes
+
+* The package READMEs describe what each package holds today: the four packages, the page templates and page options, members-only content and the sign-in form, the title shown in the default language for untranslated pages, every progressive-enhancement script and the sign-in island, the unit-tested helpers, both pre-packaged sites (their theme, what each leaves out, Skylantern's inactive Chinese language) and the Skylantern example for classic-travel
+
+* The release checklist is documented, from the changelog and the version to the GitHub release, the demo replication kit and the Jahia Store submission pack
+
+* The release documentation now says when to push the next development version after a release: once the release build has started, since a build still waiting would be replaced
+
+* `yarn lint` in the template set and classic-travel now checks the SonarQube rules that kept failing pull requests (sort comparators, unnecessary type assertions, object stringification, globalThis, replaceAll, code points, String.raw, at, re-exports, single push, cognitive complexity, nested conditionals and template literals), so the Static checks job fails before Sonar does; the rules ESLint cannot check, and how to write each case, are listed in `.agents/context/sonar-rules.md`. The few existing cases were fixed with no change to the rendered pages
+
 ## 0.6.0
 
 ### New Features
