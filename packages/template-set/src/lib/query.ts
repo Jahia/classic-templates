@@ -66,7 +66,7 @@ export const categoryIds = (categories?: JCRNodeWrapper[]): string[] => {
     ids.add(node.getIdentifier());
     for (const child of getChildNodes(node, -1, 0, (n: JCRNodeWrapper) =>
       n.isNodeType("jnt:category"),
-    ) as JCRNodeWrapper[]) {
+    )) {
       walk(child);
     }
   };
@@ -163,7 +163,7 @@ export const runList = ({
   const query = buildListQuery({ type, start, criteria, direction, categories });
   const excluded = excludedIds(exclude);
   const fetchSize = Math.max(countUpTo ?? 0, (max + excluded.size) * 2);
-  const rows = getNodesByJCRQuery(session, query, fetchSize) as JCRNodeWrapper[];
+  const rows = getNodesByJCRQuery(session, query, fetchSize);
   let skippedExcluded = 0;
   let skippedUntranslated = 0;
   const items: JCRNodeWrapper[] = [];

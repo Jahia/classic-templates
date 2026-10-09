@@ -21,16 +21,17 @@ Each folder only offers its own type. A page then shows them through a [Content 
 
 ## Fields
 
-| Label as shown in the editor | What it does                                                              | Notes                                                                                                           |
-| ---------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Title                        | Title of the item, shown on cards and as the heading of its page.         | Per language. An item without a title in a language is left out of that language's lists.                       |
-| Teaser                       | One or two sentences shown on cards and under the title of the full page. | Per language. Also used as the page description for search engines when the item has no description of its own. |
-| Body                         | The full text, shown on the item's own page.                              | Per language. Rich text: see [Text](rich-text.md) for what is kept.                                             |
-| Publication date             | Date shown to visitors and used to sort lists, newest first.              | Shared by all languages. Leave empty to show the creation date.                                                 |
-| Image                        | Image shown on cards and on the full page.                                | See [Images](images.md).                                                                                        |
-| Text alternative             | What the image means on the full page.                                    | Per language. On cards the image is always decorative.                                                          |
-| Decorative image             | Tells screen readers to skip the image.                                   | Default: off.                                                                                                   |
-| Author                       | Name of the author as shown to visitors, for example "Jane Smith".        | Articles only. The same in every language.                                                                      |
+| Label as shown in the editor | What it does                                                                 | Notes                                                                                                           |
+| ---------------------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Title                        | Title of the item, shown on cards and as the heading of its page.            | Per language. An item without a title in a language is left out of that language's lists.                       |
+| Teaser                       | One or two sentences shown on cards and under the title of the full page.    | Per language. Also used as the page description for search engines when the item has no description of its own. |
+| Body                         | The full text, shown on the item's own page.                                 | Per language. Rich text: see [Text](rich-text.md) for what is kept.                                             |
+| Publication date             | Date shown to visitors and used to sort lists, newest first.                 | Shared by all languages. Leave empty to show the creation date.                                                 |
+| Image                        | Image shown on cards and on the full page.                                   | See [Images](images.md).                                                                                        |
+| Text alternative             | What the image means on the full page.                                       | Per language. On cards the image is always decorative.                                                          |
+| Decorative image             | Tells screen readers to skip the image.                                      | Default: off.                                                                                                   |
+| Author                       | Name of the author as shown to visitors, for example "Jane Smith".           | Articles only. The same in every language.                                                                      |
+| Members only                 | Reserves the item for signed-in visitors. See [Members only](#members-only). | Optional section of the edit form. Default once switched on: ticked.                                            |
 
 Tags and categories are not fields of the template set: you set them with Jahia's own **tags** and **categories**, available on every item.
 
@@ -48,6 +49,10 @@ At its own address, an item shows, in this order:
 6. **Topics**: the item's categories and tags, when it has some.
 
 The site header, footer and breadcrumb surround it. The breadcrumb goes through the page that lists the item when its folder names one (**Listing page**, set on the content folder in jContent), for example Home > News > the item's title; otherwise it reads Home > the item's title. The content folder itself is not shown. See [Breadcrumb](breadcrumb.md#the-page-that-lists-a-folder).
+
+### Members only
+
+Switch on the **Members only** section of the item's edit form to reserve it for signed-in visitors. Visitors who are not signed in then get, at the item's address: the type and date line with a **Members only** badge, the title, the teaser, the image, a notice and a [sign-in form](sign-in.md), but not the body. Once signed in, they stay on the page and see the whole item. Cards, compact rows and tiles of the item carry the badge for everybody. The teaser, title, image and date stay public (search results and shared links show them), so write them for that audience. The switch **hides** the body from the page; it does not protect it from being read through the API: see [Members-only content](../guides/members-only-content.md#what-is-protected-and-what-is-only-hidden).
 
 ### Cards and compact rows
 
@@ -69,7 +74,7 @@ An item without a title in the current language is left out of lists and cards i
 
 ### Fixed labels
 
-A few words on these pages are part of the template set, translated for each language of the site, and cannot be edited in jContent: "News", "Article", "By ...", "... min read" and "Topics".
+A few words on these pages are part of the template set, translated for each language of the site, and cannot be edited in jContent: "News", "Article", "By ...", "... min read", "Topics", "Members only" and the sign-in form's words.
 
 ### For administrators: search engines
 

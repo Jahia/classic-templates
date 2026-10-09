@@ -1,0 +1,16 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A sign-in form as a page section: an optional heading (jcr:title), an introduction, then a
+// username, a password and a button that sign the visitor in without leaving the site. Put it on the
+// page the header's sign-in entry points to. Once signed in, the visitor goes to the page named in
+// the address (the "redirect" parameter, set by the pages that asked them to sign in), else to
+// afterSignIn, else to the home page. A visitor who is already signed in sees who they are instead.
+[ctpl:signIn] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle
+ - introText (string, textarea) i18n
+ - afterSignIn (weakreference, picker[type='page']) < jnt:page

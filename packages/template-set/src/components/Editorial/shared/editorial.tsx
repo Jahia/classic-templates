@@ -5,6 +5,9 @@ import { useTranslation } from "react-i18next";
 import { formatDate, isoDay } from "../../../lib/dates.js";
 import { type ItemLabelMode, chooseItemLabel, itemLabelMode } from "../../../lib/itemLabel.js";
 import { Image } from "../../../lib/Image.js";
+import { gateFor } from "../../../lib/members.js";
+import { MembersBadge } from "../../../lib/MembersBadge.js";
+import { MembersNotice } from "../../../lib/MembersNotice.js";
 import { readString as str } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
 import { headingTag, type HeadingTag } from "../../../lib/Heading.js";
@@ -30,6 +33,10 @@ export type Kind = "news" | "article";
 /** Publication date, or the creation date when the editor left it empty. */
 const dateOf = (node: JCRNodeWrapper, publicationDate?: string) =>
   publicationDate || str(node, "jcr:created");
+
+/** True when the item carries the "Members only" switch (ctplmix:membersOnly) and it is on. */
+export const isMembersOnly = (node: JCRNodeWrapper): boolean =>
+  node.hasProperty("ctplMembersOnly") && node.getProperty("ctplMembersOnly").getBoolean();
 
 /** Text of an HTML string with its tags dropped, in one linear pass (no backtracking regex). */
 const textOf = (html: string) => {
@@ -99,7 +106,7 @@ const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] 
 const useItemLabelMode = (): ItemLabelMode => {
   const { currentResource } = useServerContext();
   try {
-    return itemLabelMode(String(currentResource.getModuleParams().get("itemLabel")));
+    return itemLabelMode(currentResource.getModuleParams().get("itemLabel"));
   } catch {
     return "type";
   }
@@ -127,6 +134,7 @@ const Meta = ({
   return (
     <p className={classes.meta}>
       {label && <span className={classes.kind}>{label}</span>}
+      {isMembersOnly(node) && <MembersBadge />}
       {iso && <time dateTime={isoDay(iso)}>{formatDate(iso, lang)}</time>}
       {kind === "article" && props.author && (
         <span>
@@ -149,14 +157,76 @@ const Untitled = () => {
   ) : null;
 };
 
-/** The item's own page (rendered inside the main-resource template, which owns header and footer). */
-export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
+/**
+ * The item's own page (rendered inside the main-resource template, which owns header and footer).
+ *
+ * `perUser` says the view that renders it is cached per user (view "fullPageMembers"), which is the
+ * only place the page may tell visitors apart: a flagged item gets its body there, for a signed-in
+ * visitor or an editor, and its teaser page (RestrictedPage) for anyone else. The shared view
+ * ("fullPage") sits in a cache every visitor reads, so it never renders the body of a flagged item.
+ */
+export const FullPage = ({
+  kind,
+  props,
+  perUser = false,
+}: {
+  kind: Kind;
+  props: EditorialProps;
+  perUser?: boolean;
+}) => {
+  const { currentNode, renderContext } = useServerContext();
+  const membersOnly = isMembersOnly(currentNode);
+  const gate = perUser
+    ? gateFor({
+        membersOnly,
+        signedIn: renderContext.isLoggedIn(),
+        editMode: renderContext.isEditMode(),
+      })
+    : gateFor({ membersOnly, signedIn: false, editMode: false });
+  if (gate === "teaser") return <RestrictedPage kind={kind} props={props} />;
+  return <ItemBody kind={kind} props={props} />;
+};
+
+/**
+ * What a visitor who is not signed in gets of a members-only item: the item's public face (kind,
+ * date, title, teaser, image), a notice and the sign-in form. The body is never rendered here.
+ */
+export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
+  const { t } = useTranslation("classic-templates");
+  const { currentNode, renderContext } = useServerContext();
+  const title = props["jcr:title"];
+  return (
+    <article className={classes.full} data-testid={`ctpl-${kind}-restricted`}>
+      <header className={`ctpl-container ${classes.head}`}>
+        <Meta kind={kind} node={currentNode} props={props} />
+        {title ? <h1 className={classes.fullTitle}>{title}</h1> : <Untitled />}
+        {props.teaser && <p className={classes.lead}>{props.teaser}</p>}
+      </header>
+      {props.image && (
+        <figure className={`ctpl-container ${classes.figure}`}>
+          <Image node={props.image} owner={currentNode} renderContext={renderContext} priority />
+        </figure>
+      )}
+      <div className="ctpl-container">
+        <MembersNotice text={t(`members.${kind}Notice`)} fallback={buildNodeUrl(currentNode)} />
+      </div>
+    </article>
+  );
+};
+
+/** The full item: header, image, body and topics. */
+const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { t } = useTranslation("classic-templates");
   const { currentNode, renderContext } = useServerContext();
   const topics = topicsOf(currentNode, renderContext);
   const title = props["jcr:title"];
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-full`}>
+      {isMembersOnly(currentNode) && renderContext.isEditMode() && (
+        <p className={`ctpl-container ${classes.editNote}`} data-testid="ctpl-members-edit-note">
+          {t("members.editNote")}
+        </p>
+      )}
       <header className={`ctpl-container ${classes.head}`}>
         <Meta kind={kind} node={currentNode} props={props} />
         {title ? <h1 className={classes.fullTitle}>{title}</h1> : <Untitled />}
@@ -196,7 +266,8 @@ export const FullPage = ({ kind, props }: { kind: Kind; props: EditorialProps })
 const useHeadingTag = (): HeadingTag => {
   const { currentResource } = useServerContext();
   try {
-    const level = Number(String(currentResource.getModuleParams().get("headingLevel")));
+    const param = currentResource.getModuleParams().get("headingLevel");
+    const level = typeof param === "string" ? Number(param) : 0;
     return headingTag(level || 3);
   } catch {
     return "h3";
@@ -240,6 +311,7 @@ export const TileView = ({ kind, props }: { kind: Kind; props: EditorialProps })
       headingTag={Heading}
       href={buildNodeUrl(currentNode)}
       text={props.teaser}
+      badge={isMembersOnly(currentNode) ? <MembersBadge /> : undefined}
       testId={`ctpl-${kind}-tile`}
     />
   );

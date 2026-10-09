@@ -26,7 +26,7 @@ jahiaComponent(
         jcrSession,
         buildListQuery("ctrv:destination", start.getPath()),
         FETCH_LIMIT,
-      ) as JCRNodeWrapper[];
+      );
       const translated = rows.filter((node) => node.hasI18N(locale as never));
       const region = regionFilter(props.region);
       const selected = selectDestinations(translated.map(destinationEntry), {

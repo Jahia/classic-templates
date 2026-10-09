@@ -11,9 +11,7 @@ import { breadcrumbOf } from "./Breadcrumb.jsx";
 /** The header singleton, whose brand name and logo name the Organization. */
 const headerOf = (home: JCRNodeWrapper): JCRNodeWrapper | undefined => {
   try {
-    return home.hasNode("siteHeader/header")
-      ? (home.getNode("siteHeader/header") as JCRNodeWrapper)
-      : undefined;
+    return home.hasNode("siteHeader/header") ? home.getNode("siteHeader/header") : undefined;
   } catch {
     return undefined;
   }

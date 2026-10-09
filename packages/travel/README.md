@@ -103,7 +103,7 @@ Node 22 and Yarn 4 (the repository's `.yarn/releases`). Run the Yarn commands fr
 ```bash
 yarn install
 yarn build && yarn deploy     # build the package and install it in the local Jahia (http://localhost:8080)
-yarn lint                     # ESLint
+yarn lint                     # ESLint, with the SonarQube rules of the pull-request gate
 yarn test:unit                # Vitest unit tests (formatting, selection, queries, sanitizer, JSON-LD)
 yarn check:tokens             # no literal colour or primitive token in the stylesheets
 ```

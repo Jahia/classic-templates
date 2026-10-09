@@ -31,8 +31,18 @@ const normalise = (contextPath: string | undefined): string => {
   return path.startsWith("/") ? path : "";
 };
 
+/**
+ * Jahia's login servlet, the route a sign-in form posts to (`restMode=true` makes it answer "OK" or
+ * "unauthorized" instead of redirecting). Under the web application's context path.
+ */
+export const loginRoute = (contextPath: string | undefined): string =>
+  `${normalise(contextPath)}${LOGIN}`;
+
 export interface AccountUrls {
-  /** Jahia's login page, which sends the visitor to `signInTo` once signed in. */
+  /**
+   * Where the "Sign in" link goes: Jahia's login page, or the site's own sign-in page when one is
+   * given. Either way the visitor ends up on `signInTo` once signed in.
+   */
   signIn: string;
   /** Jahia's logout servlet, which sends the visitor to `signOutTo` once signed out. */
   signOut: string;
@@ -44,21 +54,28 @@ export interface AccountUrls {
  * The three URLs of the account entry. `signInTo` and `signOutTo` must be site-relative paths (see
  * safeLocalPath); one that is not is dropped, which leaves a plain login or logout with Jahia's
  * default destination.
+ *
+ * `signInPage` is the site-relative address of the site's own sign-in page. When it is a safe path
+ * the "Sign in" link goes there instead of to Jahia's login screen, carrying `signInTo` as its
+ * `redirect` parameter (the page's sign-in form reads it, see lib/signin.ts); otherwise the link
+ * is Jahia's login route as before.
  */
 export const accountUrls = (
   contextPath: string | undefined,
   signInTo: string | undefined,
   signOutTo: string | undefined,
+  signInPage?: string,
 ): AccountUrls => {
   const base = normalise(contextPath);
   const withRedirect = (route: string, target: string | undefined) => {
     const safe = safeLocalPath(target);
     const query = safe ? `?redirect=${encodeURIComponent(safe)}` : "";
-    return `${base}${route}${query}`;
+    return `${route}${query}`;
   };
+  const page = safeLocalPath(signInPage);
   return {
-    signIn: withRedirect(LOGIN, signInTo),
-    signOut: withRedirect(LOGOUT, signOutTo),
+    signIn: page ? withRedirect(page, signInTo) : withRedirect(`${base}${LOGIN}`, signInTo),
+    signOut: withRedirect(`${base}${LOGOUT}`, signOutTo),
     graphql: `${base}${GRAPHQL}`,
   };
 };

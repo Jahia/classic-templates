@@ -20,6 +20,8 @@ export interface PageSpec {
     description?: { en: string; fr: string }
     /** Sets the "Hide from navigation" page option. */
     hiddenFromNav?: boolean
+    /** Sets the "Members only" page option (the page and its sub-pages). */
+    membersOnly?: boolean
 }
 
 /** Adds a page under `parentPath` with EN and FR titles (and descriptions) and the given template. */
@@ -39,8 +41,9 @@ export const addPage = (parentPath: string, page: PageSpec) =>
                 : []),
             { name: 'j:templateName', type: 'STRING', value: page.template },
             ...(page.hiddenFromNav ? [{ name: 'ctplHideFromNav', value: 'true' }] : []),
+            ...(page.membersOnly ? [{ name: 'ctplMembersOnly', value: 'true' }] : []),
         ],
-        mixins: page.hiddenFromNav ? ['ctplmix:pageOptions'] : [],
+        mixins: page.hiddenFromNav || page.membersOnly ? ['ctplmix:pageOptions'] : [],
     })
 
 /** The uuid returned by addNode / addPage. */
@@ -144,6 +147,9 @@ export interface EditorialSpec {
     name: string
     title: { en: string; fr?: string }
     teaser?: { en: string; fr?: string }
+    body?: { en: string; fr?: string }
+    /** Switches on "Members only" (mixin ctplmix:membersOnly). */
+    membersOnly?: boolean
     /** YYYY-MM-DD */
     date: string
     author?: string
@@ -172,10 +178,16 @@ export const addEditorial = (folder: string, type: 'ctpl:news' | 'ctpl:article',
         parentPathOrId: folder,
         name: item.name,
         primaryNodeType: type,
-        mixins: [...(item.tags ? ['jmix:tagged'] : []), ...(item.categories ? ['jmix:categorized'] : [])],
+        mixins: [
+            ...(item.tags ? ['jmix:tagged'] : []),
+            ...(item.categories ? ['jmix:categorized'] : []),
+            ...(item.membersOnly ? ['ctplmix:membersOnly'] : []),
+        ],
         properties: [
             ...i18nValue('jcr:title', item.title),
             ...i18nValue('teaser', item.teaser),
+            ...i18nValue('body', item.body),
+            ...(item.membersOnly ? [{ name: 'ctplMembersOnly', value: 'true' }] : []),
             { name: 'publicationDate', type: 'DATE', value: `${item.date}T09:00:00.000+02:00` },
             ...(item.author ? [{ name: 'author', value: item.author }] : []),
             ...(item.tags ? [{ name: 'j:tagList', values: item.tags }] : []),

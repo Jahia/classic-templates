@@ -20,6 +20,26 @@
     "signOut": "Se déconnecter",
     "signedInAs": "Connecté en tant que"
   },
+  "signin": {
+    "formLabel": "Connexion",
+    "username": "Identifiant",
+    "password": "Mot de passe",
+    "submit": "Se connecter",
+    "submitting": "Connexion en cours...",
+    "rejected": "L'identifiant ou le mot de passe n'est pas correct. Vérifiez-les et réessayez.",
+    "unknown": "La connexion n'a pas abouti. Réessayez dans un instant.",
+    "signedInAs": "Vous êtes connecté en tant que {{name}}.",
+    "continue": "Continuer"
+  },
+  "members": {
+    "badge": "Réservé aux membres",
+    "title": "Réservé aux membres",
+    "newsNotice": "Cette actualité est réservée aux membres. Connectez-vous pour la lire.",
+    "articleNotice": "Cet article est réservé aux membres. Connectez-vous pour le lire.",
+    "pageNotice": "Cette page est réservée aux membres. Connectez-vous pour la consulter.",
+    "editNote": "Réservé aux membres : les visiteurs non connectés voient le chapeau, un avis et un formulaire de connexion à la place du texte.",
+    "pageEditNote": "Page réservée aux membres : les visiteurs non connectés voient le titre, un avis et un formulaire de connexion à la place des sections ci-dessous."
+  },
   "links": {
     "label": "Liens"
   },

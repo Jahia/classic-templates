@@ -23,6 +23,7 @@ You add these to a page's main area, inside a [Columns](columns.md) column, a [T
 | Notice bar     | A slim band of the latest news or articles as dated links.                    | Header area of the home page, hero area, main area           | [notice-bar.md](notice-bar.md)                     |
 | Link list      | An ordered list of links with an optional title.                              | Main area, column, free zone; also in the header and footer  | [links-and-link-lists.md](links-and-link-lists.md) |
 | Site map       | Every page of the site as nested lists of links.                              | Main area, usually on a page of its own                      | [site-map.md](site-map.md)                         |
+| Sign-in form   | A username and password form that signs visitors in without leaving the site. | Main area, usually on a page of its own                      | [sign-in.md](sign-in.md)                           |
 | Tabs           | Tabs, each holding its own sections; one tab shows at a time.                 | Main area, column, free zone                                 | [tabs.md](tabs.md)                                 |
 | Free zone      | A frame for components of other modules (forms, FAQ, gallery, store locator). | Main area, column                                            | [free-zone.md](free-zone.md)                       |
 

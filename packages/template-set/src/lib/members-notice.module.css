@@ -1,0 +1,15 @@
+.notice {
+  max-width: var(--ctpl-measure);
+  margin: 0 auto;
+  padding: var(--ctpl-space-6);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-lg);
+  background: var(--ctpl-color-surface-raised);
+}
+.title {
+  margin-bottom: var(--ctpl-space-2);
+}
+.text {
+  margin: 0 0 var(--ctpl-space-5);
+  color: var(--ctpl-color-text-muted);
+}

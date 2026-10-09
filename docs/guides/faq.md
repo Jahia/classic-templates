@@ -87,6 +87,10 @@ Forms come from the Formidable module. Enable it on your site, add a **Free zone
 page, and place a form reference to your form inside it. See
 [Place a Formidable form](add-ons.md#place-a-formidable-form).
 
+### How do I reserve a page or a news item for members?
+
+Tick **Members only** in the page's **Page options**, or switch on the **Members only** section of a news item or article, then publish. Visitors who are not signed in get a sign-in form instead. Read what this protects, and what it only hides, in [Members-only content](members-only-content.md).
+
 ## Images and publishing
 
 ### Why is my image not shown on the live site?

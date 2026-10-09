@@ -7,4 +7,5 @@ export interface Props {
   showBrandName?: boolean;
   showAccount?: boolean;
   accountLanding?: JCRNodeWrapper;
+  signInPage?: JCRNodeWrapper;
 }

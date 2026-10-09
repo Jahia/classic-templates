@@ -76,3 +76,7 @@
   font-size: var(--ctpl-text-sm);
   overflow-wrap: anywhere;
 }
+
+.badge {
+  margin: 0 0 var(--ctpl-space-2);
+}
