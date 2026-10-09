@@ -22,6 +22,11 @@ repository; a release is done when every step is.
    to the new tag. Pushed while the release run is still waiting, it replaces that run (one waiting
    run per concurrency group); `gh run rerun <id>` brings it back.
 
+On the release commit's run, `Publish module`, `SBOM processing` and the integration tests are red,
+by design: the test provisioning installs `*-SNAPSHOT` files only and the release builds `X.Y.Z`
+ones, so no test site is created. The tests that count are those of the next-SNAPSHOT commit's run,
+on the same code.
+
 Do not merge anything else into `main` before the release run's `Build Module` job has finished: a
 newer push cancels the older `main` run, release included once it is past waiting.
 
@@ -52,8 +57,11 @@ instance (Hyper Avitron) and imports the demo sites.
   `MODULES` list in `replicate.sh` and the versions in its README.
 - Run `./replicate.sh http://localhost:8080 --modules-only` against the local Jahia: every module
   reaches STARTED, then the demo pages still answer 200.
-- The kit never replaces a newer version, nor a SNAPSHOT of the same version: the demo instance runs
-  classic-travel from the `demo-live` branch, with components the release does not have yet.
+- The kit never replaces a newer version, nor any running SNAPSHOT build, whatever its number: the
+  demo instance runs classic-travel from the `demo-live` branch (0.6.0-SNAPSHOT), with components the
+  release does not have yet, and a higher release number would otherwise replace it. Locally, a
+  SNAPSHOT of the template set is left too: install the release over it from Administration >
+  Modules (or the module API) after the kit test when the Store screenshots need the release.
 
 **Jahia Store submission pack** (`0.Modules/store-submissions/classic-templates`): what is pasted
 into the Store form and uploaded. The generic rules are in the AIStartupKit harness ("Jahia Store
