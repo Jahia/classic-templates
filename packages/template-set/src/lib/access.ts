@@ -1,5 +1,5 @@
 import { buildNodeUrl, server } from "@jahia/javascript-modules-library";
-import type { JCRNodeWrapper, JCRSessionWrapper } from "org.jahia.services.content";
+import type { JCRSessionWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 
 /**
@@ -72,6 +72,6 @@ export const pageUrlById = (
     // Not readable by the rendering user: the system lookup below still finds it.
   }
   return asSystem(renderContext.getWorkspace(), locale, (session) =>
-    buildNodeUrl(session.getNodeByIdentifier(identifier) as JCRNodeWrapper),
+    buildNodeUrl(session.getNodeByIdentifier(identifier)),
   );
 };

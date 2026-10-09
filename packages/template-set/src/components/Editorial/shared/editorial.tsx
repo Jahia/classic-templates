@@ -106,7 +106,7 @@ const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] 
 const useItemLabelMode = (): ItemLabelMode => {
   const { currentResource } = useServerContext();
   try {
-    return itemLabelMode(String(currentResource.getModuleParams().get("itemLabel")));
+    return itemLabelMode(currentResource.getModuleParams().get("itemLabel"));
   } catch {
     return "type";
   }
@@ -266,7 +266,8 @@ const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
 const useHeadingTag = (): HeadingTag => {
   const { currentResource } = useServerContext();
   try {
-    const level = Number(String(currentResource.getModuleParams().get("headingLevel")));
+    const param = currentResource.getModuleParams().get("headingLevel");
+    const level = typeof param === "string" ? Number(param) : 0;
     return headingTag(level || 3);
   } catch {
     return "h3";
