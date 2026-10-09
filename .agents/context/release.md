@@ -15,7 +15,9 @@ repository; a release is done when every step is.
    root `pom.xml`, the four `packages/*/pom.xml` and the two `package.json` (template set, travel).
    Nothing else.
 3. Wait until that commit's `On merge to main` run is **in progress** (`gh run view <id> --json status`),
-   then commit `chore: next development version X.Y.(Z+1)-SNAPSHOT; README for the X.Y.Z release`:
+   then commit `chore: next development version X.(Y+1).0-SNAPSHOT; README for the X.Y.Z release`
+   (the next minor, as after every release so far; the release PR sets the real number from the
+   fragments):
    the SNAPSHOT version back in the same seven files, and the README's "Latest release" line pointing
    to the new tag. Pushed while the release run is still waiting, it replaces that run (one waiting
    run per concurrency group); `gh run rerun <id>` brings it back.
