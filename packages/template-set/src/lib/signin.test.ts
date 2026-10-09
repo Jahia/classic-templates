@@ -53,7 +53,7 @@ describe("destinationOf", () => {
     expect(
       destinationOf("?redirect=//evil.example.com", "https://evil.example.com"),
     ).toBeUndefined();
-    expect(destinationOf("", undefined)).toBeUndefined();
+    expect(destinationOf("")).toBeUndefined();
   });
 
   it("reads only the first redirect parameter", () => {

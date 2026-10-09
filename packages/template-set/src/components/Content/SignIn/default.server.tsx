@@ -1,5 +1,4 @@
 import { buildNodeUrl, jahiaComponent, server } from "@jahia/javascript-modules-library";
-import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { pageUrlById } from "../../../lib/access.js";
 import { SectionHeading } from "../../../lib/Heading.js";
 import { Section } from "../../../lib/Section.js";
@@ -37,7 +36,7 @@ jahiaComponent(
       : undefined;
     const fallback =
       (chosen && pageUrlById(chosen, renderContext, currentResource.getLocale())) ||
-      buildNodeUrl(chromeOwner(site) as JCRNodeWrapper);
+      buildNodeUrl(chromeOwner(site));
     const user = renderContext.getUser();
     // In Page Builder the editor is signed in, and "Sign out" would end their session: show the form instead.
     const editMode = renderContext.isEditMode();

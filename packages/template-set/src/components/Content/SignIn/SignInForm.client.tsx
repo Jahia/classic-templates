@@ -26,15 +26,15 @@ interface Props {
 /** Where the visitor goes after signing in (lib/signin.ts decides): read in the browser only. */
 const nextAddress = (fallback: string | undefined, stay: boolean | undefined) =>
   destinationOf(
-    window.location.search,
+    globalThis.location.search,
     fallback,
-    stay ? window.location.pathname + window.location.search : undefined,
+    stay ? globalThis.location.pathname + globalThis.location.search : undefined,
   );
 
 /** Full navigation to `destination`, or a reload of the page when there is none. */
 const go = (destination: string | undefined) => {
-  if (destination) window.location.assign(destination);
-  else window.location.reload();
+  if (destination) globalThis.location.assign(destination);
+  else globalThis.location.reload();
 };
 
 /**
