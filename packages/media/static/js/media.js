@@ -10,6 +10,12 @@
  * - [data-ctmd-share]: the browser's share sheet when it has one, and "copy link".
  * - [data-ctmd-countdown]: "Starts in 12 days" / "Happening now", from the event's first and last
  *   day, in the visitor's calendar; the texts come from the page (translated by the server).
+ * - Tracking, when jExperience runs on the page and tracks this visitor (its tracker loaded a
+ *   profile and is active, so after consent where the site asks for it): standard jCustomer events
+ *   only, no event type of our own. A story's video or audio (data-ctmd-track-media) sends `video`
+ *   events (action play / ended, the story as target); share and filter buttons send `click`
+ *   events (target type share / filter); a search results page (data-ctmd-track-search) sends one
+ *   `search` event with its words. Without jExperience, or before consent, nothing is sent.
  */
 (() => {
   // ---- Tabs -------------------------------------------------------------------------------------
@@ -113,14 +119,85 @@
         }
         wanted[facet] = button.dataset.ctmdValue || "";
         apply();
+        track("click", {
+          id: trackedId(root),
+          type: "filter",
+          properties: { facet, value: wanted[facet] },
+        });
       });
     }
     for (const select of controls.querySelectorAll("select[data-ctmd-facet]")) {
       select.addEventListener("change", () => {
         wanted[select.dataset.ctmdFacet] = select.value;
         apply();
+        track("click", {
+          id: trackedId(root),
+          type: "filter",
+          properties: { facet: select.dataset.ctmdFacet, value: select.value },
+        });
       });
     }
+  };
+
+  // ---- Tracking ---------------------------------------------------------------------------------
+  // jExperience's tracker (window.wem) tracks this visitor: a context with a profile is loaded and
+  // tracking is not switched off (wemInitConfig.activateWem: off until consent on a site that asks
+  // for it, off again after a refusal).
+  const tracking = () =>
+    Boolean(
+      globalThis.wem?.cxs?.profileId &&
+      globalThis.digitalData?.wemInitConfig?.activateWem === true &&
+      typeof globalThis.wem.collectEvent === "function",
+    );
+  /** The node the event is about: the nearest data-ctmd-track (a story, a feed, an agenda). */
+  const trackedId = (element) => element.closest("[data-ctmd-track]")?.dataset.ctmdTrack;
+  const track = (eventType, target, properties) => {
+    if (!tracking() || !target.id) return;
+    const wem = globalThis.wem;
+    const event = wem.buildEvent(
+      eventType,
+      wem.buildTarget(target.id, target.type, target.properties),
+      wem.buildSourcePage(),
+    );
+    if (properties) event.properties = properties;
+    wem.collectEvent(event);
+  };
+  /** Runs `send` once the tracker has loaded its context (now if it already has). */
+  const whenTracked = (send) => {
+    const wem = globalThis.wem;
+    if (!wem) return;
+    if (wem.cxs?.profileId) send();
+    else if (typeof wem._registerCallback === "function")
+      wem._registerCallback(send, "classic-media tracking", 50);
+  };
+  const playerEvents = (root) => {
+    const id = trackedId(root);
+    for (const player of root.querySelectorAll("video, audio")) {
+      let played = false;
+      player.addEventListener("play", () => {
+        if (played) return; // one play per page view, not one per pause and resume
+        played = true;
+        track("video", { id, type: root.dataset.ctmdTrackMedia, properties: { action: "play" } });
+      });
+      player.addEventListener("ended", () =>
+        track("video", { id, type: root.dataset.ctmdTrackMedia, properties: { action: "ended" } }),
+      );
+    }
+  };
+  const searchEvent = (root) => {
+    const keyword = root.dataset.ctmdTrackSearch;
+    if (!keyword) return;
+    whenTracked(() =>
+      track(
+        "search",
+        { id: trackedId(root), type: "search" },
+        {
+          keyword,
+          language: (document.documentElement.lang || "").slice(0, 5),
+          origin: "ctmd:searchResults",
+        },
+      ),
+    );
   };
 
   // ---- Share ------------------------------------------------------------------------------------
@@ -134,7 +211,18 @@
     if (shareButton && typeof navigator.share === "function") {
       shareButton.hidden = false;
       any = true;
-      shareButton.addEventListener("click", () => navigator.share({ title, url }).catch(() => {}));
+      shareButton.addEventListener("click", () =>
+        navigator
+          .share({ title, url })
+          .then(() =>
+            track("click", {
+              id: trackedId(root),
+              type: "share",
+              properties: { method: "native" },
+            }),
+          )
+          .catch(() => {}),
+      );
     }
     if (copyButton && navigator.clipboard) {
       copyButton.hidden = false;
@@ -143,6 +231,7 @@
         navigator.clipboard.writeText(url).then(
           () => {
             if (status) status.textContent = status.dataset.copied || "";
+            track("click", { id: trackedId(root), type: "share", properties: { method: "copy" } });
           },
           () => {},
         ),
@@ -175,6 +264,8 @@
     document.querySelectorAll("[data-ctmd-filter]").forEach(filters);
     document.querySelectorAll("[data-ctmd-share]").forEach(share);
     document.querySelectorAll("[data-ctmd-countdown]").forEach(countdown);
+    document.querySelectorAll("[data-ctmd-track-media]").forEach(playerEvents);
+    document.querySelectorAll("[data-ctmd-track-search]").forEach(searchEvent);
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
