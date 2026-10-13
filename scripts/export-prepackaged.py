@@ -577,8 +577,29 @@ def read_properties(text):
         if not line or line.startswith(("#", "!")):
             continue
         key, _, value = line.partition("=")
-        props[key.strip()] = value.strip().encode("latin-1", "backslashreplace").decode("unicode_escape")
+        props[key.strip()] = java_unescape(value.strip())
     return props
+
+
+def java_unescape(text):
+    """A .properties value as Java reads it: \\uXXXX, \\t \\n \\r \\f, and a backslash before any other
+    character (\\: \\= \\\\ ...) stands for that character. Python's unicode_escape keeps the backslash of
+    \\: (a colon Jahia escapes in site descriptions), so a round trip used to double it."""
+    out, i = [], 0
+    while i < len(text):
+        ch = text[i]
+        if ch != "\\" or i + 1 == len(text):
+            out.append(ch)
+            i += 1
+            continue
+        nxt = text[i + 1]
+        if nxt == "u" and i + 5 < len(text):
+            out.append(chr(int(text[i + 2:i + 6], 16)))
+            i += 6
+            continue
+        out.append({"t": "\t", "n": "\n", "r": "\r", "f": "\f"}.get(nxt, nxt))
+        i += 2
+    return "".join(out)
 
 
 def write_properties(props, header):

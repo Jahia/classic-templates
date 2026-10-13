@@ -1,0 +1,53 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:00.462
+Aiko Tanabe:  Arjun, can an AI dub a drama series today without anyone noticing?
+
+2
+00:00:00.462 --> 00:00:00.923
+Arjun Mehta:  For a documentary narration, often yes.
+
+3
+00:00:00.923 --> 00:00:01.385
+For a drama, not yet.
+
+4
+00:00:01.385 --> 00:00:01.846
+Emotion, timing, the breath before a line: those are still where a good actor wins easily.
+
+5
+00:00:01.846 --> 00:00:02.308
+Aiko Tanabe:  Actors worry about their voices being cloned.
+
+6
+00:00:02.308 --> 00:00:02.769
+What should they be able to refuse?
+
+7
+00:00:02.769 --> 00:00:03.231
+Arjun Mehta:  Any use they did not agree to, in writing, for that specific production.
+
+8
+00:00:03.231 --> 00:00:03.692
+A voice is not a library asset.
+
+9
+00:00:03.692 --> 00:00:04.154
+We only build a synthetic voice with explicit consent, and the actor can withdraw it.
+
+10
+00:00:04.154 --> 00:00:04.615
+Aiko Tanabe:  Your team published a method for logging the whole pipeline.
+
+11
+00:00:04.615 --> 00:00:05.077
+Why does that matter?
+
+12
+00:00:05.077 --> 00:00:05.538
+Arjun Mehta:  Because when something goes wrong, a broadcaster needs to know which model translated a line, who approved it and which voice read it.
+
+13
+00:00:05.538 --> 00:00:06.000
+Without that trail, nobody can take responsibility, and that is the real risk.
