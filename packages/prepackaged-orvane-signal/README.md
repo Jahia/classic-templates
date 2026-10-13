@@ -35,6 +35,29 @@ Unlike the classic-dev and Skylantern packages, this one keeps the content of ad
 purpose (the showcase demonstrates them): it declares `jsfaq`, `js-media-gallery`,
 `js-store-locator` and `formidable-elements` as dependencies.
 
+## Personalisation (jExperience)
+
+Both Orvane sites also show personalisation with jExperience, built on what a visitor reads and
+answers, and only after they accept tracking:
+
+- a consent banner (`ctpl:consentBanner`) in the shared footer; tracking is off by default on the
+  site node (`wemmix:deactivateJSExecution` = all) until the visitor accepts;
+- personalised sections: the Signal hero (registered attendee, exhibitor prospect, the reader of
+  each topic), a "For you" rail (the reader's topic, else editors' picks), the newsletter band
+  (exhibitor prospect, subscriber); on Orvane Live the hero (exhibitor prospect, registered
+  attendee, streaming reader) and the latest Signal stories by the reader's topic;
+- an A/B test of the Live hero's call to action ("Register now" or "Get your pass") for the
+  visitors no variant matched, measured by the registration goal;
+- form answers (newsletter, Live registration, stand enquiry) written to the visitor profile by
+  formidable-jexperience-engine, and story plays, shares, filters and searches recorded by
+  classic-media.
+
+Segments, rules, the scoring plan, goals, personas and the audience dashboard live in jCustomer and
+Kibana, not in the site export: they ship in [`personalisation/`](personalisation) (JSON per jCustomer
+endpoint, the dashboard as `.ndjson`) and are loaded after the import by
+`scripts/load-jcustomer.py`, which also resolves the goals' forms on the target (an import gives
+every node a new identifier).
+
 ## Installing
 
 The two Orvane sites link to each other (the network bar in each header, the Signal editors who
@@ -44,11 +67,22 @@ order does not matter.
 
 1. Install, at the same version, `classic-templates` and `classic-media` (0.8.0 or later), then the
    add-on modules the sites show: `jsfaq` (1.1.1), `js-media-gallery` (1.1.0),
-   `js-store-locator` (1.1.0) and `formidable-elements` (0.5.0), and these two modules.
+   `js-store-locator` (1.1.0) and `formidable-elements` (0.5.0), and these two modules. For the
+   personalisation, a jCustomer (3.0.0) and, from the Jahia store, `jexperience` (3.9.1),
+   `formidable-engine` and `formidable-jexperience-engine` (0.5.0), `kibana-dashboards-provider` and
+   `jexperience-dashboards` (2.1.0), configured BEFORE the import: one jExperience settings entry
+   `global` and one per site (`org.jahia.modules.jexperience.settings`, the jCustomer connection,
+   `jexperience.siteKey` on the site entries), and the Kibana proxy
+   (`org.jahia.modules.kibana_dashboards_provider`: the URL and the four user fields, placeholders
+   on a Kibana without security). Never install a development build of a Formidable or jExperience
+   module next to these: the add-ons would stay wired to it.
 2. Open Administration > Projects
    ([localhost:8080/jahia/administration/webProjectSettings](http://localhost:8080/jahia/administration/webProjectSettings)),
    and under **Import prepackaged project** import both Orvane sites.
-3. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), then
+3. Load the personalisation into jCustomer and Kibana:
+   `JAHIA_URL=... JCUSTOMER_URL=... KIBANA_URL=... python3 scripts/load-jcustomer.py packages/prepackaged-orvane-signal/personalisation`.
+   Without it the sites work and show their default content to everyone.
+4. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), then
    register and index the two sites:
    `mutation { admin { search { a: addSite(siteKey: "orvane-signal") b: addSite(siteKey: "orvane-live") } } }`
    and `startIndex(siteKeys: ["orvane-signal", "orvane-live"], workspace: LIVE)`. Without it every

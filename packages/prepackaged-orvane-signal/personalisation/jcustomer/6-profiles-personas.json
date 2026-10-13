@@ -1,0 +1,71 @@
+{
+ "endpoint": "/cxs/profiles/personas",
+ "items": [
+  {
+   "itemId": "orvane-persona-nadia",
+   "itemType": "persona",
+   "properties": {
+    "firstName": "Nadia",
+    "lastName": "Ferhat",
+    "description": "Orvane P1: streaming engineer at a regional broadcaster, newsletter subscriber (fictional)",
+    "orvaneTopicStreaming": 4,
+    "orvaneTopics": [
+     "streaming"
+    ],
+    "orvaneRole": "broadcaster",
+    "orvaneNewsletter": "weekly",
+    "nbOfVisits": 5
+   },
+   "segments": [
+    "orvane-reader-streaming",
+    "orvane-newsletter-subscriber",
+    "orvane-returning-reader"
+   ],
+   "scores": {}
+  },
+  {
+   "itemId": "orvane-persona-tom",
+   "itemType": "persona",
+   "properties": {
+    "firstName": "Tom",
+    "lastName": "Becker",
+    "description": "Orvane P2: product marketing lead at a playout software vendor, exhibitor prospect (fictional)",
+    "orvaneTopicCloud": 3,
+    "orvaneRole": "vendor",
+    "nbOfVisits": 3,
+    "orvaneExhibitViews": 3
+   },
+   "segments": [
+    "orvane-reader-cloud",
+    "orvane-exhibitor-prospect",
+    "orvane-returning-reader"
+   ],
+   "scores": {
+    "orvane-exhibitor-intent": 30
+   }
+  },
+  {
+   "itemId": "orvane-persona-lena",
+   "itemType": "persona",
+   "properties": {
+    "firstName": "Lena",
+    "lastName": "Sorensen",
+    "description": "Orvane P3: producer at a production company, registered for Orvane Live 2027 (fictional)",
+    "orvaneTopicProduction": 3,
+    "orvaneTopics": [
+     "production"
+    ],
+    "orvaneRole": "producer",
+    "orvaneRegistered": "2027",
+    "orvanePass": "all-access",
+    "nbOfVisits": 4
+   },
+   "segments": [
+    "orvane-reader-production",
+    "orvane-registered-attendee",
+    "orvane-returning-reader"
+   ],
+   "scores": {}
+  }
+ ]
+}

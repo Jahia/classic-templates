@@ -1,0 +1,374 @@
+{
+ "endpoint": "/cxs/segments",
+ "items": [
+  {
+   "itemId": "orvane-reader-streaming",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-reader-streaming",
+    "name": "Orvane reader: Streaming and distribution",
+    "description": "Read at least two pages filed under Streaming and distribution, or chose the topic in a form.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "or",
+     "subConditions": [
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopicStreaming",
+        "comparisonOperator": "greaterThanOrEqualTo",
+        "propertyValueInteger": 2
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopics",
+        "comparisonOperator": "equals",
+        "propertyValue": "streaming"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-reader-production",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-reader-production",
+    "name": "Orvane reader: Production and live",
+    "description": "Read at least two pages filed under Production and live, or chose the topic in a form.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "or",
+     "subConditions": [
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopicProduction",
+        "comparisonOperator": "greaterThanOrEqualTo",
+        "propertyValueInteger": 2
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopics",
+        "comparisonOperator": "equals",
+        "propertyValue": "production"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-reader-ai",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-reader-ai",
+    "name": "Orvane reader: AI and automation",
+    "description": "Read at least two pages filed under AI and automation, or chose the topic in a form.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "or",
+     "subConditions": [
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopicAi",
+        "comparisonOperator": "greaterThanOrEqualTo",
+        "propertyValueInteger": 2
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopics",
+        "comparisonOperator": "equals",
+        "propertyValue": "ai"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-reader-cloud",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-reader-cloud",
+    "name": "Orvane reader: Cloud and networks",
+    "description": "Read at least two pages filed under Cloud and networks, or chose the topic in a form.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "or",
+     "subConditions": [
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopicCloud",
+        "comparisonOperator": "greaterThanOrEqualTo",
+        "propertyValueInteger": 2
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopics",
+        "comparisonOperator": "equals",
+        "propertyValue": "cloud"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-reader-immersive",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-reader-immersive",
+    "name": "Orvane reader: Immersive and virtual",
+    "description": "Read at least two pages filed under Immersive and virtual, or chose the topic in a form.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "or",
+     "subConditions": [
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopicImmersive",
+        "comparisonOperator": "greaterThanOrEqualTo",
+        "propertyValueInteger": 2
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopics",
+        "comparisonOperator": "equals",
+        "propertyValue": "immersive"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-reader-business",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-reader-business",
+    "name": "Orvane reader: Business and people",
+    "description": "Read at least two pages filed under Business and people, or chose the topic in a form.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "or",
+     "subConditions": [
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopicBusiness",
+        "comparisonOperator": "greaterThanOrEqualTo",
+        "propertyValueInteger": 2
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneTopics",
+        "comparisonOperator": "equals",
+        "propertyValue": "business"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-returning-reader",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-returning-reader",
+    "name": "Orvane returning reader",
+    "description": "Two visits or more.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "profilePropertyCondition",
+    "parameterValues": {
+     "propertyName": "properties.nbOfVisits",
+     "comparisonOperator": "greaterThanOrEqualTo",
+     "propertyValueInteger": 2
+    }
+   }
+  },
+  {
+   "itemId": "orvane-newsletter-subscriber",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-newsletter-subscriber",
+    "name": "Orvane newsletter subscriber",
+    "description": "Subscribed to the Orvane Signal newsletter.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "profilePropertyCondition",
+    "parameterValues": {
+     "propertyName": "properties.orvaneNewsletter",
+     "comparisonOperator": "exists"
+    }
+   }
+  },
+  {
+   "itemId": "orvane-registered-attendee",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-registered-attendee",
+    "name": "Orvane Live registered attendee",
+    "description": "Registered for Orvane Live 2027.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "profilePropertyCondition",
+    "parameterValues": {
+     "propertyName": "properties.orvaneRegistered",
+     "comparisonOperator": "exists"
+    }
+   }
+  },
+  {
+   "itemId": "orvane-exhibitor-prospect",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-exhibitor-prospect",
+    "name": "Orvane exhibitor prospect",
+    "description": "Exhibitor intent score of 25 or more, a technology vendor, or a stand enquiry sent.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "or",
+     "subConditions": [
+      {
+       "type": "scoringCondition",
+       "parameterValues": {
+        "scoringPlanId": "orvane-exhibitor-intent",
+        "scoreValue": 25,
+        "comparisonOperator": "greaterThanOrEqualTo"
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneRole",
+        "comparisonOperator": "equals",
+        "propertyValue": "vendor"
+       }
+      },
+      {
+       "type": "profilePropertyCondition",
+       "parameterValues": {
+        "propertyName": "properties.orvaneStandEnquiry",
+        "comparisonOperator": "exists"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-stand-enquirer",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-stand-enquirer",
+    "name": "Orvane stand enquirer",
+    "description": "Sent the book-a-stand form.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "profilePropertyCondition",
+    "parameterValues": {
+     "propertyName": "properties.orvaneStandEnquiry",
+     "comparisonOperator": "exists"
+    }
+   }
+  }
+ ]
+}

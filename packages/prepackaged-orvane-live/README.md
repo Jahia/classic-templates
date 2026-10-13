@@ -37,6 +37,14 @@ Unlike the classic-dev and Skylantern packages, this one keeps the content of ad
 purpose (the showcase demonstrates them): it declares `jsfaq`, `js-media-gallery`,
 `js-store-locator` and `formidable-elements` as dependencies.
 
+## Personalisation (jExperience)
+
+Orvane Live shares the personalisation of Orvane Signal (consent banner, personalised hero and
+Signal feed, the A/B test of the hero's call to action, the registration form mapped to the visitor
+profile): what to install and configure, and how to load the segments, goals, personas and the
+dashboard shipped with Orvane Signal, are in the
+[Orvane Signal README](../prepackaged-orvane-signal/README.md#personalisation-jexperience).
+
 ## Installing
 
 The two Orvane sites link to each other (the network bar in each header, the Signal editors who

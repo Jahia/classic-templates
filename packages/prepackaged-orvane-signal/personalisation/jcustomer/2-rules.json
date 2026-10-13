@@ -1,0 +1,341 @@
+{
+ "endpoint": "/cxs/rules",
+ "items": [
+  {
+   "itemId": "orvane-topic-streaming",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-topic-streaming",
+    "name": "Orvane: count reads of Streaming and distribution",
+    "description": "Increments a profile counter on every view of a page or story filed under this topic.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "view"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "target.properties.pageInfo.categories",
+        "comparisonOperator": "contains",
+        "propertyValue": "/categories/orvane/streaming"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneTopicStreaming"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
+  },
+  {
+   "itemId": "orvane-topic-production",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-topic-production",
+    "name": "Orvane: count reads of Production and live",
+    "description": "Increments a profile counter on every view of a page or story filed under this topic.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "view"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "target.properties.pageInfo.categories",
+        "comparisonOperator": "contains",
+        "propertyValue": "/categories/orvane/production"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneTopicProduction"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
+  },
+  {
+   "itemId": "orvane-topic-ai",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-topic-ai",
+    "name": "Orvane: count reads of AI and automation",
+    "description": "Increments a profile counter on every view of a page or story filed under this topic.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "view"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "target.properties.pageInfo.categories",
+        "comparisonOperator": "contains",
+        "propertyValue": "/categories/orvane/ai"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneTopicAi"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
+  },
+  {
+   "itemId": "orvane-topic-cloud",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-topic-cloud",
+    "name": "Orvane: count reads of Cloud and networks",
+    "description": "Increments a profile counter on every view of a page or story filed under this topic.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "view"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "target.properties.pageInfo.categories",
+        "comparisonOperator": "contains",
+        "propertyValue": "/categories/orvane/cloud"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneTopicCloud"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
+  },
+  {
+   "itemId": "orvane-topic-immersive",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-topic-immersive",
+    "name": "Orvane: count reads of Immersive and virtual",
+    "description": "Increments a profile counter on every view of a page or story filed under this topic.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "view"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "target.properties.pageInfo.categories",
+        "comparisonOperator": "contains",
+        "propertyValue": "/categories/orvane/immersive"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneTopicImmersive"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
+  },
+  {
+   "itemId": "orvane-topic-business",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-topic-business",
+    "name": "Orvane: count reads of Business and people",
+    "description": "Increments a profile counter on every view of a page or story filed under this topic.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "view"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "target.properties.pageInfo.categories",
+        "comparisonOperator": "contains",
+        "propertyValue": "/categories/orvane/business"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneTopicBusiness"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
+  },
+  {
+   "itemId": "orvane-exhibit-views",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-exhibit-views",
+    "name": "Orvane: count views of the Live exhibit pages",
+    "description": "Increments a profile counter on every view of a page under Live's Exhibit page.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "view"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "target.properties.pageInfo.pagePath",
+        "comparisonOperator": "contains",
+        "propertyValue": "/sites/orvane-live/home/exhibit"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneExhibitViews"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
+  }
+ ]
+}

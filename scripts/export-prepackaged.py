@@ -214,10 +214,14 @@ PROFILES = {
 }
 
 # The two Orvane sites (a fictional media group, see packages/prepackaged-orvane-*/README.md) show
-# the add-on modules on purpose: their content is kept, and the packages declare the modules.
-ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements"]
+# the add-on modules on purpose: their content is kept, and the packages declare the modules. Since
+# v2 they also show personalisation: jExperience's personalised sections and A/B test (wem*), the
+# form answers mapped to the visitor profile (formidable-jexperience-engine) and the audience
+# dashboard (kibana-dashboards-provider, jexperience-dashboards).
+ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements", "jexperience",
+                 "formidable-jexperience-engine", "kibana-dashboards-provider", "jexperience-dashboards"]
 ORVANE_ADDON_PREFIXES = ["jsfaqnt", "jsfaqmix", "jsfaq", "jsmediagallerynt", "jsmediagallerymix", "jsstorelocnt",
-                         "jsstorelocmix", "fmdb", "fmdbmix"]
+                         "jsstorelocmix", "fmdb", "fmdbmix", "wem", "wemnt", "wemmix"]
 for _site in ("orvane-signal", "orvane-live"):
     PROFILES[_site] = {
         "package": f"prepackaged-{_site}",
@@ -293,7 +297,7 @@ def node_types(element):
 
 
 def qname(name):
-    for p, uri in NS.items():
+    for p, uri in {**NS, **DECLARED}.items():
         if name.startswith("{%s}" % uri):
             return p + ":" + name[len(uri) + 2:]
     if name.startswith("{"):
@@ -311,7 +315,7 @@ def write_element(element, depth, out):
     tag = qname(element.tag)
     attrs = [f'{qname(k)}="{escape(v)}"' for k, v in element.attrib.items()]
     if depth == 0:
-        attrs = [f'xmlns:{p}="{uri}"' for p, uri in NS.items()] + attrs
+        attrs = [f'xmlns:{p}="{uri}"' for p, uri in namespaces_used(element).items()] + attrs
         head = f"<{tag}" + "".join(" " + a for a in attrs)
     else:
         pad = "\n" + indent + " " * (len(tag) + 2)
@@ -332,10 +336,25 @@ def serialize(root):
     return "".join(out)
 
 
+# Namespaces of property and node names other than j and jcr (wem:deactivateJSExecution on a site
+# with jExperience, for example), read from the export's own declarations: the root element declares
+# them only when a name uses them.
+DECLARED = {}
+
+
 def parse(data):
     for p, uri in NS.items():
         ET.register_namespace(p, uri)
+    for _, (p, uri) in ET.iterparse(io.BytesIO(data), events=("start-ns",)):
+        if p and uri not in NS.values() and p not in NS:
+            DECLARED[p] = uri
     return ET.fromstring(data)
+
+
+def namespaces_used(root):
+    """j and jcr, then every declared namespace a node or property name of `root` uses."""
+    uris = {name[1:name.index("}")] for e in root.iter() for name in [e.tag, *e.attrib] if name.startswith("{")}
+    return {**NS, **{p: uri for p, uri in DECLARED.items() if uri in uris}}
 
 
 # ---------------------------------------------------------------------------------------------
