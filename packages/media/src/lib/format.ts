@@ -109,10 +109,24 @@ export const isoInZone = (iso: string | undefined, zone: string): string | undef
   return `${day}T${get("hour")}:${get("minute")}:${get("second")}${sign}${hh}:${mm}`;
 };
 
+/** Text of an HTML string with its tags dropped, in one linear pass (no backtracking regex). */
+const textOf = (html: string) => {
+  let out = "";
+  let inTag = false;
+  for (const ch of html) {
+    if (ch === "<" || ch === ">") {
+      inTag = ch === "<";
+      out += " ";
+    } else if (!inTag) {
+      out += ch;
+    }
+  }
+  return out;
+};
+
 /** Reading time of a rich text in minutes (200 words a minute), at least 1. */
 export const readingMinutes = (html: string | undefined): number => {
-  const words = (html ?? "")
-    .replaceAll(/<[^>]*>/g, " ")
+  const words = textOf(html ?? "")
     .split(/\s+/)
     .filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 200));

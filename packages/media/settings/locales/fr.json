@@ -41,7 +41,10 @@
     "membersNotice": "Cet article est réservé aux membres. Connectez-vous pour le lire en entier.",
     "signIn": "Se connecter",
     "membersEdit": "Réservé aux membres : les visiteurs non connectés voient le résumé et un lien de connexion.",
-    "membersLabel": "Membres"
+    "membersLabel": "Membres",
+    "download": "Télécharger l'épisode",
+    "captionsMissing": "Ajoutez les sous-titres de l'épisode (un fichier WebVTT) pour afficher le lecteur audio.",
+    "captions": "Sous-titres"
   },
   "share": {
     "label": "Partager cette page",

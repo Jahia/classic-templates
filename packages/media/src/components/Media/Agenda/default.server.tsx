@@ -74,13 +74,8 @@ jahiaComponent(
               <MediaScript />
               {facets.length > 0 && (
                 <>
-                  <div
-                    className={classes.filters}
-                    role="group"
-                    aria-label={t("agenda.filters")}
-                    data-ctmd-filter-controls=""
-                    hidden
-                  >
+                  <fieldset className={classes.filters} data-ctmd-filter-controls="" hidden>
+                    <legend className={shared.visuallyHidden}>{t("agenda.filters")}</legend>
                     {facets.map((facet) => (
                       <label key={facet} className={classes.filter}>
                         <span>{t(`agenda.${facet}`)}</span>
@@ -94,10 +89,9 @@ jahiaComponent(
                         </select>
                       </label>
                     ))}
-                  </div>
-                  <p
+                  </fieldset>
+                  <output
                     className={shared.visuallyHidden}
-                    role="status"
                     data-ctmd-filter-status=""
                     data-template={t("agenda.shown", { n: "{count}", ...RAW })}
                   />

@@ -139,37 +139,37 @@ jahiaComponent(
               {title}
             </Heading>
           )}
-          <form
-            className={classes.form}
-            role="search"
-            method="get"
-            action={action}
-            data-testid="ctmd-search-form"
-          >
-            <label className={classes.label} htmlFor={inputId}>
-              {t("search.label")}
-            </label>
-            <div className={classes.row}>
-              <input
-                id={inputId}
-                className={classes.input}
-                type="search"
-                name="q"
-                defaultValue={words}
-                maxLength={200}
-              />
-              <button type="submit" className={classes.submit}>
-                {t("search.submit")}
-              </button>
-            </div>
-          </form>
-          <p
+          <search>
+            <form
+              className={classes.form}
+              method="get"
+              action={action}
+              data-testid="ctmd-search-form"
+            >
+              <label className={classes.label} htmlFor={inputId}>
+                {t("search.label")}
+              </label>
+              <div className={classes.row}>
+                <input
+                  id={inputId}
+                  className={classes.input}
+                  type="search"
+                  name="q"
+                  defaultValue={words}
+                  maxLength={200}
+                />
+                <button type="submit" className={classes.submit}>
+                  {t("search.submit")}
+                </button>
+              </div>
+            </form>
+          </search>
+          <output
             className={status ? classes.status : shared.visuallyHidden}
-            role="status"
             data-testid="ctmd-search-status"
           >
             {status}
-          </p>
+          </output>
           {words && !failed && total === 0 && (
             <p className={cards.empty}>{props.noResultText || t("search.none")}</p>
           )}

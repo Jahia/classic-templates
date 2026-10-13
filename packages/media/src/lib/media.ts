@@ -197,7 +197,7 @@ export const eventTimeZone = (node: JCRNodeWrapper, renderContext: RenderContext
  */
 export const pageOf = (renderContext: RenderContext, fallback: JCRNodeWrapper) => {
   try {
-    const page = renderContext.getMainResource()?.getNode() as JCRNodeWrapper | undefined;
+    const page = renderContext.getMainResource()?.getNode();
     if (page) return { page, site: page.getResolveSite() as JCRNodeWrapper };
   } catch {
     // no main resource (rendering outside a page)

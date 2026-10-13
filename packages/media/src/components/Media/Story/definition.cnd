@@ -13,7 +13,9 @@
 // body, publication date, image; the optional "Members only" switch), so content lists, card grids
 // and the main-resource template handle it like a news item. authors are people of this module.
 // A video story shows a video of js-media-gallery (picked, rendered with its own view: captions and
-// transcript come with it); a podcast story an audio file of the media library and its transcript.
+// transcript come with it); a podcast story an audio file of the media library, its captions
+// (a WebVTT file per language: without it the page offers the file and the transcript, no player)
+// and its transcript.
 // Topics are the native categories (j:defaultCategory), never declared here.
 [ctmd:story] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component, ctplmix:editorialItem
  - format (string, choicelist[resourceBundle]) = 'news' autocreated < 'news', 'feature', 'opinion', 'interview', 'report', 'video', 'podcast'
@@ -21,4 +23,5 @@
  // cnd-check-ignore(weakrefNoConstraint): a video of js-media-gallery (internal or external), rendered through its own view; left unconstrained so this module does not depend on js-media-gallery
  - video (weakreference, picker[type='editorial'])
  - audio (weakreference, picker[type='file']) < jnt:file
+ - audioCaptions (weakreference, picker[type='file']) i18n < jnt:file
  - transcript (string, richtext) i18n

@@ -41,7 +41,10 @@
     "membersNotice": "This story is for members. Sign in to read it in full.",
     "signIn": "Sign in",
     "membersEdit": "Members only: visitors who are not signed in see the summary and a sign-in link.",
-    "membersLabel": "Members"
+    "membersLabel": "Members",
+    "download": "Download the episode",
+    "captionsMissing": "Add the episode's captions (a WebVTT file) to show the audio player.",
+    "captions": "Captions"
   },
   "share": {
     "label": "Share this page",

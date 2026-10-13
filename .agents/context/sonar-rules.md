@@ -40,12 +40,17 @@ JavaScript strings (the views pass `parameters={{ headingLevel: String(level) }}
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | S4623             | Sonar flags `undefined` passed to an **optional** parameter only; ESLint sees no types and flags required ones too        | never pass a trailing `undefined` to a `param?:` parameter (tests included: `destinationOf("")`, not `destinationOf("", undefined)`)      |
 | S1192             | counts every literal of the file, old lines included (threshold 3): a lint rule would flag lines Sonar treats as old code | a string used three times in a file you touch becomes a constant; never rewrite literals on untouched lines (it moves them into new code) |
+| S6819             | an ARIA role where a native element exists (`role="group"`, `role="status"`, `role="search"`)                     | `<fieldset>` + `<legend>` for a group of controls, `<output>` for a live status line, `<search>` around a search form                    |
+| S4043             | an array-mutating method used as an expression (`return list.sort(...).slice(...)`)                                     | sort in its own statement, then use the array                                                                                           |
+| S4084             | `<audio>` / `<video>` without a `<track kind="captions">` child                                                        | render the player only with a captions file; otherwise offer the file and the transcript                                                |
 | S5852 (hotspot)   | regular-expression backtracking needs a review                                                                            | no two adjacent quantified groups that can match the same characters; add `(?![a-z0-9])` after a tag name                                 |
 | S1523/S5332 (hot) | `javascript:` or `http:` in sanitiser tests is expected                                                                   | leave the test; the user marks the hotspot Safe in SonarQube                                                                              |
 
 ## When the gate still fails
 
-The check-run summary names the failed conditions, never the issues. Ask the user to open
+The check-run summary names the failed conditions; the issues are the annotations of the
+`jahia-sonarqube / SonarQube Code Analysis` check on the PR's Checks tab (rule, file, line), which
+GitHub shows even when SonarQube is down. Otherwise ask the user to open
 [sonarqube.jahia.com](https://sonarqube.jahia.com) in Chrome (SSO), then from a tab on that origin:
 
 ```js

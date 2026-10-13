@@ -39,6 +39,7 @@
   background: var(--ctpl-color-action-hover);
 }
 .status {
+  display: block;
   margin: 0 0 var(--ctpl-space-4);
   color: var(--ctpl-color-text-muted);
 }
