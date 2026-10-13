@@ -198,6 +198,15 @@ def notice_bar(d, p):
     d.line(p(12, 16, 26, 16), fill=INK, width=w(2))
 
 
+def network_bar(d, p):
+    # Three linked sites on a band: the group and its sites.
+    d.rectangle(p(2, 11, 30, 21), fill=INK)
+    for x in (8, 16, 24):
+        d.ellipse(p(x - 2, 14, x + 2, 18), fill=(255, 255, 255, 255))
+    d.line(p(10, 16, 14, 16), fill=(255, 255, 255, 255), width=w(1))
+    d.line(p(18, 16, 22, 16), fill=(255, 255, 255, 255), width=w(1))
+
+
 def hero_carousel(d, p):
     d.rectangle(p(5, 6, 27, 22), outline=INK, width=w(2))
     d.line(p(9, 12, 20, 12), fill=INK, width=w(3))
@@ -247,6 +256,7 @@ ICONS = {
     "ctpl_tabs": tabs,
     "ctpl_tab": tab,
     "ctpl_noticeBar": notice_bar,
+    "ctpl_networkBar": network_bar,
     "ctpl_heroCarousel": hero_carousel,
     "ctpl_signIn": sign_in,
 }

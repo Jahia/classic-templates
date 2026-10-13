@@ -35,14 +35,16 @@ and no layout: every page keeps its sections, text and images.
 | **Sage (green and coral)**          | ![Sage theme, light](../images/theme-sage-light.png)             | ![Sage theme, dark](../images/theme-sage-dark.png)             |
 | **Slate (ink and green)**           | ![Slate theme, light](../images/theme-slate-light.png)           | ![Slate theme, dark](../images/theme-slate-dark.png)           |
 | **Graphite (charcoal and crimson)** | ![Graphite theme, light](../images/theme-graphite-light.png)     | ![Graphite theme, dark](../images/theme-graphite-dark.png)     |
+| **Signal (cobalt and vermilion)**   | ![Signal theme, light](../images/theme-signal-light.png)         | ![Signal theme, dark](../images/theme-signal-dark.png)         |
+| **Live (violet and jade)**          | ![Live theme, light](../images/theme-live-light.png)             | ![Live theme, dark](../images/theme-live-dark.png)             |
 
 Every theme is checked for sufficient text contrast (WCAG 2.1 AA) in both light and dark.
 
-Each theme also has an **emphasis colour**, used for values that must stand out, such as key figures and prices. It is the theme's main colour in Classic, Ocean and Terracotta, an orange in Horizon, a coral in Sage, a green in Slate and a crimson in Graphite. Horizon is designed light first: its dark version keeps the same navy, teal and orange family. Sage is calm and rounded, with serif headings; Slate is crisper, with sans-serif headings and squarer shapes. Graphite is the most neutral: true charcoal greys with sans-serif headings and squared corners, where crimson is reserved for buttons and key values.
+Each theme also has an **emphasis colour**, used for values that must stand out, such as key figures and prices. It is the theme's main colour in Classic, Ocean and Terracotta, an orange in Horizon, a coral in Sage, a green in Slate, a crimson in Graphite, a vermilion in Signal and a jade green in Live. Horizon is designed light first: its dark version keeps the same navy, teal and orange family. Sage is calm and rounded, with serif headings; Slate is crisper, with sans-serif headings and squarer shapes. Graphite is the most neutral: true charcoal greys with sans-serif headings and squared corners, where crimson is reserved for buttons and key values. Signal is made for news and magazine sites: warm paper whites, serif headings and sharp corners, cobalt links and vermilion buttons. Live is made for event sites: cool dusk greys, heavy sans-serif headings and round shapes, violet links and jade buttons; it reads well in dark.
 
 ### Accent and action
 
-A theme has two main colours. The **accent** colours links, navigation, tabs and tinted backgrounds. The **action** colours the call-to-action buttons (the filled and the outlined button of a section, the submit button of a form). In Classic, Ocean, Terracotta and Horizon the two are the same colour. Sage uses a deep green-teal accent with coral buttons, and Slate a slate-ink accent with green buttons, and Graphite a charcoal accent with crimson buttons, so the buttons stand out from the text links.
+A theme has two main colours. The **accent** colours links, navigation, tabs and tinted backgrounds. The **action** colours the call-to-action buttons (the filled and the outlined button of a section, the submit button of a form). In Classic, Ocean, Terracotta and Horizon the two are the same colour. Sage uses a deep green-teal accent with coral buttons, and Slate a slate-ink accent with green buttons, Graphite a charcoal accent with crimson buttons, Signal a cobalt accent with vermilion buttons and Live a violet accent with jade buttons, so the buttons stand out from the text links.
 
 ## Light or dark
 
