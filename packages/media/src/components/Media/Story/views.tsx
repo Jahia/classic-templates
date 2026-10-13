@@ -105,7 +105,8 @@ const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => 
   if (props.format === "video" && props.video) {
     return (
       <div className={classes.media} data-testid="ctmd-story-video">
-        <Render node={props.video} />
+        {/* The video's title is the first heading under the story's h1. */}
+        <Render node={props.video} parameters={{ headingLevel: "2" }} />
       </div>
     );
   }

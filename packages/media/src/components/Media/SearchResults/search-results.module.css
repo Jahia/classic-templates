@@ -1,0 +1,86 @@
+/* The search section: a search box, a count, ranked hits, previous and next. Theme tokens only. */
+
+.form {
+  display: grid;
+  gap: var(--ctpl-space-2);
+  max-width: var(--ctpl-measure);
+  margin-bottom: var(--ctpl-space-4);
+}
+.label {
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+}
+.input {
+  flex: 1 1 14rem;
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  font: inherit;
+}
+.submit {
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-5);
+  border: 0;
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  cursor: pointer;
+}
+.submit:hover {
+  background: var(--ctpl-color-action-hover);
+}
+.status {
+  margin: 0 0 var(--ctpl-space-4);
+  color: var(--ctpl-color-text-muted);
+}
+.results {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  max-width: var(--ctpl-measure);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.result {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  padding-block: var(--ctpl-space-4);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.result > * {
+  margin: 0;
+}
+.title {
+  font-size: var(--ctpl-text-lg);
+}
+.excerpt {
+  color: var(--ctpl-color-text-muted);
+}
+/* Matched words: the theme's emphasis tint, readable in both schemes. */
+.mark {
+  padding: 0 0.1em;
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-text);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.pager {
+  display: flex;
+  gap: var(--ctpl-space-5);
+  margin-top: var(--ctpl-space-5);
+}
+.pager a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  font-weight: var(--ctpl-font-weight-medium);
+}

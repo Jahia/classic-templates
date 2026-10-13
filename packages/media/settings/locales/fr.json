@@ -110,5 +110,25 @@
     "today": "Commence aujourd'hui",
     "running": "En ce moment",
     "keyDates": "Dates clés"
+  },
+  "search": {
+    "label": "Rechercher dans le site",
+    "submit": "Rechercher",
+    "count_one": "{{count}} résultat pour « {{words}} »",
+    "count_other": "{{count}} résultats pour « {{words}} »",
+    "none": "Aucun résultat pour ces mots. Essayez d'autres mots, ou moins de mots.",
+    "unavailable": "La recherche n'est pas disponible pour le moment. Réessayez plus tard.",
+    "pages": "Pages de résultats",
+    "previous": "Résultats précédents",
+    "next": "Plus de résultats",
+    "kind": {
+      "story": "Article",
+      "person": "Personne",
+      "session": "Session",
+      "news": "Actualité",
+      "article": "Article",
+      "page": "Page",
+      "other": "Contenu"
+    }
   }
 }

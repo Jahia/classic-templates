@@ -110,5 +110,25 @@
     "today": "Starts today",
     "running": "Happening now",
     "keyDates": "Key dates"
+  },
+  "search": {
+    "label": "Search the site",
+    "submit": "Search",
+    "count_one": "{{count}} result for “{{words}}”",
+    "count_other": "{{count}} results for “{{words}}”",
+    "none": "Nothing matches these words. Try other words, or fewer.",
+    "unavailable": "Search is not available at the moment. Please try again later.",
+    "pages": "Result pages",
+    "previous": "Previous results",
+    "next": "More results",
+    "kind": {
+      "story": "Story",
+      "person": "Person",
+      "session": "Session",
+      "news": "News",
+      "article": "Article",
+      "page": "Page",
+      "other": "Content"
+    }
   }
 }

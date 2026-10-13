@@ -82,6 +82,11 @@ def key_dates(d, p):
     d.rectangle(p(12, 15, 20, 23), fill=INK)
 
 
+def search(d, p):
+    d.ellipse(p(5, 5, 21, 21), outline=INK, width=w(3))
+    d.line(p(19, 19, 27, 27), fill=INK, width=w(4))
+
+
 def key_date(d, p):
     d.rectangle(p(7, 8, 25, 26), outline=INK, width=w(2))
     d.rectangle(p(12, 14, 20, 21), fill=INK)
@@ -99,6 +104,7 @@ ICONS = {
     "ctmd_speakerGallery": gallery,
     "ctmd_keyDates": key_dates,
     "ctmd_keyDate": key_date,
+    "ctmd_searchResults": search,
 }
 
 if __name__ == "__main__":
