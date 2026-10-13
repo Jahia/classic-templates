@@ -140,12 +140,12 @@
   };
 
   // ---- Tracking ---------------------------------------------------------------------------------
-  // jExperience's tracker (window.wem) tracks this visitor: a context with a profile is loaded and
-  // tracking is not switched off (wemInitConfig.activateWem: off until consent on a site that asks
-  // for it, off again after a refusal).
+  // jExperience's tracker (window.wem) tracks this visitor: the context it loaded has a profile
+  // (wem.getLoadedContext(), its public accessor) and tracking is on (wemInitConfig.activateWem:
+  // off until consent on a site that asks for it, off again after a refusal).
   const tracking = () =>
     Boolean(
-      globalThis.wem?.cxs?.profileId &&
+      globalThis.wem?.getLoadedContext?.()?.profileId &&
       globalThis.digitalData?.wemInitConfig?.activateWem === true &&
       typeof globalThis.wem.collectEvent === "function",
     );
@@ -166,7 +166,7 @@
   const whenTracked = (send) => {
     const wem = globalThis.wem;
     if (!wem) return;
-    if (wem.cxs?.profileId) send();
+    if (wem.getLoadedContext?.()?.profileId) send();
     else if (typeof wem._registerCallback === "function")
       wem._registerCallback(send, "classic-media tracking", 50);
   };
