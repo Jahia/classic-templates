@@ -3,6 +3,7 @@ import {
   RenderChildren,
   buildNodeUrl,
   getChildNodes,
+  getNodesByJCRQuery,
   useServerContext,
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
@@ -10,7 +11,6 @@ import { Heading, useParamHeadingLevel } from "../../../lib/Heading.js";
 import { RAW, useT } from "../../../lib/i18n.js";
 import { Image } from "../../../lib/Image.js";
 import { JsonLd, useAbsoluteUrl } from "../../../lib/JsonLd.js";
-import { getNodesByJCRQuery } from "@jahia/javascript-modules-library";
 import { buildListQuery } from "../../../lib/query.js";
 import { RichText } from "../../../lib/RichText.js";
 import { resolveLink } from "../../../lib/resolveLink.js";
@@ -64,7 +64,8 @@ const itemsOf = (person: JCRNodeWrapper, type: "ctmd:story" | "ctmd:sessionSpeak
     }
   }
   const startOf = (n: JCRNodeWrapper) => Date.parse(readString(n, "start") ?? "") || 0;
-  return sessions.sort((a, b) => startOf(a) - startOf(b)).slice(0, MAX_LISTED);
+  sessions.sort((a, b) => startOf(a) - startOf(b));
+  return sessions.slice(0, MAX_LISTED);
 };
 
 /**

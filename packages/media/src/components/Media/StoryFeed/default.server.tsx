@@ -79,7 +79,6 @@ jahiaComponent(
           (pageWithoutCategory ? t("feed.pageNoCategory") : t("feed.pageCategories"))}
       </>
     );
-    const id = currentNode.getIdentifier();
     let listClass = cards.grid;
     if (layout === "list") listClass = classes.list;
     else if (layout === "lead") listClass = `${cards.grid} ${classes.leadGrid}`;
@@ -96,16 +95,8 @@ jahiaComponent(
             {withFilter && (
               <>
                 <MediaScript />
-                <div
-                  className={parts.filters}
-                  role="group"
-                  aria-labelledby={`ctmd-feed-filter-${id}`}
-                  data-ctmd-filter-controls=""
-                  hidden
-                >
-                  <p id={`ctmd-feed-filter-${id}`} className={parts.filterLabel}>
-                    {t("feed.filterLabel")}
-                  </p>
+                <fieldset className={parts.filters} data-ctmd-filter-controls="" hidden>
+                  <legend className={parts.filterLabel}>{t("feed.filterLabel")}</legend>
                   <button
                     type="button"
                     className={parts.toggle}
@@ -127,10 +118,9 @@ jahiaComponent(
                       {formatLabel(f)}
                     </button>
                   ))}
-                </div>
-                <p
+                </fieldset>
+                <output
                   className={shared.visuallyHidden}
-                  role="status"
                   data-ctmd-filter-status=""
                   data-template={t("feed.shown", { n: "{count}", ...RAW })}
                 />

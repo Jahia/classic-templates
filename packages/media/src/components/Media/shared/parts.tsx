@@ -85,16 +85,15 @@ export const ShareBox = ({ url, title }: { url: string; title?: string }) => {
   const { renderContext } = useServerContext();
   if (renderContext.isEditMode()) return null;
   return (
-    <div
+    <fieldset
       className={classes.share}
-      role="group"
-      aria-label={t("share.label")}
       data-ctmd-share=""
       data-ctmd-url={url}
       data-ctmd-title={title}
       data-testid="ctmd-share"
       hidden
     >
+      <legend className={shared.visuallyHidden}>{t("share.label")}</legend>
       <MediaScript />
       <button type="button" className={classes.shareButton} data-ctmd-share-native="" hidden>
         {t("share.share")}
@@ -102,13 +101,12 @@ export const ShareBox = ({ url, title }: { url: string; title?: string }) => {
       <button type="button" className={classes.shareButton} data-ctmd-share-copy="" hidden>
         {t("share.copy")}
       </button>
-      <span
+      <output
         className={shared.visuallyHidden}
-        role="status"
         data-ctmd-share-status=""
         data-copied={t("share.copied")}
       />
-    </div>
+    </fieldset>
   );
 };
 

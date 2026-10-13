@@ -16,6 +16,8 @@ export interface Props {
   /** A video of js-media-gallery, rendered with its own view. */
   "video"?: JCRNodeWrapper;
   "audio"?: JCRNodeWrapper;
+  /** WebVTT captions of the audio, in the page's language. */
+  "audioCaptions"?: JCRNodeWrapper;
   "transcript"?: string;
   "ctplMembersOnly"?: boolean;
 }

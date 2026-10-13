@@ -102,6 +102,7 @@ const relatedStories = (story: JCRNodeWrapper, renderContext: RenderContext): JC
 const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => {
   const t = useT();
   const { renderContext } = useServerContext();
+  const language = useLanguage();
   if (props.format === "video" && props.video) {
     return (
       <div className={classes.media} data-testid="ctmd-story-video">
@@ -111,13 +112,35 @@ const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => 
     );
   }
   if (props.format === "podcast" && props.audio) {
+    const audioUrl = buildNodeUrl(props.audio);
+    // The player comes with its captions (a WebVTT file in the page's language); without them the
+    // episode is offered as a file, next to the transcript the page shows below.
     return (
       <figure className={classes.media} data-testid="ctmd-story-audio">
         {props.image && (
           <Image node={props.image} owner={node} renderContext={renderContext} priority />
         )}
         <figcaption className={classes.listen}>{t("story.listen")}</figcaption>
-        <audio className={classes.audio} controls preload="none" src={buildNodeUrl(props.audio)} />
+        {props.audioCaptions ? (
+          <audio className={classes.audio} controls preload="none" src={audioUrl}>
+            <track
+              kind="captions"
+              src={buildNodeUrl(props.audioCaptions)}
+              srcLang={language}
+              label={t("story.captions")}
+              default
+            />
+          </audio>
+        ) : (
+          <p>
+            <a href={audioUrl} download>
+              {t("story.download")}
+            </a>
+            {renderContext.isEditMode() && (
+              <span className={classes.editNote}> {t("story.captionsMissing")}</span>
+            )}
+          </p>
+        )}
       </figure>
     );
   }

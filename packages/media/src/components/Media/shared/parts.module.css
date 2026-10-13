@@ -13,7 +13,14 @@
   text-decoration-color: currentColor;
 }
 
+/* Fieldsets (share box, filters) without the browser's border and padding. */
+.share,
+.filters {
+  min-inline-size: 0;
+  border: 0;
+}
 .share {
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
   gap: var(--ctpl-space-2);
@@ -49,12 +56,16 @@
   align-items: center;
   gap: var(--ctpl-space-2);
   margin: 0 0 var(--ctpl-space-5);
+  padding: 0;
 }
 .filters[hidden] {
   display: none;
 }
 .filterLabel {
-  margin: 0;
+  float: inline-start;
+  margin: 0 var(--ctpl-space-2) 0 0;
+  padding: 0;
+  line-height: 2.75rem;
   color: var(--ctpl-color-text-muted);
   font-size: var(--ctpl-text-sm);
 }
