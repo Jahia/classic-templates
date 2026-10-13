@@ -18,6 +18,8 @@ export interface ResolvedLink {
    * or the link title (external), if any.
    */
   targetTitle?: string;
+  /** Key of the site the internal target belongs to (another site's page is a valid target). */
+  siteKey?: string;
 }
 
 export interface LinkState {
@@ -43,6 +45,7 @@ const resolveInternal = (node: JCRNodeWrapper, renderContext?: RenderContext): L
         href: buildNodeUrl(target),
         external: false,
         targetTitle: titleOf(target),
+        siteKey: target.getResolveSite()?.getSiteKey(),
       },
       missingTarget: false,
     };

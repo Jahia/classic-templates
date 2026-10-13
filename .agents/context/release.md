@@ -1,6 +1,6 @@
 # Releasing classic-templates
 
-The four packages (template set, classic-travel, the two pre-packaged sites) share one version and
+The seven packages (template set, classic-travel, classic-media, the four pre-packaged sites) share one version and
 are released together. The org CI account cannot push releases to this repository yet, so a release
 follows the manual path of the AIStartupKit harness (`$AISTARTUPKIT/.agents/context/jahia-release-and-ci.md`,
 "Manual release when the release workflow cannot run"). This page is the checklist for this
@@ -33,18 +33,21 @@ newer push cancels the older `main` run, release included once it is past waitin
 ## 2. GitHub release
 
 1. When `Build Module` has finished, download `build-artifacts`
-   (`gh api repos/Jahia/classic-templates/actions/artifacts/<id>/zip`) and take the six assets:
+   (`gh api repos/Jahia/classic-templates/actions/artifacts/<id>/zip`) and take the eleven assets:
    - `packages/template-set/target/classic-templates-X.Y.Z.tgz`
    - `packages/travel/target/classic-travel-X.Y.Z.tgz`
+   - `packages/media/target/classic-media-X.Y.Z.tgz`
    - `packages/prepackaged-site/target/classic-templates-prepackaged-website-X.Y.Z.jar`, and
      `prepackaged/classic-dev.zip` renamed `classic-templates-prepackaged-website-X.Y.Z-import.zip`
    - `packages/prepackaged-skylantern/target/skylantern-prepackaged-website-X.Y.Z.jar`, and
      `prepackaged/skylantern.zip` renamed `skylantern-prepackaged-website-X.Y.Z-import.zip`
+   - for each Orvane site (`orvane-signal`, `orvane-live`): `packages/prepackaged-<site>/target/<site>-prepackaged-website-X.Y.Z.jar`, and
+     `prepackaged/<site>.zip` renamed `<site>-prepackaged-website-X.Y.Z-import.zip`
 2. Check them: version `X.Y.Z` (`package.json` of the `.tgz`, `Bundle-Version` of the jars), MIT
    licence and a LICENSE file in each `.tgz`, the expected `jahia.module-dependencies` and
    `Jahia-Depends`, the site zip inside each jar, and no `/Users/` anywhere.
 3. `gh release create X_Y_Z --target <release commit> --title "classic-templates_X.Y.Z"
---notes-file <the X.Y.Z section of CHANGELOG.md>` with the six assets.
+--notes-file <the X.Y.Z section of CHANGELOG.md>` with the eleven assets.
 
 ## 3. Deliverables that copy the release
 

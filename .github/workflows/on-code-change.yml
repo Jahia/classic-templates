@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [template-set, travel]
+        package: [template-set, travel, media]
     defaults:
       run:
         working-directory: packages/${{ matrix.package }}

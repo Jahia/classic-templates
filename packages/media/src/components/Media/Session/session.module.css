@@ -1,0 +1,108 @@
+/* A session's page and its agenda row. Theme tokens only. */
+
+.full {
+  display: grid;
+  gap: var(--ctpl-space-5);
+  padding-block: var(--ctpl-space-6) var(--ctpl-section-gap);
+}
+.head {
+  display: grid;
+  gap: var(--ctpl-space-3);
+  max-width: var(--ctpl-measure);
+}
+.head > *,
+.facts,
+.facts dd {
+  margin: 0;
+}
+.kicker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-1) var(--ctpl-space-3);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.title {
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-4xl);
+  font-weight: var(--ctpl-heading-weight);
+  letter-spacing: var(--ctpl-heading-tracking);
+  line-height: var(--ctpl-leading-tight);
+  overflow-wrap: anywhere;
+}
+.lead {
+  font-size: var(--ctpl-text-xl);
+}
+.facts {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  font-size: var(--ctpl-text-lg);
+}
+.facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ctpl-space-2);
+}
+.facts dt {
+  color: var(--ctpl-color-text-muted);
+}
+.zone {
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.body {
+  max-width: var(--ctpl-measure);
+}
+.speakersTitle {
+  margin: 0 0 var(--ctpl-space-4);
+  font-size: var(--ctpl-text-2xl);
+}
+.speaker {
+  flex-direction: column;
+  gap: var(--ctpl-space-2);
+}
+.part {
+  margin: 0;
+  color: var(--ctpl-color-highlight);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+
+/* Agenda row: the time in a column of its own on a wide screen, above the text on a phone. */
+.row {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: var(--ctpl-space-2) var(--ctpl-space-5);
+  padding-block: var(--ctpl-space-4);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+@media (max-width: 40rem) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+.row > *,
+.rowBody > * {
+  margin: 0;
+}
+.rowTime {
+  font-weight: var(--ctpl-font-weight-bold);
+  font-variant-numeric: tabular-nums;
+}
+.rowBody {
+  display: grid;
+  gap: var(--ctpl-space-1);
+}
+.rowTitle {
+  font-size: var(--ctpl-text-lg);
+}
+.rowSpeakers {
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-medium);
+}
+/* A break sits on the sunken surface; the negative margin keeps its text in line with the rows. */
+.break {
+  margin-inline: calc(-1 * var(--ctpl-space-3));
+  padding-inline: var(--ctpl-space-3);
+  background: var(--ctpl-color-surface-sunken);
+}

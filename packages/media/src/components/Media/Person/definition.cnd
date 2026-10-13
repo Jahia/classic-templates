@@ -1,0 +1,25 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A person: a member of the editorial team (the author of stories) or a speaker of an event (the
+// speaker of sessions), stored in a content folder. One type for both, so a person who writes and
+// speaks has one page. It has its own page (fullPage view: the bio, then their stories and their
+// sessions, found automatically) and appears in lists (ctplmix:listable; card and compact views)
+// and in the speaker gallery. jcr:title is the full name; sortName the name it is filed under in an
+// A-Z index ("Lindqvist" for "Mara Lindqvist", the last word when empty). The portrait follows
+// ctplmix:media. teaser is the short bio of cards and the page's meta description. Children are
+// profile links (ctpl:link: a personal site, a professional network).
+[ctmd:person] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component, ctplmix:listable, ctplmix:media, jmix:list orderable
+ - role (string) i18n
+ - organisation (string)
+ - sortName (string)
+ - teaser (string, textarea) i18n
+ - bio (string, richtext) i18n
+ + * (ctpl:link)

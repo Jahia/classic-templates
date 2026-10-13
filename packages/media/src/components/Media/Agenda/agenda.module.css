@@ -1,0 +1,73 @@
+/* The agenda: day tabs (built by static/js/media.js), filters, sessions in order. */
+
+.tablist {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  margin-bottom: var(--ctpl-space-5);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.tablist [role="tab"] {
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-4);
+  border: 0;
+  border-bottom: var(--ctpl-border-width-accent) solid transparent;
+  background: transparent;
+  color: var(--ctpl-color-text);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-medium);
+  cursor: pointer;
+}
+.tablist [role="tab"][aria-selected="true"] {
+  border-bottom-color: var(--ctpl-color-accent);
+  color: var(--ctpl-color-accent);
+}
+.day + .day {
+  margin-top: var(--ctpl-space-6);
+}
+.day[data-ctmd-empty="true"]:not([role="tabpanel"]) {
+  display: none;
+}
+.dayTitle {
+  margin: 0 0 var(--ctpl-space-3);
+  font-size: var(--ctpl-text-xl);
+}
+.dayTitle[hidden] {
+  display: none;
+}
+.sessions {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.zone {
+  margin: 0 0 var(--ctpl-space-4);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.filters {
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-3) var(--ctpl-space-5);
+  margin-bottom: var(--ctpl-space-5);
+}
+.filters[hidden] {
+  display: none;
+}
+.filter {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  font-size: var(--ctpl-text-sm);
+}
+.filter select {
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  font: inherit;
+}

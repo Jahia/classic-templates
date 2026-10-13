@@ -1,0 +1,19 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A page section showing an event's programme: the sessions under startNode (the event's folder;
+// empty: the whole site), one tab per day in the event's time zone, sessions in time order. Without
+// JavaScript and in edit mode the days are stacked headings. showFilters adds stream, room and type
+// filters that hide the sessions that do not match, in the browser.
+[ctmd:agenda] > jnt:content, mix:title, ctmdmix:pageComponent, ctplmix:sectionStyle, jmix:list, jmix:renderableList, jmix:cache
+ // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
+ - startNode (weakreference)
+ - showFilters (boolean) = true autocreated
+ - noResultText (string) i18n
