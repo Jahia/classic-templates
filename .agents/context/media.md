@@ -29,6 +29,7 @@ changing a view. This file says what differs.
 | `ctmd:speakerGallery` | as the feed | default |
 | `ctmd:keyDates` | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list` (`+ * (ctmd:keyDate)`) | default |
 | `ctmd:keyDate` | `mix:title` | default |
+| `ctmd:searchResults` | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle` | default (`cache.expiration` 0) |
 
 Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:eventFolder`
 (`extends = jnt:contentFolder`, `ctmdTimeZone`, IANA name, default UTC).
@@ -54,6 +55,11 @@ Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:event
 - **JSON-LD**: one entity per item page (Person, NewsArticle / Article / OpinionNewsArticle / Report
   / VideoObject / PodcastEpisode by format, Event), pointing at the page's `WebPage` by `@id`.
   `isAccessibleForFree: false` for a members-only story.
+- **Search** (`ctmd:searchResults`): a GET form (`q`) and the Augmented Search results read on the
+  server with `useGQLQuery` (the `search` field, live workspace, page language), as the visitor;
+  scope "network" adds the sites the header's network bar links to. Excerpts are rebuilt as text
+  parts from the `<em>` highlights (`lib/search.ts`, unit tested): no index markup reaches the page.
+  Not cached (`cache.expiration` 0). Needs Augmented Search installed and the sites indexed.
 - **Accessibility**: agenda days are WAI-ARIA tabs only once the script runs; filters are a group of
   `aria-pressed` toggles (feed) or labelled selects (agenda) with a polite status; the countdown is
   built in the browser so a cached page never shows a stale count; audio always comes with a
