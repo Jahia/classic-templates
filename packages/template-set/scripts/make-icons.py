@@ -218,6 +218,12 @@ def sign_in(d, p):
     d.rectangle(p(15, 21, 17, 25), fill=(255, 255, 255, 255))
 
 
+def consent_banner(d, p):
+    # A shield with a tick: the visitor's privacy choice.
+    d.polygon(p(16, 3, 27, 7, 27, 15, 16, 29, 5, 15, 5, 7), outline=INK, width=w(2))
+    d.line(p(10, 16, 14, 20, 22, 11), fill=INK, width=w(3), joint="curve")
+
+
 ICONS = {
     "ctpl_news": news,
     "ctpl_article": article,
@@ -249,6 +255,7 @@ ICONS = {
     "ctpl_noticeBar": notice_bar,
     "ctpl_heroCarousel": hero_carousel,
     "ctpl_signIn": sign_in,
+    "ctpl_consentBanner": consent_banner,
 }
 
 if __name__ == "__main__":
