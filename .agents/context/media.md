@@ -60,6 +60,16 @@ Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:event
   scope "network" adds the sites the header's network bar links to. Excerpts are rebuilt as text
   parts from the `<em>` highlights (`lib/search.ts`, unit tested): no index markup reaches the page.
   Not cached (`cache.expiration` 0). Needs Augmented Search installed and the sites indexed.
+- **Tracking** (`static/js/media.js`): when jExperience runs on the page and tracks the visitor
+  (`wem.getLoadedContext().profileId` and `wemInitConfig.activateWem === true`, so after consent
+  where the site asks for it), the script sends standard jCustomer events only (jCustomer 3 drops a
+  type without a schema): `video` (`action` play, once per page view, and ended) for a story's
+  video or audio (`data-ctmd-track-media`), `click` for share (`type` share, `method` native / copy)
+  and filters (`type` filter, `facet`, `value`), one `search` per results page
+  (`data-ctmd-track-search`, `keyword`, `language`, `origin` `ctmd:searchResults`). The target is
+  the nearest `data-ctmd-track` node (story, feed, agenda, search section). Without jExperience,
+  before consent or after a refusal, nothing is sent. Verified end to end on the Orvane sites
+  (`orvane-demo/tools/check-media-events.mjs`).
 - **Accessibility**: agenda days are WAI-ARIA tabs only once the script runs; filters are a group of
   `aria-pressed` toggles (feed) or labelled selects (agenda) with a polite status; the countdown is
   built in the browser so a cached page never shows a stale count; audio always comes with a
