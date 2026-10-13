@@ -1,0 +1,34 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// Namespaces, base mixins and the mixins shared by several types. Each content type lives next to
+// its views in src/components/<Category>/<Name>/definition.cnd, with exactly this header: the
+// engine merges every CND of the module at install time, and a prefix bound to two URIs fails the
+// install. The ctplmix mixins come from classic-templates (a declared module dependency).
+
+// ---- Component tiers ----------------------------------------------------------------------------
+
+// Groups every classic-media type in the content type selector. A ctplmix:component, so the media
+// types sit with the classic-templates ones.
+[ctmdmix:component] > ctplmix:component mixin
+
+// A page section: accepted in the main area of classic-templates pages and in their columns, tabs
+// and free zones (ctplmix:pageComponent).
+[ctmdmix:pageComponent] > ctmdmix:component, ctplmix:pageComponent mixin
+
+// ---- Event folder -------------------------------------------------------------------------------
+
+// Optional "Event" settings of a content folder holding an event's sessions: the time zone the
+// event runs in (an IANA name, "Europe/Lisbon"). Sessions under the folder, and the agenda and key
+// dates looking under it, show their times in that zone. Without it, times show in UTC.
+[ctmdmix:eventFolder] mixin
+ extends = jnt:contentFolder
+ itemtype = content
+ - ctmdTimeZone (string) = 'UTC' autocreated

@@ -1,0 +1,70 @@
+/* A person's page and card. Theme tokens only. */
+
+.full {
+  display: grid;
+  gap: var(--ctpl-space-6);
+  padding-block: var(--ctpl-space-6) var(--ctpl-section-gap);
+}
+.head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--ctpl-space-5);
+}
+@media (max-width: 40rem) {
+  .head {
+    grid-template-columns: 1fr;
+  }
+}
+.portrait img {
+  width: 10rem;
+  height: 10rem;
+  border-radius: var(--ctpl-radius-pill);
+  object-fit: cover;
+}
+.name {
+  margin: 0;
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-4xl);
+  line-height: var(--ctpl-leading-tight);
+}
+.role {
+  margin: var(--ctpl-space-2) 0 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-lg);
+}
+.lead {
+  max-width: var(--ctpl-measure);
+  margin: var(--ctpl-space-3) 0 0;
+  font-size: var(--ctpl-text-lg);
+}
+.bio {
+  max-width: var(--ctpl-measure);
+}
+.profiles h2,
+.list h2 {
+  margin: 0 0 var(--ctpl-space-4);
+  font-size: var(--ctpl-text-2xl);
+}
+.profileList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2) var(--ctpl-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  align-items: center;
+  text-align: center;
+}
+.cardPortrait {
+  padding-top: var(--ctpl-space-5);
+}
+.cardPortrait img {
+  width: 7rem;
+  height: 7rem;
+  border-radius: var(--ctpl-radius-pill);
+  object-fit: cover;
+}

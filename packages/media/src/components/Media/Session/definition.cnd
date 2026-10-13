@@ -1,0 +1,32 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A session of an event's programme (a talk, a panel, a workshop, a break), stored in the event's
+// content folder. It has its own page and appears in the agenda (compact view) and in lists (card
+// view). start and end are date and time, shown in the event's time zone (ctmdmix:eventFolder on
+// an ancestor folder; UTC without it). room and stream are free texts as shown to visitors. The
+// speakers are child ctmd:sessionSpeaker nodes, in the order shown, each a person and a role.
+[ctmd:session] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component, ctplmix:listable, jmix:list orderable
+ - start (date, datetimepicker)
+ - end (date, datetimepicker)
+ - room (string) i18n
+ - stream (string) i18n
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - sessionType (string, choicelist[resourceBundle]) = 'talk' autocreated < 'keynote', 'talk', 'panel', 'workshop', 'fireside', 'break'
+ - teaser (string, textarea) i18n
+ - body (string, richtext) i18n
+ + * (ctmd:sessionSpeaker)
+
+// One speaker of a session: the person (ctmd:person) and the part they play. Never hidden: editors
+// select and reorder the speakers in the session's content.
+[ctmd:sessionSpeaker] > jnt:content
+ - person (weakreference, picker[type='editorial']) < ctmd:person
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - speakerRole (string, choicelist[resourceBundle]) = 'speaker' autocreated < 'speaker', 'keynote', 'moderator', 'panellist', 'host'

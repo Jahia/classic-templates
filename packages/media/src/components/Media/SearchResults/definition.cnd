@@ -1,0 +1,21 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A search section: a search box and the results of Augmented Search for the words in the page's
+// `q` request parameter, in the page's language, in pages of `pageSize` with "previous" and "next"
+// links. scope "site" searches the page's site; "network" also searches the sites the header's
+// network bar links to (ctpl:networkBar), so one box searches a whole group. Results are read on
+// the server through the Augmented Search GraphQL API, as the visitor; the module needs Augmented
+// Search installed and the sites indexed, and shows nothing but the box otherwise.
+[ctmd:searchResults] > jnt:content, mix:title, ctmdmix:pageComponent, ctplmix:sectionStyle
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - scope (string, choicelist[resourceBundle]) = 'site' autocreated < 'site', 'network'
+ - pageSize (long) = 10 autocreated < '[5,50]'
+ - noResultText (string) i18n
