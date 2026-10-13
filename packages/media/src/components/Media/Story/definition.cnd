@@ -1,0 +1,24 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A story of the editorial hub, in one of seven formats (news, feature, opinion, interview, report,
+// video, podcast), stored in a content folder. It is a classic-templates editorial item (teaser,
+// body, publication date, image; the optional "Members only" switch), so content lists, card grids
+// and the main-resource template handle it like a news item. authors are people of this module.
+// A video story shows a video of js-media-gallery (picked, rendered with its own view: captions and
+// transcript come with it); a podcast story an audio file of the media library and its transcript.
+// Topics are the native categories (j:defaultCategory), never declared here.
+[ctmd:story] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component, ctplmix:editorialItem
+ - format (string, choicelist[resourceBundle]) = 'news' autocreated < 'news', 'feature', 'opinion', 'interview', 'report', 'video', 'podcast'
+ - authors (weakreference, picker[type='editorial']) multiple < ctmd:person
+ // cnd-check-ignore(weakrefNoConstraint): a video of js-media-gallery (internal or external), rendered through its own view; left unconstrained so this module does not depend on js-media-gallery
+ - video (weakreference, picker[type='editorial'])
+ - audio (weakreference, picker[type='file']) < jnt:file
+ - transcript (string, richtext) i18n

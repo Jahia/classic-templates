@@ -1,0 +1,31 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A page section listing stories automatically, newest first: the stories of a topic page, the
+// latest videos, the reports of a theme. Its heading is the optional jcr:title (an h2); the cta is
+// the "see all" link. startNode is the folder or page to look under (empty: the whole site; a
+// folder of another site is accepted). pageCategories keeps the stories filed under one of the
+// categories of the page showing the feed (topic pages carry their topic as a category);
+// filterCategories adds categories picked here (a listing criterion, not a category field).
+// formats keeps only some formats (empty: all). layout is a grid of cards, a list of compact rows,
+// or the newest story large above a grid. showFilter adds format buttons that filter the stories
+// shown, in the browser (every story stays visible without JavaScript).
+[ctmd:storyFeed] > jnt:content, mix:title, ctmdmix:pageComponent, ctplmix:sectionStyle, jmix:list, jmix:renderableList, jmix:cache
+ // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
+ - startNode (weakreference)
+ - pageCategories (boolean) = false autocreated
+ - filterCategories (weakreference, category[autoSelectParent=false]) multiple < jnt:category
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - formats (string, choicelist[resourceBundle]) multiple < 'news', 'feature', 'opinion', 'interview', 'report', 'video', 'podcast'
+ - maxItems (long) = 9 autocreated < '[1,50]'
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - layout (string, choicelist[resourceBundle]) = 'grid' autocreated < 'grid', 'list', 'lead'
+ - showFilter (boolean) = false autocreated
+ - noResultText (string) i18n

@@ -1,12 +1,13 @@
 # Agent harness: classic-templates
 
-How to work on this repository with an AI agent. It holds four packages, built by the root
+How to work on this repository with an AI agent. It holds five packages, built by the root
 `pom.xml` and released at one version:
 
 | Package                           | What it is                                                                 | Work from                                         |
 | --------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------- |
 | `packages/template-set`           | The classic-templates template set (`ctpl`, `ctplmix`)                     | `packages/template-set`                           |
 | `packages/travel`                 | classic-travel (`ctrv`, `ctrvmix`), a module depending on the template set | `packages/travel`                                 |
+| `packages/media` | classic-media (`ctmd`, `ctmdmix`), a module depending on the template set | `packages/media` |
 | `packages/prepackaged-site`       | The `classic-dev` demo site as a pre-packaged project                      | `scripts/export-prepackaged.py`                   |
 | `packages/prepackaged-skylantern` | The `skylantern` demo site (a fictional airline) as a pre-packaged project | `scripts/export-prepackaged.py --site skylantern` |
 
@@ -25,6 +26,7 @@ use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` an
 | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | [`context/architecture.md`](context/architecture.md)                       | Decisions, type inventory, layout, theming, heading policy, open questions                                   |
 | [`context/travel.md`](context/travel.md)                                   | classic-travel: types, contract with the template set, rules and gates                                       |
+| [`context/media.md`](context/media.md) | classic-media: types, decisions, rules and gates (shares the travel contract) |
 | [`context/gates.md`](context/gates.md)                                     | The checks a change must pass before it is done, with the exact commands                                     |
 | [`context/sonar-rules.md`](context/sonar-rules.md)                         | The SonarQube rules: which `yarn lint` checks, which to write by hand                                        |
 | [`context/release.md`](context/release.md)                                 | Releasing: changelog and version, the GitHub release, then the replication kit and the Store submission pack |
@@ -44,7 +46,7 @@ use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` an
 | Review after a deploy                        | `/jahia-review` (code + site: axe + Lighthouse)                 |
 | Build or deploy error                        | `/jahia-dev-debug`                                              |
 
-## Non-negotiables for the template set (classic-travel: see `context/travel.md`)
+## Non-negotiables for the template set (classic-travel: see `context/travel.md`; classic-media: `context/media.md`)
 
 1. Namespaces are `ctpl` (types) and `ctplmix` (mixins). Never rename them once content exists.
 2. Every visible string is contributed content or a locale key, in EN and FR.
@@ -53,5 +55,5 @@ use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` an
 5. Header and footer are owned by the home page (`AbsoluteArea parent={home}`, `readOnly="children"`).
 6. Every component ships with `data-testid` on its root and Cypress specs under `tests/cypress/e2e/<component>/`.
 7. Deploy after each component: `yarn build && yarn deploy` from the package folder. Never run `yarn dev` from an agent.
-8. The four packages share the version of the root `pom.xml`; never give one package its own version.
+8. The packages share the version of the root `pom.xml`; never give one package its own version.
 9. A pre-packaged site holds the content of this repository's modules only (classic-dev: the template set; skylantern: the template set and classic-travel): regenerate it with `scripts/export-prepackaged.py [--site skylantern]`, never edit its XML by hand. What each site keeps, converts and rewrites is its profile in that script.

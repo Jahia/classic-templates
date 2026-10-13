@@ -1,0 +1,26 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A page section with the dates of an event: its first and last day, its venue, an optional
+// countdown ("Starts in 12 days", worked out in the browser from the first day) and the key dates
+// before it (child ctmd:keyDate: registration opens, early-bird rate ends...), in the order shown.
+// The call to action (ctplmix:cta, through ctplmix:sectionStyle) is the "Register" button.
+[ctmd:keyDates] > jnt:content, mix:title, ctmdmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ - eventStart (date, datepicker)
+ - eventEnd (date, datepicker)
+ - venue (string) i18n
+ - showCountdown (boolean) = true autocreated
+ + * (ctmd:keyDate)
+
+// One key date of an event: its title (jcr:title), the day, an optional detail. Never hidden:
+// editors select each date in Page Builder.
+[ctmd:keyDate] > jnt:content, mix:title
+ - date (date, datepicker)
+ - detail (string) i18n

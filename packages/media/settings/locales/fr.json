@@ -1,0 +1,114 @@
+{
+  "item": {
+    "noTitle": "Aucun titre dans cette langue : cet élément est écarté des listes et n'a pas de titre."
+  },
+  "image": {
+    "noTitle": "Cette image n'a pas de titre dans la médiathèque : elle n'a donc pas d'alternative textuelle."
+  },
+  "richText": {
+    "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : elle est ignorée par les lecteurs d'écran.",
+    "table": "Tableau",
+    "tableNumbered": "Tableau {{number}}",
+    "tableWithoutCaption": "Un tableau de ce texte n'a pas de titre : donnez-lui en un pour qu'il soit trouvé et compris."
+  },
+  "cta": {
+    "noTarget": "Aucune cible de lien dans cette langue",
+    "noLabel": "Libellé du bouton manquant",
+    "noLink": "Ce bouton a un libellé mais pas de lien : choisissez une page ou une adresse web, ou effacez le libellé."
+  },
+  "list": {
+    "empty": "Rien à afficher pour le moment.",
+    "startMissing": "Le dossier de départ est défini mais introuvable ici (supprimé, ou pas encore publié) : la liste n'affiche rien sur le site en ligne."
+  },
+  "format": {
+    "news": "Actualité",
+    "feature": "Dossier",
+    "opinion": "Tribune",
+    "interview": "Entretien",
+    "report": "Rapport",
+    "video": "Vidéo",
+    "podcast": "Podcast"
+  },
+  "story": {
+    "by": "Par {{names}}",
+    "and": "et",
+    "readingTime_one": "{{count}} min de lecture",
+    "readingTime_other": "{{count}} min de lecture",
+    "topics": "Thèmes",
+    "related": "À lire aussi",
+    "transcript": "Transcription",
+    "listen": "Écouter l'épisode",
+    "membersNotice": "Cet article est réservé aux membres. Connectez-vous pour le lire en entier.",
+    "signIn": "Se connecter",
+    "membersEdit": "Réservé aux membres : les visiteurs non connectés voient le résumé et un lien de connexion.",
+    "membersLabel": "Membres"
+  },
+  "share": {
+    "label": "Partager cette page",
+    "share": "Partager",
+    "copy": "Copier le lien",
+    "copied": "Lien copié"
+  },
+  "feed": {
+    "filterLabel": "Afficher",
+    "all": "Tous",
+    "summary": "Liste les articles ({{formats}}) sous {{start}}, du plus récent au plus ancien, jusqu'à {{max}}.",
+    "allFormats": "tous les formats",
+    "pageCategories": "Seulement les articles classés dans les catégories de cette page.",
+    "pageNoCategory": "Cette page n'a pas de catégorie : donnez-lui son thème comme catégorie, sinon le fil n'affiche rien.",
+    "noMatch": "Aucun article de ce format ici.",
+    "shown": "Articles affichés : {{n}}"
+  },
+  "person": {
+    "stories": "Articles de {{name}}",
+    "sessions": "Sessions avec {{name}}",
+    "profiles": "Profils"
+  },
+  "session": {
+    "type": {
+      "keynote": "Conférence plénière",
+      "talk": "Intervention",
+      "panel": "Table ronde",
+      "workshop": "Atelier",
+      "fireside": "Entretien au coin du feu",
+      "break": "Pause"
+    },
+    "role": {
+      "speaker": "Intervenant",
+      "keynote": "Conférencier principal",
+      "moderator": "Modérateur",
+      "panellist": "Panéliste",
+      "host": "Animateur"
+    },
+    "time": "{{start}} à {{end}}",
+    "room": "Salle",
+    "stream": "Parcours",
+    "speakers": "Intervenants",
+    "zone": "Horaires à l'heure de {{zone}}.",
+    "when": "Quand"
+  },
+  "agenda": {
+    "days": "Jours",
+    "filters": "Filtrer le programme",
+    "stream": "Parcours",
+    "room": "Salle",
+    "type": "Type",
+    "all": "Tous",
+    "noMatch": "Aucune session ne correspond à ces filtres.",
+    "summary": "Liste les sessions sous {{start}}, par jour, dans le fuseau {{zone}}.",
+    "shown": "Sessions affichées : {{n}}"
+  },
+  "gallery": {
+    "index": "Aller à une lettre",
+    "summary": "Liste les personnes sous {{start}} par nom, jusqu'à {{max}}."
+  },
+  "keyDates": {
+    "dates": "Du {{start}} au {{end}}",
+    "venue": "Lieu",
+    "tomorrow": "Commence demain",
+    "startsIn": "Commence dans {{days}} jours",
+    "today": "Commence aujourd'hui",
+    "running": "En ce moment",
+    "keyDates": "Dates clés"
+  }
+}
