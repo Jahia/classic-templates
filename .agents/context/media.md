@@ -18,18 +18,18 @@ changing a view. This file says what differs.
 
 ## Type inventory
 
-| Type | Supertypes (besides `jnt:content`) | Views |
-| --- | --- | --- |
-| `ctmd:person` | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`, `ctplmix:listable`, `ctplmix:media`, `jmix:list` (`+ * (ctpl:link)`: profiles) | default (card), card, compact, fullPage (`cache.expiration` 300) |
-| `ctmd:story` | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`, `ctplmix:editorialItem` | default (card), card, compact, tile, fullPage, fullPageMembers (`cache.perUser`) |
-| `ctmd:storyFeed` | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list`, `jmix:renderableList`, `jmix:cache` | default |
-| `ctmd:session` | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`, `ctplmix:listable`, `jmix:list` (`+ * (ctmd:sessionSpeaker)`) | default (card), card, compact (agenda row), fullPage |
-| `ctmd:sessionSpeaker` | (person weakreference + `speakerRole`) | default (edit view) |
-| `ctmd:agenda` | as the feed | default |
-| `ctmd:speakerGallery` | as the feed | default |
-| `ctmd:keyDates` | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list` (`+ * (ctmd:keyDate)`) | default |
-| `ctmd:keyDate` | `mix:title` | default |
-| `ctmd:searchResults` | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle` | default (`cache.expiration` 0) |
+| Type                  | Supertypes (besides `jnt:content`)                                                                                                                             | Views                                                                            |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `ctmd:person`         | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`, `ctplmix:listable`, `ctplmix:media`, `jmix:list` (`+ * (ctpl:link)`: profiles) | default (card), card, compact, fullPage (`cache.expiration` 300)                 |
+| `ctmd:story`          | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`, `ctplmix:editorialItem`                                                        | default (card), card, compact, tile, fullPage, fullPageMembers (`cache.perUser`) |
+| `ctmd:storyFeed`      | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list`, `jmix:renderableList`, `jmix:cache`                                                 | default                                                                          |
+| `ctmd:session`        | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`, `ctplmix:listable`, `jmix:list` (`+ * (ctmd:sessionSpeaker)`)                  | default (card), card, compact (agenda row), fullPage                             |
+| `ctmd:sessionSpeaker` | (person weakreference + `speakerRole`)                                                                                                                         | default (edit view)                                                              |
+| `ctmd:agenda`         | as the feed                                                                                                                                                    | default                                                                          |
+| `ctmd:speakerGallery` | as the feed                                                                                                                                                    | default                                                                          |
+| `ctmd:keyDates`       | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list` (`+ * (ctmd:keyDate)`)                                                               | default                                                                          |
+| `ctmd:keyDate`        | `mix:title`                                                                                                                                                    | default                                                                          |
+| `ctmd:searchResults`  | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`                                                                                                   | default (`cache.expiration` 0)                                                   |
 
 Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:eventFolder`
 (`extends = jnt:contentFolder`, `ctmdTimeZone`, IANA name, default UTC).
@@ -70,15 +70,15 @@ Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:event
 Run them from `packages/media` (Node 22), with `AISTARTUPKIT` set to the AIStartupKit checkout. The
 pull-request workflow runs the lint, format, token and unit-test gates for this package too.
 
-| Gate | Command | Passes when |
-| --- | --- | --- |
-| Type-check + build | `yarn build` | exit 0, `dist/package.tgz` produced |
-| Unit tests | `TZ=UTC yarn test:unit` (also under another time zone: dates and times) | all pass |
-| Lint + format | `yarn lint && yarn prettier --check .` | no error, the SonarQube rules included |
-| CND | `node $AISTARTUPKIT/.claude/skills/jahia-dev-review-cnd/scripts/check-cnd.mjs .` | PASS |
-| No literal colours | `yarn check:tokens` | nothing outside the classic-templates tokens |
-| Deploy | `yarn deploy`, then `curl -s -u root:root1234 'http://localhost:8080/modules/api/bundles/org.jahia.modules.javascript/classic-media/*/_info'` | `ACTIVE` / `STARTED`, the `ctmd:*` types listed by GraphQL `nodeTypeByName` |
-| Live check | `python3 scripts/seed-media-test-site.py` from the repository root (site `ctmd-test`), then the AIStartupKit site review on its pages (stories, topic, programme, every item page), EN and FR, default theme light and dark plus `signal` and `live`, and 320 px reflow | no violation, no horizontal scroll |
+| Gate               | Command                                                                                                                                                                                                                                                                 | Passes when                                                                 |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Type-check + build | `yarn build`                                                                                                                                                                                                                                                            | exit 0, `dist/package.tgz` produced                                         |
+| Unit tests         | `TZ=UTC yarn test:unit` (also under another time zone: dates and times)                                                                                                                                                                                                 | all pass                                                                    |
+| Lint + format      | `yarn lint && yarn prettier --check .`                                                                                                                                                                                                                                  | no error, the SonarQube rules included                                      |
+| CND                | `node $AISTARTUPKIT/.claude/skills/jahia-dev-review-cnd/scripts/check-cnd.mjs .`                                                                                                                                                                                        | PASS                                                                        |
+| No literal colours | `yarn check:tokens`                                                                                                                                                                                                                                                     | nothing outside the classic-templates tokens                                |
+| Deploy             | `yarn deploy`, then `curl -s -u root:root1234 'http://localhost:8080/modules/api/bundles/org.jahia.modules.javascript/classic-media/*/_info'`                                                                                                                           | `ACTIVE` / `STARTED`, the `ctmd:*` types listed by GraphQL `nodeTypeByName` |
+| Live check         | `python3 scripts/seed-media-test-site.py` from the repository root (site `ctmd-test`), then the AIStartupKit site review on its pages (stories, topic, programme, every item page), EN and FR, default theme light and dark plus `signal` and `live`, and 320 px reflow | no violation, no horizontal scroll                                          |
 
 ## Traps met while building
 

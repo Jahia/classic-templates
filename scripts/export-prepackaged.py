@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Exports a demo site into its pre-packaged project (packages/prepackaged-site for classic-dev,
-packages/prepackaged-skylantern for skylantern).
+packages/prepackaged-skylantern for skylantern, packages/prepackaged-orvane-signal and
+packages/prepackaged-orvane-live for the two Orvane sites).
 
-    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern] [--from-zip export.zip] [--check]
+    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern|orvane-signal|orvane-live] [--from-zip export.zip] [--check]
 
-A pre-packaged project must install on an instance that has only the modules of this repository it
-depends on (plus the platform modules default, siteSettings and site-settings-seo), so the script
-keeps the content of those modules only. What each site keeps is described in PROFILES below.
+A pre-packaged project installs on an instance that has the modules of this repository it depends
+on (plus the platform modules default, siteSettings and site-settings-seo) and, for a profile that
+declares them, the add-on modules it names (addon_prefixes: their content is kept and the modules
+are declared dependencies of the package). Everything else is left out. What each site keeps is
+described in PROFILES below.
 
   1. Logs in once (one HTTP session for every call) and exports the site with its live content and
      without users: GET /cms/export/default/<site>_export.zip?exportformat=site&live=true&users=false.
@@ -76,6 +79,8 @@ USER_TYPE = "jnt:user"
 # One profile per pre-packaged site:
 #   package          the folder under packages/ that receives the export
 #   sources          the packages whose CND namespaces the site keeps
+#   addon_prefixes   namespace prefixes of add-on modules (outside this repository) whose content
+#                    the site keeps; the package declares those modules as dependencies
 #   installed        the modules the imported site runs with (site.properties), nothing else
 #   only_for_addons  site-relative paths of nodes that exist only to show add-on modules
 #   conversions      site-relative path -> function rewriting add-on content into template set
@@ -207,6 +212,22 @@ PROFILES = {
         ],
     },
 }
+
+# The two Orvane sites (a fictional media group, see packages/prepackaged-orvane-*/README.md) show
+# the add-on modules on purpose: their content is kept, and the packages declare the modules.
+ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements"]
+ORVANE_ADDON_PREFIXES = ["jsfaqnt", "jsfaqmix", "jsfaq", "jsmediagallerynt", "jsmediagallerymix", "jsstorelocnt",
+                         "jsstorelocmix", "fmdb", "fmdbmix"]
+for _site in ("orvane-signal", "orvane-live"):
+    PROFILES[_site] = {
+        "package": f"prepackaged-{_site}",
+        "sources": ["template-set", "media"],
+        "addon_prefixes": ORVANE_ADDON_PREFIXES,
+        "installed": ["classic-templates", "classic-media"] + ORVANE_ADDONS + PLATFORM_MODULES,
+        "only_for_addons": [],
+        "conversions": {},
+        "text_edits": [],
+    }
 
 # ---------------------------------------------------------------------------------------------
 # Export download (one session)
@@ -599,7 +620,7 @@ def export_descriptor(text, repository_xml):
 
 
 def build(files, descriptor, site, profile, out_site, out_descriptor):
-    allowed = allowed_prefixes(profile["sources"])
+    allowed = allowed_prefixes(profile["sources"]) | set(profile.get("addon_prefixes", ()))
     report = {"allowed": sorted(allowed), "conversions": []}
     texts = {}
     removed_paths = set()
