@@ -150,5 +150,10 @@
     "play": "Lecture",
     "empty": "Aucune diapositive : ajoutez des bannières à ce carrousel, une par diapositive.",
     "editStacked": "Toutes les diapositives s'affichent ici, l'une sous l'autre. Les visiteurs en voient une à la fois, avec des boutons pour passer de l'une à l'autre."
+  },
+  "consent": {
+    "label": "Vos choix de confidentialité",
+    "editHint": "Les visiteurs voient ce bandeau jusqu'à ce qu'ils acceptent ou refusent ; le bouton de paramètres placé après le pied de page le rouvre. Pour ne rien suivre avant leur accord, désactivez le suivi sur le site (jExperience : désactiver l'exécution JavaScript sur le site, pour toutes les pages).",
+    "missingLabels": "Ce bandeau n'est pas affiché sur le site en ligne : renseignez un libellé pour accepter, un pour refuser et un pour les paramètres."
   }
 }

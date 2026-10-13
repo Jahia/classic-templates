@@ -1,0 +1,24 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// The site's tracking-consent banner, added once to the footer area of the home page so it is on
+// every page. It renders hidden; static/js/consent-banner.js shows it until the visitor accepts or
+// refuses tracking, and an always-visible button labelled settingsLabel opens it again. The choice
+// is kept in the ctpl-consent cookie (for every site of the host) for rememberDays days, then the
+// banner asks again. When jExperience runs on the site, Accept calls wem.enableWem() and Refuse
+// wem.disableWem(); either way the script fires a ctpl:consent DOM event other scripts can listen
+// to. jcr:title is the heading, text the explanation; refuseLabel is shown as prominently as
+// acceptLabel. The cta is the link to the privacy policy (ctaLabel + Jahia's link picker). For
+// "nothing before consent", tracking must be off by default on the site: with jExperience, set
+// wemmix:deactivateJSExecution = all on the site node.
+[ctpl:consentBanner] > jnt:content, mix:title, ctplmix:footerComponent, ctplmix:cta
+ - text (string, textarea) i18n
+ - acceptLabel (string) i18n
+ - refuseLabel (string) i18n
+ - settingsLabel (string) i18n
+ - rememberDays (long) = 180 autocreated < '[1,395]'

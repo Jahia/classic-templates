@@ -31,11 +31,12 @@ You add these to a page's main area, inside a [Columns](columns.md) column, a [T
 
 Both already exist on every site and appear on every page. You edit them from the home page only.
 
-| Component   | What it is for                                                                                        | Where it goes                                | Page                             |
-| ----------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------- | -------------------------------- |
-| Site header | Logo, utility links, language switcher, optional sign-in / sign-out entry and the main navigation.    | Header area of the home page                 | [site-header.md](site-header.md) |
-| Site footer | Site name, tagline, link columns, copyright, legal and social links.                                  | Footer area of the home page                 | [site-footer.md](site-footer.md) |
-| Breadcrumb  | The trail from the home page to the current page. Not a component: switched on the site and per page. | Every page except home, set by the templates | [breadcrumb.md](breadcrumb.md)   |
+| Component      | What it is for                                                                                        | Where it goes                                | Page                                   |
+| -------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------- | -------------------------------------- |
+| Site header    | Logo, utility links, language switcher, optional sign-in / sign-out entry and the main navigation.    | Header area of the home page                 | [site-header.md](site-header.md)       |
+| Site footer    | Site name, tagline, link columns, copyright, legal and social links.                                  | Footer area of the home page                 | [site-footer.md](site-footer.md)       |
+| Consent banner | Asks visitors to accept or refuse tracking; a settings button opens it again.                         | Footer area of the home page                 | [consent-banner.md](consent-banner.md) |
+| Breadcrumb     | The trail from the home page to the current page. Not a component: switched on the site and per page. | Every page except home, set by the templates | [breadcrumb.md](breadcrumb.md)         |
 
 ## Editorial content
 

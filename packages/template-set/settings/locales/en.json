@@ -150,5 +150,10 @@
     "play": "Play",
     "empty": "No slide yet: add hero banners to this carousel, one per slide.",
     "editStacked": "Every slide shows here, one under the other. Visitors see one slide at a time, with buttons to move between them."
+  },
+  "consent": {
+    "label": "Privacy choices",
+    "editHint": "Visitors see this banner until they accept or refuse, and the settings button after the footer opens it again. To track nothing before they accept, switch tracking off on the site (jExperience: deactivate JavaScript execution on the site, for all pages).",
+    "missingLabels": "This banner is not shown on the live site: give it an accept label, a refuse label and a settings label."
   }
 }
