@@ -10,8 +10,7 @@
 }
 .head,
 .body,
-.transcript,
-.topics {
+.transcript {
   max-width: var(--ctpl-measure);
 }
 .head {
@@ -76,25 +75,9 @@
   cursor: pointer;
 }
 
-.topicsTitle,
 .related h2 {
   margin: 0 0 var(--ctpl-space-3);
   font-size: var(--ctpl-text-xl);
-}
-.topicList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ctpl-space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.topicList li {
-  padding: var(--ctpl-space-1) var(--ctpl-space-3);
-  border-radius: var(--ctpl-radius-pill);
-  background: var(--ctpl-color-accent-subtle);
-  color: var(--ctpl-color-text);
-  font-size: var(--ctpl-text-sm);
 }
 
 .editNote {

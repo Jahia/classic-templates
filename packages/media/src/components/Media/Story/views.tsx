@@ -7,7 +7,7 @@ import { useT } from "../../../lib/i18n.js";
 import { Image } from "../../../lib/Image.js";
 import { JsonLd, useAbsoluteUrl } from "../../../lib/JsonLd.js";
 import { languageTag } from "../../../lib/locale.js";
-import { categoryIdsOf, categoryTitlesOf, runQuery, storyAuthors } from "../../../lib/media.js";
+import { categoryIdsOf, runQuery, storyAuthors } from "../../../lib/media.js";
 import { isMembersOnly, teaserParagraphsOf } from "../../../lib/members.js";
 import { readString } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
@@ -16,6 +16,7 @@ import { related } from "../../../lib/select.js";
 import { Styles } from "../../../lib/Styles.js";
 import cards from "../shared/cards.module.css";
 import { MembersWall } from "../shared/MembersWall.js";
+import { Taxonomy } from "../shared/Taxonomy.js";
 import { Byline, ShareBox, useFormatLabel } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
@@ -175,11 +176,7 @@ const RestrictedStory = ({ props }: { props: Props }) => {
           <Image node={props.image} owner={currentNode} renderContext={renderContext} priority />
         </figure>
       )}
-      <MembersWall
-        body={props.body}
-        paragraphs={teaserParagraphsOf(currentNode)}
-        kind="story"
-      />
+      <MembersWall body={props.body} paragraphs={teaserParagraphsOf(currentNode)} kind="story" />
     </article>
   );
 };
@@ -188,7 +185,7 @@ const RestrictedStory = ({ props }: { props: Props }) => {
  * The story's own page, inside the main-resource template of classic-templates (header, footer,
  * `<title>`, meta description from the teaser). It owns the page's only `<h1>`: the title. Then the
  * byline (each author a link to their page), the share box, the media (video, audio or image), the
- * body, the transcript in a disclosure, the topics, the related stories as cards, and the story's
+ * body, the transcript in a disclosure, the topics and tags (Taxonomy), the related stories as cards, and the story's
  * JSON-LD.
  *
  * `perUser` says the view is cached per user ("fullPageMembers"): the only place the page may tell
@@ -207,7 +204,6 @@ export const StoryFull = ({ props, perUser = false }: { props: Props; perUser?: 
   const id = currentNode.getIdentifier();
   const title = props["jcr:title"];
   const url = toAbsolute(buildNodeUrl(currentNode));
-  const topics = categoryTitlesOf(currentNode, renderContext);
   const relatedItems = relatedStories(currentNode, renderContext);
   const authors = storyAuthors(currentNode, renderContext);
   return (
@@ -230,18 +226,7 @@ export const StoryFull = ({ props, perUser = false }: { props: Props; perUser?: 
           <RichText html={props.transcript} headingLevel={3} />
         </details>
       )}
-      {topics.length > 0 && (
-        <section className={classes.topics} aria-labelledby={`ctmd-topics-${id}`}>
-          <h2 id={`ctmd-topics-${id}`} className={classes.topicsTitle}>
-            {t("story.topics")}
-          </h2>
-          <ul className={classes.topicList}>
-            {topics.map((topic) => (
-              <li key={topic}>{topic}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <Taxonomy />
       {relatedItems.length > 0 && (
         <section className={classes.related} aria-labelledby={`ctmd-related-${id}`}>
           <h2 id={`ctmd-related-${id}`}>{t("story.related")}</h2>

@@ -46,6 +46,9 @@ Install `classic-media-<version>.tgz` in Jahia (Administration > Modules), or bu
 The event's time zone is a setting of its content folder ("Event" in the folder's options): sessions
 and the agenda show their times in that zone.
 
+Story and session pages end with their **Topics** (categories) and **Tags**; each tag links to the
+site's search results for it when the classic-templates site header names a **Search page**.
+
 Stories and sessions take classic-templates' **Members only** switch: visitors who are not signed in
 read the opening paragraphs of the body (or of the session's description; 2 by default, set per
 item, never the whole text), then a notice with **Create an account** and **Sign in**, the site

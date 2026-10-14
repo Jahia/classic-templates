@@ -88,6 +88,14 @@
   color: var(--ctpl-color-accent);
   font-size: var(--ctpl-text-sm);
 }
+.tagLink {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+.tagLink:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
 
 /* ---- Members only: edit-mode note ---------------------------------------------------------------- */
 .editNote {

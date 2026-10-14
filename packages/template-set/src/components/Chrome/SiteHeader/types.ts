@@ -9,4 +9,5 @@ export interface Props {
   accountLanding?: JCRNodeWrapper;
   signInPage?: JCRNodeWrapper;
   registerPage?: JCRNodeWrapper;
+  searchPage?: JCRNodeWrapper;
 }

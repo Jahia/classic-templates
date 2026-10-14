@@ -62,7 +62,8 @@
     "readingTime_one": "{{count}} min read",
     "readingTime_other": "{{count}} min read",
     "topics": "Topics",
-    "noTitle": "No title in this language: this item is left out of lists."
+    "noTitle": "No title in this language: this item is left out of lists.",
+    "tags": "Tags"
   },
   "query": {
     "summary": "Lists {{type}} under {{start}}, {{order}}, up to {{max}}.",

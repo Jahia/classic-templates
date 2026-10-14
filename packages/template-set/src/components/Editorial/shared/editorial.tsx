@@ -9,7 +9,7 @@ import { gateFor } from "../../../lib/members.js";
 import { MembersBadge } from "../../../lib/MembersBadge.js";
 import { MembersNotice } from "../../../lib/MembersNotice.js";
 import { readString as str } from "../../../lib/props.js";
-import { registerHref } from "../../../lib/register.js";
+import { registerHref, tagSearch } from "../../../lib/headerPages.js";
 import { RichText } from "../../../lib/RichText.js";
 import { headingTag, type HeadingTag } from "../../../lib/Heading.js";
 import { teaserHtml, teaserParagraphs } from "../../../lib/teaser.js";
@@ -105,16 +105,15 @@ export const categoryTitlesOf = (
   return titles;
 };
 
-/** Tags (j:tagList) and category titles, shown as the item's topics. */
-const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] => {
-  const topics = categoryTitlesOf(node, renderContext, true);
-  if (node.hasProperty("j:tagList")) {
-    for (const value of node.getProperty("j:tagList").getValues()) {
-      const tag = (value as unknown as { getString(): string }).getString();
-      if (tag && !topics.includes(tag)) topics.push(tag);
-    }
+/** The item's tags (j:tagList, which Jahia offers on every node), in their order, without repeats. */
+export const tagsOf = (node: JCRNodeWrapper): string[] => {
+  const tags: string[] = [];
+  if (!node.hasProperty("j:tagList")) return tags;
+  for (const value of node.getProperty("j:tagList").getValues()) {
+    const tag = (value as unknown as { getString(): string }).getString().trim();
+    if (tag && !tags.includes(tag)) tags.push(tag);
   }
-  return topics;
+  return tags;
 };
 
 /**
@@ -246,11 +245,18 @@ export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialPr
   );
 };
 
-/** The full item: header, image, body and topics. */
+/**
+ * The full item: header, image, body, topics (its categories) and tags. Each tag links to the
+ * site's search page for it when the site header names one (Search page), and is plain text
+ * otherwise.
+ */
 const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { t } = useTranslation("classic-templates");
-  const { currentNode, renderContext } = useServerContext();
-  const topics = topicsOf(currentNode, renderContext);
+  const { currentNode, currentResource, renderContext } = useServerContext();
+  const topics = categoryTitlesOf(currentNode, renderContext, true);
+  const tags = tagsOf(currentNode);
+  const searchFor =
+    tags.length > 0 ? tagSearch(renderContext, currentResource.getLocale()) : undefined;
   const title = props["jcr:title"];
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-full`}>
@@ -282,6 +288,30 @@ const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
             <ul className={classes.topicList}>
               {topics.map((topic) => (
                 <li key={topic}>{topic}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {tags.length > 0 && (
+          <section
+            className={classes.topics}
+            aria-labelledby={`ctpl-tags-${currentNode.getIdentifier()}`}
+            data-testid="ctpl-item-tags"
+          >
+            <h2 id={`ctpl-tags-${currentNode.getIdentifier()}`} className={classes.topicsTitle}>
+              {t("editorial.tags")}
+            </h2>
+            <ul className={classes.topicList}>
+              {tags.map((tag) => (
+                <li key={tag}>
+                  {searchFor ? (
+                    <a className={classes.tagLink} href={searchFor(tag)}>
+                      {tag}
+                    </a>
+                  ) : (
+                    tag
+                  )}
+                </li>
               ))}
             </ul>
           </section>

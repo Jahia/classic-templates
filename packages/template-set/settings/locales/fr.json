@@ -62,7 +62,8 @@
     "readingTime_one": "{{count}} min de lecture",
     "readingTime_other": "{{count}} min de lecture",
     "topics": "Thèmes",
-    "noTitle": "Pas de titre dans cette langue : cet élément est écarté des listes."
+    "noTitle": "Pas de titre dans cette langue : cet élément est écarté des listes.",
+    "tags": "Mots-clés"
   },
   "query": {
     "summary": "Liste {{type}} sous {{start}}, {{order}}, {{max}} au plus.",

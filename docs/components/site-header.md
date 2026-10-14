@@ -36,6 +36,7 @@ The header area can also hold a [notice bar](notice-bar.md), above or below the 
 | Page after sign-in           | The page visitors land on once signed in, for example a members area.                              | Optional. Empty: the page the visitor was on.                   |
 | Sign-in page                 | A page of the site with a [Sign-in form](sign-in.md), used instead of the platform's login screen. | Optional. Empty: the platform's login screen.                   |
 | Registration page            | A page of the site where visitors create an account, offered by the notices of members-only items. | Optional. Empty: the notices offer sign-in only.                |
+| Search page                  | A page of the site with a search section; the tags on an item's page link to its results for the tag. | Optional. Empty: tags are plain text.                           |
 
 ### Utility links
 

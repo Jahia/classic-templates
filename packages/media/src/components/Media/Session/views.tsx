@@ -10,6 +10,7 @@ import { RichText } from "../../../lib/RichText.js";
 import { buildSessionLd } from "../../../lib/schema.js";
 import { Styles } from "../../../lib/Styles.js";
 import { MembersWall } from "../shared/MembersWall.js";
+import { Taxonomy } from "../shared/Taxonomy.js";
 import cards from "../shared/cards.module.css";
 import { ShareBox } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
@@ -66,8 +67,8 @@ const speakerNames = (speakers: SpeakerData[], role: (part: string) => string) =
 /**
  * The session's own page, inside the main-resource template of classic-templates. It owns the
  * page's only `<h1>`: the title. Then the day and times in the event's time zone (said in words),
- * room and stream, the share box, the description, the speakers as person cards with the part they
- * play, and the Event JSON-LD.
+ * room and stream, the share box, the description, its topics and tags, the speakers as person
+ * cards with the part they play, and the Event JSON-LD.
  *
  * A session switched to "Members only" (ctplmix:membersOnly) keeps all of that for every visitor
  * but its description: a visitor who is not signed in reads its opening paragraphs, then the
@@ -131,6 +132,7 @@ export const SessionFull = ({ props, perUser = false }: { props: Props; perUser?
           kind="session"
         />
       )}
+      {open && <Taxonomy />}
       {speakers.length > 0 && (
         <section aria-labelledby={`ctmd-speakers-${id}`}>
           <h2 id={`ctmd-speakers-${id}`} className={classes.speakersTitle}>

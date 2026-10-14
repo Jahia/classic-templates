@@ -33,7 +33,7 @@ Each folder only offers its own type. A page then shows them through a [Content 
 | Author                       | Name of the author as shown to visitors, for example "Jane Smith".           | Articles only. The same in every language.                                                                      |
 | Members only                 | Reserves the item for signed-in visitors. See [Members only](#members-only). | Optional section of the edit form. Default once switched on: ticked.                                            |
 
-Tags and categories are not fields of the template set: you set them with Jahia's own **tags** and **categories**, available on every item.
+Tags and categories are not fields of the template set: you set them with Jahia's own **tags** and **categories**, available on every item. The item's page lists its categories under **Topics** and its tags under **Tags**; each tag links to the site's search results for it when the site header names a **Search page**.
 
 ## How it behaves
 

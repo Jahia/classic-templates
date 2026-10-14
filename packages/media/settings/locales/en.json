@@ -1,6 +1,7 @@
 {
   "item": {
-    "noTitle": "No title in this language: this item is left out of lists and has no heading."
+    "noTitle": "No title in this language: this item is left out of lists and has no heading.",
+    "tags": "Tags"
   },
   "image": {
     "noTitle": "This image has no title in the media library, so it has no alternative text."

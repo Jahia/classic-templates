@@ -1,6 +1,7 @@
 {
   "item": {
-    "noTitle": "Aucun titre dans cette langue : cet élément est écarté des listes et n'a pas de titre."
+    "noTitle": "Aucun titre dans cette langue : cet élément est écarté des listes et n'a pas de titre.",
+    "tags": "Mots-clés"
   },
   "image": {
     "noTitle": "Cette image n'a pas de titre dans la médiathèque : elle n'a donc pas d'alternative textuelle."
