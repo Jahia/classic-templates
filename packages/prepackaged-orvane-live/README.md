@@ -58,11 +58,9 @@ order does not matter.
 2. Open Administration > Projects
    ([localhost:8080/jahia/administration/webProjectSettings](http://localhost:8080/jahia/administration/webProjectSettings)),
    and under **Import prepackaged project** import both Orvane sites.
-3. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), then
-   register and index the two sites:
-   `mutation { admin { search { a: addSite(siteKey: "orvane-signal") b: addSite(siteKey: "orvane-live") } } }`
-   and `startIndex(siteKeys: ["orvane-signal", "orvane-live"], workspace: LIVE)`. Without it every
-   page works and the search page shows its box with no result.
+3. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), set its
+   mapped node types and run one full reindex as the Orvane Signal package's README says (step 4).
+   Without it every page works and the search page shows its box with no result.
 
 With the provisioning API, attach the modules and both site zips (`importSite` takes the inner
 `<site>.zip` of the `-import.zip`, never the outer zip):

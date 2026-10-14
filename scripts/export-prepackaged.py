@@ -15,8 +15,11 @@ described in PROFILES below.
      without users: GET /cms/export/default/<site>_export.zip?exportformat=site&live=true&users=false.
      Only the inner <site>.zip is kept (never roles.zip or mounts.zip). --from-zip reads a
      previously downloaded export instead.
-  2. Rewrites the add-on content that has an equivalent in the template set (the profile's
-     conversions: the jsfaq questions of skylantern become accordions).
+  2. Leaves out the instance's own state: the global groups and users the export pulls in
+     (drop_global_principals) and Augmented Search's indexation timestamps on the site node
+     (drop_search_state), which make the import fail where Augmented Search runs. Then rewrites
+     the add-on content that has an equivalent in the template set (the profile's conversions: the
+     jsfaq questions of skylantern become accordions).
   3. Removes, in repository.xml and live-repository.xml alike:
      - every node whose primary type or one of its mixins belongs to a namespace that neither the
        platform nor the profile's packages declare (the allow-list is read from their CND files:
@@ -680,6 +683,23 @@ def drop_global_principals(root):
     return removed
 
 
+# Augmented Search writes its indexation state on the site node. Imported, it races the indexation
+# Augmented Search starts on the new site: "indexationStart ... has been modified externally" and the
+# whole site import is rolled back.
+SEARCH_STATE = ("indexationStart", "indexationEnd", "indexationScheduled")
+
+
+def drop_search_state(root):
+    """Leaves out Augmented Search's indexation timestamps (SEARCH_STATE). Returns how many."""
+    removed = 0
+    for element in root.iter():
+        for name in SEARCH_STATE:
+            if name in element.attrib:
+                del element.attrib[name]
+                removed += 1
+    return removed
+
+
 def build(files, descriptor, site, profile, out_site, out_descriptor):
     allowed = allowed_prefixes(profile["sources"]) | set(profile.get("addon_prefixes", ()))
     report = {"allowed": sorted(allowed), "conversions": []}
@@ -693,6 +713,8 @@ def build(files, descriptor, site, profile, out_site, out_descriptor):
         dropped = drop_global_principals(root)
         if dropped:
             report.setdefault("principals", []).append(f"{name}: {dropped} global group or user element(s) left out")
+        if drop_search_state(root):
+            report.setdefault("search_state", []).append(f"{name}: Augmented Search indexation timestamps left out")
         converted = []
         apply_conversions(root, site, profile["conversions"], converted)
         report["conversions"] += [f"{name}: {c}" for c in converted]

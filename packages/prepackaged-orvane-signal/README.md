@@ -89,20 +89,23 @@ order does not matter.
    rules were written at the import, before these property types existed, so they map e-mail and
    first name only: a minute after loading (the engine caches the property list), change and
    publish each form (newsletter, register, exhibit) once to rebuild them.
-4. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), set
-   `org.jahia.modules.augmentedsearch.content.mappedNodeTypes` to
-   `ctmd:story,ctmd:session,ctmd:person,ctplmix:editorialItem.teaser` before the first indexation
-   (the Format filter and the result summaries read those properties), then register and index the
-   two sites:
-   `mutation { admin { search { a: addSite(siteKey: "orvane-signal") b: addSite(siteKey: "orvane-live") } } }`
-   and `startIndex(siteKeys: ["orvane-signal", "orvane-live"], workspace: LIVE)` (a full
-   `startIndex(workspace: LIVE, force: true)` when the mapping changed on an existing index).
+4. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector). Once it
+   has started (its configuration file is written then; an edit made before leaves a one-line file
+   and only files get indexed), set `org.jahia.modules.augmentedsearch.content.mappedNodeTypes` to
+   `ctmd:story,ctmd:session,ctmd:person,ctplmix:editorialItem.teaser` (the Format filter and the
+   result summaries read those properties), then register the two sites and run one full reindex,
+   which rebuilds the index mapping:
+   `mutation { admin { search { a: addSite(siteKey: "orvane-signal") b: addSite(siteKey: "orvane-live") startIndex(force: true) { jobs { id } } } } }`
+   (no `workspace`: both; two full reindexes started together left a site out).
    Without it every page works and the search page shows its box with no result.
 5. Members and newsroom: the sites create no users. Accounts come from the register pages (a global
    group `orvane-members` must exist: `/groups/orvane-members`). The newsroom's back-office users and
-   their roles (a contributor and a reviewer on Signal, an editor on Live, translators, a marketer
-   with the custom role `orvane-marketer`) are created by the showcase's `seed-staff.py`; a site
-   import keeps the role grants to those groups, which take effect once the groups exist.
+   their roles are created by the showcase's `seed-staff.py`, with roles every 8.2.3.2 has: `editor`
+   (edits, requests publication) for Signal's newsroom, `editor` and `reviewer` for Signal's
+   editors, `editor-in-chief` (publishes directly) for the Live team, `translator-pt` and
+   `translator-fr`, and the custom role `orvane-marketer` it creates. The imported sites also carry
+   the grants made on the instance they were exported from; a grant naming a role the target lacks
+   gives nothing.
 
 With the provisioning API, attach the modules and both site zips (`importSite` takes the inner
 `<site>.zip` of the `-import.zip`, never the outer zip):
