@@ -35,6 +35,7 @@ The header area can also hold a [notice bar](notice-bar.md), above or below the 
 | Show a sign-in entry         | Adds "Sign in" to the utility bar; signed-in visitors see their name and "Sign out" instead.       | Default: off. See [Sign-in entry](#sign-in-entry).              |
 | Page after sign-in           | The page visitors land on once signed in, for example a members area.                              | Optional. Empty: the page the visitor was on.                   |
 | Sign-in page                 | A page of the site with a [Sign-in form](sign-in.md), used instead of the platform's login screen. | Optional. Empty: the platform's login screen.                   |
+| Registration page            | A page of the site where visitors create an account, offered by the notices of members-only items. | Optional. Empty: the notices offer sign-in only.                |
 
 ### Utility links
 
@@ -89,6 +90,7 @@ Switch on **Show a sign-in entry** (in the header's edit form, from the home pag
 - A visitor who is not signed in sees **Sign in** (in French, **Se connecter**). It opens the platform's own login page, or your own sign-in page when you pick one in **Sign-in page**, and brings the visitor back to the page they were on once signed in.
 - A signed-in visitor sees their **name** and **Sign out** instead, on every page. After signing out they come back to the page they were on, or to the home page when that page is not open to the public.
 - **Sign-in page** keeps visitors in your design: create a page with a [Sign-in form](sign-in.md) section, pick it here, and the entry opens it with the page to come back to in its address. The page must be published, or the entry falls back to the platform's login screen. See [Members-only content](../guides/members-only-content.md).
+- **Registration page** is where visitors create an account (a page holding a registration form). The notice of every members-only item offers **Create an account** with a link to it that brings the visitor back to the item. See [Members-only content](../guides/members-only-content.md#offer-registration).
 - **Page after sign-in** overrides the page to come back to: pick your members area and every sign-in lands there. The page can be restricted to signed-in users: that is the point.
 - There is **no link to maintain**: the sign-in and sign-out addresses belong to the platform, not to your content. Do not add a "Sign in" link to the utility links, and do not paste the address of your Jahia login page into an external link: it only works on that one server, and breaks when the site is copied to another environment. Switch this option on instead.
 - The header is the same for everybody (it is cached as one piece): a small script asks the platform who the visitor is and swaps "Sign in" for the name. For a split second a signed-in visitor can still see "Sign in". Without JavaScript the visitor always sees "Sign in", which is always correct for someone the site does not recognise.

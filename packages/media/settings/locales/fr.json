@@ -38,9 +38,8 @@
     "related": "À lire aussi",
     "transcript": "Transcription",
     "listen": "Écouter l'épisode",
-    "membersNotice": "Cet article est réservé aux membres. Connectez-vous pour le lire en entier.",
-    "signIn": "Se connecter",
-    "membersEdit": "Réservé aux membres : les visiteurs non connectés voient le résumé et un lien de connexion.",
+    "membersNotice": "La suite de ce récit est réservée aux membres. Créez un compte ou connectez-vous pour lire la suite.",
+    "membersEdit": "Réservé aux membres : les visiteurs non connectés voient le résumé, les premiers paragraphes et un avis pour créer un compte ou se connecter.",
     "membersLabel": "Membres",
     "download": "Télécharger l'épisode",
     "captionsMissing": "Ajoutez les sous-titres de l'épisode (un fichier WebVTT) pour afficher le lecteur audio.",
@@ -88,7 +87,10 @@
     "stream": "Parcours",
     "speakers": "Intervenants",
     "zone": "Horaires à l'heure de {{zone}}.",
-    "when": "Quand"
+    "when": "Quand",
+    "membersNotice": "La suite de la description de cette session est réservée aux membres. Créez un compte ou connectez-vous pour lire la suite.",
+    "membersEdit": "Réservé aux membres : les visiteurs non connectés voient les informations de la session et les premiers paragraphes de sa description, puis un avis pour créer un compte ou se connecter.",
+    "membersLabel": "Membres"
   },
   "agenda": {
     "days": "Jours",
@@ -133,5 +135,10 @@
       "page": "Page",
       "other": "Contenu"
     }
+  },
+  "members": {
+    "title": "Réservé aux membres",
+    "register": "Créer un compte",
+    "signIn": "Se connecter"
   }
 }

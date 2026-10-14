@@ -9,8 +9,10 @@ import { gateFor } from "../../../lib/members.js";
 import { MembersBadge } from "../../../lib/MembersBadge.js";
 import { MembersNotice } from "../../../lib/MembersNotice.js";
 import { readString as str } from "../../../lib/props.js";
+import { registerHref } from "../../../lib/register.js";
 import { RichText } from "../../../lib/RichText.js";
 import { headingTag, type HeadingTag } from "../../../lib/Heading.js";
+import { teaserHtml, teaserParagraphs } from "../../../lib/teaser.js";
 import { Tile } from "../../../lib/Tile.js";
 import classes from "./editorial.module.css";
 import { languageTag } from "../../../lib/locale.js";
@@ -37,6 +39,22 @@ const dateOf = (node: JCRNodeWrapper, publicationDate?: string) =>
 /** True when the item carries the "Members only" switch (ctplmix:membersOnly) and it is on. */
 export const isMembersOnly = (node: JCRNodeWrapper): boolean =>
   node.hasProperty("ctplMembersOnly") && node.getProperty("ctplMembersOnly").getBoolean();
+
+/**
+ * How many paragraphs of a members-only item's body a visitor who is not signed in reads before the
+ * notice (ctplmix:membersOnly, 2 when the item does not say). Shared with classic-media's teasers.
+ */
+export const teaserParagraphsOf = (node: JCRNodeWrapper): number => {
+  try {
+    return teaserParagraphs(
+      node.hasProperty("ctplTeaserParagraphs")
+        ? node.getProperty("ctplTeaserParagraphs").getLong()
+        : undefined,
+    );
+  } catch {
+    return teaserParagraphs(undefined);
+  }
+};
 
 /** Text of an HTML string with its tags dropped, in one linear pass (no backtracking regex). */
 const textOf = (html: string) => {
@@ -189,12 +207,16 @@ export const FullPage = ({
 
 /**
  * What a visitor who is not signed in gets of a members-only item: the item's public face (kind,
- * date, title, teaser, image), a notice and the sign-in form. The body is never rendered here.
+ * date, title, teaser, image), the opening paragraphs of the body (lib/teaser.ts: the rest is cut
+ * on the server and never sent), then a notice with a link to the site's registration page and the
+ * sign-in form. Both bring the visitor back to the item.
  */
 export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { t } = useTranslation("classic-templates");
-  const { currentNode, renderContext } = useServerContext();
+  const { currentNode, currentResource, renderContext } = useServerContext();
   const title = props["jcr:title"];
+  const here = buildNodeUrl(currentNode);
+  const opening = teaserHtml(props.body, teaserParagraphsOf(currentNode));
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-restricted`}>
       <header className={`ctpl-container ${classes.head}`}>
@@ -208,7 +230,16 @@ export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialPr
         </figure>
       )}
       <div className="ctpl-container">
-        <MembersNotice text={t(`members.${kind}Notice`)} fallback={buildNodeUrl(currentNode)} />
+        {opening && (
+          <div className={classes.opening} data-testid="ctpl-members-opening">
+            <RichText html={opening} className={classes.body} />
+          </div>
+        )}
+        <MembersNotice
+          text={t(`members.${kind}Notice`)}
+          fallback={here}
+          register={registerHref(renderContext, currentResource.getLocale(), here)}
+        />
       </div>
     </article>
   );

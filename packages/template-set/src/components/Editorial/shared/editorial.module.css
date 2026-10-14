@@ -45,6 +45,19 @@
   margin-inline: auto;
   font-size: var(--ctpl-text-lg);
 }
+/* The opening paragraphs of a members-only item, fading out above the members notice. */
+.opening {
+  position: relative;
+  margin-bottom: var(--ctpl-space-6);
+}
+.opening::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4rem;
+  background: linear-gradient(transparent, var(--ctpl-color-surface-page));
+  pointer-events: none;
+}
 .topics {
   max-width: var(--ctpl-measure);
   margin: var(--ctpl-space-6) auto 0;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { accountUrls, loginRoute, safeLocalPath } from "./account.js";
+import { accountUrls, loginRoute, pageWithComeBack, safeLocalPath } from "./account.js";
 
 describe("safeLocalPath", () => {
   it("keeps a site-relative path, query string included", () => {
@@ -97,5 +97,25 @@ describe("loginRoute", () => {
     expect(loginRoute("")).toBe("/cms/login");
     expect(loginRoute("/jahia/")).toBe("/jahia/cms/login");
     expect(loginRoute(undefined)).toBe("/cms/login");
+  });
+});
+
+describe("pageWithComeBack", () => {
+  it("adds the place to come back to", () => {
+    expect(pageWithComeBack("/en/sites/s/home/register.html", "/en/sites/s/home/r/a.html")).toBe(
+      "/en/sites/s/home/register.html?redirect=%2Fen%2Fsites%2Fs%2Fhome%2Fr%2Fa.html",
+    );
+    expect(pageWithComeBack("/register.html?x=1", "/a.html")).toBe(
+      "/register.html?x=1&redirect=%2Fa.html",
+    );
+  });
+
+  it("drops a place to come back to on another host", () => {
+    expect(pageWithComeBack("/register.html", "https://evil.example.com/")).toBe("/register.html");
+  });
+
+  it("refuses a page that is not site-relative", () => {
+    expect(pageWithComeBack("https://evil.example.com/register", "/a.html")).toBeUndefined();
+    expect(pageWithComeBack(undefined, "/a.html")).toBeUndefined();
   });
 });

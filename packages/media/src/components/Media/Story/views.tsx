@@ -1,4 +1,4 @@
-import { Render, buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
+import { Render, buildNodeUrl, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { formatDate, isoDay, readingMinutes } from "../../../lib/format.js";
@@ -8,12 +8,14 @@ import { Image } from "../../../lib/Image.js";
 import { JsonLd, useAbsoluteUrl } from "../../../lib/JsonLd.js";
 import { languageTag } from "../../../lib/locale.js";
 import { categoryIdsOf, categoryTitlesOf, runQuery, storyAuthors } from "../../../lib/media.js";
-import { readReference, readString } from "../../../lib/props.js";
+import { isMembersOnly, teaserParagraphsOf } from "../../../lib/members.js";
+import { readString } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
 import { buildStoryLd } from "../../../lib/schema.js";
 import { related } from "../../../lib/select.js";
 import { Styles } from "../../../lib/Styles.js";
 import cards from "../shared/cards.module.css";
+import { MembersWall } from "../shared/MembersWall.js";
 import { Byline, ShareBox, useFormatLabel } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
@@ -25,10 +27,6 @@ const RELATED_CANDIDATES = 60;
 
 /** Formats read as text: they show a reading time. */
 const TEXT_FORMATS = new Set(["news", "feature", "opinion", "interview", "report"]);
-
-/** True for a story switched to "Members only" (ctplmix:membersOnly of classic-templates). */
-const isMembersOnly = (node: JCRNodeWrapper) =>
-  node.hasProperty("ctplMembersOnly") && node.getProperty("ctplMembersOnly").getBoolean();
 
 /** The page language as a BCP 47 tag ("en", "fr"). */
 const useLanguage = () => {
@@ -57,20 +55,6 @@ const Meta = ({ props, withReading }: { props: Props; withReading: boolean }) =>
       )}
     </p>
   );
-};
-
-/** The site's sign-in page (classic-templates header setting), when it has one. */
-const signInPage = (
-  node: JCRNodeWrapper,
-  renderContext: RenderContext,
-): JCRNodeWrapper | undefined => {
-  try {
-    const header = node.getResolveSite().getHome().getNode("siteHeader/header");
-    server.render.addCacheDependency({ node: header }, renderContext);
-    return readReference(header, "signInPage");
-  } catch {
-    return undefined;
-  }
 };
 
 /** Stories sharing the most categories with `story`, newest first among equals. */
@@ -176,13 +160,13 @@ const StoryHead = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => {
 
 /**
  * What a visitor who is not signed in gets of a members-only story: its public face (meta, title,
- * lead, byline, image), a notice and a link to the site's sign-in page. The body, the media and the
+ * lead, byline, image), the opening paragraphs of the body, then the members notice with the
+ * site's registration and sign-in pages (MembersWall). The rest of the body, the media and the
  * transcript are never rendered here.
  */
 const RestrictedStory = ({ props }: { props: Props }) => {
   const t = useT();
   const { currentNode, renderContext } = useServerContext();
-  const signIn = signInPage(currentNode, renderContext);
   return (
     <article className={`ctpl-container ${classes.full}`} data-testid="ctmd-story-restricted">
       <Styles />
@@ -192,16 +176,11 @@ const RestrictedStory = ({ props }: { props: Props }) => {
           <Image node={props.image} owner={currentNode} renderContext={renderContext} priority />
         </figure>
       )}
-      <div className={classes.notice}>
-        <p>{t("story.membersNotice")}</p>
-        {signIn && (
-          <p>
-            <a className={classes.signIn} href={buildNodeUrl(signIn)}>
-              {t("story.signIn")}
-            </a>
-          </p>
-        )}
-      </div>
+      <MembersWall
+        body={props.body}
+        paragraphs={teaserParagraphsOf(currentNode)}
+        notice={t("story.membersNotice")}
+      />
     </article>
   );
 };

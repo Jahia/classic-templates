@@ -4,7 +4,8 @@ import { readString } from "../../../lib/props.js";
 import type { Props, SpeakerProps } from "./types.js";
 import { SessionCard, SessionCompact, SessionFull } from "./views.js";
 
-// "fullPage" is used by the classic-templates main-resource template at the session's own URL;
+// "fullPage" is used by the classic-templates main-resource template at the session's own URL, and
+// "fullPageMembers" (cached per user) for a session switched to "Members only";
 // "compact" by the agenda; "card" by content lists and a person's page; the default view is the card.
 const card = (props: Props) => <SessionCard props={props} />;
 jahiaComponent({ componentType: "view", nodeType: "ctmd:session", displayName: "Card" }, card);
@@ -19,6 +20,16 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctmd:session", name: "fullPage", displayName: "Full page" },
   (props: Props) => <SessionFull props={props} />,
+);
+jahiaComponent(
+  {
+    componentType: "view",
+    nodeType: "ctmd:session",
+    name: "fullPageMembers",
+    displayName: "Full page (members only)",
+    properties: { "cache.perUser": "true" },
+  },
+  (props: Props) => <SessionFull props={props} perUser />,
 );
 
 // A speaker is shown by its session (name, role, portrait come from the person). This view is what
