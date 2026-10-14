@@ -76,6 +76,8 @@ export const SearchBox = (props: SearchBoxProps) => {
           action={props.action}
           role="search"
           aria-label={t("search.label")}
+          // jExperience's tracker stamps data-wem-observed on forms before React hydrates
+          suppressHydrationWarning
         >
           <div className={classes.combo}>
             <label htmlFor={id} className="ctpl-visually-hidden">

@@ -102,6 +102,8 @@ export const SearchPanel = (props: PanelProps) => {
           method="get"
           action={action}
           onSubmit={interactive ? props.onSubmit : undefined}
+          // jExperience's tracker stamps data-wem-observed on forms before React hydrates
+          suppressHydrationWarning
           data-testid="ctmd-search-form"
         >
           <label className={classes.label} htmlFor={`${idPrefix}-q`}>
