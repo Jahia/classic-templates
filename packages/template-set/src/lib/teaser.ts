@@ -135,6 +135,6 @@ export const teaserHtml = (html: string | undefined, paragraphs: number): string
   const cuts = paragraphCuts(html);
   const cut = cuts[Math.min(paragraphs, cuts.length - 1) - 1];
   if (!cut) return "";
-  const closing = cut.open.toReversed().map((name) => `</${name}>`);
-  return html.slice(0, cut.at) + closing.join("");
+  // reduceRight, not toReversed(): the server's GraalJS has no ES2023 array copies.
+  return cut.open.reduceRight((out, name) => `${out}</${name}>`, html.slice(0, cut.at));
 };
