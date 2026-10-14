@@ -218,10 +218,11 @@ PROFILES = {
 # v2 they also show personalisation: jExperience's personalised sections and A/B test (wem*), the
 # form answers mapped to the visitor profile (formidable-jexperience-engine) and the audience
 # dashboard (kibana-dashboards-provider, jexperience-dashboards).
-ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements", "jexperience",
-                 "formidable-jexperience-engine", "kibana-dashboards-provider", "jexperience-dashboards"]
+ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements", "formidable-extended-inputs",
+                 "formidable-accounts", "jexperience", "formidable-jexperience-engine", "kibana-dashboards-provider",
+                 "jexperience-dashboards"]
 ORVANE_ADDON_PREFIXES = ["jsfaqnt", "jsfaqmix", "jsfaq", "jsmediagallerynt", "jsmediagallerymix", "jsstorelocnt",
-                         "jsstorelocmix", "fmdb", "fmdbmix", "wem", "wemnt", "wemmix"]
+                         "jsstorelocmix", "fmdb", "fmdbmix", "fmdbext", "fmdbacc", "fmdbaccmix", "wem", "wemnt", "wemmix"]
 for _site in ("orvane-signal", "orvane-live"):
     PROFILES[_site] = {
         "package": f"prepackaged-{_site}",
@@ -659,6 +660,26 @@ def export_descriptor(text, repository_xml):
 # ---------------------------------------------------------------------------------------------
 
 
+def drop_global_principals(root):
+    """Leaves out the global groups and users an export pulls in: granting a site role to a global
+    group makes Jahia list that group in the site's `site-privileged` group, and the export then
+    carries the group and its users (/groups, /users). A pre-packaged site never carries principals:
+    the project creates its groups and users after the import, and granting the roles adds them to
+    `site-privileged` again. Returns how many elements were removed."""
+    removed = 0
+    for child in list(root):
+        if child.tag.split("}")[-1] in ("groups", "users"):
+            root.remove(child)
+            removed += 1
+    for parent in root.iter():
+        for child in list(parent):
+            member = child.get(J + "member") or ""
+            if child.get(JCR + "primaryType") == "jnt:member" and member.startswith(("#/groups/", "#/users/")):
+                parent.remove(child)
+                removed += 1
+    return removed
+
+
 def build(files, descriptor, site, profile, out_site, out_descriptor):
     allowed = allowed_prefixes(profile["sources"]) | set(profile.get("addon_prefixes", ()))
     report = {"allowed": sorted(allowed), "conversions": []}
@@ -669,6 +690,9 @@ def build(files, descriptor, site, profile, out_site, out_descriptor):
         if name not in files:
             sys.exit(f"The site export has no {name}")
         root = parse(files[name])
+        dropped = drop_global_principals(root)
+        if dropped:
+            report.setdefault("principals", []).append(f"{name}: {dropped} global group or user element(s) left out")
         converted = []
         apply_conversions(root, site, profile["conversions"], converted)
         report["conversions"] += [f"{name}: {c}" for c in converted]

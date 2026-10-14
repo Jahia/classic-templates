@@ -13,7 +13,10 @@
     "hidden": false,
     "readOnly": false,
     "tags": [],
-    "systemTags": []
+    "systemTags": [
+     "goal",
+     "formGoal"
+    ]
    },
    "startEvent": {
     "type": "eventTypeCondition",
@@ -22,9 +25,17 @@
     }
    },
    "targetEvent": {
-    "type": "formEventCondition",
+    "type": "booleanCondition",
     "parameterValues": {
-     "formId": "jahia-uuid:/sites/orvane-signal/contents/forms/newsletter"
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "formEventCondition",
+       "parameterValues": {
+        "formId": "jahia-uuid:/sites/orvane-signal/contents/forms/newsletter"
+       }
+      }
+     ]
     }
    }
   },
@@ -40,7 +51,10 @@
     "hidden": false,
     "readOnly": false,
     "tags": [],
-    "systemTags": []
+    "systemTags": [
+     "goal",
+     "formGoal"
+    ]
    },
    "startEvent": {
     "type": "eventTypeCondition",
@@ -49,9 +63,17 @@
     }
    },
    "targetEvent": {
-    "type": "formEventCondition",
+    "type": "booleanCondition",
     "parameterValues": {
-     "formId": "jahia-uuid:/sites/orvane-live/contents/forms/register"
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "formEventCondition",
+       "parameterValues": {
+        "formId": "jahia-uuid:/sites/orvane-live/contents/forms/register"
+       }
+      }
+     ]
     }
    }
   },
@@ -67,7 +89,10 @@
     "hidden": false,
     "readOnly": false,
     "tags": [],
-    "systemTags": []
+    "systemTags": [
+     "goal",
+     "formGoal"
+    ]
    },
    "startEvent": {
     "type": "eventTypeCondition",
@@ -76,9 +101,93 @@
     }
    },
    "targetEvent": {
-    "type": "formEventCondition",
+    "type": "booleanCondition",
     "parameterValues": {
-     "formId": "jahia-uuid:/sites/orvane-live/contents/forms/exhibit"
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "formEventCondition",
+       "parameterValues": {
+        "formId": "jahia-uuid:/sites/orvane-live/contents/forms/exhibit"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-goal-account-signal",
+   "itemType": "goal",
+   "metadata": {
+    "id": "orvane-goal-account-signal",
+    "name": "Orvane: account created (Signal)",
+    "description": "Form sent: /sites/orvane-signal/contents/forms/account",
+    "scope": "orvane-signal",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": [
+     "goal",
+     "formGoal"
+    ]
+   },
+   "startEvent": {
+    "type": "eventTypeCondition",
+    "parameterValues": {
+     "eventTypeId": "view"
+    }
+   },
+   "targetEvent": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "formEventCondition",
+       "parameterValues": {
+        "formId": "jahia-uuid:/sites/orvane-signal/contents/forms/account"
+       }
+      }
+     ]
+    }
+   }
+  },
+  {
+   "itemId": "orvane-goal-account-live",
+   "itemType": "goal",
+   "metadata": {
+    "id": "orvane-goal-account-live",
+    "name": "Orvane: account created (Live)",
+    "description": "Form sent: /sites/orvane-live/contents/forms/account",
+    "scope": "orvane-live",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": [
+     "goal",
+     "formGoal"
+    ]
+   },
+   "startEvent": {
+    "type": "eventTypeCondition",
+    "parameterValues": {
+     "eventTypeId": "view"
+    }
+   },
+   "targetEvent": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "formEventCondition",
+       "parameterValues": {
+        "formId": "jahia-uuid:/sites/orvane-live/contents/forms/account"
+       }
+      }
+     ]
     }
    }
   }

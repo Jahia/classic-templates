@@ -234,6 +234,24 @@
     "hidden": false,
     "readOnly": false
    }
+  },
+  {
+   "itemId": "orvaneSignIns",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneSignIns",
+    "name": "Orvane sign-ins (member)",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
   }
  ]
 }

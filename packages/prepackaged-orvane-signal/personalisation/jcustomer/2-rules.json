@@ -336,6 +336,54 @@
    "raiseEventOnlyOnceForSession": false,
    "raiseEventOnlyOnce": false,
    "priority": 0
+  },
+  {
+   "itemId": "orvane-sign-ins",
+   "itemType": "rule",
+   "metadata": {
+    "id": "orvane-sign-ins",
+    "name": "Orvane: count sign-ins",
+    "description": "Increments a profile counter on every sign-in to Orvane Signal or Orvane Live.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "booleanCondition",
+    "parameterValues": {
+     "operator": "and",
+     "subConditions": [
+      {
+       "type": "eventTypeCondition",
+       "parameterValues": {
+        "eventTypeId": "login"
+       }
+      },
+      {
+       "type": "eventPropertyCondition",
+       "parameterValues": {
+        "propertyName": "scope",
+        "comparisonOperator": "contains",
+        "propertyValue": "orvane-"
+       }
+      }
+     ]
+    }
+   },
+   "actions": [
+    {
+     "type": "incrementPropertyAction",
+     "parameterValues": {
+      "propertyName": "orvaneSignIns"
+     }
+    }
+   ],
+   "raiseEventOnlyOnceForSession": false,
+   "raiseEventOnlyOnce": false,
+   "priority": 0
   }
  ]
 }

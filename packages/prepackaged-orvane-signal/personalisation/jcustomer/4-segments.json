@@ -369,6 +369,29 @@
      "comparisonOperator": "exists"
     }
    }
+  },
+  {
+   "itemId": "orvane-member",
+   "itemType": "segment",
+   "metadata": {
+    "id": "orvane-member",
+    "name": "Orvane member",
+    "description": "Signed in to an Orvane account at least once (one account for both sites).",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "condition": {
+    "type": "profilePropertyCondition",
+    "parameterValues": {
+     "propertyName": "properties.orvaneSignIns",
+     "comparisonOperator": "greaterThanOrEqualTo",
+     "propertyValueInteger": 1
+    }
+   }
   }
  ]
 }

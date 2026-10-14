@@ -12,7 +12,7 @@ module, packaged as a Jahia module. It goes with its sister site
 
 ## What the site contains
 
-Orvane Signal in English and French:
+Orvane Signal in English and French (Orvane Live adds Portuguese):
 
 - 45 pages, three levels deep: home, topics (6 topics, each with 4 sub-topics, every one a feed
   of the stories filed under it), Watch (a video gallery and video stories), Podcasts, Reports
@@ -67,10 +67,13 @@ order does not matter.
 
 1. Install, at the same version, `classic-templates` and `classic-media` (0.8.0 or later), then the
    add-on modules the sites show: `jsfaq` (1.1.1), `js-media-gallery` (1.1.0),
-   `js-store-locator` (1.1.0) and `formidable-elements` (0.5.0), and these two modules. For the
+   `js-store-locator` (1.1.0), Formidable 0.6 or later (`formidable-engine`, `formidable-elements`,
+   `formidable-extended-inputs` and `formidable-accounts`, which creates members' accounts; its
+   CAPTCHA requirement `requireCaptcha` in `org.jahia.modules.formidable.accounts` needs a CAPTCHA
+   provider configured, or `false` on a development instance only), and these two modules. For the
    personalisation, a jCustomer (3.0.0) and, from the Jahia store, `jcontent` (3.7.1 or later:
    jExperience 3.9.1 needs it, Jahia 8.2.3.2 ships 3.5.0), `jexperience` (3.9.1),
-   `formidable-engine` and `formidable-jexperience-engine` (0.5.0), `kibana-dashboards-provider` and
+   `formidable-jexperience-engine` (0.6, as Formidable), `kibana-dashboards-provider` and
    `jexperience-dashboards` (2.1.0), configured BEFORE the import: one jExperience settings entry
    `global` and one per site (`org.jahia.modules.jexperience.settings`, the jCustomer connection,
    `jexperience.siteKey` on the site entries), and the Kibana proxy
@@ -86,11 +89,20 @@ order does not matter.
    rules were written at the import, before these property types existed, so they map e-mail and
    first name only: a minute after loading (the engine caches the property list), change and
    publish each form (newsletter, register, exhibit) once to rebuild them.
-4. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), then
-   register and index the two sites:
+4. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), set
+   `org.jahia.modules.augmentedsearch.content.mappedNodeTypes` to
+   `ctmd:story,ctmd:session,ctmd:person,ctplmix:editorialItem.teaser` before the first indexation
+   (the Format filter and the result summaries read those properties), then register and index the
+   two sites:
    `mutation { admin { search { a: addSite(siteKey: "orvane-signal") b: addSite(siteKey: "orvane-live") } } }`
-   and `startIndex(siteKeys: ["orvane-signal", "orvane-live"], workspace: LIVE)`. Without it every
-   page works and the search page shows its box with no result.
+   and `startIndex(siteKeys: ["orvane-signal", "orvane-live"], workspace: LIVE)` (a full
+   `startIndex(workspace: LIVE, force: true)` when the mapping changed on an existing index).
+   Without it every page works and the search page shows its box with no result.
+5. Members and newsroom: the sites create no users. Accounts come from the register pages (a global
+   group `orvane-members` must exist: `/groups/orvane-members`). The newsroom's back-office users and
+   their roles (a contributor and a reviewer on Signal, an editor on Live, translators, a marketer
+   with the custom role `orvane-marketer`) are created by the showcase's `seed-staff.py`; a site
+   import keeps the role grants to those groups, which take effect once the groups exist.
 
 With the provisioning API, attach the modules and both site zips (`importSite` takes the inner
 `<site>.zip` of the `-import.zip`, never the outer zip):
