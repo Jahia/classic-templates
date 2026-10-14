@@ -14,7 +14,7 @@ changing a view. This file says what differs.
 4. No dependency on js-media-gallery: a story's `video` is an unconstrained weakreference rendered through the picked node's own view.
 5. Topics are platform categories (`j:defaultCategory`), never a field. The story feed's `filterCategories` is a listing criterion (the AIStartupKit rule 21 exception).
 6. Views read classic-templates semantic tokens only; every visible string is contributed content or a locale key (EN and FR); every type and field has an EN and FR label and tooltip.
-7. Interactive behaviour is progressive enhancement in `static/js/media.js`, never loaded in edit mode: without JavaScript every story, session and day stays visible, and no button shows that would do nothing.
+7. Interactive behaviour is progressive enhancement in `static/js/media.js` (and, for the search section only, one `clientOnly` island that replaces the server's no-JavaScript form), never loaded in edit mode: without JavaScript every story, session and day stays visible, and no button shows that would do nothing.
 
 ## Type inventory
 
@@ -55,12 +55,33 @@ Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:event
 - **JSON-LD**: one entity per item page (Person, NewsArticle / Article / OpinionNewsArticle / Report
   / VideoObject / PodcastEpisode by format, Event), pointing at the page's `WebPage` by `@id`.
   `isAccessibleForFree: false` for a members-only story.
-- **Search** (`ctmd:searchResults`): a GET form (`q`) and the Augmented Search results read on the
-  server with `useGQLQuery` (the `search` field, live workspace, page language), as the visitor;
-  scope "network" adds the sites the header's network bar links to. Excerpts are rebuilt as text
-  parts from the `<em>` highlights (`lib/search.ts`, unit tested): no index markup reaches the page.
-  Not cached (`cache.expiration` 0). Needs Augmented Search installed and the sites indexed.
-- **Tracking** (`static/js/media.js`): when jExperience runs on the page and tracks the visitor
+- **Search** (`ctmd:searchResults`): the page's state is one definition (`lib/searchState.ts`: `q`,
+  `page`, `topic`, `tag`, `format`, `type`, `site`, all facets repeatable; every value validated,
+  lists capped, `/` kept readable in topics). One query builder (`lib/searchQuery.ts`) makes the
+  GraphQL document and its variables for both the server view (`useGQLQuery`, the page without
+  JavaScript: facets are checkboxes of the GET form with an "Apply" button, chips and pager are
+  links) and the browser connector (`lib/searchConnector.ts`, our `APIConnector` for Elastic Search
+  UI core's `SearchDriver`: variables only, a list of sites, `credentials: same-origin`). The island
+  (`SearchApp.client.tsx`, `clientOnly`, the server's form is its placeholder) starts from the page
+  the server read (`primed`: no request for it), loads the driver as a separate chunk
+  (`lib/searchDriver.ts`, dynamic `import()`: never in the server bundle) and keeps the address in
+  step (clean URLs, a history entry per change, foreign parameters such as `lang` kept).
+  **Filters** (probed on Augmented Search 3): `filters.custom.term` is a list of groups; groups are
+  ANDed, a group's terms follow its `operation`. One group per facet with operation OR gives "OR
+  within a facet, AND across". Type and site are groups too (`jgql:nodeType` holds every supertype,
+  `jgql:originSite`); `siteKeys` is the scope. `includeSubNodes` is not used (on `ctmd:person` it
+  also matched stories). **Counts** are disjunctive by construction: a facet with a selection is
+  counted by its own aliased `search` without its group, the others by the main search; the
+  Augmented Search `disjunctive` flag is not used (it keys on one field, the Format facet has two:
+  `format` of stories and `sessionType` of sessions, both `facetable`, reindex after a change).
+  **Topics**: the whole category tree is one `termFacet` on `jgql:categories_path` (values are
+  `key###title` segments joined by `/`); a topic is the key path under the root with the most items,
+  and its filter is a regular expression that matches the root whatever it is (`#` must be escaped as
+  `[#]`). Types are counted from `termFacet(jgql:nodeType)`. Excerpts are rebuilt as text parts
+  (`lib/search.ts`, unit tested); a hit's address is only followed when it is a site path or an
+  http(s) address. Not cached (`cache.expiration` 0). Needs Augmented Search installed and the
+  sites indexed; the item pages' tags link to `?tag=<tag>`.
+- **Tracking** (`static/js/media.js`; the search island sends `ctmd:search` and `ctmd:filter` events it listens to): when jExperience runs on the page and tracks the visitor
   (`wem.getLoadedContext().profileId` and `wemInitConfig.activateWem === true`, so after consent
   where the site asks for it), the script sends standard jCustomer events only (jCustomer 3 drops a
   type without a schema): `video` (`action` play, once per page view, and ended) for a story's
