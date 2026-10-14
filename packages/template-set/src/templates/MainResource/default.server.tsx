@@ -9,8 +9,10 @@ import { PageShell } from "../PageShell.jsx";
  * page furniture (header, footer, `<title>`, description); the type's "fullPage" view owns the
  * content, including the page's `<h1>`, which is why no heading is passed to the shell.
  *
- * An item switched to "Members only" (ctplmix:membersOnly) goes through the "fullPageMembers" view,
- * the one cached per user, so that who sees the body never depends on who rendered the page first.
+ * An item switched to "Members only" (ctplmix:membersOnly: an editorial item, or a type of another
+ * module that lists ctplmix:gatedItem, such as a classic-media session) goes through its
+ * "fullPageMembers" view, the one cached per user, so that who sees the body never depends on who
+ * rendered the page first.
  *
  * News and articles lay out their own page width. A main resource of another module (a store of
  * js-store-locator, for example) is placed in the page container, so it lines up with the header
@@ -30,19 +32,19 @@ jahiaComponent(
       teaser,
     }: { "jcr:title"?: string; "jcr:description"?: string; "teaser"?: string },
     { currentNode },
-  ) => (
-    // News and articles have a teaser: the natural meta description when none is set.
-    <PageShell title={title} description={description || teaser}>
-      {currentNode.isNodeType("ctplmix:editorialItem") ? (
-        <Render
-          node={currentNode}
-          view={isMembersOnly(currentNode) ? "fullPageMembers" : "fullPage"}
-        />
-      ) : (
-        <div className="ctpl-container">
-          <Render node={currentNode} view="fullPage" />
-        </div>
-      )}
-    </PageShell>
-  ),
+  ) => {
+    const view = isMembersOnly(currentNode) ? "fullPageMembers" : "fullPage";
+    return (
+      // News and articles have a teaser: the natural meta description when none is set.
+      <PageShell title={title} description={description || teaser}>
+        {currentNode.isNodeType("ctplmix:editorialItem") ? (
+          <Render node={currentNode} view={view} />
+        ) : (
+          <div className="ctpl-container">
+            <Render node={currentNode} view={view} />
+          </div>
+        )}
+      </PageShell>
+    );
+  },
 );
