@@ -379,7 +379,7 @@ export const ResultList = ({
           <LevelHeading level={level} className={classes.title}>
             {hit.url ? <a href={hit.url}>{hit.title}</a> : hit.title}
           </LevelHeading>
-          {hit.excerpt && (
+          {hit.excerpt ? (
             <p className={classes.excerpt}>
               {excerptParts(hit.excerpt).map((part) =>
                 part.hit ? (
@@ -391,6 +391,8 @@ export const ResultList = ({
                 ),
               )}
             </p>
+          ) : (
+            hit.summary && <p className={classes.excerpt}>{hit.summary}</p>
           )}
         </li>
       ))}

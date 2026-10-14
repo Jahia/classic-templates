@@ -215,3 +215,46 @@ describe("adaptSuggestions", () => {
     expect(adaptSuggestions({}, "x")).toEqual([]);
   });
 });
+
+describe("result summary", () => {
+  const hit = (extra: Record<string, unknown>) => ({
+    main: {
+      results: {
+        totalHits: 1,
+        hasMore: false,
+        hits: [
+          {
+            id: "1",
+            displayableName: "Item",
+            link: "/sites/s/home/item.html",
+            nodeType: "jnt:page",
+            excerpt: "",
+            ...extra,
+          },
+        ],
+      },
+    },
+  });
+  const summary = (extra: Record<string, unknown>) =>
+    adaptSearchData(hit(extra), emptyState(), ctx).items[0]?.summary;
+
+  it("uses the SEO description first, as the page's meta description does", () => {
+    expect(summary({ description: "SEO text", teaser: "Teaser", role: "Role" })).toBe("SEO text");
+  });
+
+  it("falls back to the teaser, then to a person's role", () => {
+    expect(summary({ description: "", teaser: "Teaser", role: "Role" })).toBe("Teaser");
+    expect(summary({ description: null, teaser: null, role: "Role" })).toBe("Role");
+    expect(summary({})).toBe("");
+  });
+
+  it("keeps the highlighted excerpt apart", () => {
+    const page = adaptSearchData(
+      hit({ excerpt: "a <em>word</em>", description: "SEO text" }),
+      emptyState(),
+      ctx,
+    );
+    expect(page.items[0]?.excerpt).toBe("a <em>word</em>");
+    expect(page.items[0]?.summary).toBe("SEO text");
+  });
+});

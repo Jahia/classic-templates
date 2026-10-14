@@ -82,6 +82,7 @@ const resultToUi = (item: ResultItem) => ({
   title: { raw: item.title },
   url: { raw: item.url },
   excerpt: { raw: item.excerpt },
+  summary: { raw: item.summary },
   type: { raw: item.type },
   date: { raw: item.date },
   _meta: { id: item.id },
@@ -138,6 +139,7 @@ export const pageFromResponse = (response: {
         title: text(fields.title),
         url: text(fields.url) || undefined,
         excerpt: text(fields.excerpt),
+        summary: text(fields.summary),
         type: text(fields.type),
         date: text(fields.date) || undefined,
       };

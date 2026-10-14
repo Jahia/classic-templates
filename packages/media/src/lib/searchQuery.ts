@@ -167,7 +167,7 @@ function facetSelection(alias: string, field: string): string {
 }
 
 const HITS =
-  "results(page: $page, size: $size, sortBy: $sort) { totalHits hasMore hits { id displayableName excerpt link nodeType lastPublished lastModified created } }";
+  'results(page: $page, size: $size, sortBy: $sort) { totalHits hasMore hits { id displayableName excerpt link nodeType lastPublished lastModified created description: property(name: "jgql:description") teaser: property(name: "teaser") role: property(name: "role") } }';
 
 /** Newest first: what a search by filters alone (no words) is ordered by. */
 const NEWEST = [{ field: "jgql:lastPublished", dir: "DESC" }];

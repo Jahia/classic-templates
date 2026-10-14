@@ -28,6 +28,12 @@ export interface ResultItem {
   url?: string;
   /** The excerpt as the index gives it, `<em>` around the matched words: see excerptParts. */
   excerpt: string;
+  /**
+   * Plain text shown when there is no excerpt (a search by filters only has no words to highlight):
+   * the item's SEO description (jcr:description, as `jgql:description`), else its teaser, else a
+   * person's role. The same order as the page's own meta description in the template set.
+   */
+  summary: string;
   /** The node type of the hit, which gives its kind label. */
   type: string;
   date?: string;
@@ -91,6 +97,7 @@ const itemsOf = (results: Json): ResultItem[] => {
         title: asText(hit.displayableName),
         url: safeHref(hit.link),
         excerpt: asText(hit.excerpt),
+        summary: asText(hit.description) || asText(hit.teaser) || asText(hit.role),
         type: asText(hit.nodeType),
         date: date || undefined,
       },
