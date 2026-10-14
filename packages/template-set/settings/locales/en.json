@@ -34,11 +34,15 @@
   "members": {
     "badge": "Members only",
     "title": "Members only",
-    "newsNotice": "This news item is reserved for members. Sign in to read it.",
-    "articleNotice": "This article is reserved for members. Sign in to read it.",
+    "newsNotice": "This news item is reserved for members. Sign in to read on.",
+    "articleNotice": "This article is reserved for members. Sign in to read on.",
     "pageNotice": "This page is reserved for members. Sign in to see it.",
-    "editNote": "Members only: visitors who are not signed in see the teaser, a notice and a sign-in form instead of the body.",
-    "pageEditNote": "Members only page: visitors who are not signed in see the title, a notice and a sign-in form instead of the sections below."
+    "editNote": "Members only: visitors who are not signed in see the teaser, the opening paragraphs of the body, then a notice with a sign-in form and a link to register.",
+    "pageEditNote": "Members only page: visitors who are not signed in see the title, a notice and a sign-in form instead of the sections below.",
+    "register": "Create an account",
+    "orSignIn": "or sign in below if you already have one.",
+    "newsNoticeRegister": "This news item is reserved for members. Sign in or create an account to read on.",
+    "articleNoticeRegister": "This article is reserved for members. Sign in or create an account to read on."
   },
   "links": {
     "label": "Links"
@@ -58,7 +62,8 @@
     "readingTime_one": "{{count}} min read",
     "readingTime_other": "{{count}} min read",
     "topics": "Topics",
-    "noTitle": "No title in this language: this item is left out of lists."
+    "noTitle": "No title in this language: this item is left out of lists.",
+    "tags": "Tags"
   },
   "query": {
     "summary": "Lists {{type}} under {{start}}, {{order}}, up to {{max}}.",

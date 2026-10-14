@@ -9,8 +9,10 @@ import { gateFor } from "../../../lib/members.js";
 import { MembersBadge } from "../../../lib/MembersBadge.js";
 import { MembersNotice } from "../../../lib/MembersNotice.js";
 import { readString as str } from "../../../lib/props.js";
+import { registerHref, tagSearch } from "../../../lib/headerPages.js";
 import { RichText } from "../../../lib/RichText.js";
 import { headingTag, type HeadingTag } from "../../../lib/Heading.js";
+import { teaserHtml, teaserParagraphs } from "../../../lib/teaser.js";
 import { Tile } from "../../../lib/Tile.js";
 import classes from "./editorial.module.css";
 import { languageTag } from "../../../lib/locale.js";
@@ -37,6 +39,22 @@ const dateOf = (node: JCRNodeWrapper, publicationDate?: string) =>
 /** True when the item carries the "Members only" switch (ctplmix:membersOnly) and it is on. */
 export const isMembersOnly = (node: JCRNodeWrapper): boolean =>
   node.hasProperty("ctplMembersOnly") && node.getProperty("ctplMembersOnly").getBoolean();
+
+/**
+ * How many paragraphs of a members-only item's body a visitor who is not signed in reads before the
+ * notice (ctplmix:membersOnly, 2 when the item does not say). Shared with classic-media's teasers.
+ */
+export const teaserParagraphsOf = (node: JCRNodeWrapper): number => {
+  try {
+    return teaserParagraphs(
+      node.hasProperty("ctplTeaserParagraphs")
+        ? node.getProperty("ctplTeaserParagraphs").getLong()
+        : undefined,
+    );
+  } catch {
+    return teaserParagraphs(undefined);
+  }
+};
 
 /** Text of an HTML string with its tags dropped, in one linear pass (no backtracking regex). */
 const textOf = (html: string) => {
@@ -87,16 +105,15 @@ export const categoryTitlesOf = (
   return titles;
 };
 
-/** Tags (j:tagList) and category titles, shown as the item's topics. */
-const topicsOf = (node: JCRNodeWrapper, renderContext: RenderContext): string[] => {
-  const topics = categoryTitlesOf(node, renderContext, true);
-  if (node.hasProperty("j:tagList")) {
-    for (const value of node.getProperty("j:tagList").getValues()) {
-      const tag = (value as unknown as { getString(): string }).getString();
-      if (tag && !topics.includes(tag)) topics.push(tag);
-    }
+/** The item's tags (j:tagList, which Jahia offers on every node), in their order, without repeats. */
+export const tagsOf = (node: JCRNodeWrapper): string[] => {
+  const tags: string[] = [];
+  if (!node.hasProperty("j:tagList")) return tags;
+  for (const value of node.getProperty("j:tagList").getValues()) {
+    const tag = (value as unknown as { getString(): string }).getString().trim();
+    if (tag && !tags.includes(tag)) tags.push(tag);
   }
-  return topics;
+  return tags;
 };
 
 /**
@@ -189,12 +206,17 @@ export const FullPage = ({
 
 /**
  * What a visitor who is not signed in gets of a members-only item: the item's public face (kind,
- * date, title, teaser, image), a notice and the sign-in form. The body is never rendered here.
+ * date, title, teaser, image), the opening paragraphs of the body (lib/teaser.ts: the rest is cut
+ * on the server and never sent), then a notice with a link to the site's registration page and the
+ * sign-in form. Both bring the visitor back to the item.
  */
 export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { t } = useTranslation("classic-templates");
-  const { currentNode, renderContext } = useServerContext();
+  const { currentNode, currentResource, renderContext } = useServerContext();
   const title = props["jcr:title"];
+  const here = buildNodeUrl(currentNode);
+  const opening = teaserHtml(props.body, teaserParagraphsOf(currentNode));
+  const register = registerHref(renderContext, currentResource.getLocale(), here);
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-restricted`}>
       <header className={`ctpl-container ${classes.head}`}>
@@ -208,17 +230,33 @@ export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialPr
         </figure>
       )}
       <div className="ctpl-container">
-        <MembersNotice text={t(`members.${kind}Notice`)} fallback={buildNodeUrl(currentNode)} />
+        {opening && (
+          <div className={classes.opening} data-testid="ctpl-members-opening">
+            <RichText html={opening} className={classes.body} />
+          </div>
+        )}
+        <MembersNotice
+          text={t(register ? `members.${kind}NoticeRegister` : `members.${kind}Notice`)}
+          fallback={here}
+          register={register}
+        />
       </div>
     </article>
   );
 };
 
-/** The full item: header, image, body and topics. */
+/**
+ * The full item: header, image, body, topics (its categories) and tags. Each tag links to the
+ * site's search page for it when the site header names one (Search page), and is plain text
+ * otherwise.
+ */
 const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const { t } = useTranslation("classic-templates");
-  const { currentNode, renderContext } = useServerContext();
-  const topics = topicsOf(currentNode, renderContext);
+  const { currentNode, currentResource, renderContext } = useServerContext();
+  const topics = categoryTitlesOf(currentNode, renderContext, true);
+  const tags = tagsOf(currentNode);
+  const searchFor =
+    tags.length > 0 ? tagSearch(renderContext, currentResource.getLocale()) : undefined;
   const title = props["jcr:title"];
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-full`}>
@@ -250,6 +288,30 @@ const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
             <ul className={classes.topicList}>
               {topics.map((topic) => (
                 <li key={topic}>{topic}</li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {tags.length > 0 && (
+          <section
+            className={classes.topics}
+            aria-labelledby={`ctpl-tags-${currentNode.getIdentifier()}`}
+            data-testid="ctpl-item-tags"
+          >
+            <h2 id={`ctpl-tags-${currentNode.getIdentifier()}`} className={classes.topicsTitle}>
+              {t("editorial.tags")}
+            </h2>
+            <ul className={classes.topicList}>
+              {tags.map((tag) => (
+                <li key={tag}>
+                  {searchFor ? (
+                    <a className={classes.tagLink} href={searchFor(tag)}>
+                      {tag}
+                    </a>
+                  ) : (
+                    tag
+                  )}
+                </li>
               ))}
             </ul>
           </section>

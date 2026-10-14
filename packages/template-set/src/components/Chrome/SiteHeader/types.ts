@@ -8,4 +8,6 @@ export interface Props {
   showAccount?: boolean;
   accountLanding?: JCRNodeWrapper;
   signInPage?: JCRNodeWrapper;
+  registerPage?: JCRNodeWrapper;
+  searchPage?: JCRNodeWrapper;
 }

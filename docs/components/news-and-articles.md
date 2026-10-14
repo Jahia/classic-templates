@@ -33,7 +33,7 @@ Each folder only offers its own type. A page then shows them through a [Content 
 | Author                       | Name of the author as shown to visitors, for example "Jane Smith".           | Articles only. The same in every language.                                                                      |
 | Members only                 | Reserves the item for signed-in visitors. See [Members only](#members-only). | Optional section of the edit form. Default once switched on: ticked.                                            |
 
-Tags and categories are not fields of the template set: you set them with Jahia's own **tags** and **categories**, available on every item.
+Tags and categories are not fields of the template set: you set them with Jahia's own **tags** and **categories**, available on every item. The item's page lists its categories under **Topics** and its tags under **Tags**; each tag links to the site's search results for it when the site header names a **Search page**.
 
 ## How it behaves
 
@@ -52,7 +52,7 @@ The site header, footer and breadcrumb surround it. The breadcrumb goes through 
 
 ### Members only
 
-Switch on the **Members only** section of the item's edit form to reserve it for signed-in visitors. Visitors who are not signed in then get, at the item's address: the type and date line with a **Members only** badge, the title, the teaser, the image, a notice and a [sign-in form](sign-in.md), but not the body. Once signed in, they stay on the page and see the whole item. Cards, compact rows and tiles of the item carry the badge for everybody. The teaser, title, image and date stay public (search results and shared links show them), so write them for that audience. The switch **hides** the body from the page; it does not protect it from being read through the API: see [Members-only content](../guides/members-only-content.md#what-is-protected-and-what-is-only-hidden).
+Switch on the **Members only** section of the item's edit form to reserve it for signed-in visitors. Visitors who are not signed in then get, at the item's address: the type and date line with a **Members only** badge, the title, the teaser, the image, the opening paragraphs of the body (**Paragraphs shown before the sign-in notice**, 2 by default, never the whole body), then a notice with **Create an account** (when the site header names a registration page) and a [sign-in form](sign-in.md). The rest of the body is not sent to them. Once signed in, they stay on the page and see the whole item. Cards, compact rows and tiles of the item carry the badge for everybody. The teaser, title, image and date stay public (search results and shared links show them), so write them for that audience. The switch **hides** the body from the page; it does not protect it from being read through the API: see [Members-only content](../guides/members-only-content.md#what-is-protected-and-what-is-only-hidden).
 
 ### Cards and compact rows
 

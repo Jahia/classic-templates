@@ -1,6 +1,7 @@
 {
   "item": {
-    "noTitle": "No title in this language: this item is left out of lists and has no heading."
+    "noTitle": "No title in this language: this item is left out of lists and has no heading.",
+    "tags": "Tags"
   },
   "image": {
     "noTitle": "This image has no title in the media library, so it has no alternative text."
@@ -38,13 +39,13 @@
     "related": "Related stories",
     "transcript": "Transcript",
     "listen": "Listen to the episode",
-    "membersNotice": "This story is for members. Sign in to read it in full.",
-    "signIn": "Sign in",
-    "membersEdit": "Members only: visitors who are not signed in see the summary and a sign-in link.",
+    "membersNotice": "The rest of this story is for members. Create an account or sign in to read on.",
+    "membersEdit": "Members only: visitors who are not signed in see the summary, the opening paragraphs and a notice to register or sign in.",
     "membersLabel": "Members",
     "download": "Download the episode",
     "captionsMissing": "Add the episode's captions (a WebVTT file) to show the audio player.",
-    "captions": "Captions"
+    "captions": "Captions",
+    "membersNoticeSignIn": "The rest of this story is for members. Sign in to read on."
   },
   "share": {
     "label": "Share this page",
@@ -88,7 +89,11 @@
     "stream": "Stream",
     "speakers": "Speakers",
     "zone": "Times are shown in {{zone}} time.",
-    "when": "When"
+    "when": "When",
+    "membersNotice": "The rest of this session's description is for members. Create an account or sign in to read on.",
+    "membersEdit": "Members only: visitors who are not signed in see the session's details and the opening paragraphs of its description, then a notice to register or sign in.",
+    "membersLabel": "Members",
+    "membersNoticeSignIn": "The rest of this session's description is for members. Sign in to read on."
   },
   "agenda": {
     "days": "Days",
@@ -133,5 +138,10 @@
       "page": "Page",
       "other": "Content"
     }
+  },
+  "members": {
+    "title": "Members only",
+    "register": "Create an account",
+    "signIn": "Sign in"
   }
 }

@@ -9,26 +9,49 @@ leaving the site, and, importantly, what the switches protect and what they only
 A visitor who is not signed in (a **guest**) is never turned away with "page not found". They get
 the public face of what they asked for, and a form to sign in:
 
-- a **news item or article** marked "Members only": its title, date, image and teaser, a
-  "Members only" badge, a notice and a **sign-in form**, in place of the body;
+- a **news item or article** marked "Members only" (and, with classic-media, a **story** or a
+  **session**): its title, date, image and teaser, a "Members only" badge, the **opening
+  paragraphs** of the body, then a notice with **Create an account** and a **sign-in form**, in
+  place of the rest;
 - a **page** marked "Members only": the site header, the page title, a notice and a sign-in
   form, in place of the page's sections.
 
-Once signed in, the visitor stays on the same page and sees the whole thing. Lists and cards show a
+Once signed in (or registered), the visitor is back on the same page and sees the whole thing. Lists and cards show a
 **Members only** badge next to every reserved item, to guests and members alike.
 
-## Mark a news item or an article
+## Mark a news item, an article, a story or a session
 
-1. In jContent, open the item (contents > News or Articles).
+1. In jContent, open the item (contents > News or Articles, or the stories and sessions folders).
 2. Switch on the **Members only** section of its edit form and make sure its box is ticked.
-3. Save and publish.
+3. In **Paragraphs shown before the sign-in notice**, choose how much of the body guests can read:
+   2 by default, 0 for none, at most 10.
+4. Save and publish.
 
 Untick the box (or switch the section off) and publish to make the item public again. The change
 reaches visitors with the publication; nothing is cached stale.
 
-What guests see instead of the body: kind and date, the badge, the title (the page's heading), the
-teaser, the image, a "Members only" notice and the [sign-in form](../components/sign-in.md). Cards,
-compact rows and tiles of the item carry the badge.
+What guests see: kind and date, the badge, the title (the page's heading), the teaser, the image,
+the opening paragraphs of the body fading out, then a "Members only" notice with **Create an
+account** (when the site has a registration page, below) and the
+[sign-in form](../components/sign-in.md). Cards, compact rows and tiles of the item carry the badge.
+A session keeps its day, times, room, speakers and structured data for everybody: only its
+description is cut.
+
+The opening paragraphs are the body's own paragraphs (`<p>`), with whatever comes before them (a
+heading, an image); a paragraph inside a quote, a list or a table belongs to that block and is not
+counted. **At least one paragraph always stays reserved**: a body of two paragraphs with a setting
+of 2 shows one. The rest of the body is cut on the server: it is not in the page guests receive,
+hidden or blurred, it is simply not sent.
+
+### Offer registration
+
+1. Create a page where visitors create an account (a "Register" page holding a registration form,
+   for instance Formidable's account actions), usually hidden from the navigation.
+2. In the site header's edit form (from the home page), pick it in **Registration page**.
+
+The notice of every reserved item now offers **Create an account**, which opens that page with
+`?redirect=` set to the item, so the form can bring the new member back to it. Without a
+registration page the notice offers sign-in only.
 
 ## Mark a page
 
@@ -93,7 +116,7 @@ This is a presentation feature first. Read this table before you rely on it.
 
 | What                                                                               | Guest sees                                    | Status                                                     |
 | ---------------------------------------------------------------------------------- | --------------------------------------------- | ---------------------------------------------------------- |
-| The page of a reserved item, at its address                                        | Teaser, notice, form; no body                 | Hidden by the template                                     |
+| The page of a reserved item, at its address                                        | Teaser, opening paragraphs, notice, form      | Hidden by the template: the rest of the body is not sent   |
 | Other views of a reserved item (`.fullPage.html.ajax`, `.html.ajax`, `.default`)   | Teaser or card; no body                       | Hidden: no view renders the body for a guest               |
 | The body of a reserved item through the GraphQL API                                | **The body**                                  | **Only hidden**: the item stays readable by guests         |
 | The sections of a reserved page, at their own address or through GraphQL           | "Not found"                                   | **Protected**, once the areas are restricted (see above)   |

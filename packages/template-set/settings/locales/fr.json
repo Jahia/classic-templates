@@ -34,11 +34,15 @@
   "members": {
     "badge": "Réservé aux membres",
     "title": "Réservé aux membres",
-    "newsNotice": "Cette actualité est réservée aux membres. Connectez-vous pour la lire.",
-    "articleNotice": "Cet article est réservé aux membres. Connectez-vous pour le lire.",
+    "newsNotice": "Cette actualité est réservée aux membres. Connectez-vous pour lire la suite.",
+    "articleNotice": "Cet article est réservé aux membres. Connectez-vous pour lire la suite.",
     "pageNotice": "Cette page est réservée aux membres. Connectez-vous pour la consulter.",
-    "editNote": "Réservé aux membres : les visiteurs non connectés voient le chapeau, un avis et un formulaire de connexion à la place du texte.",
-    "pageEditNote": "Page réservée aux membres : les visiteurs non connectés voient le titre, un avis et un formulaire de connexion à la place des sections ci-dessous."
+    "editNote": "Réservé aux membres : les visiteurs non connectés voient le chapeau, les premiers paragraphes du texte, puis un avis avec un formulaire de connexion et un lien pour créer un compte.",
+    "pageEditNote": "Page réservée aux membres : les visiteurs non connectés voient le titre, un avis et un formulaire de connexion à la place des sections ci-dessous.",
+    "register": "Créer un compte",
+    "orSignIn": "ou connectez-vous ci-dessous si vous en avez déjà un.",
+    "newsNoticeRegister": "Cette actualité est réservée aux membres. Connectez-vous ou créez un compte pour lire la suite.",
+    "articleNoticeRegister": "Cet article est réservé aux membres. Connectez-vous ou créez un compte pour lire la suite."
   },
   "links": {
     "label": "Liens"
@@ -58,7 +62,8 @@
     "readingTime_one": "{{count}} min de lecture",
     "readingTime_other": "{{count}} min de lecture",
     "topics": "Thèmes",
-    "noTitle": "Pas de titre dans cette langue : cet élément est écarté des listes."
+    "noTitle": "Pas de titre dans cette langue : cet élément est écarté des listes.",
+    "tags": "Mots-clés"
   },
   "query": {
     "summary": "Liste {{type}} sous {{start}}, {{order}}, {{max}} au plus.",
