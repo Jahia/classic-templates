@@ -75,8 +75,16 @@ the chips and the pager are links: everything works with a page reload. With Jav
 (Elastic Search UI's core `SearchDriver` behind our own connector to Augmented Search,
 `src/lib/searchConnector.ts`) takes the form's place and updates the results without a reload.
 
-Augmented Search must index the sites (a **reindex** after installing this version: the story
-`format` and the session `sessionType` became `facetable`, which the Format filter reads). The
+Each result shows its own summary under its title, the words searched highlighted in it: the SEO
+description (`jcr:description`), else the teaser, else a person's role. Only an item without any of
+them shows the index's excerpt (which can come from a related item the index folds in, such as a
+story's author).
+
+Augmented Search must map the media types and be fully reindexed after installing this version:
+set `org.jahia.modules.augmentedsearch.content.mappedNodeTypes` to
+`ctmd:story,ctmd:session,ctmd:person,ctplmix:editorialItem.teaser` (the Format filter reads the story
+`format` and the session `sessionType`, the summaries read the teasers and roles; `facetable` in
+the CND alone does nothing), then run a full reindex (all sites: the index mapping changes). The
 topics are read from the categories the content is filed under (the category tree with the most
 content is shown); the tags are Jahia's own tags. A search with nothing asked shows the filters
 and no results.
