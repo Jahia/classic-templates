@@ -14,7 +14,7 @@ changing a view. This file says what differs.
 4. No dependency on js-media-gallery: a story's `video` is an unconstrained weakreference rendered through the picked node's own view.
 5. Topics are platform categories (`j:defaultCategory`), never a field. The story feed's `filterCategories` is a listing criterion (the AIStartupKit rule 21 exception).
 6. Views read classic-templates semantic tokens only; every visible string is contributed content or a locale key (EN and FR); every type and field has an EN and FR label and tooltip.
-7. Interactive behaviour is progressive enhancement in `static/js/media.js` (and, for the search section only, one `clientOnly` island that replaces the server's no-JavaScript form), never loaded in edit mode: without JavaScript every story, session and day stays visible, and no button shows that would do nothing.
+7. Interactive behaviour is progressive enhancement in `static/js/media.js` (and, for the search section only, one island, server-rendered from the same state as the no-JavaScript form and hydrated), never loaded in edit mode: without JavaScript every story, session and day stays visible, and no button shows that would do nothing.
 
 ## Type inventory
 
@@ -62,7 +62,7 @@ Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:event
   JavaScript: facets are checkboxes of the GET form with an "Apply" button, chips and pager are
   links) and the browser connector (`lib/searchConnector.ts`, our `APIConnector` for Elastic Search
   UI core's `SearchDriver`: variables only, a list of sites, `credentials: same-origin`). The island
-  (`SearchApp.client.tsx`, `clientOnly`, the server's form is its placeholder) starts from the page
+  (`SearchApp.client.tsx`, a normal server-rendered island) starts from the page
   the server read (`primed`: no request for it), loads the driver as a separate chunk
   (`lib/searchDriver.ts`, dynamic `import()`: never in the server bundle) and keeps the address in
   step (clean URLs, a history entry per change, foreign parameters such as `lang` kept).
@@ -117,3 +117,19 @@ pull-request workflow runs the lint, format, token and unit-test gates for this 
   combining accent): write such escapes from a script (`chr(92)`), or avoid them (`\p{Diacritic}`).
 - `ctaLabel` on a section needs the optional `ctplmix:cta` mixin added with it (the property is not
   defined on the type itself).
+
+## Trap: hydration of the search island (React error #418)
+
+The engine (javascript-modules-engine 1.2.0, `javascript/index.js`) decides between `createRoot` and
+`hydrateRoot` with `!element.dataset.clientOnly`. A `clientOnly` island is rendered as
+`data-client-only=""`, an empty string, which is falsy: **a `clientOnly` island is hydrated** against
+its placeholder children, never rendered fresh. Using the server's no-JavaScript form as a
+placeholder for a different client tree therefore throws "server rendered HTML didn't match the
+client" (#418) on every search page, and React regenerates the tree. The island is now a normal one:
+its first render (`useSyncExternalStore` with a `false` server snapshot) is exactly the server's
+markup (`PanelProps.interactive` false: plain input, `form=` fields, "Apply" button, link chips and
+pager), and the combobox, controlled boxes and buttons replace them right after hydration. Rule:
+an island's first client render equals its server HTML, whatever the `clientOnly` flag says.
+To find a mismatch, serve a development build of React from Playwright (route `react`,
+`react/jsx-runtime`, `react-dom`, `react-dom/client` and the engine chunks `react-*.js` /
+`index-*.js` of `shared-libs/`): React then prints the diff of the two trees.

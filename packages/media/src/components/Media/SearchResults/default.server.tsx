@@ -16,9 +16,9 @@ import { Section } from "../../../lib/Section.js";
 import { Styles } from "../../../lib/Styles.js";
 import { MediaScript } from "../shared/parts.js";
 import { SearchPanel } from "./panel.js";
+import { SearchInput } from "./parts.js";
 import SearchApp from "./SearchApp.client.jsx";
 import type { Props } from "./types.js";
-import classes from "./search-results.module.css";
 
 /** Results a page shows, from 5 to 50 (the CND range), 10 by default. */
 const sizeOf = (value: number | undefined) =>
@@ -125,16 +125,7 @@ jahiaComponent(
         siteLabels={siteLabels}
         showSites={sites.size > 1}
         noResultText={props.noResultText}
-        box={
-          <input
-            id={`${idPrefix}-q`}
-            className={classes.input}
-            type="search"
-            name="q"
-            defaultValue={state.q}
-            maxLength={200}
-          />
-        }
+        box={<SearchInput id={`${idPrefix}-q`} value={state.q} />}
       />
     );
 
@@ -154,7 +145,6 @@ jahiaComponent(
         ) : (
           <Island
             component={SearchApp}
-            clientOnly
             props={{
               endpoint: `${request.getContextPath()}/modules/graphql`,
               action,
@@ -170,9 +160,7 @@ jahiaComponent(
               trackId: id,
               initial: { state, page },
             }}
-          >
-            {panel}
-          </Island>
+          />
         )}
       </Section>
     );

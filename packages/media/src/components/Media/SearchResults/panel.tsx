@@ -49,6 +49,12 @@ export interface PanelProps {
   noResultText?: string;
   /** The search box, inside the form; its input has the id `${idPrefix}-q`. */
   box: ReactNode;
+  /**
+   * The handlers replace the links and the "Apply" button. False (the default) renders exactly the
+   * server's no-JavaScript markup, which is what the island's first render must be: React hydrates
+   * the island against the server's HTML, and any difference is a hydration error (#418).
+   */
+  interactive?: boolean;
   /** Island only: the handlers that replace the links and the "Apply" button. */
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
   onToggle?: (facet: FacetName, value: string, selected: boolean) => void;
@@ -64,7 +70,7 @@ export const SearchPanel = (props: PanelProps) => {
   const t = useT();
   const labelFor = useFacetLabel(siteLabels);
   const asked = isAsked(state);
-  const interactive = Boolean(props.onToggle);
+  const interactive = props.interactive ?? Boolean(props.onToggle);
   const formId = `${idPrefix}-form`;
   const status = useStatusText(state, page.total, asked, props.failed);
   const hasFacets = FACETS.some(
@@ -95,7 +101,7 @@ export const SearchPanel = (props: PanelProps) => {
           className={classes.form}
           method="get"
           action={action}
-          onSubmit={props.onSubmit}
+          onSubmit={interactive ? props.onSubmit : undefined}
           data-testid="ctmd-search-form"
         >
           <label className={classes.label} htmlFor={`${idPrefix}-q`}>
@@ -113,12 +119,14 @@ export const SearchPanel = (props: PanelProps) => {
         {hasFacets && (
           <div className={classes.side} role="group" aria-label={t("search.filters")}>
             <FacetPanel
+              // switching from the form's fields to controlled ones starts the boxes afresh
+              key={interactive ? "live" : "static"}
               facets={page.facets}
               state={state}
               siteLabels={siteLabels}
               showSites={showSites}
               idPrefix={idPrefix}
-              onToggle={props.onToggle}
+              onToggle={interactive ? props.onToggle : undefined}
               formId={interactive ? undefined : formId}
             />
             {!interactive && (
@@ -132,9 +140,11 @@ export const SearchPanel = (props: PanelProps) => {
           <SelectedFilters
             chips={chips}
             onRemove={
-              props.onToggle ? (facet, value) => props.onToggle?.(facet, value, false) : undefined
+              interactive && props.onToggle
+                ? (facet, value) => props.onToggle?.(facet, value, false)
+                : undefined
             }
-            onClear={props.onClear}
+            onClear={interactive ? props.onClear : undefined}
             removeHref={removeHref}
             clearHref={stateUrl(action, withoutFilters(state))}
           />
@@ -149,7 +159,13 @@ export const SearchPanel = (props: PanelProps) => {
               {t("search.results")}
             </LevelHeading>
           )}
-          <output className={statusClass(status)} data-testid="ctmd-search-status">
+          <output
+            className={statusClass(status)}
+            data-testid="ctmd-search-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {status}
           </output>
           {!asked && <p className={cards.empty}>{t("search.hint")}</p>}
@@ -165,7 +181,7 @@ export const SearchPanel = (props: PanelProps) => {
             page={state.page}
             totalPages={page.totalPages}
             hrefOf={(to) => stateUrl(action, { ...state, page: to })}
-            onPage={props.onPage}
+            onPage={interactive ? props.onPage : undefined}
           />
         </div>
       </div>

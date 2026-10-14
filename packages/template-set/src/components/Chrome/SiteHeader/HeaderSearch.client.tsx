@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FocusEvent, type KeyboardEvent } from "react";
 import {
   SUGGEST_MINIMUM,
+  keyResult,
   SUGGEST_QUERY,
   searchUrl,
   suggestVariables,
@@ -137,38 +138,24 @@ export default function HeaderSearch({ action, endpoint, language, sites, id }: 
     );
   };
 
-  const move = (event: KeyboardEvent<HTMLElement>, step: 1 | -1) => {
-    if (options.length === 0 || event.target !== inputRef.current) return;
-    event.preventDefault();
-    if (!open) {
-      setOpen(true);
-      return;
-    }
-    if (step === 1) setActive((active + 1) % options.length);
-    else setActive(active <= 0 ? options.length - 1 : active - 1);
-  };
-
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    if (event.key === "ArrowDown") move(event, 1);
-    else if (event.key === "ArrowUp") move(event, -1);
-    else if (event.key === "Escape") {
-      if (open) {
-        event.preventDefault();
-        close();
-      } else if (expanded) {
-        event.preventDefault();
-        setExpanded(false);
-        toggleRef.current?.focus();
-      }
-    } else if (event.key === "Enter" && event.target === inputRef.current) {
-      const chosen = options[active];
-      if (open && chosen) {
-        event.preventDefault();
-        pick(chosen);
-      } else {
-        close();
-      }
+    const result = keyResult({
+      key: event.key,
+      open,
+      active,
+      count: options.length,
+      fromInput: event.target === inputRef.current,
+      expanded,
+    });
+    if (result.prevent) event.preventDefault();
+    if (result.open !== undefined) setOpen(result.open);
+    if (result.active !== undefined) setActive(result.active);
+    if (result.collapse) {
+      setExpanded(false);
+      toggleRef.current?.focus();
     }
+    const chosen = result.pick === undefined ? undefined : options[result.pick];
+    if (chosen) pick(chosen);
   };
 
   // Focus moved to another control by the keyboard: the list and the panel close.

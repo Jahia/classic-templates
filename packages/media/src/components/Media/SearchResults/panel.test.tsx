@@ -9,6 +9,7 @@ import { emptyState, type SearchState } from "../../../lib/searchState.js";
 import browse from "../../../lib/__fixtures__/search-browse.json";
 import words from "../../../lib/__fixtures__/search-words.json";
 import { SearchPanel, type PanelProps } from "./panel.js";
+import { SearchInput } from "./parts.js";
 import { SearchCombobox } from "./SearchCombobox.js";
 
 const ctx: QueryContext = {
@@ -182,5 +183,43 @@ describe("SearchCombobox", () => {
     expect(html).toMatch(/<ul[^>]*role="listbox"[^>]*aria-label="Suggestions"[^>]*hidden=""/);
     expect(html).toContain('role="status"');
     expect(input).not.toContain("aria-activedescendant");
+  });
+});
+
+describe("hydration: the island's first render is the server's markup", () => {
+  const state = { ...emptyState(), q: "fast", tag: ["fast"] };
+  const handlers = {
+    onToggle: () => {},
+    onClear: () => {},
+    onPage: () => {},
+    onSubmit: () => {},
+    resultsHeadingRef: () => {},
+    rootRef: () => {},
+  };
+
+  it("is identical with or without the handlers while not interactive", () => {
+    const server = render(state, words, {
+      box: <SearchInput id="s1-q" value="fast" />,
+    });
+    const firstRender = render(state, words, {
+      box: <SearchInput id="s1-q" value="fast" />,
+      ...handlers,
+      interactive: false,
+    });
+    expect(firstRender).toBe(server);
+  });
+
+  it("differs once interactive (that swap happens after hydration, never during it)", () => {
+    const server = render(state, words);
+    expect(render(state, words, { ...handlers, interactive: true })).not.toBe(server);
+  });
+});
+
+describe("the result count is a polite live region", () => {
+  it("is a status region holding the count, updated in place", () => {
+    const html = render({ ...emptyState(), q: "fast" }, words);
+    expect(html).toMatch(
+      /<output[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"[^>]*>13 results/,
+    );
   });
 });

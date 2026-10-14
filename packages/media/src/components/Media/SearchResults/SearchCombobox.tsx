@@ -8,6 +8,7 @@
  */
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { RAW, useT } from "../../../lib/i18n.js";
+import { keyResult } from "../../../lib/comboboxKeys.js";
 import { SUGGEST_MINIMUM } from "../../../lib/searchConnector.js";
 import type { Suggestion } from "../../../lib/searchResponse.js";
 import shared from "../../../lib/shared.module.css";
@@ -77,36 +78,21 @@ export const SearchCombobox = ({
     onPick(suggestion);
   };
 
-  /** Moves the cursor one option down (`1`) or up (`-1`), opening the list first when closed. */
-  const move = (event: KeyboardEvent<HTMLInputElement>, step: 1 | -1) => {
-    if (items.length === 0) return;
-    event.preventDefault();
-    if (!open) {
-      setOpen(true);
-      return;
-    }
-    const count = items.length;
-    if (step === 1) setActive((active + 1) % count);
-    else setActive(active <= 0 ? count - 1 : active - 1);
-  };
-
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "ArrowDown") move(event, 1);
-    else if (event.key === "ArrowUp") move(event, -1);
-    else if (event.key === "Escape" && open) {
-      event.preventDefault();
-      close();
-    } else if (event.key === "Enter") {
-      const chosen = items[active];
-      if (open && chosen) {
-        event.preventDefault();
-        pick(chosen);
-      } else {
-        // the form submits the words as typed
-        sequenceRef.current++;
-        close();
-      }
-    }
+    const result = keyResult({
+      key: event.key,
+      open,
+      active,
+      count: items.length,
+      fromInput: true,
+    });
+    if (result.prevent) event.preventDefault();
+    if (result.open !== undefined) setOpen(result.open);
+    if (result.active !== undefined) setActive(result.active);
+    const chosen = result.pick === undefined ? undefined : items[result.pick];
+    if (chosen) pick(chosen);
+    // Enter without a highlighted option: the form submits the words as typed.
+    else if (event.key === "Enter") sequenceRef.current++;
   };
 
   const optionId = (index: number) => `${listId}-${index}`;

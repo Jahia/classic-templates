@@ -442,3 +442,18 @@ export const Pager = ({
 /** The text the status line is hidden with when it is empty (kept in the page for the live region). */
 export const statusClass = (text: string): string =>
   text ? classes.status : shared.visuallyHidden;
+
+/**
+ * The search box without suggestions: a plain input of the GET form. The server renders it, and the
+ * island's first render must match it (see PanelProps.interactive) before it swaps in the combobox.
+ */
+export const SearchInput = ({ id, value }: { id: string; value: string }) => (
+  <input
+    id={id}
+    className={classes.input}
+    type="search"
+    name="q"
+    defaultValue={value}
+    maxLength={200}
+  />
+);
