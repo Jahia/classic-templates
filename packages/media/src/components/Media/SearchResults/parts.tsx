@@ -7,7 +7,7 @@
 import type { ChangeEvent, ElementType, ReactNode, Ref } from "react";
 import { RAW, useT } from "../../../lib/i18n.js";
 import { clampLevel } from "../../../lib/level.js";
-import { excerptParts, kindKey } from "../../../lib/search.js";
+import { excerptParts, kindKey, readableExcerpt } from "../../../lib/search.js";
 import type { FacetEntry, Facets, ResultItem } from "../../../lib/searchResponse.js";
 import {
   FACETS,
@@ -381,7 +381,7 @@ export const ResultList = ({
           </LevelHeading>
           {hit.excerpt ? (
             <p className={classes.excerpt}>
-              {excerptParts(hit.excerpt).map((part) =>
+              {readableExcerpt(excerptParts(hit.excerpt)).map((part) =>
                 part.hit ? (
                   <mark key={part.at} className={classes.mark}>
                     {part.text}

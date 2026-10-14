@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { excerptParts, kindKey, pageNumber, searchWords } from "./search.js";
+import { excerptParts, kindKey, pageNumber, readableExcerpt, searchWords } from "./search.js";
 
 describe("excerptParts", () => {
   it("splits the excerpt on the highlighter tags", () => {
@@ -50,5 +50,41 @@ describe("request helpers", () => {
     expect(kindKey("jnt:page")).toBe("search.kind.page");
     expect(kindKey("jnt:file")).toBe("search.kind.other");
     expect(kindKey(undefined)).toBe("search.kind.other");
+  });
+});
+
+describe("readableExcerpt", () => {
+  const text = (excerpt: string, max?: number) =>
+    readableExcerpt(excerptParts(excerpt), max)
+      .map((p) => (p.hit ? `[${p.text}]` : p.text))
+      .join("");
+
+  it("extends a highlighted stem to the whole word", () => {
+    expect(text("free <em>streamin</em>g channels")).toBe("free [streaming] channels");
+    expect(text("the <em>stream</em>ing <em>pre</em>view")).toBe("the [streaming] [preview]");
+  });
+
+  it("separates passages the index glued together", () => {
+    expect(text("linear audiences.This panel")).toBe("linear audiences. … This panel");
+    expect(text("reach a plateauPaid tiers")).toBe("reach a plateau … Paid tiers");
+    expect(text("the iPhone and FAST channels on YouTube")).toBe(
+      "the iPhone and FAST channels on YouTube",
+    );
+  });
+
+  it("keeps a short window around the first highlight, cut at word boundaries", () => {
+    const long = `${"word ".repeat(60)}the <em>match</em> here ${"tail ".repeat(60)}`;
+    const out = text(long, 80);
+    expect(out.startsWith("… ")).toBe(true);
+    expect(out.endsWith(" …")).toBe(true);
+    expect(out).toContain("[match]");
+    expect(out.length).toBeLessThanOrEqual(80 + 4);
+    expect(out).not.toMatch(/ wor$| wo …/);
+  });
+
+  it("leaves a short excerpt alone and numbers the keys", () => {
+    const parts = readableExcerpt(excerptParts("Free <em>channels</em> pass."));
+    expect(parts.map((p) => p.at)).toEqual([0, 1, 2]);
+    expect(parts.map((p) => p.text).join("")).toBe("Free channels pass.");
   });
 });
