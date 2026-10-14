@@ -194,18 +194,19 @@ export const highlightWords = (text: string, words: string): ExcerptPart[] | und
 };
 
 /**
- * What a result shows under its title: its own summary (SEO description, else teaser) with the
- * searched words highlighted when it contains them; else the index's excerpt, made readable (it
- * can come from a related item the index folds into the result, an author's bio for a story);
- * else the summary as is.
+ * What a result shows under its title: its own summary (SEO description, else teaser), with the
+ * searched words highlighted when it contains them. Only a result without a summary shows the
+ * index's excerpt, made readable: the excerpt can come from a related item the index folds into
+ * the result (a story's author bio), which reads as if it described the result.
  */
 export const resultText = (
   hit: { excerpt: string; summary: string },
   words: string,
   max = 260,
 ): ExcerptPart[] => {
-  const own = words ? highlightWords(hit.summary, words) : undefined;
-  if (own) return readableExcerpt(own, max);
-  if (hit.excerpt) return readableExcerpt(excerptParts(hit.excerpt), max);
-  return hit.summary ? readableExcerpt([{ text: hit.summary, hit: false, at: 0 }], max) : [];
+  if (hit.summary) {
+    const own = words ? highlightWords(hit.summary, words) : undefined;
+    return readableExcerpt(own ?? [{ text: hit.summary, hit: false, at: 0 }], max);
+  }
+  return hit.excerpt ? readableExcerpt(excerptParts(hit.excerpt), max) : [];
 };

@@ -109,9 +109,15 @@ describe("resultText", () => {
     expect(show(resultText(hit, "stream"))).toBe("[Streaming] grows, free channels too.");
   });
 
-  it("falls back to the index excerpt when the summary does not hold the words", () => {
+  it("keeps its own summary when it does not hold the words (the excerpt may describe a related item)", () => {
     const hit = { excerpt: "a <em>remote</em> crew", summary: "A season of football." };
-    expect(show(resultText(hit, "remote"))).toBe("a [remote] crew");
+    expect(show(resultText(hit, "remote"))).toBe("A season of football.");
+  });
+
+  it("uses the index excerpt only without a summary", () => {
+    expect(show(resultText({ excerpt: "a <em>remote</em> crew", summary: "" }, "remote"))).toBe(
+      "a [remote] crew",
+    );
   });
 
   it("shows the summary as is without words, and nothing without text", () => {
