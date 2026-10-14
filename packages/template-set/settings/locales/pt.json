@@ -1,0 +1,159 @@
+{
+  "layout": {
+    "skipToContent": "Saltar para o conteúdo principal"
+  },
+  "link": {
+    "noTarget": "Nenhum destino de ligação neste idioma",
+    "newTab": "abre num novo separador",
+    "untitled": "Ligação sem título"
+  },
+  "nav": {
+    "main": "Navegação principal",
+    "menu": "Menu",
+    "submenu": "Mostrar o submenu {{title}}"
+  },
+  "lang": {
+    "label": "Idioma"
+  },
+  "account": {
+    "signIn": "Iniciar sessão",
+    "signOut": "Terminar sessão",
+    "signedInAs": "Sessão iniciada como"
+  },
+  "signin": {
+    "formLabel": "Iniciar sessão",
+    "username": "Nome de utilizador",
+    "password": "Palavra-passe",
+    "submit": "Iniciar sessão",
+    "submitting": "A iniciar sessão...",
+    "rejected": "O nome de utilizador ou a palavra-passe não estão corretos. Verifique-os e tente novamente.",
+    "unknown": "Não foi possível iniciar sessão. Tente novamente dentro de instantes.",
+    "signedInAs": "Sessão iniciada como {{name}}.",
+    "continue": "Continuar"
+  },
+  "members": {
+    "badge": "Exclusivo para membros",
+    "title": "Exclusivo para membros",
+    "newsNotice": "Esta notícia é reservada a membros. Inicie sessão para continuar a ler.",
+    "articleNotice": "Este artigo é reservado a membros. Inicie sessão para continuar a ler.",
+    "pageNotice": "Esta página é reservada a membros. Inicie sessão para a ver.",
+    "editNote": "Exclusivo para membros: os visitantes sem sessão iniciada veem o resumo, os primeiros parágrafos do texto e, a seguir, um aviso com um formulário de início de sessão e uma ligação para criar conta.",
+    "pageEditNote": "Página exclusiva para membros: os visitantes sem sessão iniciada veem o título, um aviso e um formulário de início de sessão em vez das secções abaixo.",
+    "register": "Criar conta",
+    "orSignIn": "ou inicie sessão abaixo se já tiver uma.",
+    "newsNoticeRegister": "Esta notícia é reservada a membros. Inicie sessão ou crie uma conta para continuar a ler.",
+    "articleNoticeRegister": "Este artigo é reservado a membros. Inicie sessão ou crie uma conta para continuar a ler."
+  },
+  "links": {
+    "label": "Ligações"
+  },
+  "image": {
+    "missing": "Nenhuma imagem selecionada",
+    "noTitle": "Esta imagem não tem título na biblioteca de multimédia, pelo que não tem texto alternativo."
+  },
+  "cta": {
+    "noLabel": "Falta o texto do botão",
+    "noLink": "Este botão tem texto mas não tem ligação: escolha uma página ou um endereço web, ou apague o texto."
+  },
+  "editorial": {
+    "news": "Notícia",
+    "article": "Artigo",
+    "by": "Por {{author}}",
+    "readingTime_one": "{{count}} min de leitura",
+    "readingTime_other": "{{count}} min de leitura",
+    "topics": "Temas",
+    "noTitle": "Sem título neste idioma: este item é excluído das listas.",
+    "tags": "Etiquetas"
+  },
+  "query": {
+    "summary": "Lista {{type}} em {{start}}, {{order}}, no máximo {{max}}.",
+    "newest": "do mais recente para o mais antigo",
+    "oldest": "do mais antigo para o mais recente",
+    "empty": "Nada para mostrar por agora.",
+    "startMissing": "A pasta de partida está definida mas não foi encontrada aqui (eliminada, ou ainda não publicada): a lista não mostra nada no site em direto.",
+    "invalidType": "Este tipo de conteúdo não pode ser listado.",
+    "sort": {
+      "publicationDate": "data de publicação",
+      "jcr_created": "data de criação",
+      "jcr_lastModified": "última modificação",
+      "jcr_title": "título"
+    },
+    "layout": {
+      "grid": "cartões",
+      "list": "lista compacta"
+    },
+    "itemLabel": {
+      "none": "nenhuma",
+      "type": "tipo de conteúdo",
+      "category": "primeira categoria, ou então o tipo de conteúdo"
+    },
+    "panel": {
+      "type": "Conteúdo",
+      "start": "Em",
+      "sort": "Ordenação",
+      "max": "Máximo",
+      "display": "Apresentação",
+      "itemLabel": "Etiqueta dos itens",
+      "categories": "Categorias",
+      "allCategories": "todas as categorias",
+      "withSubcategories_one": "({{count}} categoria com subcategorias)",
+      "withSubcategories_other": "({{count}} categorias com subcategorias)",
+      "excluded": "Excluídos",
+      "none": "nenhum",
+      "found": "Encontrados",
+      "foundValue": "{{shown}} apresentados de {{matching}}{{more}} correspondentes",
+      "skipped": "Omitidos",
+      "skippedValue": "{{excluded}} excluídos, {{untranslated}} não traduzidos para {{language}}",
+      "query": "Consulta JCR-SQL2"
+    },
+    "aToZ": "de A a Z",
+    "zToA": "de Z a A"
+  },
+  "breadcrumb": {
+    "label": "Caminho de navegação",
+    "home": "Início",
+    "noListingPage": "Este caminho de navegação não passa pela página que lista este item. Para a mostrar, escolha essa página na pasta de conteúdo do item, nas suas definições de Página de listagem."
+  },
+  "cards": {
+    "teaserMissing": "Escolha uma notícia ou um artigo para mostrar neste cartão.",
+    "noTitle": "Este cartão não tem título neste idioma: não mostra nenhum cabeçalho.",
+    "logoMissing": "Este logótipo não tem imagem: não é apresentado.",
+    "teaserNotInLogos": "Os cartões de itens existentes não são apresentados numa faixa de logótipos."
+  },
+  "figures": {
+    "noValue": "Este número não tem valor neste idioma: não é apresentado."
+  },
+  "quote": {
+    "empty": "Esta citação não tem texto neste idioma: não é apresentada."
+  },
+  "richText": {
+    "imageWithoutAlt": "Uma imagem deste texto não tem alternativa textual: edite a imagem no editor e descreva-a, ou marque-a como decorativa com um texto vazio.",
+    "table": "Tabela",
+    "tableNumbered": "Tabela {{number}}",
+    "tableWithoutCaption": "Uma tabela deste texto não tem legenda: adicione uma no editor de texto formatado (propriedades da tabela). Ela dá um nome à tabela para os leitores de ecrã."
+  },
+  "accordion": {
+    "expandAll": "Expandir tudo",
+    "collapseAll": "Recolher tudo",
+    "noTitle": "Esta entrada não tem título neste idioma: não é apresentada."
+  },
+  "tabs": {
+    "noTitle": "Este separador não tem etiqueta neste idioma: nem ele nem o seu conteúdo são apresentados."
+  },
+  "notice": {
+    "label": "Últimas novidades",
+    "dismiss": "Ocultar estas novidades"
+  },
+  "carousel": {
+    "label": "Em destaque",
+    "roleDescription": "carrossel",
+    "slideRole": "diapositivo",
+    "slideOf": "Diapositivo {{index}} de {{total}}",
+    "previous": "Diapositivo anterior",
+    "next": "Diapositivo seguinte",
+    "pause": "Pausa",
+    "play": "Reproduzir",
+    "empty": "Ainda sem diapositivos: adicione banners de destaque a este carrossel, um por diapositivo.",
+    "editStacked": "Todos os diapositivos são mostrados aqui, um por baixo do outro. Os visitantes veem um de cada vez, com botões para passar de um para o outro."
+  }
+}
