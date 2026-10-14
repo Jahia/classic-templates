@@ -68,7 +68,8 @@ order does not matter.
 1. Install, at the same version, `classic-templates` and `classic-media` (0.8.0 or later), then the
    add-on modules the sites show: `jsfaq` (1.1.1), `js-media-gallery` (1.1.0),
    `js-store-locator` (1.1.0) and `formidable-elements` (0.5.0), and these two modules. For the
-   personalisation, a jCustomer (3.0.0) and, from the Jahia store, `jexperience` (3.9.1),
+   personalisation, a jCustomer (3.0.0) and, from the Jahia store, `jcontent` (3.7.1 or later:
+   jExperience 3.9.1 needs it, Jahia 8.2.3.2 ships 3.5.0), `jexperience` (3.9.1),
    `formidable-engine` and `formidable-jexperience-engine` (0.5.0), `kibana-dashboards-provider` and
    `jexperience-dashboards` (2.1.0), configured BEFORE the import: one jExperience settings entry
    `global` and one per site (`org.jahia.modules.jexperience.settings`, the jCustomer connection,
@@ -81,7 +82,10 @@ order does not matter.
    and under **Import prepackaged project** import both Orvane sites.
 3. Load the personalisation into jCustomer and Kibana:
    `JAHIA_URL=... JCUSTOMER_URL=... KIBANA_URL=... python3 scripts/load-jcustomer.py packages/prepackaged-orvane-signal/personalisation`.
-   Without it the sites work and show their default content to everyone.
+   Without it the sites work and show their default content to everyone. The forms' mapping
+   rules were written at the import, before these property types existed, so they map e-mail and
+   first name only: a minute after loading (the engine caches the property list), change and
+   publish each form (newsletter, register, exhibit) once to rebuild them.
 4. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), then
    register and index the two sites:
    `mutation { admin { search { a: addSite(siteKey: "orvane-signal") b: addSite(siteKey: "orvane-live") } } }`
