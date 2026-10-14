@@ -15,7 +15,9 @@
  *   only, no event type of our own. A story's video or audio (data-ctmd-track-media) sends `video`
  *   events (action play / ended, the story as target); share and filter buttons send `click`
  *   events (target type share / filter); a search results page (data-ctmd-track-search) sends one
- *   `search` event with its words. Without jExperience, or before consent, nothing is sent.
+ *   `search` event with its words; the search island (ctmd:search, ctmd:filter events it dispatches
+ *   for each later search and each filter chosen) sends the same `search` and `click` events.
+ *   Without jExperience, or before consent, nothing is sent.
  */
 (() => {
   // ---- Tabs -------------------------------------------------------------------------------------
@@ -200,6 +202,30 @@
     );
   };
 
+  // The search island, once it has taken over the page, tells what the visitor searched and chose.
+  const searchIslandEvents = () => {
+    document.addEventListener("ctmd:search", (event) => {
+      const { keyword, id } = event.detail || {};
+      if (!keyword || !id) return;
+      whenTracked(() =>
+        track(
+          "search",
+          { id, type: "search" },
+          {
+            keyword,
+            language: (document.documentElement.lang || "").slice(0, 5),
+            origin: "ctmd:searchResults",
+          },
+        ),
+      );
+    });
+    document.addEventListener("ctmd:filter", (event) => {
+      const { facet, value, id } = event.detail || {};
+      if (!facet || !id) return;
+      track("click", { id, type: "filter", properties: { facet, value } });
+    });
+  };
+
   // ---- Share ------------------------------------------------------------------------------------
   const share = (root) => {
     const url = root.dataset.ctmdUrl || location.href;
@@ -266,6 +292,7 @@
     document.querySelectorAll("[data-ctmd-countdown]").forEach(countdown);
     document.querySelectorAll("[data-ctmd-track-media]").forEach(playerEvents);
     document.querySelectorAll("[data-ctmd-track-search]").forEach(searchEvent);
+    searchIslandEvents();
   };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();

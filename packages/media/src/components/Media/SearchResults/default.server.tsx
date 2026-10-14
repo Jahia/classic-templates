@@ -1,52 +1,45 @@
 import {
   buildNodeUrl,
   getChildNodes,
+  Island,
   jahiaComponent,
   useGQLQuery,
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { Heading, useHeadingLevel } from "../../../lib/Heading.js";
-import { RAW, useT } from "../../../lib/i18n.js";
+import { useHeadingLevel } from "../../../lib/Heading.js";
 import { pageOf } from "../../../lib/media.js";
 import { readReference } from "../../../lib/props.js";
-import { excerptParts, kindKey, pageNumber, searchWords } from "../../../lib/search.js";
+import { buildSearchQuery, type QueryContext } from "../../../lib/searchQuery.js";
+import { adaptSearchData } from "../../../lib/searchResponse.js";
+import { emptyState, parseSearchState } from "../../../lib/searchState.js";
 import { Section } from "../../../lib/Section.js";
 import { Styles } from "../../../lib/Styles.js";
 import { MediaScript } from "../shared/parts.js";
-import shared from "../../../lib/shared.module.css";
-import cards from "../shared/cards.module.css";
+import { SearchPanel } from "./panel.js";
+import SearchApp from "./SearchApp.client.jsx";
 import type { Props } from "./types.js";
 import classes from "./search-results.module.css";
-
-const SEARCH = `query Search($q: String!, $sites: [String], $language: String, $workspace: Workspace, $page: Int, $size: Int) {
-  search(q: $q, siteKeys: $sites, language: $language, workspace: $workspace) {
-    results(page: $page, size: $size) {
-      totalHits
-      hasMore
-      hits { id displayableName excerpt link nodeType }
-    }
-  }
-}`;
-
-interface Hit {
-  id: string;
-  displayableName?: string;
-  excerpt?: string;
-  link?: string;
-  nodeType?: string;
-}
 
 /** Results a page shows, from 5 to 50 (the CND range), 10 by default. */
 const sizeOf = (value: number | undefined) =>
   Math.min(Math.max(Math.round(value ?? 10) || 10, 5), 50);
 
+/** The title of a site, its key when it has none. */
+const siteLabel = (site: JCRNodeWrapper): string => {
+  try {
+    return (site as unknown as { getTitle(): string }).getTitle() || site.getName();
+  } catch {
+    return site.getName();
+  }
+};
+
 /**
- * The site keys a search covers: the page's site, and with scope "network" the sites the home
- * page's network bar links to (the internal targets of its ctpl:link children).
+ * The sites a search covers: the page's site, and with scope "network" the sites the home page's
+ * network bar links to (the internal targets of its ctpl:link children), each with its title.
  */
-const siteKeysOf = (site: JCRNodeWrapper, scope: string | undefined): string[] => {
-  const keys = [site.getName()];
-  if (scope !== "network") return keys;
+const sitesOf = (site: JCRNodeWrapper, scope: string | undefined): Map<string, string> => {
+  const sites = new Map([[site.getName(), siteLabel(site)]]);
+  if (scope !== "network") return sites;
   try {
     const home = (site as unknown as { getHome(): JCRNodeWrapper }).getHome();
     const header = home.getNode("siteHeader");
@@ -56,24 +49,29 @@ const siteKeysOf = (site: JCRNodeWrapper, scope: string | undefined): string[] =
       for (const link of getChildNodes(bar, -1, 0, (n: JCRNodeWrapper) =>
         n.isNodeType("ctpl:link"),
       )) {
-        const target = readReference(link, "j:linknode");
-        const key = target?.getResolveSite()?.getName();
-        if (key && !keys.includes(key)) keys.push(key);
+        const target = readReference(link, "j:linknode")?.getResolveSite() as
+          JCRNodeWrapper | undefined;
+        if (target && !sites.has(target.getName())) sites.set(target.getName(), siteLabel(target));
       }
     }
   } catch {
     // no network bar: this site only
   }
-  return keys;
+  return sites;
 };
 
 /**
- * The search section: a search form (GET, the `q` parameter, on this page) and, when words were
- * given, the Augmented Search results for them in the page's language, from the live workspace
- * (the edit workspace in edit mode), as the visitor: a count read by screen readers, then each
- * hit's kind, linked title and excerpt with the matched words marked, then "previous" and "next".
- * Excerpts are rebuilt as text parts (lib/search.ts): no markup of the index reaches the page.
- * Never cached: the results depend on the request (`cache.expiration` 0).
+ * The search section: a search form (GET, on this page), facet groups (topics as a tree, tags,
+ * format, type and, for a network search, site) and the Augmented Search results for the words and
+ * the selected values, in the page's language, from the live workspace (the edit workspace in edit
+ * mode), as the visitor. Within a facet the selected values are alternatives, across facets they
+ * all apply; the counts ignore a facet's own selection (lib/searchQuery.ts).
+ *
+ * This view is the page without JavaScript: the facets are checkboxes of the same GET form with an
+ * "Apply filters" button, the pager and the chips are links. In the browser the island
+ * (SearchApp.client.tsx) takes the same place and starts from this very answer: Elastic Search UI
+ * behind our connector, no reload. Excerpts are rebuilt as text parts (lib/search.ts): no markup of
+ * the index reaches the page. Never cached: the results depend on the request.
  */
 jahiaComponent(
   {
@@ -83,142 +81,99 @@ jahiaComponent(
     properties: { "cache.expiration": "0" },
   },
   (props: Props, { currentNode, renderContext, currentResource }) => {
-    const t = useT();
     const level = useHeadingLevel(currentNode);
     const request = renderContext.getRequest();
-    const words = searchWords(request.getParameter("q"));
-    const page = pageNumber(request.getParameter("page"));
+    const state = parseSearchState((name) => {
+      const values = request.getParameterValues(name);
+      const all: string[] = [];
+      for (let i = 0; i < (values?.length ?? 0); i++) all.push(String(values[i]));
+      return all;
+    });
     const size = sizeOf(props.pageSize);
+    const editing = renderContext.isEditMode();
     const { page: mainPage, site } = pageOf(renderContext, currentNode);
     const action = buildNodeUrl(mainPage);
     const id = currentNode.getIdentifier();
-    const title = props["jcr:title"];
-    const sites = siteKeysOf(site, props.scope);
-
-    let hits: Hit[] = [];
-    let total = 0;
-    let hasMore = false;
-    let failed = false;
-    if (words) {
-      const { data, errors } = useGQLQuery({
-        query: SEARCH,
-        variables: {
-          q: words,
-          sites,
-          language: currentResource.getLocale().toString(),
-          workspace: renderContext.isEditMode() ? "EDIT" : "LIVE",
-          page: page - 1,
-          size,
-        },
-      });
-      const results = data?.search?.results;
-      failed = Boolean(errors?.length) || !results;
-      hits = (results?.hits ?? []) as Hit[];
-      total = Number(results?.totalHits ?? 0);
-      hasMore = Boolean(results?.hasMore);
-    }
-    const link = (to: number) => {
-      const pageParam = to > 1 ? `&page=${to}` : "";
-      return `${action}?q=${encodeURIComponent(words)}${pageParam}`;
+    const sites = sitesOf(site, props.scope);
+    const context: QueryContext = {
+      language: currentResource.getLocale().toString(),
+      workspace: editing ? "EDIT" : "LIVE",
+      sites: [...sites.keys()],
+      size,
     };
-    const headingId = `ctmd-search-${id}`;
-    const inputId = `ctmd-search-q-${id}`;
-    let status = "";
-    if (words && failed) status = t("search.unavailable");
-    else if (words) status = t("search.count", { count: total, words, ...RAW });
+
+    // Facets are always read (they offer what to search for); the first page of hits only when
+    // something was asked. The page is read through the same builder as the browser's connector.
+    const built = buildSearchQuery(state, context);
+    const { data, errors } = useGQLQuery({ query: built.query, variables: built.variables });
+    const failed = Boolean(errors?.length) || !data?.main;
+    const page = adaptSearchData(failed ? undefined : data, failed ? emptyState() : state, context);
+    const idPrefix = `ctmd-search-${id}`;
+    const siteLabels = Object.fromEntries(sites);
+
+    const panel = (
+      <SearchPanel
+        idPrefix={idPrefix}
+        title={props["jcr:title"]}
+        level={level}
+        action={action}
+        state={state}
+        page={page}
+        loading={false}
+        failed={failed}
+        size={size}
+        siteLabels={siteLabels}
+        showSites={sites.size > 1}
+        noResultText={props.noResultText}
+        box={
+          <input
+            id={`${idPrefix}-q`}
+            className={classes.input}
+            type="search"
+            name="q"
+            defaultValue={state.q}
+            maxLength={200}
+          />
+        }
+      />
+    );
 
     return (
       <Section
         surface={props.ctplSurface}
         testId="ctmd-search"
-        labelledBy={title ? headingId : undefined}
+        labelledBy={props["jcr:title"] ? `${idPrefix}-title` : undefined}
       >
         <Styles />
-        {words && !failed && (
-          <span hidden data-ctmd-track-search={words} data-ctmd-track={id}>
-            <MediaScript />
-          </span>
+        <MediaScript />
+        {state.q && !failed && (
+          <span hidden data-ctmd-track-search={state.q} data-ctmd-track={id} />
         )}
-        <div className="ctpl-container">
-          {title && (
-            <Heading level={level} id={headingId}>
-              {title}
-            </Heading>
-          )}
-          <search>
-            <form
-              className={classes.form}
-              method="get"
-              action={action}
-              data-testid="ctmd-search-form"
-            >
-              <label className={classes.label} htmlFor={inputId}>
-                {t("search.label")}
-              </label>
-              <div className={classes.row}>
-                <input
-                  id={inputId}
-                  className={classes.input}
-                  type="search"
-                  name="q"
-                  defaultValue={words}
-                  maxLength={200}
-                />
-                <button type="submit" className={classes.submit}>
-                  {t("search.submit")}
-                </button>
-              </div>
-            </form>
-          </search>
-          <output
-            className={status ? classes.status : shared.visuallyHidden}
-            data-testid="ctmd-search-status"
+        {editing || failed ? (
+          panel
+        ) : (
+          <Island
+            component={SearchApp}
+            clientOnly
+            props={{
+              endpoint: `${request.getContextPath()}/modules/graphql`,
+              action,
+              language: context.language,
+              workspace: context.workspace,
+              sites: [...context.sites],
+              siteLabels,
+              size,
+              level,
+              title: props["jcr:title"],
+              noResultText: props.noResultText,
+              idPrefix,
+              trackId: id,
+              initial: { state, page },
+            }}
           >
-            {status}
-          </output>
-          {words && !failed && total === 0 && (
-            <p className={cards.empty}>{props.noResultText || t("search.none")}</p>
-          )}
-          {hits.length > 0 && (
-            <ol className={classes.results} start={(page - 1) * size + 1}>
-              {hits.map((hit) => (
-                <li key={hit.id} className={classes.result} data-testid="ctmd-search-hit">
-                  <p className={cards.kind}>{t(kindKey(hit.nodeType))}</p>
-                  <Heading level={title ? level + 1 : level} className={classes.title}>
-                    <a href={hit.link}>{hit.displayableName}</a>
-                  </Heading>
-                  {hit.excerpt && (
-                    <p className={classes.excerpt}>
-                      {excerptParts(hit.excerpt).map((part) =>
-                        part.hit ? (
-                          <mark key={part.at} className={classes.mark}>
-                            {part.text}
-                          </mark>
-                        ) : (
-                          <span key={part.at}>{part.text}</span>
-                        ),
-                      )}
-                    </p>
-                  )}
-                </li>
-              ))}
-            </ol>
-          )}
-          {(page > 1 || hasMore) && (
-            <nav className={classes.pager} aria-label={t("search.pages")}>
-              {page > 1 && (
-                <a href={link(page - 1)} rel="prev">
-                  {t("search.previous")}
-                </a>
-              )}
-              {hasMore && (
-                <a href={link(page + 1)} rel="next">
-                  {t("search.next")}
-                </a>
-              )}
-            </nav>
-          )}
-        </div>
+            {panel}
+          </Island>
+        )}
       </Section>
     );
   },
