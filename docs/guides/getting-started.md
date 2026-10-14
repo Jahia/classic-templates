@@ -28,7 +28,8 @@ you create a site.
 2. Pick the **classic-templates** template set.
 3. Add the languages English and French. You can add other languages: every text a visitor reads is
    content you can translate. The few texts that come with the template set itself (for example
-   "Skip to main content" or the "Menu" button) exist in English and French only.
+   "Skip to main content" or the "Menu" button) exist in English, French and European Portuguese
+   (`pt`). The editing interface (field labels and tooltips) is available in English and French only.
 4. Give the site a title and a description. The title is shown in the footer, in the browser tab of
    every page, and next to the logo until you set a brand name. The description is used as the
    search engine description of any page that has none of its own.

@@ -2,7 +2,7 @@
 
 This reference describes every component of the classic-templates template set, as you see it in jContent and Page Builder: what it is for, where you can add it, its fields with their exact labels, and how it behaves for visitors and in edit mode.
 
-Every text a visitor reads on the site is content you can edit, per language: headings, button labels, link texts, copyright line, "no result" texts. The only fixed wording is a handful of labels built into the template set and translated for each language (for example "Menu", "Skip to main content", and the "News", "Article" and "Topics" labels of news and articles).
+Every text a visitor reads on the site is content you can edit, per language: headings, button labels, link texts, copyright line, "no result" texts. The only fixed wording is a handful of labels built into the template set and translated into English, French and European Portuguese (for example "Menu", "Skip to main content", and the "News", "Article" and "Topics" labels of news and articles).
 
 ## Page sections
 
