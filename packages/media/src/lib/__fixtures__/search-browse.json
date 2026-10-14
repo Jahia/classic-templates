@@ -1,0 +1,214 @@
+{
+  "main": {
+    "topic": {
+      "data": [
+        {
+          "value": "orvane###orvane",
+          "count": 79
+        },
+        {
+          "value": "orvane###orvane/business###Business and people",
+          "count": 18
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks",
+          "count": 15
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation",
+          "count": 14
+        },
+        {
+          "value": "orvane###orvane/production###Production and live",
+          "count": 14
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual",
+          "count": 13
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution",
+          "count": 13
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/rights-ethics###Rights and ethics",
+          "count": 9
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual/virtual-production###Virtual production",
+          "count": 7
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution/fast-channels###Free ad-supported channels",
+          "count": 7
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution/audience-measurement###Audience measurement",
+          "count": 6
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/localisation###Localisation",
+          "count": 5
+        },
+        {
+          "value": "orvane###orvane/business###Business and people/inclusion###Inclusion",
+          "count": 5
+        },
+        {
+          "value": "orvane###orvane/business###Business and people/sustainability###Sustainability",
+          "count": 5
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks/cloud-workflows###Cloud workflows",
+          "count": 5
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks/ip-networks###IP networks",
+          "count": 5
+        },
+        {
+          "value": "orvane###orvane/production###Production and live/studios###Studios",
+          "count": 5
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/generative-tools###Generative tools",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/metadata-search###Metadata and search",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/business###Business and people/skills###Skills",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks/broadcast-5g###Broadcast over 5G",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual/game-engines###Game engines",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/production###Production and live/live-sport###Live sport",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/production###Production and live/remote-production###Remote production",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution/subscriptions###Subscriptions",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks/edge###Edge",
+          "count": 3
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual/extended-reality###Extended reality",
+          "count": 2
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual/spatial-audio###Spatial audio",
+          "count": 2
+        },
+        {
+          "value": "orvane###orvane/production###Production and live/audio###Audio",
+          "count": 2
+        },
+        {
+          "value": "orvane###orvane/business###Business and people/policy###Policy",
+          "count": 1
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution/delivery-networks###Delivery networks",
+          "count": 1
+        }
+      ]
+    },
+    "tag": {
+      "data": [
+        {
+          "value": "fast",
+          "count": 7
+        },
+        {
+          "value": "orvane live 2027",
+          "count": 6
+        },
+        {
+          "value": "carbon",
+          "count": 5
+        },
+        {
+          "value": "icvfx",
+          "count": 5
+        },
+        {
+          "value": "led volume",
+          "count": 5
+        },
+        {
+          "value": "newsroom",
+          "count": 5
+        },
+        {
+          "value": "archives",
+          "count": 4
+        },
+        {
+          "value": "keynote",
+          "count": 4
+        }
+      ]
+    },
+    "format": {
+      "data": []
+    },
+    "sessionType": {
+      "data": []
+    },
+    "type": {
+      "data": [
+        {
+          "value": "jmix:basemetadata",
+          "count": 147
+        },
+        {
+          "value": "jnt:page",
+          "count": 74
+        },
+        {
+          "value": "ctmdmix:component",
+          "count": 66
+        },
+        {
+          "value": "ctmd:story",
+          "count": 30
+        },
+        {
+          "value": "ctmd:session",
+          "count": 22
+        },
+        {
+          "value": "ctmd:person",
+          "count": 14
+        }
+      ]
+    },
+    "site": {
+      "data": [
+        {
+          "value": "orvane-signal",
+          "count": 82
+        },
+        {
+          "value": "orvane-live",
+          "count": 65
+        }
+      ]
+    }
+  }
+}

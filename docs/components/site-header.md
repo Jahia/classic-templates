@@ -26,17 +26,18 @@ The header area can also hold a [notice bar](notice-bar.md), above or below the 
 
 ### Site header
 
-| Label as shown in the editor | What it does                                                                                       | Notes                                                           |
-| ---------------------------- | -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| Logo                         | Logo shown at the top left, linking to the home page.                                              | Optional. An SVG or a PNG about 44 pixels high works best.      |
-| Logo for dark mode           | A light-coloured version of the logo, used when the site shows in dark mode.                       | Optional. Only used when **Logo** is set too.                   |
-| Brand name                   | Name shown next to the logo.                                                                       | Per language. Leave empty to use the site title.                |
-| Show the brand name          | Shows the brand name next to the logo.                                                             | Default: on. Untick it when the logo already contains the name. |
-| Show a sign-in entry         | Adds "Sign in" to the utility bar; signed-in visitors see their name and "Sign out" instead.       | Default: off. See [Sign-in entry](#sign-in-entry).              |
-| Page after sign-in           | The page visitors land on once signed in, for example a members area.                              | Optional. Empty: the page the visitor was on.                   |
-| Sign-in page                 | A page of the site with a [Sign-in form](sign-in.md), used instead of the platform's login screen. | Optional. Empty: the platform's login screen.                   |
-| Registration page            | A page of the site where visitors create an account, offered by the notices of members-only items. | Optional. Empty: the notices offer sign-in only.                |
-| Search page                  | A page of the site with a search section; the tags on an item's page link to its results for the tag. | Optional. Empty: tags are plain text.                           |
+| Label as shown in the editor | What it does                                                                                                                                           | Notes                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Logo                         | Logo shown at the top left, linking to the home page.                                                                                                  | Optional. An SVG or a PNG about 44 pixels high works best.            |
+| Logo for dark mode           | A light-coloured version of the logo, used when the site shows in dark mode.                                                                           | Optional. Only used when **Logo** is set too.                         |
+| Brand name                   | Name shown next to the logo.                                                                                                                           | Per language. Leave empty to use the site title.                      |
+| Show the brand name          | Shows the brand name next to the logo.                                                                                                                 | Default: on. Untick it when the logo already contains the name.       |
+| Show a sign-in entry         | Adds "Sign in" to the utility bar; signed-in visitors see their name and "Sign out" instead.                                                           | Default: off. See [Sign-in entry](#sign-in-entry).                    |
+| Page after sign-in           | The page visitors land on once signed in, for example a members area.                                                                                  | Optional. Empty: the page the visitor was on.                         |
+| Sign-in page                 | A page of the site with a [Sign-in form](sign-in.md), used instead of the platform's login screen.                                                     | Optional. Empty: the platform's login screen.                         |
+| Registration page            | A page of the site where visitors create an account, offered by the notices of members-only items.                                                     | Optional. Empty: the notices offer sign-in only.                      |
+| Show a search box            | Adds a search box to the header, with suggestions as visitors type.                                                                                    | Default: off. Needs a **Search page**. See [Search box](#search-box). |
+| Search page                  | A page of the site with a search section; the tags on an item's page link to its results filtered by the tag, and the search box sends visitors there. | Optional. Empty: tags are plain text and there is no search box.      |
 
 ### Utility links
 
@@ -98,6 +99,17 @@ Switch on **Show a sign-in entry** (in the header's edit form, from the home pag
 - In Page Builder the entry shows as plain text "Sign in": editors are signed in, and clicking it would take them away from the editing frame.
 
 **Links to pages that are not open to everyone.** A guest never gets a working link to a page they may not open (it would lead to "page not found"). In the main menu such a page is left out for that guest. A utility link to it shows its title as plain text, without a link; a utility link without a title shows nothing. Signed-in visitors who may open the page see the real link, and the header is cached separately for each kind of visitor, so one never receives the other's version. To show a **Members area** link only to signed-in visitors, restrict the link node itself to the **Users** group (its access rights in jContent): guests then do not see it at all.
+
+### Search box
+
+Switch on **Show a search box** (in the header's edit form, from the home page) and pick a **Search page**: a page of your site that holds a search section (classic-media's **Search results**).
+
+- Visitors type words and press **Search** (or Enter): they land on the Search page with their words in its address (`?q=`), where the section lists the results. This works without JavaScript.
+- With JavaScript, once two characters are typed, the box suggests up to five matching pages and items, each linking straight to its page, then a last choice, **Search for "your words"**, which goes to the Search page. Arrow keys move through the choices, Enter opens the highlighted one, Escape closes the list. Screen readers hear how many suggestions there are.
+- The suggestions come from **Augmented Search**, in the visitor's language. They look in this site and, when the site has a network bar in its header area, in the sites that bar links to. If Augmented Search is not installed, or does not answer, the box simply has no suggestions: no message, and the form still works.
+- On large screens the field and its button sit at the right of the header, after the menu. On small screens a **Search** button next to the **Menu** button opens the field in a panel below the header, over the page: nothing in the header moves. Escape closes the panel and returns to the button. Without JavaScript the field takes its own row under the brand.
+- Without a **Search page** visitors see no search box. In Page Builder a note tells editors the page is missing.
+- In Page Builder the box shows as a plain form, without suggestions.
 
 ### Mobile menu
 

@@ -18,7 +18,7 @@
 // and its transcript.
 // Topics are the native categories (j:defaultCategory), never declared here.
 [ctmd:story] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component, ctplmix:editorialItem
- - format (string, choicelist[resourceBundle]) = 'news' autocreated < 'news', 'feature', 'opinion', 'interview', 'report', 'video', 'podcast'
+ - format (string, choicelist[resourceBundle]) = 'news' autocreated facetable < 'news', 'feature', 'opinion', 'interview', 'report', 'video', 'podcast'
  - authors (weakreference, picker[type='editorial']) multiple < ctmd:person
  // cnd-check-ignore(weakrefNoConstraint): a video of js-media-gallery (internal or external), rendered through its own view; left unconstrained so this module does not depend on js-media-gallery
  - video (weakreference, picker[type='editorial'])

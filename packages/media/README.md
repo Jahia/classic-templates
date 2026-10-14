@@ -43,14 +43,51 @@ Install `classic-media-<version>.tgz` in Jahia (Administration > Modules), or bu
 | Session (`ctmd:session`)                | A session of an event: start and end, room, stream, type, description, speakers with their part, "Members only"                                               | The event's content folder. Own page; rows of the agenda                                    |
 | Agenda (`ctmd:agenda`)                  | The sessions of an event, one tab per day, with stream, room and type filters                                                                                 | A page area, a column, a tab, a free zone                                                   |
 | Speaker gallery (`ctmd:speakerGallery`) | The people of a folder as portrait cards, sorted by name, with an A-Z index                                                                                   | A page area, a column, a tab, a free zone                                                   |
-| Search results (`ctmd:searchResults`)   | A search box and the Augmented Search results for the words typed, for this site or its whole network, with previous and next pages                           | A page area, a column, a tab, a free zone                                                   |
+| Search results (`ctmd:searchResults`)   | A search box with suggestions, filters (topics, tags, format, type, site) and the Augmented Search results, for this site or its whole network, with paging   | A page area, a column, a tab, a free zone                                                   |
 | Key dates (`ctmd:keyDates`)             | An event's days and venue, a countdown, its key dates, a call to action                                                                                       | A page area, a column, a tab, a free zone                                                   |
 
 The event's time zone is a setting of its content folder ("Event" in the folder's options): sessions
 and the agenda show their times in that zone.
 
 Story and session pages end with their **Topics** (categories) and **Tags**; each tag links to the
-site's search results for it when the classic-templates site header names a **Search page**.
+site's search results filtered by it (`?tag=<tag>`) when the classic-templates site header names a
+**Search page**.
+
+### The search section
+
+Put a **Search results** section on the page the site header names as its **Search page**. It shows:
+
+- a **search box** with suggestions: after two characters, up to five matching titles and the tags
+  that match, as an accessible combobox (arrow keys, Enter, Escape);
+- **filters** beside the results: **Topics** (the categories, as a tree: top-level topics, their
+  sub-topics under a disclosure), **Tags** (the twelve most used, then "More"), **Format** (a
+  story's format, a session's type), **Type** (story, session, person, page) and, when the section
+  searches the network, **Site**. Within a filter the chosen values are alternatives (a story
+  tagged either way), across filters they all apply. Every value shows how many results it would
+  give, without counting its own filter, so choosing one never empties its siblings;
+- the **selected filters** as removable chips with "Clear all filters", the number of results in a
+  status line, the results, and paging.
+
+The address carries the whole state, so a search can be bookmarked and shared, and the back button
+works: `?q=fast&topic=streaming/fast-channels&tag=carbon&tag=icvfx&format=news&type=story&site=orvane-signal&page=2`.
+Without JavaScript the same filters are checkboxes of a form with an **Apply filters** button, and
+the chips and the pager are links: everything works with a page reload. With JavaScript an island
+(Elastic Search UI's core `SearchDriver` behind our own connector to Augmented Search,
+`src/lib/searchConnector.ts`) takes the form's place and updates the results without a reload.
+
+Each result shows its own summary under its title, the words searched highlighted in it: the SEO
+description (`jcr:description`), else the teaser, else a person's role. Only an item without any of
+them shows the index's excerpt (which can come from a related item the index folds in, such as a
+story's author).
+
+Augmented Search must map the media types and be fully reindexed after installing this version:
+set `org.jahia.modules.augmentedsearch.content.mappedNodeTypes` to
+`ctmd:story,ctmd:session,ctmd:person,ctplmix:editorialItem.teaser` (the Format filter reads the story
+`format` and the session `sessionType`, the summaries read the teasers and roles; `facetable` in
+the CND alone does nothing), then run a full reindex (all sites: the index mapping changes). The
+topics are read from the categories the content is filed under (the category tree with the most
+content is shown); the tags are Jahia's own tags. A search with nothing asked shows the filters
+and no results.
 
 Stories and sessions take classic-templates' **Members only** switch: visitors who are not signed in
 read the opening paragraphs of the body (or of the session's description; 2 by default, set per

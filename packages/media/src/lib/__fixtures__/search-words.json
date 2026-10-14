@@ -1,0 +1,174 @@
+{
+  "main": {
+    "results": {
+      "totalHits": 13,
+      "hasMore": true,
+      "hits": [
+        {
+          "id": "7201e576-3bdc-4dec-a0e8-658f5828b0ce",
+          "displayableName": "Ad fill rates on free streaming channels climb to 71%",
+          "excerpt": "ad-supported channels sold 71% of their available advertising slots in the second quarter, up from 63% a year earlier, according to the quarterly Orvane Signal <em>FAS</em>T index. The index tracks 412 channels operated by 29 companies in Europe and the Middle East.Live news and sport highlights channels led the rise, with<br/><br/><br/>Signal <em>FAS</em>T index shows the highest fill rate since tracking began, driven by live news and sport highlights channels.",
+          "link": "/sites/orvane-signal/contents/stories/fast-ad-fill-rates-climb.html",
+          "nodeType": "ctmd:story",
+          "lastPublished": "2026-10-14T09:14:40.125Z",
+          "lastModified": "2026-10-14T09:14:20.594Z",
+          "created": "2026-10-13T17:06:55.877Z"
+        },
+        {
+          "id": "0eb63851-c9f1-472e-977d-1a4148b41432",
+          "displayableName": "Streaming needs one audience currency, not twelve",
+          "excerpt": "than a minute, one counts accounts, and one estimates people in the room from a panel.Advertisers respond the only way they can: they discount. Our <em>FAS</em>T index suggests that free channels sell their inventory at roughly 30% below what comparable linear audiences would fetch, and the lack of a common measure",
+          "link": "/sites/orvane-signal/contents/stories/streaming-needs-one-audience-currency.html",
+          "nodeType": "ctmd:story",
+          "lastPublished": "2026-10-14T09:15:05.492Z",
+          "lastModified": "2026-10-14T09:14:22.405Z",
+          "created": "2026-10-13T17:06:56.915Z"
+        },
+        {
+          "id": "069401e4-aa9e-49ce-b2d4-60ec588a8a29",
+          "displayableName": "Inside the economics of free streaming channels",
+          "excerpt": "best-performing titles are renegotiated every year.Where the money comes fromThe Orvane Signal <em>FAS</em>T index puts average fill rates at 71% in the second quarter, but revenue per hour viewed varies by a <em>fact</em>or of four between genres. Live news and sport highlights sell at a premium; library drama sells",
+          "link": "/sites/orvane-signal/contents/stories/economics-of-free-streaming.html",
+          "nodeType": "ctmd:story",
+          "lastPublished": "2026-10-14T09:14:53.594Z",
+          "lastModified": "2026-10-14T09:14:21.575Z",
+          "created": "2026-10-13T17:06:56.463Z"
+        }
+      ]
+    },
+    "topic": {
+      "data": [
+        {
+          "value": "orvane###orvane",
+          "count": 12
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution",
+          "count": 7
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution/fast-channels###Free ad-supported channels",
+          "count": 6
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution/audience-measurement###Audience measurement",
+          "count": 5
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/generative-tools###Generative tools",
+          "count": 3
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/rights-ethics###Rights and ethics",
+          "count": 3
+        },
+        {
+          "value": "orvane###orvane/streaming###Streaming and distribution/subscriptions###Subscriptions",
+          "count": 2
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/localisation###Localisation",
+          "count": 1
+        },
+        {
+          "value": "orvane###orvane/ai###AI and automation/metadata-search###Metadata and search",
+          "count": 1
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks",
+          "count": 1
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks/cloud-workflows###Cloud workflows",
+          "count": 1
+        },
+        {
+          "value": "orvane###orvane/cloud###Cloud and networks/ip-networks###IP networks",
+          "count": 1
+        }
+      ]
+    },
+    "tag": {
+      "data": [
+        {
+          "value": "fast",
+          "count": 7
+        },
+        {
+          "value": "measurement",
+          "count": 4
+        },
+        {
+          "value": "avod",
+          "count": 3
+        },
+        {
+          "value": "cpm",
+          "count": 3
+        },
+        {
+          "value": "ctv",
+          "count": 3
+        },
+        {
+          "value": "audience currency",
+          "count": 2
+        },
+        {
+          "value": "audit trail",
+          "count": 2
+        },
+        {
+          "value": "generative ai",
+          "count": 2
+        }
+      ]
+    },
+    "format": {
+      "data": []
+    },
+    "sessionType": {
+      "data": []
+    },
+    "type": {
+      "data": [
+        {
+          "value": "ctmdmix:component",
+          "count": 13
+        },
+        {
+          "value": "jmix:basemetadata",
+          "count": 13
+        },
+        {
+          "value": "ctmd:story",
+          "count": 10
+        },
+        {
+          "value": "ctmd:session",
+          "count": 2
+        },
+        {
+          "value": "ctmd:person",
+          "count": 1
+        }
+      ]
+    },
+    "site": {
+      "data": [
+        {
+          "value": "orvane-signal",
+          "count": 11
+        },
+        {
+          "value": "orvane-live",
+          "count": 2
+        }
+      ]
+    }
+  }
+}

@@ -155,5 +155,15 @@
     "play": "Play",
     "empty": "No slide yet: add hero banners to this carousel, one per slide.",
     "editStacked": "Every slide shows here, one under the other. Visitors see one slide at a time, with buttons to move between them."
+  },
+  "search": {
+    "label": "Search the site",
+    "submit": "Search",
+    "toggle": "Search",
+    "suggestions": "Suggestions",
+    "suggestionCount_one": "{{count}} suggestion available",
+    "suggestionCount_other": "{{count}} suggestions available",
+    "for": "Search for “{{words}}”",
+    "noPage": "The search box is switched on, but the header names no Search page: choose one in the header's settings. Visitors see no search box until then."
   }
 }

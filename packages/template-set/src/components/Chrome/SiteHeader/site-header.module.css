@@ -32,6 +32,21 @@
   padding-block: var(--ctpl-space-3);
 }
 
+/* The navigation and the search box, when the header has one, as one group at the right. */
+.end {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--ctpl-space-3) var(--ctpl-space-6);
+}
+@media (max-width: 63.999rem) {
+  /* Without the script the menu and the search field each take a full-width row. */
+  :global(html:not(.ctpl-js)) .end {
+    flex-basis: 100%;
+  }
+}
+
 .brand {
   display: inline-flex;
   align-items: center;

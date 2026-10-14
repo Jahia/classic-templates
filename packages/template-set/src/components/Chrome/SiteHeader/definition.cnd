@@ -15,13 +15,16 @@
 // section): the entry then links to that page, which sends the visitor on to where they came from.
 // registerPage is the page where visitors create an account (a registration form): the notice of a
 // members-only item links to it, with the item as the place to come back to. searchPage is the
-// page holding the site's search results: the tags of an item's page link to it (?q=<tag>).
+// page holding the site's search results: the tags of an item's page link to its tag filter
+// (?tag=<tag>). showSearch adds a search box to the header (a GET form to searchPage, `q` being the
+// words) with suggestions from Augmented Search when it is installed; it needs searchPage.
 [ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType
  - logo (weakreference, picker[type='image']) < jmix:image
  - logoDark (weakreference, picker[type='image']) < jmix:image
  - brandName (string) i18n
  - showBrandName (boolean) = true autocreated
  - showAccount (boolean) = false autocreated
+ - showSearch (boolean) = false autocreated
  - accountLanding (weakreference, picker[type='page']) < jnt:page
  - signInPage (weakreference, picker[type='page']) < jnt:page
  - registerPage (weakreference, picker[type='page']) < jnt:page
