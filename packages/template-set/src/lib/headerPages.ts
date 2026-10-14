@@ -4,6 +4,7 @@ import type { RenderContext } from "org.jahia.services.render";
 import { pageUrlById } from "./access.js";
 import { pageWithComeBack, safeLocalPath } from "./account.js";
 import { chromeOwner, pageSite } from "./site.js";
+import { tagFilterUrl } from "./tagFilter.js";
 
 /**
  * The address of a page the site header names (registerPage, searchPage...), or undefined when the
@@ -40,8 +41,8 @@ export const registerHref = (
   pageWithComeBack(headerPageUrl(renderContext, locale, "registerPage"), comeBack);
 
 /**
- * A function giving the search page's address for one tag (`?q=<tag>`, the search section's
- * parameter), or undefined when the site header names no search page: tags are then plain text.
+ * A function giving the search page's address filtered by one tag (`?tag=<tag>`, a facet of the
+ * search section), or undefined when the site header names no search page: tags are then plain text.
  */
 export const tagSearch = (
   renderContext: RenderContext,
@@ -49,6 +50,5 @@ export const tagSearch = (
 ): ((tag: string) => string) | undefined => {
   const page = safeLocalPath(headerPageUrl(renderContext, locale, "searchPage"));
   if (!page) return undefined;
-  const separator = page.includes("?") ? "&" : "?";
-  return (tag) => `${page}${separator}q=${encodeURIComponent(tag)}`;
+  return (tag) => tagFilterUrl(page, tag);
 };
