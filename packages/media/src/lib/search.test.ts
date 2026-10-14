@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { excerptParts, kindKey, pageNumber, readableExcerpt, searchWords } from "./search.js";
+import {
+  excerptParts,
+  highlightWords,
+  kindKey,
+  pageNumber,
+  readableExcerpt,
+  resultText,
+  searchWords,
+} from "./search.js";
 
 describe("excerptParts", () => {
   it("splits the excerpt on the highlighter tags", () => {
@@ -86,5 +94,40 @@ describe("readableExcerpt", () => {
     const parts = readableExcerpt(excerptParts("Free <em>channels</em> pass."));
     expect(parts.map((p) => p.at)).toEqual([0, 1, 2]);
     expect(parts.map((p) => p.text).join("")).toBe("Free channels pass.");
+  });
+});
+
+describe("resultText", () => {
+  const show = (parts: { text: string; hit: boolean }[]) =>
+    parts.map((p) => (p.hit ? `[${p.text}]` : p.text)).join("");
+
+  it("highlights the searched words in the item's own summary first", () => {
+    const hit = {
+      excerpt: "runs the features desk and writes on <em>streamin</em>g",
+      summary: "Streaming grows, free channels too.",
+    };
+    expect(show(resultText(hit, "stream"))).toBe("[Streaming] grows, free channels too.");
+  });
+
+  it("falls back to the index excerpt when the summary does not hold the words", () => {
+    const hit = { excerpt: "a <em>remote</em> crew", summary: "A season of football." };
+    expect(show(resultText(hit, "remote"))).toBe("a [remote] crew");
+  });
+
+  it("shows the summary as is without words, and nothing without text", () => {
+    expect(show(resultText({ excerpt: "", summary: "Plain." }, ""))).toBe("Plain.");
+    expect(resultText({ excerpt: "", summary: "" }, "x")).toEqual([]);
+  });
+
+  it("matches accents and case, and ignores one-letter words", () => {
+    expect(show(highlightWords("Média et télévision", "media a") ?? [])).toBe(
+      "[Média] et télévision",
+    );
+    expect(highlightWords("Nothing here", "zz")).toBeUndefined();
+  });
+
+  it("never shows a highlight cut by the window", () => {
+    const long = `${"word ".repeat(70)}<em>streaming</em>`;
+    expect(show(readableExcerpt(excerptParts(long), 40))).not.toMatch(/\[st\]|\[s\]/);
   });
 });

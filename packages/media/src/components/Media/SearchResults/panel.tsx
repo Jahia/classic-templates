@@ -176,6 +176,7 @@ export const SearchPanel = (props: PanelProps) => {
           )}
           <ResultList
             items={page.items}
+            words={state.q}
             start={(state.page - 1) * size + 1}
             level={resultsLevel + 1}
           />

@@ -7,7 +7,7 @@
 import type { ChangeEvent, ElementType, ReactNode, Ref } from "react";
 import { RAW, useT } from "../../../lib/i18n.js";
 import { clampLevel } from "../../../lib/level.js";
-import { excerptParts, kindKey, readableExcerpt } from "../../../lib/search.js";
+import { kindKey, resultText } from "../../../lib/search.js";
 import type { FacetEntry, Facets, ResultItem } from "../../../lib/searchResponse.js";
 import {
   FACETS,
@@ -363,9 +363,12 @@ export const ResultList = ({
   items,
   start,
   level,
+  words = "",
 }: {
   items: ResultItem[];
   start: number;
+  /** The words searched, highlighted in each result's own summary. */
+  words?: string;
   /** Heading level of each hit's title. */
   level: number;
 }) => {
@@ -379,21 +382,22 @@ export const ResultList = ({
           <LevelHeading level={level} className={classes.title}>
             {hit.url ? <a href={hit.url}>{hit.title}</a> : hit.title}
           </LevelHeading>
-          {hit.excerpt ? (
-            <p className={classes.excerpt}>
-              {readableExcerpt(excerptParts(hit.excerpt)).map((part) =>
-                part.hit ? (
-                  <mark key={part.at} className={classes.mark}>
-                    {part.text}
-                  </mark>
-                ) : (
-                  <span key={part.at}>{part.text}</span>
-                ),
-              )}
-            </p>
-          ) : (
-            hit.summary && <p className={classes.excerpt}>{hit.summary}</p>
-          )}
+          {(() => {
+            const parts = resultText(hit, words);
+            return parts.length > 0 ? (
+              <p className={classes.excerpt}>
+                {parts.map((part) =>
+                  part.hit ? (
+                    <mark key={part.at} className={classes.mark}>
+                      {part.text}
+                    </mark>
+                  ) : (
+                    <span key={part.at}>{part.text}</span>
+                  ),
+                )}
+              </p>
+            ) : null;
+          })()}
         </li>
       ))}
     </ol>

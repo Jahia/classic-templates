@@ -122,7 +122,8 @@ const spaceGlued = (runs: Run[]): Run[] =>
 const clip = (run: Run, start: number, from: number, to: number): string => {
   const end = start + run.text.length;
   let text = run.text.slice(Math.max(0, from - start), Math.min(run.text.length, to - start));
-  if (run.hit) return text;
+  // a highlight the window would cut ("st" of "streaming") is left out, never shown in pieces
+  if (run.hit) return start < from || end > to ? "" : text;
   if (start < from) text = text.replace(/^\S*\s*/u, "");
   if (end > to) text = text.replace(/\s*\S*$/u, "");
   return text;
@@ -159,3 +160,52 @@ const windowed = (runs: Run[], max: number): ExcerptPart[] => {
  */
 export const readableExcerpt = (parts: ExcerptPart[], max = 260): ExcerptPart[] =>
   windowed(spaceGlued(wholeWords(parts)), max);
+
+/** Lower case without accents: "Média" and "media" compare equal. */
+const fold = (text: string): string =>
+  text.normalize("NFD").replaceAll(/\p{M}/gu, "").toLowerCase();
+
+/**
+ * `text` with the searched words highlighted (a word of the text that starts with a searched word
+ * of two letters or more, accents and case ignored: "stream" marks "Streaming"), or undefined
+ * when none of the words is in it.
+ */
+export const highlightWords = (text: string, words: string): ExcerptPart[] | undefined => {
+  const terms = fold(words)
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((term) => term.length >= 2);
+  if (terms.length === 0 || !text) return undefined;
+  const parts: ExcerptPart[] = [];
+  let plain = "";
+  let found = false;
+  for (const piece of text.split(/([\p{L}\p{N}'’-]+)/u)) {
+    const isWord = /[\p{L}\p{N}]/u.test(piece);
+    if (isWord && terms.some((term) => fold(piece).startsWith(term))) {
+      if (plain) parts.push({ text: plain, hit: false, at: parts.length });
+      parts.push({ text: piece, hit: true, at: parts.length });
+      plain = "";
+      found = true;
+    } else {
+      plain += piece;
+    }
+  }
+  if (plain) parts.push({ text: plain, hit: false, at: parts.length });
+  return found ? parts : undefined;
+};
+
+/**
+ * What a result shows under its title: its own summary (SEO description, else teaser) with the
+ * searched words highlighted when it contains them; else the index's excerpt, made readable (it
+ * can come from a related item the index folds into the result, an author's bio for a story);
+ * else the summary as is.
+ */
+export const resultText = (
+  hit: { excerpt: string; summary: string },
+  words: string,
+  max = 260,
+): ExcerptPart[] => {
+  const own = words ? highlightWords(hit.summary, words) : undefined;
+  if (own) return readableExcerpt(own, max);
+  if (hit.excerpt) return readableExcerpt(excerptParts(hit.excerpt), max);
+  return hit.summary ? readableExcerpt([{ text: hit.summary, hit: false, at: 0 }], max) : [];
+};
