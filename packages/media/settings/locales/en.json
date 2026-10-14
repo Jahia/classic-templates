@@ -43,7 +43,8 @@
     "membersLabel": "Members",
     "download": "Download the episode",
     "captionsMissing": "Add the episode's captions (a WebVTT file) to show the audio player.",
-    "captions": "Captions"
+    "captions": "Captions",
+    "membersNoticeSignIn": "The rest of this story is for members. Sign in to read on."
   },
   "share": {
     "label": "Share this page",
@@ -90,7 +91,8 @@
     "when": "When",
     "membersNotice": "The rest of this session's description is for members. Create an account or sign in to read on.",
     "membersEdit": "Members only: visitors who are not signed in see the session's details and the opening paragraphs of its description, then a notice to register or sign in.",
-    "membersLabel": "Members"
+    "membersLabel": "Members",
+    "membersNoticeSignIn": "The rest of this session's description is for members. Sign in to read on."
   },
   "agenda": {
     "days": "Days",

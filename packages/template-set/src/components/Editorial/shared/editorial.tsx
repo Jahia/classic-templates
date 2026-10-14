@@ -217,6 +217,7 @@ export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialPr
   const title = props["jcr:title"];
   const here = buildNodeUrl(currentNode);
   const opening = teaserHtml(props.body, teaserParagraphsOf(currentNode));
+  const register = registerHref(renderContext, currentResource.getLocale(), here);
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-restricted`}>
       <header className={`ctpl-container ${classes.head}`}>
@@ -236,9 +237,9 @@ export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialPr
           </div>
         )}
         <MembersNotice
-          text={t(`members.${kind}Notice`)}
+          text={t(register ? `members.${kind}NoticeRegister` : `members.${kind}Notice`)}
           fallback={here}
-          register={registerHref(renderContext, currentResource.getLocale(), here)}
+          register={register}
         />
       </div>
     </article>

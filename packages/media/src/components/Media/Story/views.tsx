@@ -165,7 +165,6 @@ const StoryHead = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => {
  * transcript are never rendered here.
  */
 const RestrictedStory = ({ props }: { props: Props }) => {
-  const t = useT();
   const { currentNode, renderContext } = useServerContext();
   return (
     <article className={`ctpl-container ${classes.full}`} data-testid="ctmd-story-restricted">
@@ -179,7 +178,7 @@ const RestrictedStory = ({ props }: { props: Props }) => {
       <MembersWall
         body={props.body}
         paragraphs={teaserParagraphsOf(currentNode)}
-        notice={t("story.membersNotice")}
+        kind="story"
       />
     </article>
   );

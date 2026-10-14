@@ -128,7 +128,7 @@ export const SessionFull = ({ props, perUser = false }: { props: Props; perUser?
         <MembersWall
           body={props.body}
           paragraphs={teaserParagraphsOf(currentNode)}
-          notice={t("session.membersNotice")}
+          kind="session"
         />
       )}
       {speakers.length > 0 && (

@@ -11,16 +11,17 @@ import classes from "./members-wall.module.css";
  * paragraphs of the body (`opening`, already cut by lib/teaser.ts: the rest is never sent), fading
  * out, then a notice with "Create an account" (the site's registration page) and "Sign in" (its
  * sign-in page), both bringing the visitor back to the item. Only the links the site header names
- * are shown; without either, the notice says the item is for members and nothing more.
+ * are shown, and the notice's wording follows: it never mentions an account nobody can create.
  */
 export const MembersWall = ({
   body,
   paragraphs,
-  notice,
+  kind,
 }: {
   body?: string;
   paragraphs: number;
-  notice: string;
+  /** Which item it is, for the notice's wording ("story.membersNotice"...). */
+  kind: "story" | "session";
 }) => {
   const t = useT();
   const id = useId();
@@ -38,7 +39,7 @@ export const MembersWall = ({
         <h2 id={id} className={classes.title}>
           {t("members.title")}
         </h2>
-        <p>{notice}</p>
+        <p>{t(register ? `${kind}.membersNotice` : `${kind}.membersNoticeSignIn`)}</p>
         {(register || signIn) && (
           <p className={classes.actions}>
             {register && (

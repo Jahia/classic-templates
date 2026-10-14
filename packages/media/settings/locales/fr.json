@@ -43,7 +43,8 @@
     "membersLabel": "Membres",
     "download": "Télécharger l'épisode",
     "captionsMissing": "Ajoutez les sous-titres de l'épisode (un fichier WebVTT) pour afficher le lecteur audio.",
-    "captions": "Sous-titres"
+    "captions": "Sous-titres",
+    "membersNoticeSignIn": "La suite de ce récit est réservée aux membres. Connectez-vous pour lire la suite."
   },
   "share": {
     "label": "Partager cette page",
@@ -90,7 +91,8 @@
     "when": "Quand",
     "membersNotice": "La suite de la description de cette session est réservée aux membres. Créez un compte ou connectez-vous pour lire la suite.",
     "membersEdit": "Réservé aux membres : les visiteurs non connectés voient les informations de la session et les premiers paragraphes de sa description, puis un avis pour créer un compte ou se connecter.",
-    "membersLabel": "Membres"
+    "membersLabel": "Membres",
+    "membersNoticeSignIn": "La suite de la description de cette session est réservée aux membres. Connectez-vous pour lire la suite."
   },
   "agenda": {
     "days": "Jours",
