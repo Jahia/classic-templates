@@ -24,6 +24,7 @@
     "watch:callback": "run package && run deploy"
   },
   "dependencies": {
+    "@elastic/search-ui": "^1.24.2",
     "entities": "^8.1.0",
     "xss": "^1.0.15"
   },
@@ -34,6 +35,7 @@
     "@jahia/javascript-modules-library": "^1.2.0",
     "@jahia/vite-plugin": "^1.2.0",
     "@types/react": "^19.1.2",
+    "@types/react-dom": "^19",
     "eslint": "^9.26.0",
     "eslint-plugin-sonarjs": "^4.2.2",
     "eslint-plugin-unicorn": "^77.0.0",
@@ -41,6 +43,7 @@
     "i18next": "^25.0.2",
     "prettier": "^3.5.3",
     "react": "^19.1.0",
+    "react-dom": "^19",
     "react-i18next": "^16.0.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.1",

@@ -1,0 +1,130 @@
+{
+  "main": {
+    "results": {
+      "totalHits": 1,
+      "hasMore": false,
+      "hits": [
+        {
+          "id": "71fe8121-167d-49bf-afa6-5edf5930f0e0",
+          "displayableName": "What remote production really saves",
+          "excerpt": "feature Remote production is usually sold on two promises: lower costs and a smaller carbon footprint. Both are real. Neither is automatic, and the size of the saving depends on decisions that are often taken by habit rather than by measurement.Travel is the easy partThe largest saving comes from people",
+          "link": "/sites/orvane-signal/contents/stories/what-remote-production-saves.html",
+          "nodeType": "ctmd:story",
+          "lastPublished": "2026-10-14T09:14:55.530Z",
+          "lastModified": "2026-10-14T09:14:21.708Z",
+          "created": "2026-10-13T17:06:56.545Z"
+        }
+      ]
+    },
+    "format": {
+      "data": []
+    },
+    "sessionType": {
+      "data": []
+    }
+  },
+  "by_topic": {
+    "topic": {
+      "data": [
+        {
+          "value": "orvane###orvane",
+          "count": 7
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual/virtual-production###Virtual production",
+          "count": 4
+        },
+        {
+          "value": "orvane###orvane/business###Business and people",
+          "count": 3
+        },
+        {
+          "value": "orvane###orvane/business###Business and people/sustainability###Sustainability",
+          "count": 3
+        },
+        {
+          "value": "orvane###orvane/immersive###Immersive and virtual/game-engines###Game engines",
+          "count": 2
+        },
+        {
+          "value": "orvane###orvane/production###Production and live",
+          "count": 1
+        },
+        {
+          "value": "orvane###orvane/production###Production and live/remote-production###Remote production",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "by_tag": {
+    "tag": {
+      "data": [
+        {
+          "value": "fast",
+          "count": 5
+        },
+        {
+          "value": "avod",
+          "count": 2
+        },
+        {
+          "value": "cpm",
+          "count": 2
+        },
+        {
+          "value": "ctv",
+          "count": 2
+        },
+        {
+          "value": "hybrid tiers",
+          "count": 2
+        },
+        {
+          "value": "ip studio",
+          "count": 2
+        },
+        {
+          "value": "measurement",
+          "count": 2
+        },
+        {
+          "value": "ptp",
+          "count": 2
+        }
+      ]
+    }
+  },
+  "by_type": {
+    "type": {
+      "data": [
+        {
+          "value": "ctmd:story",
+          "count": 1
+        },
+        {
+          "value": "ctmdmix:component",
+          "count": 1
+        },
+        {
+          "value": "jmix:basemetadata",
+          "count": 1
+        }
+      ]
+    }
+  },
+  "by_site": {
+    "site": {
+      "data": [
+        {
+          "value": "orvane-signal",
+          "count": 1
+        }
+      ]
+    }
+  }
+}
