@@ -155,5 +155,15 @@
     "play": "Reproduzir",
     "empty": "Ainda sem diapositivos: adicione banners de destaque a este carrossel, um por diapositivo.",
     "editStacked": "Todos os diapositivos são mostrados aqui, um por baixo do outro. Os visitantes veem um de cada vez, com botões para passar de um para o outro."
+  },
+  "search": {
+    "label": "Pesquisar no site",
+    "submit": "Pesquisar",
+    "toggle": "Pesquisar",
+    "suggestions": "Sugestões",
+    "suggestionCount_one": "{{count}} sugestão disponível",
+    "suggestionCount_other": "{{count}} sugestões disponíveis",
+    "for": "Pesquisar «{{words}}»",
+    "noPage": "A caixa de pesquisa está ativada, mas o cabeçalho não indica nenhuma página de pesquisa: escolha uma nas definições do cabeçalho. Os visitantes não veem a caixa de pesquisa até lá."
   }
 }
