@@ -54,7 +54,8 @@ order does not matter.
 
 1. Install, at the same version, `classic-templates` and `classic-media` (0.8.0 or later), then the
    add-on modules the sites show: `jsfaq` (1.1.1), `js-media-gallery` (1.1.0),
-   `js-store-locator` (1.1.0) and `formidable-elements` (0.5.0), and these two modules.
+   `js-store-locator` (1.1.0) and Formidable 0.6 (with `formidable-accounts`: not released yet,
+   see the Orvane Signal package's README), and these two modules.
 2. Open Administration > Projects
    ([localhost:8080/jahia/administration/webProjectSettings](http://localhost:8080/jahia/administration/webProjectSettings)),
    and under **Import prepackaged project** import both Orvane sites.

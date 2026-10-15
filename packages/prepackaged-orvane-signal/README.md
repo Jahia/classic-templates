@@ -70,7 +70,10 @@ order does not matter.
    `js-store-locator` (1.1.0), Formidable 0.6 or later (`formidable-engine`, `formidable-elements`,
    `formidable-extended-inputs` and `formidable-accounts`, which creates members' accounts; its
    CAPTCHA requirement `requireCaptcha` in `org.jahia.modules.formidable.accounts` needs a CAPTCHA
-   provider configured, or `false` on a development instance only), and these two modules. For the
+   provider configured, or `false` on a development instance only), and these two modules.
+   Formidable 0.6 is not released yet: `formidable-accounts`, the password field and the engine
+   changes it needs are in Jahia/formidable#406, the Portuguese messages in Jahia/formidable#409.
+   Until it ships, build those branches; the official 0.5.0 cannot import the account forms. For the
    personalisation, a jCustomer (3.0.0) and, from the Jahia store, `jcontent` (3.7.1 or later:
    jExperience 3.9.1 needs it, Jahia 8.2.3.2 ships 3.5.0), `jexperience` (3.9.1),
    `formidable-jexperience-engine` (0.6, as Formidable), `kibana-dashboards-provider` and
@@ -78,8 +81,8 @@ order does not matter.
    `global` and one per site (`org.jahia.modules.jexperience.settings`, the jCustomer connection,
    `jexperience.siteKey` on the site entries), and the Kibana proxy
    (`org.jahia.modules.kibana_dashboards_provider`: the URL and the four user fields, placeholders
-   on a Kibana without security). Never install a development build of a Formidable or jExperience
-   module next to these: the add-ons would stay wired to it.
+   on a Kibana without security). Never install two versions of a Formidable or jExperience module
+   side by side (a 0.5.0 next to a 0.6 build, for one): the add-ons would stay wired to the other.
 2. Open Administration > Projects
    ([localhost:8080/jahia/administration/webProjectSettings](http://localhost:8080/jahia/administration/webProjectSettings)),
    and under **Import prepackaged project** import both Orvane sites.
