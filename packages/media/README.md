@@ -65,7 +65,12 @@ decided by Jahia's ACLs, never by a field.
 
 - A **Brief** is a main resource with its own page (description, deadline, media wanted, quantity,
   intended use, a mood picture) and a card for lists. A closed brief says so in words, on its card
-  and on its page. The page keeps a marked place for the submission form, attached later.
+  and on its page. Pick a **Submission form** on the brief: a Formidable form (`fmdb:form`),
+  shown on the brief's page, under the heading "Answer this brief", while the brief is open; a
+  closed brief shows "This brief is closed." instead. Without a form the page shows none (edit mode
+  says so). Formidable is not a dependency of the module: install it on the instance, and give the
+  form a save action (or one that creates the submission) and the access suppliers need. The
+  form posts from the brief's page.
 - A **Submission** has no page: it is shown as a **status card** with its title, the brief it
   answers (linked when the visitor may read it), the day it was submitted, its status as text with
   a mark (never colour alone), the picture desk's note, the item that used the media once accepted
@@ -80,6 +85,16 @@ decided by Jahia's ACLs, never by a field.
 - Closed briefs leave the brief list unless **Show closed briefs** is on; briefs are ordered by
   deadline, those without one last. A list with nothing to show displays its own text, or leaves
   the section out when it has none.
+
+### Photo credits
+
+Add the **Credit** option (`ctmdmix:credited`) to a picture or video in the media library (jContent
+offers it on every file) and type who to credit, exactly as it must appear, for example "Sofia
+Marques / Northlight Pictures". It is the same in every language. A story's lead image (its page,
+its members teaser, the episode's cover) and a brief's mood picture then carry a caption "Photo:
+Sofia Marques / Northlight Pictures" ("Photo : ..." in French, "Foto: ..." in Portuguese). A file
+without a credit shows as before. Videos rendered by js-media-gallery and the small thumbnails of
+cards and status cards show no credit.
 
 ### The search section
 

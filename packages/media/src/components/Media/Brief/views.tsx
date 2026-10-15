@@ -1,6 +1,15 @@
-import { buildNodeUrl, useServerContext } from "@jahia/javascript-modules-library";
-import { MEDIA_WANTED, USAGES, briefStatusOf, knownValues } from "../../../lib/briefs.js";
+import { Render, buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
+import type { JCRNodeWrapper } from "org.jahia.services.content";
+import {
+  FORM_NODE_TYPE,
+  MEDIA_WANTED,
+  USAGES,
+  briefStatusOf,
+  knownValues,
+  submissionSlotState,
+} from "../../../lib/briefs.js";
 import { formatDate, isoDay } from "../../../lib/format.js";
+import { CreditLine, creditOf } from "../../../lib/Credit.js";
 import { Heading, useParamHeadingLevel } from "../../../lib/Heading.js";
 import { useT } from "../../../lib/i18n.js";
 import { Image } from "../../../lib/Image.js";
@@ -63,13 +72,69 @@ const Facts = ({ props, withUsage }: { props: Props; withUsage: boolean }) => {
 };
 
 /**
- * Where the submission form of a brief goes, under the facts and the description. Nothing is
- * rendered yet: the form is attached here once its design is decided (release 5.3: a
- * client island posting to a submission action, shown to signed-in suppliers while the brief is
- * open, with the brief's identifier as a hidden field). Keeping the place in one component means
- * the full-page view needs no other change then.
+ * Reads the form a brief points at (`submissionForm`), for the slot below. "none": the brief has no
+ * form; "unavailable": one is set but is not a Formidable form, or the visitor cannot read it (it
+ * was deleted, is not published yet, or is restricted: a weakreference to such a node comes back
+ * unset); otherwise the form node.
  */
-const SubmissionSlot = () => null;
+const readSubmissionForm = (
+  currentNode: JCRNodeWrapper,
+): { state: "none" } | { state: "unavailable" } | { state: "ready"; node: JCRNodeWrapper } => {
+  if (!currentNode.hasProperty("submissionForm")) return { state: "none" };
+  // getNode(), not getContextualizedNode(): the latter reads a `j:node` property (a content
+  // reference's) and throws ItemNotFoundException on any other weakreference (8.2.3.2).
+  try {
+    const node = currentNode.getProperty("submissionForm").getNode() as JCRNodeWrapper;
+    if (!node?.isNodeType(FORM_NODE_TYPE)) return { state: "unavailable" };
+    return { state: "ready", node };
+  } catch {
+    return { state: "unavailable" };
+  }
+};
+
+/**
+ * The submission form of a brief, under the facts and the description. While the brief is open and
+ * `submissionForm` points at a Formidable form (`fmdb:form`) the visitor can read, the form is
+ * rendered under a level-2 heading, through `<Render>` of the contextualized node as Formidable's
+ * own form reference does (but resolved with getNode(): see readSubmissionForm): the form is a client island that posts from this page, so its request
+ * carries the brief's page as Referer (the Formidable action resolves the brief from it). A closed
+ * brief shows a short text instead. Without a readable form nothing is shown, and in edit mode a
+ * notice says what is missing. The form is a cache dependency of the page (it is read through the
+ * brief's own fragment, which holds no per-visitor data: the form's markup is the same for every
+ * visitor and its island decides everything else in the browser).
+ */
+const SubmissionSlot = ({ props }: { props: Props }) => {
+  const t = useT();
+  const { currentNode, renderContext } = useServerContext();
+  const form = readSubmissionForm(currentNode);
+  const state = submissionSlotState(props.briefStatus, form.state === "ready");
+  if (state === "none") {
+    if (!renderContext.isEditMode()) return null;
+    return (
+      <p className={classes.editNote}>
+        {t(form.state === "unavailable" ? "brief.formUnavailable" : "brief.noForm")}
+      </p>
+    );
+  }
+  if (form.state !== "ready") return null;
+  server.render.addCacheDependency({ node: form.node }, renderContext);
+  return (
+    <section
+      className={classes.answer}
+      aria-labelledby="ctmd-brief-answer"
+      data-testid="ctmd-brief-answer"
+    >
+      <h2 id="ctmd-brief-answer" className={classes.answerTitle}>
+        {t("brief.answer")}
+      </h2>
+      {state === "closed" ? (
+        <p data-testid="ctmd-brief-closed">{t("brief.closedForm")}</p>
+      ) : (
+        <Render node={form.node} readOnly />
+      )}
+    </section>
+  );
+};
 
 /**
  * The brief's own page, inside the main-resource template of classic-templates (header, footer,
@@ -103,11 +168,14 @@ export const BriefFull = ({ props }: { props: Props }) => {
       {props.referenceImage && (
         <figure className={classes.reference} data-testid="ctmd-brief-reference">
           <Image node={props.referenceImage} renderContext={renderContext} priority />
-          <figcaption>{t("brief.reference")}</figcaption>
+          <figcaption>
+            {t("brief.reference")}
+            <CreditLine credit={creditOf(props.referenceImage, renderContext)} />
+          </figcaption>
         </figure>
       )}
       <RichText html={props.description} className={classes.body} headingLevel={2} />
-      <SubmissionSlot />
+      <SubmissionSlot props={props} />
       {renderContext.isEditMode() && !props.description && (
         <p className={classes.editNote}>{t("brief.noDescription")}</p>
       )}
