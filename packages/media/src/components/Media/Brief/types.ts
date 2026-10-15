@@ -14,4 +14,9 @@ export interface Props {
   "briefStatus"?: BriefStatus;
   /** A mood picture; its alternative text is its title in the media library. */
   "referenceImage"?: JCRNodeWrapper;
+  /**
+   * The Formidable form (fmdb:form) suppliers answer the brief with. Unset when the visitor cannot
+   * read it; the view checks the node type.
+   */
+  "submissionForm"?: JCRNodeWrapper;
 }

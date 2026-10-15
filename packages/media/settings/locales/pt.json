@@ -6,6 +6,9 @@
   "image": {
     "noTitle": "Esta imagem não tem título na biblioteca de multimédia, pelo que não tem texto alternativo."
   },
+  "credit": {
+    "photo": "Foto: {{credit}}"
+  },
   "richText": {
     "imageWithoutAlt": "Uma imagem deste texto não tem texto alternativo: é ignorada pelos leitores de ecrã.",
     "table": "Tabela",
@@ -117,7 +120,11 @@
     "usage": "Utilização prevista",
     "reference": "Imagem de referência",
     "closedNotice": "Este briefing está encerrado: já não aceita propostas.",
+    "answer": "Responder a este pedido",
+    "closedForm": "Este pedido está encerrado.",
     "noDescription": "Adicione a descrição do briefing: é aí que os fornecedores leem o que se espera deles.",
+    "noForm": "Escolha o formulário de proposta: sem ele, os fornecedores não podem responder a este briefing.",
+    "formUnavailable": "O formulário de proposta não está disponível: não é um formulário Formidable, ou não pode ser lido (eliminado, ainda não publicado ou restrito). Os visitantes não veem nenhum formulário.",
     "status": {
       "closed": "Encerrado"
     },

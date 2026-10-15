@@ -14,7 +14,9 @@ import {
   listLimit,
   sortBriefs,
   sortSubmissions,
+  submissionSlotState,
   submissionStatusOf,
+  FORM_NODE_TYPE,
 } from "./briefs.js";
 
 const brief = (title: string, deadline?: string, status?: string) => ({ title, deadline, status });
@@ -156,5 +158,27 @@ describe("listLimit", () => {
     expect(listLimit(undefined, 20, 100)).toBe(20);
     expect(listLimit(Number.NaN, 20, 100)).toBe(20);
     expect(listLimit(0, 20, 100)).toBe(20);
+  });
+});
+
+describe("submissionSlotState", () => {
+  it("shows nothing without a readable form, whatever the status", () => {
+    expect(submissionSlotState("open", false)).toBe("none");
+    expect(submissionSlotState("closed", false)).toBe("none");
+    expect(submissionSlotState(undefined, false)).toBe("none");
+  });
+
+  it("shows the form while the brief is open, a missing status included", () => {
+    expect(submissionSlotState("open", true)).toBe("form");
+    expect(submissionSlotState(undefined, true)).toBe("form");
+    expect(submissionSlotState("whatever", true)).toBe("form");
+  });
+
+  it("shows the closed text once the brief is closed", () => {
+    expect(submissionSlotState("closed", true)).toBe("closed");
+  });
+
+  it("names the Formidable form type", () => {
+    expect(FORM_NODE_TYPE).toBe("fmdb:form");
   });
 });

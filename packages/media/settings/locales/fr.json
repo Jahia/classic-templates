@@ -6,6 +6,9 @@
   "image": {
     "noTitle": "Cette image n'a pas de titre dans la médiathèque : elle n'a donc pas d'alternative textuelle."
   },
+  "credit": {
+    "photo": "Photo : {{credit}}"
+  },
   "richText": {
     "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : elle est ignorée par les lecteurs d'écran.",
     "table": "Tableau",
@@ -117,7 +120,11 @@
     "usage": "Usage prévu",
     "reference": "Image d'inspiration",
     "closedNotice": "Ce brief est clos : il n'accepte plus de propositions.",
+    "answer": "Répondre à cette commande",
+    "closedForm": "Cette commande est close.",
     "noDescription": "Ajoutez la description du brief : c'est là que les fournisseurs lisent ce que l'on attend d'eux.",
+    "noForm": "Choisissez le formulaire de proposition : sans lui, les fournisseurs ne peuvent pas répondre à ce brief.",
+    "formUnavailable": "Le formulaire de proposition n'est pas disponible : ce n'est pas un formulaire Formidable, ou il n'est pas lisible (supprimé, pas encore publié ou restreint). Les visiteurs ne voient aucun formulaire.",
     "status": {
       "closed": "Clos"
     },

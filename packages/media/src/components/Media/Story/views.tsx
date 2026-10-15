@@ -3,6 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { formatDate, isoDay, readingMinutes } from "../../../lib/format.js";
 import { Heading, useParamHeadingLevel } from "../../../lib/Heading.js";
+import { CreditCaption, CreditLine, creditOf } from "../../../lib/Credit.js";
 import { useT } from "../../../lib/i18n.js";
 import { Image } from "../../../lib/Image.js";
 import { JsonLd, useAbsoluteUrl } from "../../../lib/JsonLd.js";
@@ -109,7 +110,10 @@ const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => 
         {props.image && (
           <Image node={props.image} owner={node} renderContext={renderContext} priority />
         )}
-        <figcaption className={classes.listen}>{t("story.listen")}</figcaption>
+        <figcaption className={classes.listen}>
+          {t("story.listen")}
+          <CreditLine credit={creditOf(props.image, renderContext)} />
+        </figcaption>
         {props.audioCaptions ? (
           <audio className={classes.audio} controls preload="none" src={audioUrl}>
             <track
@@ -137,6 +141,7 @@ const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => 
     return (
       <figure className={classes.media}>
         <Image node={props.image} owner={node} renderContext={renderContext} priority />
+        <CreditCaption credit={creditOf(props.image, renderContext)} />
       </figure>
     );
   }
@@ -174,6 +179,7 @@ const RestrictedStory = ({ props }: { props: Props }) => {
       {props.image && (
         <figure className={classes.media}>
           <Image node={props.image} owner={currentNode} renderContext={renderContext} priority />
+          <CreditCaption credit={creditOf(props.image, renderContext)} />
         </figure>
       )}
       <MembersWall body={props.body} paragraphs={teaserParagraphsOf(currentNode)} kind="story" />

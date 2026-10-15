@@ -1,0 +1,18 @@
+/* The credit line under a picture. Colours, sizes and spacing are classic-templates semantic
+   tokens (--ctpl-*), never literals. */
+
+/* A caption of its own (figure with an image and nothing else). */
+.caption {
+  margin-top: var(--ctpl-space-2);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+
+/* A line inside a caption that already says something (the mood picture, the episode). */
+.line {
+  display: block;
+  margin-top: var(--ctpl-space-1);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-normal);
+}
