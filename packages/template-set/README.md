@@ -35,7 +35,7 @@ light and dark, from its settings, with no code change.
   get its public face (title, teaser, a badge) and a sign-in form instead of a "page not found",
   and stay on the page once signed in. Lists show a badge on reserved items. See
   [members-only content](../../docs/guides/members-only-content.md).
-- **Themes.** Seven themes (Classic, Ocean, Terracotta, Horizon, Sage, Slate, Graphite), each in light and dark, chosen per site.
+- **Themes.** Ten themes (Classic, Ocean, Terracotta, Horizon, Sage, Slate, Graphite, Signal, Live, Portal), each in light and dark, chosen per site.
   Visitors get their system's scheme unless the site forces one. Contrast is checked for every
   theme and scheme.
 - **Accessible by default.** WCAG 2.1 AA and RGAA 4.1.2 audited. Skip link, landmarks, strict
@@ -73,6 +73,7 @@ light and dark, from its settings, with no code change.
 | Quote             | A quotation with the person's name, role and portrait                           | [quote](../../docs/components/quote.md)                               |
 | Link list         | A list of links: a section, a bar or a footer column                            | [links-and-link-lists](../../docs/components/links-and-link-lists.md) |
 | Content list      | News or articles found automatically, sorted and filtered                       | [content-list](../../docs/components/content-list.md)                 |
+| Network bar       | The group's name and a link to each of its sites, above the header              | [network-bar](../../docs/components/network-bar.md)                   |
 | Notice bar        | A slim band of the latest items as dated links, dismissible                     | [notice-bar](../../docs/components/notice-bar.md)                     |
 | News and articles | Editorial items with their own page, card and compact views                     | [news-and-articles](../../docs/components/news-and-articles.md)       |
 | Site map          | Every page of the site as nested lists                                          | [site-map](../../docs/components/site-map.md)                         |
@@ -110,6 +111,9 @@ choose a "Theme" and "Light or dark". "Automatic" follows each visitor's system 
 | Sage (green and coral)          | ![Sage, light](../../docs/images/theme-sage-light.png)             | ![Sage, dark](../../docs/images/theme-sage-dark.png)             |
 | Slate (ink and green)           | ![Slate, light](../../docs/images/theme-slate-light.png)           | ![Slate, dark](../../docs/images/theme-slate-dark.png)           |
 | Graphite (charcoal and crimson) | ![Graphite, light](../../docs/images/theme-graphite-light.png)     | ![Graphite, dark](../../docs/images/theme-graphite-dark.png)     |
+| Signal (cobalt and vermilion)   | ![Signal, light](../../docs/images/theme-signal-light.png)         | ![Signal, dark](../../docs/images/theme-signal-dark.png)         |
+| Live (violet and jade)          | ![Live, light](../../docs/images/theme-live-light.png)             | ![Live, dark](../../docs/images/theme-live-dark.png)             |
+| Portal (petrol and ledger grey) | Cool light greys, petrol blue                                      | Ledger-black greys, light petrol                                 |
 
 Components never contain a colour, font or shadow value. They read semantic CSS custom properties
 (`--ctpl-color-text`, `--ctpl-color-accent`, `--ctpl-color-action` for buttons, `--ctpl-color-highlight`, ...) defined in `src/templates/tokens.css`, in three

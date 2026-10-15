@@ -20,6 +20,7 @@ You add these to a page's main area, inside a [Columns](columns.md) column, a [T
 | Key figures    | A row of figures with their labels ("98% satisfied customers").               | Main area, column, free zone                                 | [key-figures.md](key-figures.md)                   |
 | Quote          | A quotation with the name, role and portrait of the person quoted.            | Main area, column, free zone                                 | [quote.md](quote.md)                               |
 | Content list   | News items or articles listed automatically, with a "see all" button.         | Main area, column, free zone                                 | [content-list.md](content-list.md)                 |
+| Network bar    | The group's name and a link to each of its sites, the current one marked.     | Header area of the home page                                 | [network-bar.md](network-bar.md)                   |
 | Notice bar     | A slim band of the latest news or articles as dated links.                    | Header area of the home page, hero area, main area           | [notice-bar.md](notice-bar.md)                     |
 | Link list      | An ordered list of links with an optional title.                              | Main area, column, free zone; also in the header and footer  | [links-and-link-lists.md](links-and-link-lists.md) |
 | Site map       | Every page of the site as nested lists of links.                              | Main area, usually on a page of its own                      | [site-map.md](site-map.md)                         |
@@ -59,4 +60,4 @@ These groups of fields appear in several components. Each page explains them onc
 Two groups of options are not components but change how pages show:
 
 - **Page options**, in a page's edit form: **Hide from navigation** (see [Site header](site-header.md)), **Hide the page title** (see [Hero banner](hero-banner.md)) and **Hide the breadcrumb** (see [Breadcrumb](breadcrumb.md)).
-- **Site look**, in the site's edit form in jContent: **Theme**, **Light or dark** and **Show the breadcrumb**. Changing them alters no content: every component follows.
+- **Site look**, in the site's edit form in jContent: **Theme**, **Light or dark**, **Show the breadcrumb** and **Hide from search engines**. Changing them alters no content: every component follows.

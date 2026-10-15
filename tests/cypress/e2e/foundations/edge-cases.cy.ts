@@ -15,6 +15,14 @@ const setLook = (theme: string, scheme: string) => {
     publishAndWaitJobEnding(sitePath, ['en', 'fr'])
 }
 
+const setNoIndex = (noIndex: boolean) => {
+    cy.apollo({
+        mutationFile: 'graphql/mutation/setSiteNoIndex.graphql',
+        variables: { sitePath, noIndex: String(noIndex) },
+    })
+    publishAndWaitJobEnding(sitePath, ['en', 'fr'])
+}
+
 describe('Foundations - fallbacks and site look', () => {
     before(() => {
         cy.login()
@@ -80,11 +88,15 @@ describe('Foundations - fallbacks and site look', () => {
         accent().should('eq', 'rgb(11, 58, 102)')
     })
 
-    // Each of these themes sets its own emphasis and action colours (coral for sage, green for slate, crimson for graphite).
+    // Each of these themes sets its own emphasis and action colours (coral for sage, green for slate, crimson for graphite,
+    // vermilion for signal, jade for live; portal keeps the action on its petrol accent and only sets the emphasis).
     const emphasisThemes = [
         { theme: 'sage', highlight: 'rgb(178, 60, 36)', accent: 'rgb(14, 92, 85)', action: 'rgb(178, 60, 36)' },
         { theme: 'slate', highlight: 'rgb(23, 112, 61)', accent: 'rgb(42, 56, 80)', action: 'rgb(23, 112, 61)' },
         { theme: 'graphite', highlight: 'rgb(176, 18, 47)', accent: 'rgb(58, 58, 56)', action: 'rgb(176, 18, 47)' },
+        { theme: 'signal', highlight: 'rgb(184, 53, 15)', accent: 'rgb(31, 63, 174)', action: 'rgb(184, 53, 15)' },
+        { theme: 'live', highlight: 'rgb(11, 116, 104)', accent: 'rgb(90, 43, 208)', action: 'rgb(11, 116, 104)' },
+        { theme: 'portal', highlight: 'rgb(184, 53, 15)', accent: 'rgb(10, 86, 108)', action: 'rgb(10, 86, 108)' },
     ]
     emphasisThemes.forEach(({ theme, highlight, accent: expectedAccent, action }) => {
         it(`applies the ${theme} theme with its own emphasis colour in light and dark`, () => {
@@ -112,6 +124,28 @@ describe('Foundations - fallbacks and site look', () => {
             cy.get('html').should('have.attr', 'data-ctpl-scheme', 'dark')
             accent().should('not.eq', expectedAccent)
         })
+    })
+
+    it('hides the whole site from search engines only while the setting is on', () => {
+        cy.request(`${sitePath}/home/bare.html`)
+            .its('body')
+            .should('not.match', /name="robots"/)
+        cy.login()
+        setNoIndex(true)
+        cy.logout()
+        cy.visit(`${sitePath}/home/bare.html`)
+        cy.get('meta[name="robots"]').should('have.attr', 'content', 'noindex, nofollow')
+        cy.visit(`${sitePath}/home.html`)
+        cy.get('meta[name="robots"]').should('have.attr', 'content', 'noindex, nofollow')
+        cy.visit(`/fr${sitePath}/home/bare.html`)
+        cy.get('meta[name="robots"]').should('have.attr', 'content', 'noindex, nofollow')
+
+        cy.login()
+        setNoIndex(false)
+        cy.logout()
+        cy.request(`${sitePath}/home/bare.html`)
+            .its('body')
+            .should('not.match', /name="robots"/)
     })
 
     it('returns to the default look when the theme is set back to default and auto', () => {
