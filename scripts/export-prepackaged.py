@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Exports a demo site into its pre-packaged project (packages/prepackaged-site for classic-dev,
-packages/prepackaged-skylantern for skylantern, packages/prepackaged-orvane-signal and
-packages/prepackaged-orvane-live for the two Orvane sites).
+packages/prepackaged-skylantern for skylantern, packages/prepackaged-orvane-signal,
+packages/prepackaged-orvane-live and packages/prepackaged-orvane-portal for the three Orvane sites).
 
-    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern|orvane-signal|orvane-live] [--from-zip export.zip] [--check]
+    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern|orvane-signal|orvane-live|orvane-portal] [--from-zip export.zip] [--check]
 
 A pre-packaged project installs on an instance that has the modules of this repository it depends
 on (plus the platform modules default, siteSettings and site-settings-seo) and, for a profile that
@@ -236,6 +236,21 @@ for _site in ("orvane-signal", "orvane-live"):
         "conversions": {},
         "text_edits": [],
     }
+
+# Orvane Portal (v5), the suppliers' portal: gated below its home page (the ACLs travel with the
+# export, the groups they name are the project's), the briefs and submissions of classic-media, and
+# the submission form with Formidable's Create content action (formidable-content, prefix fmdbcnt).
+# No jExperience on the portal.
+PROFILES["orvane-portal"] = {
+    "package": "prepackaged-orvane-portal",
+    "sources": ["template-set", "media"],
+    "addon_prefixes": ["fmdb", "fmdbmix", "fmdbext", "fmdbcnt"],
+    "installed": ["classic-templates", "classic-media", "formidable-elements", "formidable-extended-inputs", "formidable-content"]
+    + PLATFORM_MODULES,
+    "only_for_addons": [],
+    "conversions": {},
+    "text_edits": [],
+}
 
 # ---------------------------------------------------------------------------------------------
 # Export download (one session)

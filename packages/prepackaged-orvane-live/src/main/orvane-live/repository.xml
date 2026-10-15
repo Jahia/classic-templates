@@ -4,19 +4,16 @@
       <orvane-live ctplColorScheme="dark"
                    ctplShowBreadcrumb="true"
                    ctplTheme="live"
-                  
-                  
-                  
                    j:inactiveLanguages=""
                    j:inactiveLiveLanguages=""
-                   j:lastPublished="2026-10-14T15:07:06.320Z"
+                   j:lastPublished="2026-10-15T10:09:04.607Z"
                    j:lastPublishedBy="root"
                    j:originWS="default"
                    j:published="true"
                    j:wcagCompliance="true"
                    jcr:created="2026-10-13T21:47:24.783Z"
                    jcr:createdBy="system"
-                   jcr:lastModified="2026-10-14T15:07:06.316Z"
+                   jcr:lastModified="2026-10-15T10:09:04.604Z"
                    jcr:lastModifiedBy=""
                    jcr:mixinTypes="jmix:augmentedSearchIndexableSite jmix:accessControlled ctplmix:siteSettings wemmix:deactivateJSExecution"
                    jcr:primaryType="jnt:virtualsite"
@@ -9054,13 +9051,13 @@
                                     jcr:uuid="8e90a204-4bd7-4785-b004-0e0a1a4792f3"
                                     label="Rede Orvane"/>
                </network>
-               <header j:lastPublished="2026-10-14T15:09:17.759Z"
+               <header j:lastPublished="2026-10-15T09:17:36.090Z"
                        j:lastPublishedBy="root"
                        j:originWS="default"
                        j:published="true"
                        jcr:created="2026-10-13T21:47:24.788Z"
                        jcr:createdBy="system"
-                       jcr:lastModified="2026-10-14T15:09:09.421Z"
+                       jcr:lastModified="2026-10-15T09:17:35.908Z"
                        jcr:lastModifiedBy="root"
                        jcr:primaryType="ctpl:siteHeader"
                        jcr:uuid="08731e3d-5676-4802-9ec7-997aacea9531"
@@ -9068,7 +9065,7 @@
                        logoDark="#/sites/orvane-live/files/orvane/logo-live-light.png"
                        registerPage="#/sites/orvane-live/home/register"
                        searchPage="#/sites/orvane-live/home/search"
-                       showAccount="false"
+                       showAccount="true"
                        showBrandName="false"
                        showSearch="true"
                        signInPage="#/sites/orvane-live/home/sign-in">
@@ -9198,7 +9195,7 @@
                               jcr:uuid="a06d27f2-1b4c-4f84-af5b-0b44e8875f17"
                               navDepth="3"/>
                   <j:translation_en brandName="Orvane Live"
-                                    j:lastPublished="2026-10-14T15:09:17.759Z"
+                                    j:lastPublished="2026-10-15T09:17:36.090Z"
                                     j:lastPublishedBy="root"
                                     j:published="true"
                                     jcr:language="en"
@@ -9207,7 +9204,7 @@
                                     jcr:primaryType="jnt:translation"
                                     jcr:uuid="82f684ac-7a84-44c4-b3ef-a87665d7cd2d"/>
                   <j:translation_fr brandName="Orvane Live"
-                                    j:lastPublished="2026-10-14T15:09:17.759Z"
+                                    j:lastPublished="2026-10-15T09:17:36.090Z"
                                     j:lastPublishedBy="root"
                                     j:published="true"
                                     jcr:language="fr"
@@ -9747,6 +9744,47 @@
                                           jcr:primaryType="jnt:translation"
                                           jcr:title="Orvane Live"
                                           jcr:uuid="757a1e8b-a282-46e0-a8c5-119954563010"/>
+                        <work-with-us j:lastPublished="2026-10-15T09:10:11.654Z"
+                                      j:lastPublishedBy="root"
+                                      j:linkType="internal"
+                                      j:originWS="default"
+                                      j:published="true"
+                                      jcr:created="2026-10-15T09:10:10.444Z"
+                                      jcr:createdBy="root"
+                                      jcr:lastModified="2026-10-15T09:10:10.456Z"
+                                      jcr:lastModifiedBy="root"
+                                      jcr:mixinTypes="jmix:internalLink"
+                                      jcr:primaryType="ctpl:link"
+                                      jcr:uuid="fd1d0251-3f71-48ca-b910-a1f72a693709"
+                                      openInNewTab="false">
+                           <j:translation_en j:lastPublished="2026-10-15T09:10:11.654Z"
+                                             j:lastPublishedBy="root"
+                                             j:linknode="#/sites/orvane-portal/home"
+                                             j:published="true"
+                                             jcr:language="en"
+                                             jcr:lastModified="2026-10-15T09:10:10.456Z"
+                                             jcr:lastModifiedBy="root"
+                                             jcr:primaryType="jnt:translation"
+                                             jcr:title="Work with us"
+                                             jcr:uuid="c50a6752-8ff1-4a60-afd0-7b7cbfb8a7b0"/>
+                           <j:translation_fr j:lastPublished="2026-10-15T09:10:11.654Z"
+                                             j:lastPublishedBy="root"
+                                             j:linknode="#/sites/orvane-portal/home"
+                                             j:published="true"
+                                             jcr:language="fr"
+                                             jcr:lastModified="2026-10-15T09:10:10.456Z"
+                                             jcr:lastModifiedBy="root"
+                                             jcr:primaryType="jnt:translation"
+                                             jcr:title="Travailler avec nous"
+                                             jcr:uuid="97fac12c-ed62-49d4-999c-40e318a9cc71"/>
+                           <j:translation_pt j:linknode="#/sites/orvane-portal/home"
+                                             jcr:language="pt"
+                                             jcr:lastModified="2026-10-15T09:10:10.473Z"
+                                             jcr:lastModifiedBy="root"
+                                             jcr:primaryType="jnt:translation"
+                                             jcr:title="Trabalhe connosco"
+                                             jcr:uuid="26df2544-9518-47b1-95c0-1aad59570f0d"/>
+                        </work-with-us>
                      </about>
                   </columns>
                   <legal j:lastPublished="2026-10-14T13:41:07.312Z"
