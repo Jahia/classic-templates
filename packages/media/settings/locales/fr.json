@@ -110,6 +110,51 @@
     "index": "Aller à une lettre",
     "summary": "Liste les personnes sous {{start}} par nom, jusqu'à {{max}}."
   },
+  "brief": {
+    "deadline": "Date limite",
+    "mediaWanted": "Médias demandés",
+    "quantity": "Quantité",
+    "usage": "Usage prévu",
+    "reference": "Image d'inspiration",
+    "closedNotice": "Ce brief est clos : il n'accepte plus de propositions.",
+    "noDescription": "Ajoutez la description du brief : c'est là que les fournisseurs lisent ce que l'on attend d'eux.",
+    "status": {
+      "closed": "Clos"
+    },
+    "media": {
+      "photo": "Photos",
+      "video": "Vidéos"
+    },
+    "use": {
+      "storyIllustration": "Illustration d'articles",
+      "social": "Réseaux sociaux",
+      "eventScreens": "Écrans d'événement"
+    }
+  },
+  "briefList": {
+    "summary": "Liste les briefs sous {{start}} que chaque visiteur peut lire, {{scope}}, par date limite croissante, jusqu'à {{max}}.",
+    "scopeOpen": "ouverts uniquement",
+    "scopeAll": "ouverts et clos"
+  },
+  "submission": {
+    "brief": "Brief",
+    "submittedOn": "Date d'envoi",
+    "statusLabel": "Statut",
+    "deskNote": "Note du service photo",
+    "usedIn": "Utilisée dans",
+    "photos": "Photos envoyées",
+    "moreFiles_one": "{{count}} autre fichier",
+    "moreFiles_other": "{{count}} autres fichiers",
+    "status": {
+      "submitted": "Envoyée",
+      "inReview": "En cours d'examen",
+      "accepted": "Acceptée",
+      "declined": "Refusée"
+    }
+  },
+  "submissionList": {
+    "summary": "Liste les propositions sous {{start}} que chaque visiteur peut lire, les plus récentes d'abord, jusqu'à {{max}}."
+  },
   "keyDates": {
     "dates": "Du {{start}} au {{end}}",
     "venue": "Lieu",

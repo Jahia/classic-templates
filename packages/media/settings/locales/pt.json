@@ -110,6 +110,51 @@
     "index": "Ir para uma letra",
     "summary": "Lista as pessoas em {{start}} por nome, até {{max}}."
   },
+  "brief": {
+    "deadline": "Data limite",
+    "mediaWanted": "Conteúdos pedidos",
+    "quantity": "Quantidade",
+    "usage": "Utilização prevista",
+    "reference": "Imagem de referência",
+    "closedNotice": "Este briefing está encerrado: já não aceita propostas.",
+    "noDescription": "Adicione a descrição do briefing: é aí que os fornecedores leem o que se espera deles.",
+    "status": {
+      "closed": "Encerrado"
+    },
+    "media": {
+      "photo": "Fotografias",
+      "video": "Vídeos"
+    },
+    "use": {
+      "storyIllustration": "Ilustração de notícias",
+      "social": "Redes sociais",
+      "eventScreens": "Ecrãs de eventos"
+    }
+  },
+  "briefList": {
+    "summary": "Lista os briefings em {{start}} que cada visitante pode ler, {{scope}}, por data limite crescente, até {{max}}.",
+    "scopeOpen": "apenas os abertos",
+    "scopeAll": "abertos e encerrados"
+  },
+  "submission": {
+    "brief": "Briefing",
+    "submittedOn": "Data de envio",
+    "statusLabel": "Estado",
+    "deskNote": "Nota da redação de fotografia",
+    "usedIn": "Utilizada em",
+    "photos": "Fotografias enviadas",
+    "moreFiles_one": "mais {{count}} ficheiro",
+    "moreFiles_other": "mais {{count}} ficheiros",
+    "status": {
+      "submitted": "Enviada",
+      "inReview": "Em análise",
+      "accepted": "Aceite",
+      "declined": "Recusada"
+    }
+  },
+  "submissionList": {
+    "summary": "Lista as propostas em {{start}} que cada visitante pode ler, das mais recentes para as mais antigas, até {{max}}."
+  },
   "keyDates": {
     "dates": "De {{start}} a {{end}}",
     "venue": "Local",
