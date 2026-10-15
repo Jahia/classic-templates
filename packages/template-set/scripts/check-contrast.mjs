@@ -138,8 +138,24 @@ for (const [, name] of css.matchAll(/:root\[data-ctpl-theme="([\w-]+)"\]/g)) {
   if (!themes.includes(name)) themes.push(name);
 }
 
+// Every theme the site settings offer must have a token block (else it would render as the default
+// look, unchecked) and every token block must be offered: compare with the CND choicelist.
+const cnd = readFileSync(new URL("../settings/definitions.cnd", import.meta.url), "utf8");
+const offered = [
+  ...(cnd.split("\n").find((l) => l.includes("- ctplTheme")) ?? "").matchAll(/'([a-z]+)'/g),
+].map((m) => m[1]);
+const mismatch = [
+  ...offered
+    .filter((t) => !themes.includes(t))
+    .map((t) => `${t}: offered by the CND, no token block`),
+  ...themes
+    .filter((t) => !offered.includes(t))
+    .map((t) => `${t}: token block, not offered by the CND`),
+];
+for (const line of mismatch) console.log(`FAIL theme list: ${line}`);
+
 const white = parseHex("#ffffff");
-let failures = 0;
+let failures = mismatch.length;
 for (const theme of themes) {
   const vars =
     theme === "default" ? base : { ...base, ...blockVars(`:root[data-ctpl-theme="${theme}"]`) };

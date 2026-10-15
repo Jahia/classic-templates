@@ -85,6 +85,21 @@ Only what the page shows is described. To get the best of it:
 - tag news items and articles with Jahia's tag field;
 - set the logo and brand name in the site header.
 
+## Hiding a whole site from search engines
+
+A private, gated or pre-launch site should not appear in search results. In jContent, edit the
+site node (the site, not its home page), switch on the **Site look** section, tick **Hide from
+search engines**, save, and **publish the site**. Every page of the site then carries
+`<meta name="robots" content="noindex, nofollow">`: search engines are asked not to index it and
+not to follow its links. Unticking it removes the tag from every page again.
+
+- This is a request that well-behaved crawlers honour. It does not protect the content: use
+  access control (members-only pages, a gated site) for that.
+- The template set generates no `sitemap.xml` and no `robots.txt`. If you use Jahia's **sitemap**
+  module, do not enable it on a site you hide: it would list pages you ask engines not to index.
+- The structured data (schema.org JSON-LD) and the Open Graph tags are unchanged: they describe the
+  page and are harmless on a noindex site.
+
 ## sitemap.xml for search engines
 
 A `sitemap.xml` file lists the pages of your site for search engines. The template set does not

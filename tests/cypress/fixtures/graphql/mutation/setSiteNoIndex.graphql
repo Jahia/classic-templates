@@ -1,0 +1,10 @@
+mutation setSiteNoIndex($sitePath: String!, $noIndex: String!) {
+    jcr {
+        mutateNode(pathOrId: $sitePath) {
+            addMixins(mixins: ["ctplmix:siteSettings"])
+            setPropertiesBatch(properties: [{ name: "ctplNoIndex", value: $noIndex }]) {
+                path
+            }
+        }
+    }
+}

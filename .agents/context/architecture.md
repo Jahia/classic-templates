@@ -62,8 +62,12 @@ classic-travel has its own page: [`travel.md`](travel.md).
 
 See the AIStartupKit context doc `jahia-theming-tokens.md`. Tokens are prefixed `--ctpl-`, in
 `src/templates/tokens.css`. The site mixin `ctplmix:siteSettings` carries `ctplTheme` (`default`,
-`ocean`, `terracotta`, `horizon`, `sage`, `slate`, `graphite`, `signal`, `live`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
-Layout (only known values; the default look stamps nothing).
+`ocean`, `terracotta`, `horizon`, `sage`, `slate`, `graphite`, `signal`, `live`, `portal`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
+Layout (only known values; the default look stamps nothing). It also carries `ctplNoIndex` (boolean, default false):
+true makes the Layout render `<meta name="robots" content="noindex, nofollow">` on every page, read from the
+page's own site (`robotsDirective` in `lib/site.ts`); false or absent renders nothing. The template set emits no
+sitemap and no robots.txt (Jahia's sitemap module does, and must stay off on a noindex site); JSON-LD and Open
+Graph are left as they are.
 
 - **Light and dark without duplication:** every colour role is a `light-dark()` pair and
   `:root { color-scheme: light dark }`; `data-ctpl-scheme` only forces `color-scheme`. Jahia's CSS
@@ -73,7 +77,7 @@ Layout (only known values; the default look stamps nothing).
   badge) is for values that must stand out (key figures, prices). `:root` aliases it to the accent,
   so every theme has it; a theme that wants its own sets it (horizon: an orange, light first, with
   its own surfaces, text and borders). The alias resolves on `<html>`, where the theme block
-  overrides the accent, so no theme has to repeat it. Sage (coral), slate (green), graphite (crimson), signal (vermilion) and live (jade) also set their own.
+  overrides the accent, so no theme has to repeat it. Sage (coral), slate (green), graphite (crimson), signal (vermilion) and live (jade) also set their own; portal sets only the emphasis (the group's vermilion) and keeps the action equal to its petrol accent.
 - **Action role:** `--ctpl-color-action` (+ `-hover`, `--ctpl-color-text-on-action`) is for the call-to-action buttons (`lib/cta.module.css`, the Formidable primary button in `addons.css`). Aliased to the accent in `:root`, like the emphasis role, so only a theme that wants other button colours sets it (sage: coral, slate: green, graphite: crimson, signal: vermilion, live: jade). Links, navigation, tabs and indicators keep the accent. `check-contrast.mjs` covers it for every theme and scheme.
 - **Contrast** is checked by `yarn check:contrast` for every theme × scheme (39 pairs each), and
   literal colours outside `tokens.css` by `yarn check:tokens`. Both were shown to fail on a

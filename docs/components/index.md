@@ -60,4 +60,4 @@ These groups of fields appear in several components. Each page explains them onc
 Two groups of options are not components but change how pages show:
 
 - **Page options**, in a page's edit form: **Hide from navigation** (see [Site header](site-header.md)), **Hide the page title** (see [Hero banner](hero-banner.md)) and **Hide the breadcrumb** (see [Breadcrumb](breadcrumb.md)).
-- **Site look**, in the site's edit form in jContent: **Theme**, **Light or dark** and **Show the breadcrumb**. Changing them alters no content: every component follows.
+- **Site look**, in the site's edit form in jContent: **Theme**, **Light or dark**, **Show the breadcrumb** and **Hide from search engines**. Changing them alters no content: every component follows.

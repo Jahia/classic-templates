@@ -12,6 +12,7 @@ const THEMES = new Set([
   "graphite",
   "signal",
   "live",
+  "portal",
 ]);
 const SCHEMES = new Set(["light", "dark"]);
 
@@ -39,6 +40,20 @@ export const readSiteLook = (site: JCRSiteNode): SiteLook => {
     theme: THEMES.has(theme) ? theme : undefined,
     scheme: SCHEMES.has(scheme) ? scheme : undefined,
   };
+};
+
+/** The robots directive of a site that hides itself from search engines. */
+export const NOINDEX_DIRECTIVE = "noindex, nofollow";
+
+/**
+ * The content of `<meta name="robots">` for the site, or undefined when the site does not hide
+ * itself from search engines (the setting off, never saved, or the mixin not switched on): the
+ * page then carries no robots tag at all and the output is unchanged.
+ */
+export const robotsDirective = (site: JCRSiteNode): string | undefined => {
+  if (!site.isNodeType("ctplmix:siteSettings")) return undefined;
+  if (!site.hasProperty("ctplNoIndex")) return undefined;
+  return site.getProperty("ctplNoIndex").getBoolean() ? NOINDEX_DIRECTIVE : undefined;
 };
 
 /**
