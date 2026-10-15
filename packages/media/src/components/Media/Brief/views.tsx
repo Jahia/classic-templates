@@ -75,19 +75,18 @@ const Facts = ({ props, withUsage }: { props: Props; withUsage: boolean }) => {
  * Reads the form a brief points at (`submissionForm`), for the slot below. "none": the brief has no
  * form; "unavailable": one is set but is not a Formidable form, or the visitor cannot read it (it
  * was deleted, is not published yet, or is restricted: a weakreference to such a node comes back
- * unset); otherwise the form, contextualized the way Formidable's own form reference renders it.
+ * unset); otherwise the form node.
  */
 const readSubmissionForm = (
   currentNode: JCRNodeWrapper,
-  form: JCRNodeWrapper | undefined,
 ): { state: "none" } | { state: "unavailable" } | { state: "ready"; node: JCRNodeWrapper } => {
   if (!currentNode.hasProperty("submissionForm")) return { state: "none" };
-  if (!form || !form.isNodeType(FORM_NODE_TYPE)) return { state: "unavailable" };
+  // getNode(), not getContextualizedNode(): the latter reads a `j:node` property (a content
+  // reference's) and throws ItemNotFoundException on any other weakreference (8.2.3.2).
   try {
-    return {
-      state: "ready",
-      node: currentNode.getProperty("submissionForm").getContextualizedNode(),
-    };
+    const node = currentNode.getProperty("submissionForm").getNode() as JCRNodeWrapper;
+    if (!node?.isNodeType(FORM_NODE_TYPE)) return { state: "unavailable" };
+    return { state: "ready", node };
   } catch {
     return { state: "unavailable" };
   }
@@ -97,7 +96,7 @@ const readSubmissionForm = (
  * The submission form of a brief, under the facts and the description. While the brief is open and
  * `submissionForm` points at a Formidable form (`fmdb:form`) the visitor can read, the form is
  * rendered under a level-2 heading, through `<Render>` of the contextualized node as Formidable's
- * own form reference does: the form is a client island that posts from this page, so its request
+ * own form reference does (but resolved with getNode(): see readSubmissionForm): the form is a client island that posts from this page, so its request
  * carries the brief's page as Referer (the Formidable action resolves the brief from it). A closed
  * brief shows a short text instead. Without a readable form nothing is shown, and in edit mode a
  * notice says what is missing. The form is a cache dependency of the page (it is read through the
@@ -107,7 +106,7 @@ const readSubmissionForm = (
 const SubmissionSlot = ({ props }: { props: Props }) => {
   const t = useT();
   const { currentNode, renderContext } = useServerContext();
-  const form = readSubmissionForm(currentNode, props.submissionForm);
+  const form = readSubmissionForm(currentNode);
   const state = submissionSlotState(props.briefStatus, form.state === "ready");
   if (state === "none") {
     if (!renderContext.isEditMode()) return null;
