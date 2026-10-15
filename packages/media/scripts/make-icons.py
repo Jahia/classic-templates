@@ -92,6 +92,36 @@ def key_date(d, p):
     d.rectangle(p(12, 14, 20, 21), fill=INK)
 
 
+def brief(d, p):
+    # A clipboard sheet with a clip on top and lines of text: what is asked for.
+    d.rectangle(p(6, 6, 26, 29), outline=INK, width=w(2))
+    d.rectangle(p(12, 3, 20, 9), fill=INK)
+    for y in (14, 19, 24):
+        d.line(p(10, y, 22, y), fill=INK, width=w(2))
+
+
+def submission(d, p):
+    # A picture frame with an arrow going up into it: what a supplier sends.
+    d.rectangle(p(4, 12, 28, 29), outline=INK, width=w(2))
+    d.polygon(p(5, 28, 12, 20, 17, 25, 21, 21, 27, 28), fill=INK)
+    d.line(p(16, 3, 16, 14), fill=INK, width=w(2))
+    d.polygon(p(11, 7, 16, 2, 21, 7), fill=INK)
+
+
+def brief_list(d, p):
+    for y in (4, 12, 20):
+        d.rectangle(p(4, y, 10, y + 6), outline=INK, width=w(2))
+        d.line(p(13, y + 3, 28, y + 3), fill=INK, width=w(2))
+    d.line(p(13, 28, 22, 28), fill=INK, width=w(1))
+
+
+def submission_list(d, p):
+    for y in (5, 13, 21):
+        d.line(p(4, y + 3, 6, y + 5), fill=INK, width=w(2))
+        d.line(p(6, y + 5, 10, y), fill=INK, width=w(2))
+        d.line(p(13, y + 3, 28, y + 3), fill=INK, width=w(2))
+
+
 ICONS = {
     "ctmdmix_component": wave,
     "ctmdmix_pageComponent": wave,
@@ -105,6 +135,10 @@ ICONS = {
     "ctmd_keyDates": key_dates,
     "ctmd_keyDate": key_date,
     "ctmd_searchResults": search,
+    "ctmd_brief": brief,
+    "ctmd_submission": submission,
+    "ctmd_briefList": brief_list,
+    "ctmd_submissionList": submission_list,
 }
 
 if __name__ == "__main__":

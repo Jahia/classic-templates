@@ -1,0 +1,40 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// What a supplier sent in answer to a brief: the photos or videos with their caption, credit,
+// licence, shooting date and place, and the picture desk's follow-up (status, note, and where the
+// accepted media were used). It has no page of its own (no jmix:mainResource): it shows as a status
+// card in a submission list, to the supplier who sent it and to the desk, as far as the ACLs on the
+// submission or its folder allow. The supplier's own values (caption, credit, location, company,
+// submittedBy) and the desk note are typed once, in one language, and read in any: they are NOT
+// i18n, so a supplier reading the portal in another language still sees them. The title comes from
+// mix:title, whose jcr:title is translatable by nature: the card reads it in the page's language,
+// else in whichever language it exists (titleOf in lib/media.ts), and a submission list never
+// leaves out a submission for lack of a translation. company and submittedBy are set by the
+// submission action, not typed by the supplier. brief and media are weak references: the card
+// links the brief only when the visitor can read it.
+[ctmd:submission] > jnt:content, mix:title, jmix:editorialContent, ctmdmix:component
+ // cnd-check-ignore(missingI18n): typed by the supplier once, in one language, read in any (see above)
+ - caption (string, textarea)
+ - credit (string)
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - licence (string, choicelist[resourceBundle]) < 'editorial', 'exclusive30'
+ - shotDate (date, datepicker)
+ - location (string)
+ - media (weakreference, picker[type='file']) multiple < jnt:file
+ - captionsFiles (weakreference, picker[type='file']) multiple < jnt:file
+ - brief (weakreference, picker[type='editorial']) < ctmd:brief
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - submissionStatus (string, choicelist[resourceBundle]) = 'submitted' autocreated < 'submitted', 'inReview', 'accepted', 'declined'
+ - deskNote (string, textarea)
+ // cnd-check-ignore(weakrefNoConstraint): the published item that uses the accepted media can be any main resource, on any site of the group
+ - usedIn (weakreference)
+ - company (string)
+ - submittedBy (string)

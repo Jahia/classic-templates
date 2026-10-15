@@ -30,6 +30,10 @@ changing a view. This file says what differs.
 | `ctmd:keyDates`       | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list` (`+ * (ctmd:keyDate)`)                                                               | default                                                                          |
 | `ctmd:keyDate`        | `mix:title`                                                                                                                                                    | default                                                                          |
 | `ctmd:searchResults`  | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`                                                                                                   | default (`cache.expiration` 0)                                                   |
+| `ctmd:brief`          | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`                                                                                 | default (card), card, fullPage                                                   |
+| `ctmd:briefList`      | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list`, `jmix:renderableList`, `jmix:cache`                                                 | default (`cache.perUser`)                                                        |
+| `ctmd:submission`     | `mix:title`, `jmix:editorialContent`, `ctmdmix:component` (no `jmix:mainResource`)                                                                             | default and statusCard (`cache.perUser`)                                         |
+| `ctmd:submissionList` | as the brief list                                                                                                                                              | default (`cache.perUser`)                                                        |
 
 Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:eventFolder`
 (`extends = jnt:contentFolder`, `ctmdTimeZone`, IANA name, default UTC).
@@ -95,6 +99,33 @@ Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:event
   `aria-pressed` toggles (feed) or labelled selects (agenda) with a polite status; the countdown is
   built in the browser so a cached page never shows a stale count; audio always comes with a
   transcript in a `<details>`.
+
+- **Supplier portal: briefs and submissions** (`ctmd:brief`, `ctmd:submission` and their two lists).
+  The module owns types and views only; who may read what is an ACL set by the site (on a brief, a
+  supplier's folder, a submission), never a field. Lists run `getNodesByJCRQuery` with the
+  request's own session (`jcrSession`, `lib/media.ts` `runQuery`), so an unreadable item is not
+  returned. **Output cache** (checked in Jahia's `AclCacheKeyPartGenerator`): by default a fragment
+  is keyed on the roles of the visitor on the rendered node's own path (or, with the groups
+  signature, on the principals that carry an ACE somewhere), neither of which sees the ACLs of the
+  items a list finds below its folder, and `cache.perUser` makes the key part the user. So
+  `ctmd:briefList`, `ctmd:submissionList` and the submission status card (which links a brief and
+  an item only when the visitor may read them) set `cache.perUser: "true"` on their views; the
+  brief card and page show the same to everyone who can open them and keep the shared cache. A
+  list depends on everything under its folder (path regex, `runQuery`). Not verified on a running
+  Jahia from this change: render the two lists as two suppliers in both orders after deploying.
+  Briefs are sorted in code (`lib/briefs.ts`: deadline, undated last, title as tie-break) and
+  filtered by status in the query (`briefStatus = 'open'`) and in code; submissions are ordered
+  `jcr:created DESC` in the query and again in code. Briefs are left out of a list for lack of a
+  translation in the page's language (as every list of the module); submissions never are
+  (`WITHOUT_TRANSLATION`): a supplier typed them in one language, and the status card reads the
+  title through `titleOf` (page language, else the first language it exists in, else the node
+  name). `caption`, `credit`, `location`, `deskNote` and the choicelists are not i18n on purpose.
+  A list whose folder the visitor cannot read counts as a missing start node (nothing live).
+  Choice labels shown to visitors are locale keys (`brief.media.*`, `brief.use.*`,
+  `submission.status.*`), the editor labels the resource bundle. The status shows as text with a
+  mark (`STATUS_CUE`) on a role tint, never colour alone. The brief's full-page view renders the
+  page's `<h1>` (as every full-page view of the module) and leaves `SubmissionSlot` for the
+  submission form.
 
 ## Gates
 

@@ -1,0 +1,87 @@
+/* A brief's page and the facts shown on its card. Theme tokens only. */
+
+.full {
+  display: grid;
+  gap: var(--ctpl-space-5);
+  padding-block: var(--ctpl-space-6) var(--ctpl-section-gap);
+}
+.full > * {
+  margin: 0;
+}
+.head,
+.body {
+  max-width: var(--ctpl-measure);
+}
+.head {
+  display: grid;
+  gap: var(--ctpl-space-3);
+}
+.head > * {
+  margin: 0;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-1) var(--ctpl-space-3);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.title {
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-4xl);
+  font-weight: var(--ctpl-heading-weight);
+  letter-spacing: var(--ctpl-heading-tracking);
+  line-height: var(--ctpl-leading-tight);
+  overflow-wrap: anywhere;
+}
+/* A closed brief says so in words, on the warning surface (the badge above is text too). */
+.notice {
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-inline-start: var(--ctpl-border-width-accent) solid var(--ctpl-color-warning);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-text);
+}
+
+/* Deadline, media wanted, quantity, use: a label and its value per line. */
+.facts {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  margin: 0;
+}
+.facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ctpl-space-2);
+}
+.facts dt {
+  color: var(--ctpl-color-text-muted);
+}
+.facts dd {
+  margin: 0;
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.full > .facts {
+  font-size: var(--ctpl-text-lg);
+}
+
+.reference {
+  max-width: var(--ctpl-measure);
+  margin: 0;
+}
+.reference img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--ctpl-radius-lg);
+}
+.reference figcaption {
+  margin-top: var(--ctpl-space-2);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.editNote {
+  max-width: var(--ctpl-measure);
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-sm);
+}

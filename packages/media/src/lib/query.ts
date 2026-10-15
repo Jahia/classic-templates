@@ -1,3 +1,5 @@
+import { BRIEF_STATUSES, SUBMISSION_STATUSES } from "./briefs.js";
+
 /**
  * The JCR-SQL2 queries of this module's lists. Every piece that reaches the string is checked
  * against an allow-list (type, order, format), an identifier checked against the UUID pattern
@@ -12,7 +14,15 @@ export const LIST_TYPES = new Set([
   "ctmd:person",
   "ctmd:session",
   "ctmd:sessionSpeaker",
+  "ctmd:brief",
+  "ctmd:submission",
 ]);
+
+/** The status property of the types that have one, and the values a list may filter on. */
+const STATUS_FILTERS: Record<string, { property: string; allowed: readonly string[] }> = {
+  "ctmd:brief": { property: "briefStatus", allowed: BRIEF_STATUSES },
+  "ctmd:submission": { property: "submissionStatus", allowed: SUBMISSION_STATUSES },
+};
 
 /** The formats of a story (ctmd:story format choicelist), in the order buttons show them. */
 export const FORMATS = [
@@ -31,6 +41,8 @@ export const isFormat = (value: unknown): value is Format =>
 const ORDERS = {
   newest: " ORDER BY item.[publicationDate] DESC",
   start: " ORDER BY item.[start] ASC",
+  deadline: " ORDER BY item.[deadline] ASC",
+  created: " ORDER BY item.[jcr:created] DESC",
   none: "",
 } as const;
 export type Order = keyof typeof ORDERS;
@@ -54,6 +66,7 @@ export const buildListQuery = ({
   order = "none",
   categories = [],
   formats = [],
+  statuses = [],
   reference,
 }: {
   type: string;
@@ -62,6 +75,8 @@ export const buildListQuery = ({
   /** Category identifiers: an item filed under any of them matches. */
   categories?: string[];
   formats?: string[];
+  /** Statuses an item of a brief or submission list may have (empty: any); an unknown one throws. */
+  statuses?: string[];
   /** A multi-valued or single weakreference property that must hold this identifier. */
   reference?: { property: "authors" | "person"; id: string };
 }): string => {
@@ -73,6 +88,13 @@ export const buildListQuery = ({
   if (ids.length > 0) conditions.push(anyOf("j:defaultCategory", ids));
   const kept = formats.filter(isFormat);
   if (kept.length > 0) conditions.push(anyOf("format", kept));
+  if (statuses.length > 0) {
+    const filter = STATUS_FILTERS[type];
+    if (!filter) throw new Error(`${type} has no status to filter on`);
+    const unknown = statuses.find((status) => !filter.allowed.includes(status));
+    if (unknown) throw new Error(`not a ${type} status: ${unknown}`);
+    conditions.push(anyOf(filter.property, statuses));
+  }
   if (reference) {
     if (!UUID.test(reference.id)) throw new Error(`not an identifier: ${reference.id}`);
     conditions.push(`item.[${reference.property}] = ${literal(reference.id)}`);
