@@ -61,7 +61,7 @@
     "all": "Todos",
     "summary": "Lista os artigos ({{formats}}) em {{start}}, do mais recente para o mais antigo, até {{max}}.",
     "allFormats": "todos os formatos",
-    "pageCategories": "Apenas os artigos classificados nas categorias desta página.",
+    "pageCategories": "Apenas os artigos classificados nas categorias desta página ou nas suas subcategorias.",
     "pageNoCategory": "Esta página não tem categoria: atribua-lhe o seu tema como categoria, ou o feed não mostra nada.",
     "noMatch": "Nenhum artigo deste formato aqui.",
     "shown": "Artigos apresentados: {{n}}"
