@@ -12,7 +12,8 @@
 // latest videos, the reports of a theme. Its heading is the optional jcr:title (an h2); the cta is
 // the "see all" link. startNode is the folder or page to look under (empty: the whole site; a
 // folder of another site is accepted). pageCategories keeps the stories filed under one of the
-// categories of the page showing the feed (topic pages carry their topic as a category);
+// categories of the page showing the feed or one of their subcategories (topic pages carry their
+// topic as a category, and list the stories of its sub-topics too);
 // filterCategories adds categories picked here (a listing criterion, not a category field).
 // formats keeps only some formats (empty: all). layout is a grid of cards, a list of compact rows,
 // or the newest story large above a grid. showFilter adds format buttons that filter the stories

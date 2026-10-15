@@ -61,7 +61,7 @@
     "all": "Tous",
     "summary": "Liste les articles ({{formats}}) sous {{start}}, du plus récent au plus ancien, jusqu'à {{max}}.",
     "allFormats": "tous les formats",
-    "pageCategories": "Seulement les articles classés dans les catégories de cette page.",
+    "pageCategories": "Seulement les articles classés dans les catégories de cette page ou leurs sous-catégories.",
     "pageNoCategory": "Cette page n'a pas de catégorie : donnez-lui son thème comme catégorie, sinon le fil n'affiche rien.",
     "noMatch": "Aucun article de ce format ici.",
     "shown": "Articles affichés : {{n}}"
