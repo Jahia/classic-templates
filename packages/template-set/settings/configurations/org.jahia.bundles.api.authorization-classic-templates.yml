@@ -1,0 +1,14 @@
+# default configuration - won't be overridden
+#
+# The header's account entry (an island) asks Jahia who is signed in: { currentUser { username displayName } }.
+# Jahia's default scope opens GraphQL to privileged users only (back-office roles): a site member or a
+# portal supplier, signed in, would always see "Sign in". This scope lets the site's own pages call that
+# one field and the two fields of the user it reads (each field is checked; the type of currentUser is
+# "Current user", escaped Current_32_user), on no node: no content becomes readable through GraphQL.
+classic_templates_account:
+  description: "Pages of a classic-templates site may ask who is signed in (the header's account entry)"
+  auto_apply:
+    - origin: hosted
+  grants:
+    - api: graphql.Query.currentUser, graphql.Current_32_user.username, graphql.Current_32_user.displayName
+      node: none
