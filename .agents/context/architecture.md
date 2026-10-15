@@ -38,7 +38,7 @@ classic-travel has its own page: [`travel.md`](travel.md).
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
 | Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
-| Content                                    | `ctpl:heroBanner`, `ctpl:heroCarousel`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`, `ctpl:signIn`                                                                        |
+| Content                                    | `ctpl:heroBanner`, `ctpl:heroCarousel`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:networkBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`, `ctpl:signIn`                                                     |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -62,7 +62,7 @@ classic-travel has its own page: [`travel.md`](travel.md).
 
 See the AIStartupKit context doc `jahia-theming-tokens.md`. Tokens are prefixed `--ctpl-`, in
 `src/templates/tokens.css`. The site mixin `ctplmix:siteSettings` carries `ctplTheme` (`default`,
-`ocean`, `terracotta`, `horizon`, `sage`, `slate`, `graphite`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
+`ocean`, `terracotta`, `horizon`, `sage`, `slate`, `graphite`, `signal`, `live`) and `ctplColorScheme` (`auto`, `light`, `dark`), stamped on `<html>` by the
 Layout (only known values; the default look stamps nothing).
 
 - **Light and dark without duplication:** every colour role is a `light-dark()` pair and
@@ -73,8 +73,8 @@ Layout (only known values; the default look stamps nothing).
   badge) is for values that must stand out (key figures, prices). `:root` aliases it to the accent,
   so every theme has it; a theme that wants its own sets it (horizon: an orange, light first, with
   its own surfaces, text and borders). The alias resolves on `<html>`, where the theme block
-  overrides the accent, so no theme has to repeat it. Sage (coral), slate (green) and graphite (crimson) also set their own.
-- **Action role:** `--ctpl-color-action` (+ `-hover`, `--ctpl-color-text-on-action`) is for the call-to-action buttons (`lib/cta.module.css`, the Formidable primary button in `addons.css`). Aliased to the accent in `:root`, like the emphasis role, so only a theme that wants other button colours sets it (sage: coral, slate: green, graphite: crimson). Links, navigation, tabs and indicators keep the accent. `check-contrast.mjs` covers it for every theme and scheme.
+  overrides the accent, so no theme has to repeat it. Sage (coral), slate (green), graphite (crimson), signal (vermilion) and live (jade) also set their own.
+- **Action role:** `--ctpl-color-action` (+ `-hover`, `--ctpl-color-text-on-action`) is for the call-to-action buttons (`lib/cta.module.css`, the Formidable primary button in `addons.css`). Aliased to the accent in `:root`, like the emphasis role, so only a theme that wants other button colours sets it (sage: coral, slate: green, graphite: crimson, signal: vermilion, live: jade). Links, navigation, tabs and indicators keep the accent. `check-contrast.mjs` covers it for every theme and scheme.
 - **Contrast** is checked by `yarn check:contrast` for every theme × scheme (39 pairs each), and
   literal colours outside `tokens.css` by `yarn check:tokens`. Both were shown to fail on a
   deliberately broken token before being trusted.
@@ -319,6 +319,19 @@ auto`, with the non-breaking spaces French needs inside « »), so editors type 
   hero carousels (a column adds one under a titled row; a tab adds its label's level, one below a
   titled tabs section, plus one; a carousel slide adds one under a titled carousel), with every
   container as a cache dependency, clamped to h6; `headingTag` covers h2 to h6.
+
+## Network bar
+
+- **Network bar** (`ctpl:networkBar`, `ctplmix:headerComponent` only, `jmix:list` of `ctpl:link`):
+  for a site that belongs to a group of sites (a media group's editorial hub and its event site).
+  Optional `label` (i18n, the navigation's name, else a hidden "Our sites"), then the children
+  rendered with the `network` view of `ctpl:link` (`Link/network.server.tsx`), which marks with
+  `aria-current="true"` the internal link whose target's site (`resolveLink` now returns the
+  target's `siteKey`) is the page's site (`pageSite`). External links are never current. A named
+  `<nav>` beside the site header, never inside it (one banner). On `surface-inverse` with
+  `text-inverse` links and focus ring, the one pair `check:contrast` checks on that surface.
+  Cross-site internal links work as is: the page picker has a site switcher, and `buildNodeUrl`
+  renders the other site's URL (checked on 8.2.3.2 with two sites on `localhost`).
 
 ## Notice bar and hero carousel
 
