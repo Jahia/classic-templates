@@ -54,7 +54,7 @@ order does not matter.
 
 1. Install, at the same version, `classic-templates` and `classic-media` (0.8.0 or later), then the
    add-on modules the sites show: `jsfaq` (1.1.1), `js-media-gallery` (1.1.0),
-   `js-store-locator` (1.1.0) and Formidable 0.6 and `formidable-extended-actions` (accounts; not released yet,
+   `js-store-locator` (1.1.0) and Formidable 0.6 and `formidable-accounts` (of the formidable-extended-actions repository; not released yet,
    see the Orvane Signal package's README), and these two modules.
 2. Open Administration > Projects
    ([localhost:8080/jahia/administration/webProjectSettings](http://localhost:8080/jahia/administration/webProjectSettings)),

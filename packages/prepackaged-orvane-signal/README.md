@@ -68,7 +68,7 @@ order does not matter.
 1. Install, at the same version, `classic-templates` and `classic-media` (0.8.0 or later), then the
    add-on modules the sites show: `jsfaq` (1.1.1), `js-media-gallery` (1.1.0),
    `js-store-locator` (1.1.0), Formidable 0.6 or later (`formidable-engine`, `formidable-elements`,
-   `formidable-extended-inputs`, and `formidable-extended-actions`, which creates members' accounts; its
+   `formidable-extended-inputs`, and `formidable-accounts` (formidable-extended-actions repository), which creates members' accounts; its
    CAPTCHA requirement `requireCaptcha` in `org.jahia.modules.formidable.accounts` needs a CAPTCHA
    provider configured, or `false` on a development instance only), and these two modules.
    Formidable 0.6 is not released yet: `formidable-accounts`, the password field and the engine
