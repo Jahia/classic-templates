@@ -70,7 +70,10 @@ jahiaComponent(
         {(dayLevel) => {
           const DayHeading = headingTag(dayLevel);
           return (
-            <div data-ctmd-filter={facets.length > 0 ? "" : undefined}>
+            <div
+              data-ctmd-filter={facets.length > 0 ? "" : undefined}
+              data-ctmd-track={facets.length > 0 ? id : undefined}
+            >
               <MediaScript />
               {facets.length > 0 && (
                 <>

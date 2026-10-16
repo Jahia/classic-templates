@@ -105,7 +105,7 @@ const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => 
   const language = useLanguage();
   if (props.format === "video" && props.video) {
     return (
-      <div className={classes.media} data-testid="ctmd-story-video">
+      <div className={classes.media} data-testid="ctmd-story-video" data-ctmd-track-media="video">
         {/* The video's title is the first heading under the story's h1. */}
         <Render node={props.video} parameters={{ headingLevel: "2" }} />
       </div>
@@ -116,7 +116,11 @@ const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => 
     // The player comes with its captions (a WebVTT file in the page's language); without them the
     // episode is offered as a file, next to the transcript the page shows below.
     return (
-      <figure className={classes.media} data-testid="ctmd-story-audio">
+      <figure
+        className={classes.media}
+        data-testid="ctmd-story-audio"
+        data-ctmd-track-media="audio"
+      >
         {props.image && (
           <Image node={props.image} owner={node} renderContext={renderContext} priority />
         )}
@@ -229,7 +233,11 @@ export const StoryFull = ({ props, perUser = false }: { props: Props; perUser?: 
   const relatedItems = relatedStories(currentNode, renderContext);
   const authors = storyAuthors(currentNode, renderContext);
   return (
-    <article className={`ctpl-container ${classes.full}`} data-testid="ctmd-story-full">
+    <article
+      className={`ctpl-container ${classes.full}`}
+      data-testid="ctmd-story-full"
+      data-ctmd-track={id}
+    >
       <Styles />
       {membersOnly && renderContext.isEditMode() && (
         <p className={classes.editNote}>{t("story.membersEdit")}</p>

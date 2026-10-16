@@ -1,0 +1,114 @@
+/*
+ * Consent banner: a band fixed at the bottom of the window on the raised surface, above the page
+ * (the script pads the end of the page by its height, so nothing stays hidden under it), and a
+ * slim "privacy settings" row after the footer, on the footer's surface. Text, link and both
+ * buttons use pairs contrast-checked in every theme and scheme (yarn check:contrast).
+ */
+.root {
+  display: contents;
+}
+
+.banner {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  max-height: 70vh;
+  overflow-y: auto;
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  background: var(--ctpl-color-surface-raised);
+  box-shadow: var(--ctpl-shadow-lg);
+  color: var(--ctpl-color-text);
+}
+.banner[hidden] {
+  display: none;
+}
+/* Edit mode: in place, never over the page the editor works on. */
+.edit .banner {
+  position: static;
+  max-height: none;
+  box-shadow: none;
+}
+
+/* Text then buttons; side by side once there is room. */
+.inner {
+  display: grid;
+  gap: var(--ctpl-space-4);
+  padding-block: var(--ctpl-space-5);
+}
+@media (min-width: 64rem) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--ctpl-space-6);
+  }
+}
+
+.body > * {
+  margin: 0;
+}
+.body > * + * {
+  margin-top: var(--ctpl-space-2);
+}
+.title {
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-lg);
+  font-weight: var(--ctpl-heading-weight);
+}
+.text {
+  max-width: var(--ctpl-measure);
+}
+.hint {
+  margin-top: var(--ctpl-space-3);
+}
+
+/* Accept and Refuse: the same button, so neither choice is easier to see than the other. */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-3);
+}
+.choice {
+  min-height: 2.75rem;
+  padding: var(--ctpl-space-2) var(--ctpl-space-5);
+  border: 2px solid var(--ctpl-color-action);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  cursor: pointer;
+  transition: background-color var(--ctpl-duration-fast) var(--ctpl-ease);
+}
+.choice:hover {
+  border-color: var(--ctpl-color-action-hover);
+  background: var(--ctpl-color-action-hover);
+}
+
+/* The row that opens the banner again: after the footer, on its surface and in its small text. */
+.settings {
+  margin: 0;
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  background: var(--ctpl-color-surface-sunken);
+  font-size: var(--ctpl-text-sm);
+}
+.settingsInner {
+  display: flex;
+}
+.settingsButton {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ctpl-color-link);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+.settingsButton:hover {
+  color: var(--ctpl-color-link-hover);
+}

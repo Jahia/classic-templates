@@ -37,6 +37,14 @@ Unlike the classic-dev and Skylantern packages, this one keeps the content of ad
 purpose (the showcase demonstrates them): it declares `jsfaq`, `js-media-gallery`,
 `js-store-locator` and `formidable-elements` as dependencies.
 
+## Personalisation (jExperience)
+
+Orvane Live shares the personalisation of Orvane Signal (consent banner, personalised hero and
+Signal feed, the A/B test of the hero's call to action, the registration form mapped to the visitor
+profile): what to install and configure, and how to load the segments, goals, personas and the
+dashboard shipped with Orvane Signal, are in the
+[Orvane Signal README](../prepackaged-orvane-signal/README.md#personalisation-jexperience).
+
 ## Installing
 
 The two Orvane sites link to each other (the network bar in each header, the Signal editors who
@@ -46,15 +54,14 @@ order does not matter.
 
 1. Install, at the same version, `classic-templates` and `classic-media` (0.8.0 or later), then the
    add-on modules the sites show: `jsfaq` (1.1.1), `js-media-gallery` (1.1.0),
-   `js-store-locator` (1.1.0) and `formidable-elements` (0.5.0), and these two modules.
+   `js-store-locator` (1.1.0) and Formidable 0.6 and `formidable-accounts` (of the formidable-extended-actions repository; not released yet,
+   see the Orvane Signal package's README), and these two modules.
 2. Open Administration > Projects
    ([localhost:8080/jahia/administration/webProjectSettings](http://localhost:8080/jahia/administration/webProjectSettings)),
    and under **Import prepackaged project** import both Orvane sites.
-3. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), then
-   register and index the two sites:
-   `mutation { admin { search { a: addSite(siteKey: "orvane-signal") b: addSite(siteKey: "orvane-live") } } }`
-   and `startIndex(siteKeys: ["orvane-signal", "orvane-live"], workspace: LIVE)`. Without it every
-   page works and the search page shows its box with no result.
+3. For the search pages: install Augmented Search (4.1.0, with its Elasticsearch connector), set its
+   mapped node types and run one full reindex as the Orvane Signal package's README says (step 4).
+   Without it every page works and the search page shows its box with no result.
 
 With the provisioning API, attach the modules and both site zips (`importSite` takes the inner
 `<site>.zip` of the `-import.zip`, never the outer zip):

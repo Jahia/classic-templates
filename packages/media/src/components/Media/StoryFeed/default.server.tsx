@@ -91,7 +91,10 @@ jahiaComponent(
         summary={summary}
       >
         {(itemLevel) => (
-          <div data-ctmd-filter={withFilter ? "" : undefined}>
+          <div
+            data-ctmd-filter={withFilter ? "" : undefined}
+            data-ctmd-track={withFilter ? currentNode.getIdentifier() : undefined}
+          >
             {withFilter && (
               <>
                 <MediaScript />
