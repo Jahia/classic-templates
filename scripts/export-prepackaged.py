@@ -222,7 +222,7 @@ PROFILES = {
 # form answers mapped to the visitor profile (formidable-jexperience-engine) and the audience
 # dashboard (kibana-dashboards-provider, jexperience-dashboards).
 ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements", "formidable-extended-inputs",
-                 "formidable-accounts", "jexperience", "formidable-jexperience-engine", "kibana-dashboards-provider",
+                 "formidable-extended-actions", "jexperience", "formidable-jexperience-engine", "kibana-dashboards-provider",
                  "jexperience-dashboards"]
 ORVANE_ADDON_PREFIXES = ["jsfaqnt", "jsfaqmix", "jsfaq", "jsmediagallerynt", "jsmediagallerymix", "jsstorelocnt",
                          "jsstorelocmix", "fmdb", "fmdbmix", "fmdbext", "fmdbacc", "fmdbaccmix", "wem", "wemnt", "wemmix"]
@@ -239,13 +239,13 @@ for _site in ("orvane-signal", "orvane-live"):
 
 # Orvane Portal (v5), the suppliers' portal: gated below its home page (the ACLs travel with the
 # export, the groups they name are the project's), the briefs and submissions of classic-media, and
-# the submission form with Formidable's Create content action (formidable-content, prefix fmdbcnt).
+# the submission form with the Create content action (formidable-extended-actions, prefix fmdbcnt).
 # No jExperience on the portal.
 PROFILES["orvane-portal"] = {
     "package": "prepackaged-orvane-portal",
     "sources": ["template-set", "media"],
     "addon_prefixes": ["fmdb", "fmdbmix", "fmdbext", "fmdbcnt"],
-    "installed": ["classic-templates", "classic-media", "formidable-elements", "formidable-extended-inputs", "formidable-content"]
+    "installed": ["classic-templates", "classic-media", "formidable-elements", "formidable-extended-inputs", "formidable-extended-actions"]
     + PLATFORM_MODULES,
     "only_for_addons": [],
     "conversions": {},

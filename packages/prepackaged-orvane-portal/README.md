@@ -22,7 +22,7 @@ Orvane Portal in English and French, theme `portal`, every page marked `noindex`
 - four briefs (`ctmd:brief`, one for video suppliers only, one closed) and three earlier submissions
   (`ctmd:submission`) of two companies, with their pictures;
 - the submission form shown on every open brief's page (Formidable, sign-in required), whose
-  **Create content** action (`formidable-content`) turns an answer into a submission in the
+  **Create content** action (`formidable-extended-actions`) turns an answer into a submission in the
   supplier's company folder, files with their credit line.
 
 Every person, company, picture and contact is invented (`@orvane.example`, `.example` domains).
@@ -47,7 +47,7 @@ a new 8.2.3.2).
 
 1. Install `classic-templates` and `classic-media` (with the portal theme, the noindex setting, the
    brief and submission types and the credits: PRs #36 to #38), Formidable 0.6 with
-   `formidable-extended-inputs` and `formidable-content` (Jahia/formidable#406 and #415, not released
+   `formidable-extended-inputs` (Jahia/formidable#432) and `formidable-extended-actions` (not released
    yet), and this module.
 2. Configure Formidable's uploads (`org.jahia.modules.formidable.uploads`: add `vtt` to
    `uploadAllowedTypes`; 40 MB per file and 100 MB per request suit short video clips; files are held
