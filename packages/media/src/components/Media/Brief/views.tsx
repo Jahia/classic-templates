@@ -20,6 +20,14 @@ import cards from "../shared/cards.module.css";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
 import classes from "./brief.module.css";
+import ctaClasses from "../../../lib/cta.module.css";
+
+/** The id of the answer section: the brief page's "Answer this brief" button and the cards link to it. */
+const ANSWER_ID = "ctmd-brief-answer";
+
+/** Whether a supplier can answer the brief now: open, with a Formidable form the visitor can read. */
+const isAnswerable = (props: Props, currentNode: JCRNodeWrapper) =>
+  briefStatusOf(props.briefStatus) !== "closed" && readSubmissionForm(currentNode).state === "ready";
 
 /** The page language as a BCP 47 tag ("en", "fr"). */
 const useLanguage = () => {
@@ -120,17 +128,23 @@ const SubmissionSlot = ({ props }: { props: Props }) => {
   server.render.addCacheDependency({ node: form.node }, renderContext);
   return (
     <section
+      id={ANSWER_ID}
       className={classes.answer}
-      aria-labelledby="ctmd-brief-answer"
+      aria-labelledby={`${ANSWER_ID}-title`}
       data-testid="ctmd-brief-answer"
     >
-      <h2 id="ctmd-brief-answer" className={classes.answerTitle}>
+      <h2 id={`${ANSWER_ID}-title`} className={classes.answerTitle}>
         {t("brief.answer")}
       </h2>
       {state === "closed" ? (
         <p data-testid="ctmd-brief-closed">{t("brief.closedForm")}</p>
       ) : (
-        <Render node={form.node} readOnly />
+        // ctpl-addon: the template set's scope for another module's output (addons.css maps the
+        // Formidable form's variables and hooks to the site's tokens); without it the form's fields
+        // keep the browser's defaults
+        <div className="ctpl-addon">
+          <Render node={form.node} readOnly />
+        </div>
       )}
     </section>
   );
@@ -145,9 +159,10 @@ const SubmissionSlot = ({ props }: { props: Props }) => {
  */
 export const BriefFull = ({ props }: { props: Props }) => {
   const t = useT();
-  const { renderContext } = useServerContext();
+  const { renderContext, currentNode } = useServerContext();
   const title = props["jcr:title"];
   const closed = briefStatusOf(props.briefStatus) === "closed";
+  const answerable = isAnswerable(props, currentNode);
   return (
     <article
       className={classes.full}
@@ -165,6 +180,18 @@ export const BriefFull = ({ props }: { props: Props }) => {
         {closed && <p className={classes.notice}>{t("brief.closedNotice")}</p>}
       </header>
       <Facts props={props} withUsage />
+      {answerable && (
+        // the form sits below the picture and the description: say at once where to answer
+        <p className={ctaClasses.wrap}>
+          <a
+            className={`${ctaClasses.cta} ${ctaClasses.primary}`}
+            href={`#${ANSWER_ID}`}
+            data-testid="ctmd-brief-answer-link"
+          >
+            {t("brief.answer")}
+          </a>
+        </p>
+      )}
       {props.referenceImage && (
         <figure className={classes.reference} data-testid="ctmd-brief-reference">
           <Image node={props.referenceImage} renderContext={renderContext} priority />
@@ -194,6 +221,8 @@ export const BriefCard = ({ props }: { props: Props }) => {
   const title = props["jcr:title"];
   if (!title) return <Untitled />;
   const closed = briefStatusOf(props.briefStatus) === "closed";
+  const answerable = isAnswerable(props, currentNode);
+  const url = buildNodeUrl(currentNode);
   return (
     <article
       className={cards.card}
@@ -204,11 +233,20 @@ export const BriefCard = ({ props }: { props: Props }) => {
       <div className={cards.body}>
         {closed && <span className={cards.badge}>{t("brief.status.closed")}</span>}
         <Heading level={level} className={cards.title}>
-          <a className={cards.stretched} href={buildNodeUrl(currentNode)}>
+          <a className={cards.stretched} href={url}>
             {title}
           </a>
         </Heading>
         <Facts props={props} withUsage={false} />
+        {answerable && (
+          <a
+            className={classes.cardAnswer}
+            href={`${url}#${ANSWER_ID}`}
+            data-testid="ctmd-brief-card-answer"
+          >
+            {t("brief.answer")}
+          </a>
+        )}
       </div>
     </article>
   );
