@@ -78,9 +78,23 @@
   color: var(--ctpl-color-text-muted);
   font-size: var(--ctpl-text-sm);
 }
-/* The submission form and its heading, or the "closed" text. */
+/* The submission form and its heading, or the "closed" text. Reached from the button under the
+   facts: keep the heading clear of a sticky header. */
 .answer {
   max-width: var(--ctpl-measure);
+  scroll-margin-top: var(--ctpl-space-8);
+}
+/* The card's own way to the form: above the card's stretched link, so it is its own target. */
+.cardAnswer {
+  position: relative;
+  z-index: 1;
+  align-self: start;
+  color: var(--ctpl-color-link);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-underline-offset: 0.2em;
+}
+.cardAnswer::after {
+  content: " \2192" / "";
 }
 .answerTitle {
   margin: 0 0 var(--ctpl-space-4);

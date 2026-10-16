@@ -85,6 +85,23 @@
   display: grid;
   gap: var(--ctpl-space-2);
 }
+/* Radios and checkboxes carry .fmdb-form-control too: the text-field box above (full width,
+   padding, border) pushed each one away from its label. A choice is the control beside its label. */
+.ctpl-addon .fmdb-group-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+}
+.ctpl-addon .fmdb-form-control:is([type="radio"], [type="checkbox"]) {
+  flex: none;
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  accent-color: var(--ctpl-color-action);
+}
 .ctpl-addon .fmdb-message-success {
   padding: var(--ctpl-space-4);
   border-radius: var(--ctpl-radius-md);
