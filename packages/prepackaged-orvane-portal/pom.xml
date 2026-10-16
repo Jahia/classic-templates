@@ -24,7 +24,7 @@
 
   <properties>
     <jahia-module-type>system</jahia-module-type>
-    <jahia-depends>default,classic-templates,classic-media,formidable-elements,formidable-extended-inputs,formidable-content</jahia-depends>
+    <jahia-depends>default,classic-templates,classic-media,formidable-elements,formidable-extended-inputs,formidable-content,formidable-redirect</jahia-depends>
     <prepackaged.site>orvane-portal</prepackaged.site>
     <sonar.tests />
   </properties>

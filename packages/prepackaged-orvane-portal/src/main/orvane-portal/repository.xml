@@ -1728,7 +1728,7 @@
                                jcr:createdBy="root"
                                jcr:lastModified="2026-10-15T12:52:51.805Z"
                                jcr:lastModifiedBy="root"
-                               jcr:primaryType="fmdb:redirectAction"
+                               jcr:primaryType="fmdbred:redirectAction"
                                jcr:uuid="5cb33612-3d92-4ae6-809d-4036b80a9086"
                                page="#/sites/orvane-portal/home/my-submissions"
                                targetType="page">

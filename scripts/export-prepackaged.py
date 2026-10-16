@@ -239,13 +239,14 @@ for _site in ("orvane-signal", "orvane-live"):
 
 # Orvane Portal (v5), the suppliers' portal: gated below its home page (the ACLs travel with the
 # export, the groups they name are the project's), the briefs and submissions of classic-media, and
-# the submission form with the Create content action (formidable-content, of formidable-extended-actions; prefix fmdbcnt).
+# the submission form with the Create content action (formidable-content, of formidable-extended-actions; prefix fmdbcnt)
+# and the Redirect action (formidable-redirect, same repository; prefix fmdbred).
 # No jExperience on the portal.
 PROFILES["orvane-portal"] = {
     "package": "prepackaged-orvane-portal",
     "sources": ["template-set", "media"],
-    "addon_prefixes": ["fmdb", "fmdbmix", "fmdbext", "fmdbcnt"],
-    "installed": ["classic-templates", "classic-media", "formidable-elements", "formidable-extended-inputs", "formidable-content"]
+    "addon_prefixes": ["fmdb", "fmdbmix", "fmdbext", "fmdbcnt", "fmdbred"],
+    "installed": ["classic-templates", "classic-media", "formidable-elements", "formidable-extended-inputs", "formidable-content", "formidable-redirect"]
     + PLATFORM_MODULES,
     "only_for_addons": [],
     "conversions": {},
