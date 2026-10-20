@@ -27,3 +27,7 @@ target
 # Review and scan outputs
 pages.json
 .DS_Store
+
+# Python
+__pycache__/
+*.pyc

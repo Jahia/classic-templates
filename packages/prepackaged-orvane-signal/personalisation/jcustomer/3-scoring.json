@@ -1,0 +1,55 @@
+{
+ "endpoint": "/cxs/scoring",
+ "items": [
+  {
+   "itemId": "orvane-exhibitor-intent",
+   "itemType": "scoring",
+   "metadata": {
+    "id": "orvane-exhibitor-intent",
+    "name": "Orvane exhibitor intent",
+    "description": "10 points per view of an exhibit page of Orvane Live, up to 30.",
+    "scope": "systemscope",
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false,
+    "tags": [],
+    "systemTags": []
+   },
+   "elements": [
+    {
+     "value": 10,
+     "condition": {
+      "type": "profilePropertyCondition",
+      "parameterValues": {
+       "propertyName": "properties.orvaneExhibitViews",
+       "comparisonOperator": "greaterThanOrEqualTo",
+       "propertyValueInteger": 1
+      }
+     }
+    },
+    {
+     "value": 10,
+     "condition": {
+      "type": "profilePropertyCondition",
+      "parameterValues": {
+       "propertyName": "properties.orvaneExhibitViews",
+       "comparisonOperator": "greaterThanOrEqualTo",
+       "propertyValueInteger": 2
+      }
+     }
+    },
+    {
+     "value": 10,
+     "condition": {
+      "type": "profilePropertyCondition",
+      "parameterValues": {
+       "propertyName": "properties.orvaneExhibitViews",
+       "comparisonOperator": "greaterThanOrEqualTo",
+       "propertyValueInteger": 3
+      }
+     }
+    }
+   ]
+  }
+ ]
+}
