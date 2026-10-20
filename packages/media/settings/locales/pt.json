@@ -157,6 +157,16 @@
       "inReview": "Em análise",
       "accepted": "Aceite",
       "declined": "Recusada"
+    },
+    "caption": "Legenda",
+    "shotDate": "Data da fotografia",
+    "location": "Local",
+    "licenceLabel": "Licença",
+    "credit": "Crédito",
+    "files": "Ficheiros enviados",
+    "licence": {
+      "editorial": "Uso editorial em todos os sites do grupo",
+      "exclusive30": "Exclusividade de 30 dias"
     }
   },
   "submissionList": {

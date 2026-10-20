@@ -157,6 +157,16 @@
       "inReview": "In review",
       "accepted": "Accepted",
       "declined": "Declined"
+    },
+    "caption": "Caption",
+    "shotDate": "Shot on",
+    "location": "Location",
+    "licenceLabel": "Licence",
+    "credit": "Credit line",
+    "files": "Files sent",
+    "licence": {
+      "editorial": "Editorial use on every site of the group",
+      "exclusive30": "Exclusive for 30 days"
     }
   },
   "submissionList": {

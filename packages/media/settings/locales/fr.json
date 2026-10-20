@@ -157,6 +157,16 @@
       "inReview": "En cours d'examen",
       "accepted": "Acceptée",
       "declined": "Refusée"
+    },
+    "caption": "Légende",
+    "shotDate": "Prise de vue le",
+    "location": "Lieu",
+    "licenceLabel": "Licence",
+    "credit": "Crédit",
+    "files": "Fichiers envoyés",
+    "licence": {
+      "editorial": "Usage éditorial sur tous les sites du groupe",
+      "exclusive30": "Exclusivité de 30 jours"
     }
   },
   "submissionList": {

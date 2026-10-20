@@ -1,6 +1,8 @@
+import { Render } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useTranslation } from "react-i18next";
+import { audienceOf } from "./audience.js";
 import { readString } from "./props.js";
 import { resolveLink } from "./resolveLink.js";
 import classes from "./cta.module.css";
@@ -13,12 +15,17 @@ import classes from "./cta.module.css";
  * Safe on any node: without the mixin (an editor who did not switch it on) there is no link and no
  * label, so it renders nothing, in edit mode too. Every section view ends with it for that reason.
  * `label` defaults to the node's ctaLabel.
+ *
+ * A button limited to visitors who are, or are not, signed in (ctaAudience) is rendered through
+ * the "ctaForAudience" view of the node (CtaForAudience.server.tsx), cached per user: the section
+ * that calls this stays cached for everybody, only the button is kept per visitor.
  */
 export const Cta = ({
   node,
   label,
   renderContext,
   variant = "primary",
+  audienceChecked = false,
 }: {
   node: JCRNodeWrapper;
   label?: string;
@@ -28,8 +35,13 @@ export const Cta = ({
    * link with a 44 px target, for slim bands).
    */
   variant?: "primary" | "secondary" | "onOverlay" | "link";
+  /** Set by the "ctaForAudience" view once it decided this visitor sees the button. */
+  audienceChecked?: boolean;
 }) => {
   const { t } = useTranslation("classic-templates");
+  if (!audienceChecked && audienceOf(readString(node, "ctaAudience")) !== "everyone") {
+    return <Render node={node} view="ctaForAudience" parameters={{ variant }} />;
+  }
   const { link, missingTarget } = resolveLink(node, renderContext);
   const ctaLabel = label ?? readString(node, "ctaLabel");
   const text = ctaLabel || link?.targetTitle;
