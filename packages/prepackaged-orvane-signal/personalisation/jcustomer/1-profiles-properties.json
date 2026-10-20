@@ -1,0 +1,257 @@
+{
+ "endpoint": "/cxs/profiles/properties",
+ "items": [
+  {
+   "itemId": "orvaneTopicStreaming",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneTopicStreaming",
+    "name": "Orvane reads: Streaming and distribution",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneTopicProduction",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneTopicProduction",
+    "name": "Orvane reads: Production and live",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneTopicAi",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneTopicAi",
+    "name": "Orvane reads: AI and automation",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneTopicCloud",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneTopicCloud",
+    "name": "Orvane reads: Cloud and networks",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneTopicImmersive",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneTopicImmersive",
+    "name": "Orvane reads: Immersive and virtual",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneTopicBusiness",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneTopicBusiness",
+    "name": "Orvane reads: Business and people",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneRole",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "string",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneRole",
+    "name": "Orvane role (newsletter, registration)",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneTopics",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "string",
+   "multivalued": true,
+   "metadata": {
+    "id": "orvaneTopics",
+    "name": "Orvane topics followed (newsletter, registration)",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneNewsletter",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "string",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneNewsletter",
+    "name": "Orvane newsletter subscription",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneRegistered",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "string",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneRegistered",
+    "name": "Orvane Live registration",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvanePass",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "string",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvanePass",
+    "name": "Orvane Live pass",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneStandEnquiry",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "string",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneStandEnquiry",
+    "name": "Orvane Live stand enquiry",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneExhibitViews",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneExhibitViews",
+    "name": "Orvane reads: Live exhibit pages",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  },
+  {
+   "itemId": "orvaneSignIns",
+   "itemType": "propertyType",
+   "target": "profiles",
+   "type": "integer",
+   "multivalued": false,
+   "metadata": {
+    "id": "orvaneSignIns",
+    "name": "Orvane sign-ins (member)",
+    "tags": [],
+    "systemTags": [
+     "properties"
+    ],
+    "enabled": true,
+    "hidden": false,
+    "readOnly": false
+   }
+  }
+ ]
+}
