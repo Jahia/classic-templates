@@ -90,15 +90,21 @@
   display: none;
 }
 .option {
+  display: block;
   padding: var(--ctpl-space-2) var(--ctpl-space-3);
   border-radius: var(--ctpl-radius-sm);
   color: var(--ctpl-color-text);
-  cursor: pointer;
+  text-decoration: none;
   overflow-wrap: anywhere;
 }
-.option[aria-selected="true"] {
+.option:hover,
+.option:focus-visible {
   background: var(--ctpl-color-action);
   color: var(--ctpl-color-text-on-action);
+}
+.option:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: calc(-1 * var(--ctpl-focus-offset));
 }
 .optionSearch {
   border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);

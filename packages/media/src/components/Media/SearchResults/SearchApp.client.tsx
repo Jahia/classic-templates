@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } fro
 import { createSearchConnector, searchKey } from "../../../lib/searchConnector.js";
 import type { SearchPage, Suggestion } from "../../../lib/searchResponse.js";
 import { createSearchStore } from "../../../lib/searchStore.js";
-import type { FacetName, SearchState } from "../../../lib/searchState.js";
+import { stateUrl, withFacet, type FacetName, type SearchState } from "../../../lib/searchState.js";
 import { SearchPanel } from "./panel.js";
 import { SearchInput } from "./parts.js";
 import { SearchCombobox } from "./SearchCombobox.js";
@@ -135,6 +135,15 @@ export default function SearchApp({
     }
   };
 
+  // The search a suggestion stands for, as an address (its link): the same as pick, in the URL.
+  const hrefOf = (suggestion: Suggestion) =>
+    suggestion.kind === "tag"
+      ? stateUrl(
+          action,
+          withFacet({ ...view.state, q: "" }, "tag", [...view.state.tag, suggestion.value]),
+        )
+      : stateUrl(action, { ...view.state, q: suggestion.title, page: 1 });
+
   const toggle = (facet: FacetName, value: string, selected: boolean) => {
     focusAfterRef.current = selected ? undefined : "chips";
     store.actions.toggle(facet, value, selected);
@@ -176,6 +185,7 @@ export default function SearchApp({
             onChange={setText}
             suggest={store.actions.suggest}
             onPick={pick}
+            hrefOf={hrefOf}
           />
         ) : (
           <SearchInput id={inputId} value={text} />
