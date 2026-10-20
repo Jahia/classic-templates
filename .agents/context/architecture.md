@@ -37,7 +37,7 @@ classic-travel has its own page: [`travel.md`](travel.md).
 | Group                                      | Types                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Shared mixins (`settings/definitions.cnd`) | Built in phase 4: tiers `ctplmix:component` → `pageComponent` / `heroComponent` / `headerComponent` / `footerComponent`; areas `ctpl:heroArea`, `ctpl:pageArea`, `ctpl:headerArea`, `ctpl:footerArea`; `ctplmix:linkTo`, `ctplmix:cta`, `ctplmix:media`, `ctplmix:pageOptions` (on `jnt:page`), `ctplmix:siteSettings` (on `jnt:virtualsite`). No `seo` mixin: pages and main resources use their native `jcr:description`, the site its native `j:description` |
-| Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links)                                                                                                                                                                                                                                                                                                 |
+| Chrome                                     | `ctpl:siteHeader` (logo, dark logo, brand name, utility `linkList`, navigation settings), `ctpl:siteFooter` (link columns, legal text, copyright, social links), `ctpl:consentBanner` (tracking consent, footer area)                                                                                                                                                                                                                                                                                                 |
 | Content                                    | `ctpl:heroBanner`, `ctpl:heroCarousel`, `ctpl:imageText`, `ctpl:columns`, `ctpl:richText`, `ctpl:linkList` + `ctpl:link`, `ctpl:jcrQuery`, `ctpl:noticeBar`, `ctpl:networkBar`, `ctpl:cardGrid` + `ctpl:card` / `ctpl:contentTeaser`, `ctpl:keyFigures` + `ctpl:keyFigure`, `ctpl:quote`, `ctpl:siteMap`, `ctpl:freeZone`, `ctpl:accordion` + `ctpl:accordionItem`, `ctpl:tabs` + `ctpl:tab`, `ctpl:signIn`                                                     |
 | Main resources                             | `ctpl:news`, `ctpl:article`, each with `fullPage`, `card`, `compact` views                                                                                                                                                                                                                                                                                                                                                                                      |
 | Templates                                  | `home`, `content` (optional hero area + main), `fullWidth`, and one `MainResource` template                                                                                                                                                                                                                                                                                                                                                                     |
@@ -590,3 +590,27 @@ of both, linked from the footer.
 ## Open questions
 
 None open. Possible next step: screen-reader testing (NVDA + Firefox, VoiceOver + Safari).
+
+## Consent banner
+
+- **Type** `ctpl:consentBanner` (`mix:title`, `ctplmix:footerComponent`, `ctplmix:cta`; not hidden):
+  dropped once in the home page's footer area after `ctpl:siteFooter`, outside its `<footer>`
+  landmark. Fields `text`, `acceptLabel`, `refuseLabel`, `settingsLabel` (i18n), `rememberDays`
+  (180, 1-395, `lib/consent.ts`), privacy link through the shared `ctplmix:cta`.
+- **Cached page, choice in the browser:** the view renders the same HTML for everyone: the banner
+  `<section hidden>` and the settings button in a `<template>`. `static/js/consent-banner.js`
+  (never in edit mode) shows the banner while the `ctpl-consent` cookie (path `/`, so shared by the
+  host's sites, `SameSite=Lax`, `Max-Age` from the days) is absent, clones the settings button after
+  the footer, pads the end of the page by the banner's height (scroll padding), and moves focus to
+  the settings button after a choice made from the banner.
+- **jExperience:** with `window.wem` the script calls `wem.enableWem()` on Accept and
+  `wem.disableWem()` on Refuse, and again on any page where `digitalData.wemInitConfig.activateWem`
+  no longer matches the stored choice. "Nothing before consent" is the site's
+  `wemmix:deactivateJSExecution` = `all` (jExperience), documented, never set by the template set.
+- **Others:** a `ctpl:consent` event on `document` (`detail.status`) and `data-ctpl-consent` on
+  `<html>` on every page and every choice.
+- **Required labels:** Accept, Refuse and settings; without one the live site renders nothing (a
+  banner that cannot be refused or withdrawn is no consent) and edit mode says which is missing.
+- **Not used:** the Solutions Engineering `consent-manager` module (root credentials written into
+  public pages, contributed script text executed, no call to `wem`); see AIStartupKit
+  `jahia-jexperience-personalisation`.

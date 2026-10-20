@@ -169,5 +169,14 @@
     "suggestionCount_other": "{{count}} sugestões disponíveis",
     "for": "Pesquisar «{{words}}»",
     "noPage": "A caixa de pesquisa está ativada, mas o cabeçalho não indica nenhuma página de pesquisa: escolha uma nas definições do cabeçalho. Os visitantes não veem a caixa de pesquisa até lá."
+  },
+  "network": {
+    "label": "Os nossos sites",
+    "empty": "Adicione uma ligação para a página inicial de cada site do grupo."
+  },
+  "consent": {
+    "label": "Escolhas de privacidade",
+    "editHint": "Os visitantes veem este aviso até aceitarem ou recusarem, e o botão de definições a seguir ao rodapé volta a abri-lo. Para não seguir nada antes de aceitarem, desative o seguimento no site (jExperience: desative a execução de JavaScript no site, em todas as páginas).",
+    "missingLabels": "Este aviso não é mostrado no site em linha: dê-lhe um rótulo para aceitar, um para recusar e um para as definições."
   }
 }
