@@ -8,6 +8,13 @@ import { buildListQuery, FETCH_LIMIT, pathRegex, type Order } from "./query.js";
 /** Categories a list may expand to (a category and its subcategories) before it stops. */
 const MAX_CATEGORIES = 200;
 
+/**
+ * Types a list never leaves out for lack of a translation in the page's language: a speaker has no
+ * text of its own, and a submission is typed by a supplier in one language, so a supplier must
+ * find it whatever language the page is read in.
+ */
+const WITHOUT_TRANSLATION = new Set(["ctmd:sessionSpeaker", "ctmd:submission"]);
+
 /** The nodes a multi-valued weakreference points at, in order, skipping those that do not resolve. */
 export const readReferences = (node: JCRNodeWrapper, name: string): JCRNodeWrapper[] => {
   if (!node.hasProperty(name)) return [];
@@ -74,6 +81,7 @@ export const runQuery = ({
   order,
   categories,
   formats,
+  statuses,
   reference,
   locale,
   limit = FETCH_LIMIT,
@@ -85,6 +93,7 @@ export const runQuery = ({
   order?: Order;
   categories?: string[];
   formats?: string[];
+  statuses?: string[];
   reference?: { property: "authors" | "person"; id: string };
   locale: unknown;
   limit?: number;
@@ -99,26 +108,53 @@ export const runQuery = ({
     order,
     categories,
     formats,
+    statuses,
     reference,
   });
   return getNodesByJCRQuery(session, query, limit).filter(
-    (node) => type === "ctmd:sessionSpeaker" || node.hasI18N(locale as never),
+    (node) => WITHOUT_TRANSLATION.has(type) || node.hasI18N(locale as never),
   );
 };
 
 /**
  * Where a list looks: its start node, or the page's site when none is set. A start node that is
- * set but does not resolve (deleted, not yet published) is reported as missing: the list then
- * shows nothing on the live site rather than silently widening to the whole site.
+ * set but does not resolve (deleted, not yet published, or not readable by the visitor) is
+ * reported as missing: the list then shows nothing on the live site rather than silently widening
+ * to the whole site. `property` is the name of the list's start node property ("startNode", or
+ * "folder" for the brief and submission lists).
  */
 export const listStart = (
   currentNode: JCRNodeWrapper,
   startNode: JCRNodeWrapper | undefined,
   site: JCRNodeWrapper,
+  property = "startNode",
 ): { start: JCRNodeWrapper; startMissing: boolean } => ({
   start: startNode ?? site,
-  startMissing: !startNode && currentNode.hasProperty("startNode"),
+  startMissing: !startNode && currentNode.hasProperty(property),
 });
+
+/**
+ * The title of a node as a visitor reads it: its jcr:title in the page's language, else in the
+ * first language it has one, else its name. For content typed in one language by someone who is
+ * not an editor (a supplier's submission, the brief it answers), where a missing translation must
+ * not hide the title.
+ */
+export const titleOf = (node: JCRNodeWrapper): string => {
+  const own = readString(node, "jcr:title");
+  if (own) return own;
+  try {
+    for (const locale of Array.from(node.getExistingLocales())) {
+      const translation = node.getI18N(locale);
+      const title = translation.hasProperty("jcr:title")
+        ? translation.getProperty("jcr:title").getString()
+        : "";
+      if (title) return title;
+    }
+  } catch {
+    // translations not readable here: the name is the fallback
+  }
+  return node.getName();
+};
 
 /** A person as cards, bylines and galleries show them. */
 export interface PersonData {

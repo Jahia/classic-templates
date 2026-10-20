@@ -1,0 +1,21 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A page section listing submissions automatically, the newest first: a supplier's own submissions
+// and what became of them. Its heading is the optional jcr:title (an h2); the cta is the "see all"
+// link. folder is the content folder (or any node) to look under (empty: the whole site). The list
+// is computed for the visitor who reads it: a submission the visitor may not read is simply
+// absent, so each supplier sees their own (the view is cached per user). emptyText is shown when
+// nothing is listed; empty, the whole section stays out of the page in that case.
+[ctmd:submissionList] > jnt:content, mix:title, ctmdmix:pageComponent, ctplmix:sectionStyle, jmix:list, jmix:renderableList, jmix:cache
+ // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
+ - folder (weakreference)
+ - maxItems (long) = 20 autocreated < '[1,100]'
+ - emptyText (string) i18n

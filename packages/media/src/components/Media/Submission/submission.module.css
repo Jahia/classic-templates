@@ -1,0 +1,101 @@
+/* A submission's status card. Theme tokens only. */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  box-shadow: var(--ctpl-shadow-sm);
+}
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--ctpl-space-3);
+  padding: var(--ctpl-space-5);
+}
+.body > * {
+  margin: 0;
+}
+.title {
+  font-size: var(--ctpl-text-xl);
+  overflow-wrap: anywhere;
+}
+
+.facts {
+  display: grid;
+  gap: var(--ctpl-space-2);
+  margin: 0;
+  font-size: var(--ctpl-text-sm);
+}
+.facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ctpl-space-2);
+}
+.facts dt {
+  color: var(--ctpl-color-text-muted);
+}
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+/* The desk's note is a few lines of free text: it takes the whole width under its label. */
+.note {
+  flex-direction: column;
+}
+.note dd {
+  white-space: pre-line;
+}
+
+/* The status: text first, a mark that says it without colour, a tint of the matching role. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-1);
+  padding: 0 var(--ctpl-space-2);
+  border-radius: var(--ctpl-radius-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.cue {
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.submitted {
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-accent);
+}
+.inReview {
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+}
+.accepted {
+  background: var(--ctpl-color-success-surface);
+  color: var(--ctpl-color-success);
+}
+.declined {
+  background: var(--ctpl-color-danger-surface);
+  color: var(--ctpl-color-danger);
+}
+
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.thumb {
+  display: block;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: var(--ctpl-radius-sm);
+  object-fit: cover;
+}
+.files {
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}

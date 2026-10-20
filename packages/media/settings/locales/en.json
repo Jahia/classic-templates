@@ -110,6 +110,51 @@
     "index": "Jump to a letter",
     "summary": "Lists the people under {{start}} by name, up to {{max}}."
   },
+  "brief": {
+    "deadline": "Deadline",
+    "mediaWanted": "Media wanted",
+    "quantity": "Quantity",
+    "usage": "Intended use",
+    "reference": "Mood picture",
+    "closedNotice": "This brief is closed: it no longer accepts submissions.",
+    "noDescription": "Add the brief's description: it is where suppliers read what is expected of them.",
+    "status": {
+      "closed": "Closed"
+    },
+    "media": {
+      "photo": "Photos",
+      "video": "Videos"
+    },
+    "use": {
+      "storyIllustration": "Story illustration",
+      "social": "Social media",
+      "eventScreens": "Event screens"
+    }
+  },
+  "briefList": {
+    "summary": "Lists the briefs under {{start}} that each visitor may read, {{scope}}, nearest deadline first, up to {{max}}.",
+    "scopeOpen": "open ones only",
+    "scopeAll": "open and closed"
+  },
+  "submission": {
+    "brief": "Brief",
+    "submittedOn": "Submitted on",
+    "statusLabel": "Status",
+    "deskNote": "Picture desk note",
+    "usedIn": "Used in",
+    "photos": "Photos sent",
+    "moreFiles_one": "{{count}} more file",
+    "moreFiles_other": "{{count}} more files",
+    "status": {
+      "submitted": "Submitted",
+      "inReview": "In review",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    }
+  },
+  "submissionList": {
+    "summary": "Lists the submissions under {{start}} that each visitor may read, newest first, up to {{max}}."
+  },
   "keyDates": {
     "dates": "{{start}} to {{end}}",
     "venue": "Venue",

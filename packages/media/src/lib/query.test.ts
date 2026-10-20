@@ -58,6 +58,50 @@ describe("buildListQuery", () => {
   });
 });
 
+describe("buildListQuery for briefs and submissions", () => {
+  it("orders briefs by deadline and keeps the open ones", () => {
+    expect(
+      buildListQuery({
+        type: "ctmd:brief",
+        startPath: "/sites/p/contents/briefs",
+        order: "deadline",
+        statuses: ["open"],
+      }),
+    ).toBe(
+      "SELECT * FROM [ctmd:brief] AS item WHERE ISDESCENDANTNODE(item, '/sites/p/contents/briefs') AND item.[briefStatus] = 'open' ORDER BY item.[deadline] ASC",
+    );
+  });
+
+  it("orders submissions newest first and filters on their own status property", () => {
+    const sql = buildListQuery({
+      type: "ctmd:submission",
+      startPath: "/sites/p",
+      order: "created",
+      statuses: ["accepted", "inReview"],
+    });
+    expect(sql).toContain(
+      "(item.[submissionStatus] = 'accepted' OR item.[submissionStatus] = 'inReview')",
+    );
+    expect(sql.endsWith("ORDER BY item.[jcr:created] DESC")).toBe(true);
+  });
+
+  it("adds no status condition when none is asked for", () => {
+    expect(buildListQuery({ type: "ctmd:brief", startPath: "/s" })).not.toContain("Status");
+  });
+
+  it("refuses an unknown status, and a status on a type that has none", () => {
+    expect(() =>
+      buildListQuery({ type: "ctmd:brief", startPath: "/s", statuses: ["open' OR 1=1"] }),
+    ).toThrow();
+    expect(() =>
+      buildListQuery({ type: "ctmd:brief", startPath: "/s", statuses: ["accepted"] }),
+    ).toThrow();
+    expect(() =>
+      buildListQuery({ type: "ctmd:story", startPath: "/s", statuses: ["open"] }),
+    ).toThrow();
+  });
+});
+
 describe("isFormat", () => {
   it("knows the seven formats only", () => {
     expect(isFormat("podcast")).toBe(true);

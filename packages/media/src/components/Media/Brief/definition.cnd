@@ -1,0 +1,29 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A brief of the supplier portal: what a media group needs from its photo and video suppliers, with
+// its own page (the full-page view: what is needed, the deadline, the kinds of media wanted, how
+// many, what they will be used for, a mood picture) and a card for the brief lists. Stored in a
+// content folder; who may read a brief is decided by the ACLs on the brief or its folder, never by
+// a field, and the lists only show a visitor the briefs they can read. briefStatus closes a brief
+// (it then leaves the lists unless they show closed briefs). The description is rich text and, like
+// the title (mix:title), is written per language by the desk; the page's own submission form is
+// attached to the full-page view later (see the SubmissionSlot of Brief/views.tsx).
+[ctmd:brief] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component
+ - description (string, richtext) i18n
+ - deadline (date, datepicker)
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - mediaWanted (string, choicelist[resourceBundle]) multiple < 'photo', 'video'
+ - quantity (long) < '[1,10000]'
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - usage (string, choicelist[resourceBundle]) multiple < 'storyIllustration', 'social', 'eventScreens'
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - briefStatus (string, choicelist[resourceBundle]) = 'open' autocreated < 'open', 'closed'
+ - referenceImage (weakreference, picker[type='image']) < jmix:image

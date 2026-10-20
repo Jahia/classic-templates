@@ -45,6 +45,10 @@ Install `classic-media-<version>.tgz` in Jahia (Administration > Modules), or bu
 | Speaker gallery (`ctmd:speakerGallery`) | The people of a folder as portrait cards, sorted by name, with an A-Z index                                                                                   | A page area, a column, a tab, a free zone                                                   |
 | Search results (`ctmd:searchResults`)   | A search box with suggestions, filters (topics, tags, format, type, site) and the Augmented Search results, for this site or its whole network, with paging   | A page area, a column, a tab, a free zone                                                   |
 | Key dates (`ctmd:keyDates`)             | An event's days and venue, a countdown, its key dates, a call to action                                                                                       | A page area, a column, a tab, a free zone                                                   |
+| Brief (`ctmd:brief`)                    | What the group needs from its photo and video suppliers: description, deadline, media wanted, quantity, intended use, status, a mood picture                  | A content folder, readable by the suppliers it targets. Own page; cards in the brief list   |
+| Brief list (`ctmd:briefList`)           | The briefs the visitor may read, open ones unless asked otherwise, the nearest deadline first, as cards                                                       | A page area, a column, a tab, a free zone                                                   |
+| Submission (`ctmd:submission`)          | What a supplier sent in answer to a brief: files, caption, credit, licence, shooting date and place, status, the picture desk's note, where it was used       | A content folder, readable by its supplier and the desk. No page of its own                 |
+| Submission list (`ctmd:submissionList`) | The submissions the visitor may read, the newest first, as status cards                                                                                       | A page area, a column, a tab, a free zone                                                   |
 
 The event's time zone is a setting of its content folder ("Event" in the folder's options): sessions
 and the agenda show their times in that zone.
@@ -52,6 +56,30 @@ and the agenda show their times in that zone.
 Story and session pages end with their **Topics** (categories) and **Tags**; each tag links to the
 site's search results filtered by it (`?tag=<tag>`) when the classic-templates site header names a
 **Search page**.
+
+### Briefs and submissions (supplier portal)
+
+For a gated supplier portal where photo and video suppliers read the group's **briefs** and follow
+their own **submissions**. The module holds the content types and the views; who sees what is
+decided by Jahia's ACLs, never by a field.
+
+- A **Brief** is a main resource with its own page (description, deadline, media wanted, quantity,
+  intended use, a mood picture) and a card for lists. A closed brief says so in words, on its card
+  and on its page. The page keeps a marked place for the submission form, attached later.
+- A **Submission** has no page: it is shown as a **status card** with its title, the brief it
+  answers (linked when the visitor may read it), the day it was submitted, its status as text with
+  a mark (never colour alone), the picture desk's note, the item that used the media once accepted
+  and small thumbnails. Its values are typed once by the supplier and are not translated; the
+  title is shown in whichever language it exists.
+- The **Brief list** and the **Submission list** are computed **for the visitor who reads them**:
+  the query runs with the visitor's own session, so a brief or a submission the visitor may not
+  read is simply absent, and two suppliers get two different lists. The two list views are cached
+  **per user**, as is the status card, so a list built for one supplier is never served to
+  another. Restrict a brief or a supplier's folder with an ACL (read for the right users or
+  groups only); the lists then follow.
+- Closed briefs leave the brief list unless **Show closed briefs** is on; briefs are ordered by
+  deadline, those without one last. A list with nothing to show displays its own text, or leaves
+  the section out when it has none.
 
 ### The search section
 
