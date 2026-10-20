@@ -143,6 +143,12 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   toggle (checked in `forms.editForm`). Views end with `<Cta node renderContext />`, which renders
   nothing on a node without the mixin, edit mode included. There is no call-to-action banner type:
   a rich text on the accent surface with the call to action switched on is the banner.
+- **A call to action can be limited to guests or to signed-in visitors** (`ctaAudience`, default
+  everyone). A limited button goes through its own view, `ctaForAudience` on `ctplmix:cta`, cached
+  per user (`renderContext.isLoggedIn()`), rendered as a fragment inside the section's: the
+  section keeps the shared cache, the button is per visitor. classic-media's copy of `Cta` hands a
+  limited button to the same view. Found on the Orvane portal (October 2026): its hero's "Sign in"
+  stayed on screen for a signed-in supplier.
 
 - **Links are per language:** `j:linknode` and `j:url` are both i18n. A link set in EN has no target
   in FR. Views render the label without a link when the current language has no target (never

@@ -6,7 +6,7 @@ Type: `ctplmix:cta` (a shared field group, not a component on its own)
 
 ## What it is
 
-A call to action is one button: a link and the text written on it. It is not a component you drop on a page. It is a group of two fields, **Button label** and **Link**, that several components share. Some components have it built in and place the button in their own layout. Every other section can switch it on with the **Call to action** toggle in its edit form.
+A call to action is one button: a link and the text written on it. It is not a component you drop on a page. It is a group of fields, **Button label**, **Link** and **Show the button to**, that several components share. Some components have it built in and place the button in their own layout. Every other section can switch it on with the **Call to action** toggle in its edit form.
 
 ## Where you can add it
 
@@ -27,6 +27,7 @@ A component that needs several actions (for example the header utility links) us
 | ---------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | Button label                 | Text of the button, for example "Read more".                                  | Per language. Keep it short and explicit: screen readers read it on its own.                           |
 | Link                         | Where the button goes: **No link**, **Page of this site** or **Web address**. | Default: No link. The target is set per language. See [Links and link lists](links-and-link-lists.md). |
+| Show the button to           | **Everyone**, **Visitors who are not signed in** or **Signed-in visitors**.   | Default: Everyone. One choice for every language.                                                      |
 
 ## How it behaves
 
@@ -36,6 +37,7 @@ A component that needs several actions (for example the header utility links) us
 - **Refused web address:** an address that does not start with `http://`, `https://`, `mailto:` or `tel:` is not used. It counts as a missing target and shows the same hint.
 - **Label without a link:** if you write a button label but leave **Link** on **No link**, visitors see nothing and edit mode shows the hint "This button has a label but no link: choose a page or a web address, or clear the label."
 - A section that does not have the call to action switched on shows nothing, in edit mode too.
+- **Show the button to:** a "Sign in" or "Create your account" button set to **Visitors who are not signed in** disappears once the visitor signs in; a button for **Signed-in visitors** ("Open your area") appears only then. The rest of the section is the same for everybody. In edit mode the button is always shown, with a line saying who sees it.
 
 ### Making a call-to-action banner
 

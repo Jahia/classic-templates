@@ -110,8 +110,9 @@ language).
   is keyed on the roles of the visitor on the rendered node's own path (or, with the groups
   signature, on the principals that carry an ACE somewhere), neither of which sees the ACLs of the
   items a list finds below its folder, and `cache.perUser` makes the key part the user. So
-  `ctmd:briefList`, `ctmd:submissionList` and the submission status card (which links a brief and
-  an item only when the visitor may read them) set `cache.perUser: "true"` on their views; the
+  `ctmd:briefList`, `ctmd:submissionList`, the submission status card and the submission's own
+  page (`fullPage`; both link a brief and an item only when the visitor may read them) set
+  `cache.perUser: "true"` on their views; the
   brief card and page show the same to everyone who can open them and keep the shared cache. A
   list depends on everything under its folder (path regex, `runQuery`). Not verified on a running
   Jahia from this change: render the two lists as two suppliers in both orders after deploying.
