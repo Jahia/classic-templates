@@ -61,7 +61,7 @@
     "all": "All",
     "summary": "Lists the stories ({{formats}}) under {{start}}, newest first, up to {{max}}.",
     "allFormats": "every format",
-    "pageCategories": "Only the stories filed under this page's categories.",
+    "pageCategories": "Only the stories filed under this page's categories or their subcategories.",
     "pageNoCategory": "This page has no category: give it its topic as a category, or the feed shows nothing.",
     "noMatch": "No story of this format here.",
     "shown": "Stories shown: {{n}}"

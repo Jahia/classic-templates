@@ -6,6 +6,7 @@ import {
   expandCategories,
   listStart,
   pageOf,
+  readReferences,
   runQuery,
   startLabel,
 } from "../../../lib/media.js";
@@ -43,8 +44,9 @@ jahiaComponent(
     let pageWithoutCategory = false;
     if (props.pageCategories) {
       server.render.addCacheDependency({ node: page }, renderContext);
-      const own = categoryIdsOf(page);
-      pageWithoutCategory = own.length === 0;
+      // a topic page lists its sub-topics' stories too, as a picked category does
+      pageWithoutCategory = categoryIdsOf(page).length === 0;
+      const own = expandCategories(readReferences(page, "j:defaultCategory"));
       categories = [...new Set([...categories, ...own])];
     }
     const items: JCRNodeWrapper[] =
