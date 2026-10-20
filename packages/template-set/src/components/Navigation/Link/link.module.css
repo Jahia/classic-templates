@@ -19,3 +19,22 @@
   color: var(--ctpl-color-warning);
   font-size: var(--ctpl-text-xs);
 }
+
+/* "network" view: keeps the network bar's text colour (contrast-checked on its surface) and gets
+   a 44 px tall target from its padding, not from a taller band. The current site is underlined. */
+.network {
+  display: inline-block;
+  padding-block: 0.8rem;
+  color: inherit;
+  font-weight: var(--ctpl-font-weight-medium);
+  text-decoration: none;
+}
+.network:hover {
+  text-decoration: underline;
+}
+.current {
+  font-weight: var(--ctpl-font-weight-bold);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.35em;
+}

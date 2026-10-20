@@ -61,6 +61,7 @@ light and dark, from its settings, with no code change.
 | ----------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | Site header       | Logo, brand name, main menu, utility links, language switcher, sign-in entry    | [site-header](../../docs/components/site-header.md)                   |
 | Site footer       | Tagline, link columns, legal and social links, copyright                        | [site-footer](../../docs/components/site-footer.md)                   |
+| Consent banner    | Accept or refuse tracking, jExperience aware; a settings button reopens it      | [consent-banner](../../docs/components/consent-banner.md)             |
 | Breadcrumb        | The trail from home to the current page, above the content                      | [breadcrumb](../../docs/components/breadcrumb.md)                     |
 | Hero banner       | The banner at the top of a page: photo, split or plain                          | [hero-banner](../../docs/components/hero-banner.md)                   |
 | Hero carousel     | Hero banners shown one at a time, autoplay off by default                       | [hero-carousel](../../docs/components/hero-carousel.md)               |
@@ -73,6 +74,7 @@ light and dark, from its settings, with no code change.
 | Quote             | A quotation with the person's name, role and portrait                           | [quote](../../docs/components/quote.md)                               |
 | Link list         | A list of links: a section, a bar or a footer column                            | [links-and-link-lists](../../docs/components/links-and-link-lists.md) |
 | Content list      | News or articles found automatically, sorted and filtered                       | [content-list](../../docs/components/content-list.md)                 |
+| Network bar       | The group's name and a link to each of its sites, above the header              | [network-bar](../../docs/components/network-bar.md)                   |
 | Notice bar        | A slim band of the latest items as dated links, dismissible                     | [notice-bar](../../docs/components/notice-bar.md)                     |
 | News and articles | Editorial items with their own page, card and compact views                     | [news-and-articles](../../docs/components/news-and-articles.md)       |
 | Site map          | Every page of the site as nested lists                                          | [site-map](../../docs/components/site-map.md)                         |
@@ -110,6 +112,8 @@ choose a "Theme" and "Light or dark". "Automatic" follows each visitor's system 
 | Sage (green and coral)          | ![Sage, light](../../docs/images/theme-sage-light.png)             | ![Sage, dark](../../docs/images/theme-sage-dark.png)             |
 | Slate (ink and green)           | ![Slate, light](../../docs/images/theme-slate-light.png)           | ![Slate, dark](../../docs/images/theme-slate-dark.png)           |
 | Graphite (charcoal and crimson) | ![Graphite, light](../../docs/images/theme-graphite-light.png)     | ![Graphite, dark](../../docs/images/theme-graphite-dark.png)     |
+| Signal (cobalt and vermilion)   | ![Signal, light](../../docs/images/theme-signal-light.png)         | ![Signal, dark](../../docs/images/theme-signal-dark.png)         |
+| Live (violet and jade)          | ![Live, light](../../docs/images/theme-live-light.png)             | ![Live, dark](../../docs/images/theme-live-dark.png)             |
 
 Components never contain a colour, font or shadow value. They read semantic CSS custom properties
 (`--ctpl-color-text`, `--ctpl-color-accent`, `--ctpl-color-action` for buttons, `--ctpl-color-highlight`, ...) defined in `src/templates/tokens.css`, in three

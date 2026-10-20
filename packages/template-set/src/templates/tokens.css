@@ -10,7 +10,7 @@
  * `color-scheme`: the visitor's system preference by default, or the site's choice stamped on
  * <html data-ctpl-scheme="light|dark"> by the Layout. So dark mode is never written twice.
  *
- * Themes: <html data-ctpl-theme="ocean|terracotta|horizon|sage|slate|graphite"> (from the site
+ * Themes: <html data-ctpl-theme="ocean|terracotta|horizon|sage|slate|graphite|signal|live"> (from the site
  * settings) overrides tier 2 only.
  * Contrast of every theme x scheme pair is checked by `yarn check:contrast`.
  *
@@ -160,6 +160,54 @@
   --ctpl-crimson-300: #ff8c9d;
   --ctpl-crimson-700: #b0122f;
   --ctpl-crimson-800: #8a0d24;
+  --ctpl-paper-25: #fbfaf6;
+  --ctpl-paper-50: #f4f1ea;
+  --ctpl-paper-100: #e8e4da;
+  --ctpl-paper-200: #d6d0c2;
+  --ctpl-paper-300: #bbb3a2;
+  --ctpl-paper-400: #928a79;
+  --ctpl-paper-500: #6f6858;
+  --ctpl-paper-600: #565042;
+  --ctpl-paper-800: #29261f;
+  --ctpl-paper-850: #1f1c17;
+  --ctpl-paper-900: #16140f;
+  --ctpl-paper-ink: #17150f;
+  --ctpl-paper-line: #3a362d;
+  --ctpl-cobalt-50: #eef2fc;
+  --ctpl-cobalt-200: #b8c7f0;
+  --ctpl-cobalt-300: #8ea6e6;
+  --ctpl-cobalt-600: #2a4fc9;
+  --ctpl-cobalt-700: #1f3fae;
+  --ctpl-cobalt-800: #18318a;
+  --ctpl-cobalt-deep: #1a2a5e;
+  --ctpl-vermilion-200: #ffc2ad;
+  --ctpl-vermilion-300: #ff9a78;
+  --ctpl-vermilion-700: #b8350f;
+  --ctpl-vermilion-800: #922a0b;
+  --ctpl-dusk-25: #fafaff;
+  --ctpl-dusk-50: #f3f2fa;
+  --ctpl-dusk-100: #e6e4f2;
+  --ctpl-dusk-200: #d2cfe6;
+  --ctpl-dusk-300: #b4afd0;
+  --ctpl-dusk-400: #8b85ad;
+  --ctpl-dusk-500: #6a648b;
+  --ctpl-dusk-600: #524d6e;
+  --ctpl-dusk-800: #27243a;
+  --ctpl-dusk-850: #1d1b2d;
+  --ctpl-dusk-900: #141222;
+  --ctpl-dusk-ink: #16142a;
+  --ctpl-dusk-line: #36324c;
+  --ctpl-violet-50: #f2eefe;
+  --ctpl-violet-200: #cbb9fb;
+  --ctpl-violet-300: #ab90f7;
+  --ctpl-violet-600: #6a3be0;
+  --ctpl-violet-700: #5a2bd0;
+  --ctpl-violet-800: #4720a8;
+  --ctpl-violet-deep: #2a1f55;
+  --ctpl-jade-200: #99ecdf;
+  --ctpl-jade-300: #5eddc9;
+  --ctpl-jade-700: #0b7468;
+  --ctpl-jade-800: #095c53;
 
   --ctpl-stack-sans:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -412,6 +460,63 @@
   --ctpl-heading-tracking: -0.015em;
   --ctpl-radius-md: 0.1875rem;
   --ctpl-radius-lg: 0.375rem;
+}
+
+/* ---- Theme: signal (editorial: warm paper neutrals, serif headings, cobalt links, vermilion
+   calls to action and emphasis, sharp shapes) ------------------------------------------------- */
+:root[data-ctpl-theme="signal"] {
+  --ctpl-color-surface-page: light-dark(var(--ctpl-paper-25), var(--ctpl-paper-900));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-paper-850));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-paper-50), var(--ctpl-paper-850));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-paper-800), var(--ctpl-paper-100));
+  --ctpl-color-text: light-dark(var(--ctpl-paper-ink), var(--ctpl-paper-50));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-paper-600), var(--ctpl-paper-300));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-paper-50), var(--ctpl-paper-800));
+  --ctpl-color-border: light-dark(var(--ctpl-paper-200), var(--ctpl-paper-line));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-paper-500), var(--ctpl-paper-400));
+  --ctpl-color-accent: light-dark(var(--ctpl-cobalt-700), var(--ctpl-cobalt-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-cobalt-800), var(--ctpl-cobalt-200));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-cobalt-50), var(--ctpl-cobalt-deep));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-paper-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-cobalt-600), var(--ctpl-cobalt-300));
+  --ctpl-color-highlight: light-dark(var(--ctpl-vermilion-700), var(--ctpl-vermilion-300));
+  --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-paper-900));
+  --ctpl-color-action: light-dark(var(--ctpl-vermilion-700), var(--ctpl-vermilion-300));
+  --ctpl-color-action-hover: light-dark(var(--ctpl-vermilion-800), var(--ctpl-vermilion-200));
+  --ctpl-color-text-on-action: light-dark(var(--ctpl-white), var(--ctpl-paper-900));
+  --ctpl-heading-weight: 700;
+  --ctpl-heading-tracking: -0.02em;
+  --ctpl-radius-md: 0.125rem;
+  --ctpl-radius-lg: 0.25rem;
+}
+
+/* ---- Theme: live (event: dusk neutrals, heavy sans headings, violet links, jade calls to action
+   and emphasis, round shapes) ----------------------------------------------------------------- */
+:root[data-ctpl-theme="live"] {
+  --ctpl-color-surface-page: light-dark(var(--ctpl-dusk-25), var(--ctpl-dusk-900));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-dusk-850));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-dusk-50), var(--ctpl-dusk-850));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-dusk-800), var(--ctpl-dusk-100));
+  --ctpl-color-text: light-dark(var(--ctpl-dusk-ink), var(--ctpl-dusk-50));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-dusk-600), var(--ctpl-dusk-300));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-dusk-50), var(--ctpl-dusk-800));
+  --ctpl-color-border: light-dark(var(--ctpl-dusk-200), var(--ctpl-dusk-line));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-dusk-500), var(--ctpl-dusk-400));
+  --ctpl-color-accent: light-dark(var(--ctpl-violet-700), var(--ctpl-violet-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-violet-800), var(--ctpl-violet-200));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-violet-50), var(--ctpl-violet-deep));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-dusk-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-violet-600), var(--ctpl-violet-300));
+  --ctpl-color-highlight: light-dark(var(--ctpl-jade-700), var(--ctpl-jade-300));
+  --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-dusk-900));
+  --ctpl-color-action: light-dark(var(--ctpl-jade-700), var(--ctpl-jade-300));
+  --ctpl-color-action-hover: light-dark(var(--ctpl-jade-800), var(--ctpl-jade-200));
+  --ctpl-color-text-on-action: light-dark(var(--ctpl-white), var(--ctpl-dusk-900));
+  --ctpl-font-heading: var(--ctpl-stack-sans);
+  --ctpl-heading-weight: 800;
+  --ctpl-heading-tracking: -0.02em;
+  --ctpl-radius-md: 0.75rem;
+  --ctpl-radius-lg: 1.25rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -165,5 +165,14 @@
     "suggestionCount_other": "{{count}} suggestions disponibles",
     "for": "Rechercher « {{words}} »",
     "noPage": "Le champ de recherche est activé, mais l'en-tête ne désigne aucune page de recherche : choisissez-en une dans les paramètres de l'en-tête. Les visiteurs ne voient pas de champ de recherche d'ici là."
+  },
+  "network": {
+    "label": "Nos sites",
+    "empty": "Ajoutez un lien vers la page d'accueil de chaque site du groupe."
+  },
+  "consent": {
+    "label": "Vos choix de confidentialité",
+    "editHint": "Les visiteurs voient ce bandeau jusqu'à ce qu'ils acceptent ou refusent ; le bouton de paramètres placé après le pied de page le rouvre. Pour ne rien suivre avant leur accord, désactivez le suivi sur le site (jExperience : désactiver l'exécution JavaScript sur le site, pour toutes les pages).",
+    "missingLabels": "Ce bandeau n'est pas affiché sur le site en ligne : renseignez un libellé pour accepter, un pour refuser et un pour les paramètres."
   }
 }
