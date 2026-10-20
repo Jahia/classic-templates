@@ -36,7 +36,9 @@ changing a view. This file says what differs.
 | `ctmd:submissionList` | as the brief list                                                                                                                                              | default (`cache.perUser`)                                                        |
 
 Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:eventFolder`
-(`extends = jnt:contentFolder`, `ctmdTimeZone`, IANA name, default UTC).
+(`extends = jnt:contentFolder`, `ctmdTimeZone`, IANA name, default UTC), `ctmdmix:credited`
+(`extends = jnt:file`, `ctmdCredit`, a string that is not i18n: a credit is the same in every
+language).
 
 ## Decisions
 
@@ -124,8 +126,36 @@ Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:event
   Choice labels shown to visitors are locale keys (`brief.media.*`, `brief.use.*`,
   `submission.status.*`), the editor labels the resource bundle. The status shows as text with a
   mark (`STATUS_CUE`) on a role tint, never colour alone. The brief's full-page view renders the
-  page's `<h1>` (as every full-page view of the module) and leaves `SubmissionSlot` for the
-  submission form.
+  page's `<h1>` (as every full-page view of the module) and holds `SubmissionSlot`, the submission
+  form (next point).
+- **Submission form on a brief** (`ctmd:brief.submissionForm`, a weakreference with no type
+  constraint: `fmdb:form` belongs to Formidable, which the module must not depend on; the CND check
+  carries a `weakrefNoConstraint` ignore saying so, and the view tests `isNodeType("fmdb:form")`).
+  `SubmissionSlot` (state in `lib/briefs.ts` `submissionSlotState`, unit tested): open brief and a
+  readable form give an `<h2>` ("Answer this brief", locale key) and the form through
+  `<Render node={contextualized node} readOnly />`, the way Formidable's own `fmdb:formReference`
+  does (contextualized node of the property, so the Page Builder box is the brief's, form children
+  stay editable); a closed brief gives "This brief is closed." instead; no form, or one the visitor
+  cannot read (a weakreference to an unreadable node comes back unset, `hasProperty` stays true),
+  gives nothing, plus an edit-mode note (`brief.noForm`, `brief.formUnavailable`). The form is a
+  cache dependency of the brief page. **Cache and hydration** (read in formidable-elements
+  `Form/default.server.tsx`): the form is a client island whose server markup holds no visitor data
+  (no per-user token; the submit URL carries the form id and language only), it posts with `fetch`
+  from the brief's page, so the Referer is the brief page; captcha settings are request attributes
+  of the form's own render, and a platform in maintenance mode makes the form set a 60 s
+  `expiration` for its fragment. The brief page keeps the shared cache. Limit: that shared fragment
+  is keyed on the roles on the brief's path, so a form restricted differently from the brief would
+  be served to visitors who cannot read it (the engine still refuses their post): give the form
+  the readers of the brief, or set `cache.perUser` on the brief's full page. Not verified on a
+  running Jahia from this change.
+- **Photo credits** (`ctmdmix:credited` on a file): `lib/Credit.tsx` reads `ctmdCredit` from the
+  image file (`creditOf`, which also declares the file a cache dependency; `Image` already did) and
+  adds "Photo: <credit>" (`credit.photo`, EN, FR, PT) as the `<figcaption>` of the story's image
+  figure (full page, members teaser) or as one more line inside a caption the figure already has
+  (the episode cover's "Listen to the episode", the brief's "Mood picture"): a figure holds one
+  `<figcaption>`. The text is normalised in `lib/creditText.ts` (white space collapsed, cut at 200
+  characters, nothing when blank). No file credit, no change in the output. Card thumbnails, a
+  person's portrait and videos rendered by js-media-gallery show none.
 
 ## Gates
 

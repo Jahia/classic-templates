@@ -32,3 +32,14 @@
  extends = jnt:contentFolder
  itemtype = content
  - ctmdTimeZone (string) = 'UTC' autocreated
+
+// ---- Credited media -----------------------------------------------------------------------------
+
+// Optional "Credit" of a picture or video in the media library: who to credit, exactly as it must
+// appear (the same in every language, so not i18n). jContent offers it on every file, as it offers
+// the classic-templates site settings on a site. Stories and briefs show it as a "Photo: ..."
+// caption under the image they render; a file without it renders as before.
+[ctmdmix:credited] mixin
+ extends = jnt:file
+ itemtype = content
+ - ctmdCredit (string)

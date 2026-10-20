@@ -6,6 +6,9 @@
   "image": {
     "noTitle": "This image has no title in the media library, so it has no alternative text."
   },
+  "credit": {
+    "photo": "Photo: {{credit}}"
+  },
   "richText": {
     "imageWithoutAlt": "An image in this text has no alternative text: it is ignored by screen readers.",
     "table": "Table",
@@ -117,7 +120,11 @@
     "usage": "Intended use",
     "reference": "Mood picture",
     "closedNotice": "This brief is closed: it no longer accepts submissions.",
+    "answer": "Answer this brief",
+    "closedForm": "This brief is closed.",
     "noDescription": "Add the brief's description: it is where suppliers read what is expected of them.",
+    "noForm": "Choose the submission form: without it suppliers cannot answer this brief.",
+    "formUnavailable": "The submission form is not available: it is not a Formidable form, or it cannot be read (deleted, not published yet, or restricted). Visitors see no form.",
     "status": {
       "closed": "Closed"
     },

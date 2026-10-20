@@ -78,6 +78,17 @@
   color: var(--ctpl-color-text-muted);
   font-size: var(--ctpl-text-sm);
 }
+/* The submission form and its heading, or the "closed" text. */
+.answer {
+  max-width: var(--ctpl-measure);
+}
+.answerTitle {
+  margin: 0 0 var(--ctpl-space-4);
+  font-size: var(--ctpl-text-2xl);
+}
+.answer > p {
+  margin: 0;
+}
 .editNote {
   max-width: var(--ctpl-measure);
   padding: var(--ctpl-space-2) var(--ctpl-space-3);

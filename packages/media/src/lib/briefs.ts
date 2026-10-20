@@ -119,3 +119,22 @@ export const listLimit = (value: number | undefined, fallback: number, max: numb
 
 /** Thumbnails a submission card shows at most; the others are counted. */
 export const MAX_THUMBNAILS = 4;
+
+/** What the submission slot of a brief's page shows: the form, the "closed" text, or nothing. */
+export type SubmissionSlotState = "form" | "closed" | "none";
+
+/**
+ * The state of the submission slot. Nothing without a form the visitor can read (the page then
+ * looks as before, the closed notice of the header apart); with one, the form while the brief is
+ * open and a short "closed" text once it is not.
+ */
+export const submissionSlotState = (
+  status: string | undefined,
+  formReadable: boolean,
+): SubmissionSlotState => {
+  if (!formReadable) return "none";
+  return briefStatusOf(status) === "closed" ? "closed" : "form";
+};
+
+/** The node type of the Formidable form a brief points at (owned by the Formidable modules). */
+export const FORM_NODE_TYPE = "fmdb:form";
