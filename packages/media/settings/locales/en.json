@@ -61,10 +61,12 @@
     "all": "All",
     "summary": "Lists the stories ({{formats}}) under {{start}}, newest first, up to {{max}}.",
     "allFormats": "every format",
-    "pageCategories": "Only the stories filed under this page's categories or their subcategories.",
+    "pageCategories": "Only the stories filed under this page's categories ({{categories}}) or their subcategories.",
     "pageNoCategory": "This page has no category: give it its topic as a category, or the feed shows nothing.",
     "noMatch": "No story of this format here.",
-    "shown": "Stories shown: {{n}}"
+    "shown": "Stories shown: {{n}}",
+    "categories": "Only the stories filed under {{categories}} or their subcategories.",
+    "bothCategories": "Only the stories filed under {{categories}} or this page's categories ({{page}}), or their subcategories."
   },
   "person": {
     "stories": "Stories by {{name}}",
@@ -157,6 +159,16 @@
       "inReview": "In review",
       "accepted": "Accepted",
       "declined": "Declined"
+    },
+    "caption": "Caption",
+    "shotDate": "Shot on",
+    "location": "Location",
+    "licenceLabel": "Licence",
+    "credit": "Credit line",
+    "files": "Files sent",
+    "licence": {
+      "editorial": "Editorial use on every site of the group",
+      "exclusive30": "Exclusive for 30 days"
     }
   },
   "submissionList": {

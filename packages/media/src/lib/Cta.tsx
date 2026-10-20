@@ -1,3 +1,4 @@
+import { Render } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useT } from "./i18n.js";
@@ -10,6 +11,10 @@ import classes from "./cta.module.css";
  * ctaLabel), drawn like the classic-templates buttons. Renders a button-styled link, or nothing
  * when there is no link in the current language; in edit mode it then says why. Safe on any node:
  * without the mixin there is no link and no label, so it renders nothing.
+ *
+ * A button limited to visitors who are, or are not, signed in (ctaAudience "guests" or "members")
+ * is the template set's: it goes through classic-templates' "ctaForAudience" view of the node,
+ * cached per user, so the section around it stays cached for everybody.
  */
 export const Cta = ({
   node,
@@ -21,6 +26,10 @@ export const Cta = ({
   variant?: "primary" | "secondary";
 }) => {
   const t = useT();
+  const audience = readString(node, "ctaAudience");
+  if (audience === "guests" || audience === "members") {
+    return <Render node={node} view="ctaForAudience" parameters={{ variant }} />;
+  }
   const { link, missingTarget } = resolveLink(node, renderContext);
   const ctaLabel = readString(node, "ctaLabel");
   const text = ctaLabel || link?.targetTitle;

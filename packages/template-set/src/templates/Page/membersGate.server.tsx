@@ -8,8 +8,8 @@ import classes from "../page-areas.module.css";
 
 /** The module parameter "areas" ("hero,main"), reduced to the names a template can offer. */
 const areasOf = (value: unknown): AreaName[] => {
-  const asked = (typeof value === "string" ? value : "").split(",");
-  const known = (["hero", "main"] as const).filter((name) => asked.includes(name));
+  const asked = new Set((typeof value === "string" ? value : "").split(","));
+  const known = (["hero", "main"] as const).filter((name) => asked.has(name));
   return known.length > 0 ? known : ["main"];
 };
 

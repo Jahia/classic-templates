@@ -61,10 +61,12 @@
     "all": "Todos",
     "summary": "Lista os artigos ({{formats}}) em {{start}}, do mais recente para o mais antigo, até {{max}}.",
     "allFormats": "todos os formatos",
-    "pageCategories": "Apenas os artigos classificados nas categorias desta página ou nas suas subcategorias.",
+    "pageCategories": "Apenas os artigos classificados nas categorias desta página ({{categories}}) ou nas suas subcategorias.",
     "pageNoCategory": "Esta página não tem categoria: atribua-lhe o seu tema como categoria, ou o feed não mostra nada.",
     "noMatch": "Nenhum artigo deste formato aqui.",
-    "shown": "Artigos apresentados: {{n}}"
+    "shown": "Artigos apresentados: {{n}}",
+    "categories": "Apenas os artigos classificados em {{categories}} ou nas suas subcategorias.",
+    "bothCategories": "Apenas os artigos classificados em {{categories}} ou nas categorias desta página ({{page}}), ou nas suas subcategorias."
   },
   "person": {
     "stories": "Artigos de {{name}}",
@@ -157,6 +159,16 @@
       "inReview": "Em análise",
       "accepted": "Aceite",
       "declined": "Recusada"
+    },
+    "caption": "Legenda",
+    "shotDate": "Data da fotografia",
+    "location": "Local",
+    "licenceLabel": "Licença",
+    "credit": "Crédito",
+    "files": "Ficheiros enviados",
+    "licence": {
+      "editorial": "Uso editorial em todos os sites do grupo",
+      "exclusive30": "Exclusividade de 30 dias"
     }
   },
   "submissionList": {

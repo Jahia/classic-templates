@@ -55,9 +55,14 @@
 // button in their own layout), or switched on by editors on any section (every ctplmix:sectionStyle
 // type: "Call to action" in the edit form), where the view renders it after the section's content.
 // A component with several actions models them as child ctpl:link nodes instead.
+// ctaAudience shows the button to everyone, only to visitors who are not signed in (a "Sign in"
+// button), or only to signed-in visitors; Cta.tsx renders a limited button through its own view,
+// cached per user, so the section around it stays cached for everybody.
 [ctplmix:cta] > ctplmix:linkTo mixin
  extends = ctplmix:sectionStyle
  - ctaLabel (string) i18n
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - ctaAudience (string, choicelist[resourceBundle]) = 'everyone' autocreated indexed=no < 'everyone', 'guests', 'members'
 
 // An image from the media library. Its text alternative is imageAlt when set (what the image
 // means HERE, per language), else the image's own jcr:title; imageDecorative renders alt="" for an

@@ -10,9 +10,10 @@
 
 // What a supplier sent in answer to a brief: the photos or videos with their caption, credit,
 // licence, shooting date and place, and the picture desk's follow-up (status, note, and where the
-// accepted media were used). It has no page of its own (no jmix:mainResource): it shows as a status
-// card in a submission list, to the supplier who sent it and to the desk, as far as the ACLs on the
-// submission or its folder allow. The supplier's own values (caption, credit, location, company,
+// accepted media were used). It shows as a status card in a submission list, whose title opens its
+// own page (jmix:mainResource: everything the supplier sent and the desk's follow-up), to the
+// supplier's company and to the desk, as far as the ACLs on the submission or its folder allow:
+// anyone else gets "not found". The supplier's own values (caption, credit, location, company,
 // submittedBy) and the desk note are typed once, in one language, and read in any: they are NOT
 // i18n, so a supplier reading the portal in another language still sees them. The title comes from
 // mix:title, whose jcr:title is translatable by nature: the card reads it in the page's language,
@@ -20,7 +21,7 @@
 // leaves out a submission for lack of a translation. company and submittedBy are set by the
 // submission action, not typed by the supplier. brief and media are weak references: the card
 // links the brief only when the visitor can read it.
-[ctmd:submission] > jnt:content, mix:title, jmix:editorialContent, ctmdmix:component
+[ctmd:submission] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component
  // cnd-check-ignore(missingI18n): typed by the supplier once, in one language, read in any (see above)
  - caption (string, textarea)
  - credit (string)
