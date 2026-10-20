@@ -61,6 +61,7 @@ light and dark, from its settings, with no code change.
 | ----------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
 | Site header       | Logo, brand name, main menu, utility links, language switcher, sign-in entry    | [site-header](../../docs/components/site-header.md)                   |
 | Site footer       | Tagline, link columns, legal and social links, copyright                        | [site-footer](../../docs/components/site-footer.md)                   |
+| Consent banner    | Accept or refuse tracking, jExperience aware; a settings button reopens it      | [consent-banner](../../docs/components/consent-banner.md)             |
 | Breadcrumb        | The trail from home to the current page, above the content                      | [breadcrumb](../../docs/components/breadcrumb.md)                     |
 | Hero banner       | The banner at the top of a page: photo, split or plain                          | [hero-banner](../../docs/components/hero-banner.md)                   |
 | Hero carousel     | Hero banners shown one at a time, autoplay off by default                       | [hero-carousel](../../docs/components/hero-carousel.md)               |
