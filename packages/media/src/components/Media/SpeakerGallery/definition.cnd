@@ -1,0 +1,19 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A page section listing people (ctmd:person) under startNode as portrait cards, sorted by the name
+// they are filed under (sortName, else the last word of their name), in the page's language order.
+// showIndex adds an A-Z index of jump links above the cards. maxItems caps the cards shown.
+[ctmd:speakerGallery] > jnt:content, mix:title, ctmdmix:pageComponent, ctplmix:sectionStyle, jmix:list, jmix:renderableList, jmix:cache
+ // cnd-check-ignore(weakrefNoConstraint): any folder, page or content node can root the search
+ - startNode (weakreference)
+ - maxItems (long) = 24 autocreated < '[1,200]'
+ - showIndex (boolean) = false autocreated
+ - noResultText (string) i18n

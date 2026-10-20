@@ -1,0 +1,22 @@
+/* Story feed layouts: the grid comes from the shared cards; "list" stacks compact rows; "lead"
+   shows the newest story across the grid, image beside the text on a wide screen. */
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 64rem) {
+  .leadGrid > .lead {
+    grid-column: 1 / -1;
+  }
+  .lead > article {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+  }
+  .lead > article > :first-child img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
