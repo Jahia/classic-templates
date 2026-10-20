@@ -15,13 +15,13 @@ export const LIST_TYPES = new Set([
   "ctmd:session",
   "ctmd:sessionSpeaker",
   "ctmd:brief",
-  "ctmd:submission",
+  "ctmd:suppliedStory",
 ]);
 
 /** The status property of the types that have one, and the values a list may filter on. */
 const STATUS_FILTERS: Record<string, { property: string; allowed: readonly string[] }> = {
   "ctmd:brief": { property: "briefStatus", allowed: BRIEF_STATUSES },
-  "ctmd:submission": { property: "submissionStatus", allowed: SUBMISSION_STATUSES },
+  "ctmd:suppliedStory": { property: "moderationStatus", allowed: SUBMISSION_STATUSES },
 };
 
 /** The formats of a story (ctmd:story format choicelist), in the order buttons show them. */
@@ -75,7 +75,7 @@ export const buildListQuery = ({
   /** Category identifiers: an item filed under any of them matches. */
   categories?: string[];
   formats?: string[];
-  /** Statuses an item of a brief or submission list may have (empty: any); an unknown one throws. */
+  /** Statuses an item of a brief or supplied-story list may have (empty: any); an unknown one throws. */
   statuses?: string[];
   /** A multi-valued or single weakreference property that must hold this identifier. */
   reference?: { property: "authors" | "person"; id: string };

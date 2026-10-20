@@ -7,23 +7,25 @@ import cards from "../shared/cards.module.css";
 import { ListSection } from "../shared/parts.js";
 import type { Props } from "./types.js";
 
-/** Submissions a list shows, from 1 to 100 (the CND range), 20 by default. */
+/** Supplied stories a list shows, from 1 to 100 (the CND range), 20 by default. */
 const itemCount = (value: number | undefined) => listLimit(value, 20, 100);
 
 /**
- * The submission list: the submissions under its folder (or the whole site) that the visitor may
- * read, the newest first, as status cards (the submission's own "statusCard" view). A supplier
- * whose submissions are readable by them alone sees exactly their own.
+ * The submission list: the supplied stories (ctmd:suppliedStory) under its folder (or the whole
+ * site) that the visitor may read, the newest first, whatever their status, as status cards (the
+ * story's "statusCard" view). Suppliers' stories are stored where only their company and the
+ * editors may read them, so a supplier sees exactly their company's.
  *
- * The query runs with the request's own JCR session (`jcrSession`), so a submission the visitor
- * may not read is never returned. For that reason the view is cached per user (`cache.perUser`):
- * by default Jahia keys a fragment on the visitor's roles on the list's own path, which does not
- * see the ACLs of the submissions found below it, and one supplier could be served another's list.
- * The list still depends on everything under its folder (runQuery), so a new submission, or the
- * desk changing a status and publishing it, refreshes it.
+ * The query runs with the request's own JCR session (`jcrSession`), so a story the visitor may not
+ * read is never returned. For that reason the view is cached per user (`cache.perUser`): by
+ * default Jahia keys a fragment on the visitor's roles on the list's own path, which does not see
+ * the rights on the stories found below it, and one supplier could be served another's list. It is
+ * the only list that shows stories not accepted yet (`moderated: "all"`). The list depends on
+ * everything under its folder (runQuery), so a new story, or the editors changing a status and
+ * publishing it, refreshes it.
  *
- * Submissions are not left out for lack of a translation (see WITHOUT_TRANSLATION in
- * lib/media.ts): the supplier typed them once, in one language.
+ * Supplied stories are not left out for lack of a translation (see WITHOUT_TRANSLATION in
+ * lib/media.ts): the supplier wrote them once, in one language.
  */
 jahiaComponent(
   {
@@ -43,7 +45,8 @@ jahiaComponent(
           runQuery({
             session: jcrSession,
             renderContext,
-            type: "ctmd:submission",
+            type: "ctmd:suppliedStory",
+            moderated: "all",
             start,
             order: "created",
             locale: currentResource.getLocale(),
