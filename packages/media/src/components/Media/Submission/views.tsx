@@ -54,6 +54,62 @@ const linkedTitle = (node: JCRNodeWrapper, renderContext: RenderContext) => {
   return titleOf(node);
 };
 
+/** A link to a node the visitor may read, titled with its title (and a cache dependency). */
+const NodeLink = ({ node }: { node: JCRNodeWrapper }) => {
+  const { renderContext } = useServerContext();
+  return <a href={buildNodeUrl(node)}>{linkedTitle(node, renderContext)}</a>;
+};
+
+/** The brief a submission answers (when the visitor may read it) and the day it was submitted. */
+const SentFacts = ({ brief, created }: { brief?: JCRNodeWrapper; created?: string }) => {
+  const t = useT();
+  const { currentResource } = useServerContext();
+  const language = languageTag(currentResource.getLocale());
+  return (
+    <>
+      {brief && (
+        <div>
+          <dt>{t("submission.brief")}</dt>
+          <dd>
+            <NodeLink node={brief} />
+          </dd>
+        </div>
+      )}
+      {isoDay(created) && (
+        <div>
+          <dt>{t("submission.submittedOn")}</dt>
+          <dd>
+            <time dateTime={isoDay(created)}>{formatDate(created, language)}</time>
+          </dd>
+        </div>
+      )}
+    </>
+  );
+};
+
+/** The picture desk's note and, for an accepted submission, the item that uses the media. */
+const FollowUpFacts = ({ deskNote, usedIn }: { deskNote?: string; usedIn?: JCRNodeWrapper }) => {
+  const t = useT();
+  return (
+    <>
+      {deskNote && (
+        <div className={classes.note}>
+          <dt>{t("submission.deskNote")}</dt>
+          <dd>{deskNote}</dd>
+        </div>
+      )}
+      {usedIn && (
+        <div>
+          <dt>{t("submission.usedIn")}</dt>
+          <dd>
+            <NodeLink node={usedIn} />
+          </dd>
+        </div>
+      )}
+    </>
+  );
+};
+
 /** The status as text with a mark that says it without colour (the mark is hidden from readers). */
 const StatusLabel = ({ status }: { status: SubmissionStatus }) => {
   const t = useT();
@@ -80,8 +136,7 @@ const StatusLabel = ({ status }: { status: SubmissionStatus }) => {
 export const SubmissionCard = ({ props }: { props: Props }) => {
   const t = useT();
   const level = useParamHeadingLevel();
-  const { currentNode, renderContext, currentResource } = useServerContext();
-  const language = languageTag(currentResource.getLocale());
+  const { currentNode } = useServerContext();
   const status = submissionStatusOf(props.submissionStatus);
   const title = titleOf(currentNode);
   const created = readString(currentNode, "jcr:created");
@@ -101,42 +156,14 @@ export const SubmissionCard = ({ props }: { props: Props }) => {
           </a>
         </Heading>
         <dl className={classes.facts}>
-          {brief && (
-            <div>
-              <dt>{t("submission.brief")}</dt>
-              <dd>
-                <a href={buildNodeUrl(brief)}>{linkedTitle(brief, renderContext)}</a>
-              </dd>
-            </div>
-          )}
-          {isoDay(created) && (
-            <div>
-              <dt>{t("submission.submittedOn")}</dt>
-              <dd>
-                <time dateTime={isoDay(created)}>{formatDate(created, language)}</time>
-              </dd>
-            </div>
-          )}
+          <SentFacts brief={brief} created={created} />
           <div>
             <dt>{t("submission.statusLabel")}</dt>
             <dd>
               <StatusLabel status={status} />
             </dd>
           </div>
-          {props.deskNote && (
-            <div className={classes.note}>
-              <dt>{t("submission.deskNote")}</dt>
-              <dd>{props.deskNote}</dd>
-            </div>
-          )}
-          {usedIn && (
-            <div>
-              <dt>{t("submission.usedIn")}</dt>
-              <dd>
-                <a href={buildNodeUrl(usedIn)}>{linkedTitle(usedIn, renderContext)}</a>
-              </dd>
-            </div>
-          )}
+          <FollowUpFacts deskNote={props.deskNote} usedIn={usedIn} />
         </dl>
         {shown.length > 0 && (
           <ul className={classes.thumbs} aria-label={t("submission.photos")}>
@@ -167,7 +194,7 @@ export const SubmissionCard = ({ props }: { props: Props }) => {
  */
 export const SubmissionPage = ({ props }: { props: Props }) => {
   const t = useT();
-  const { currentNode, renderContext, currentResource } = useServerContext();
+  const { currentNode, currentResource } = useServerContext();
   const language = languageTag(currentResource.getLocale());
   const status = submissionStatusOf(props.submissionStatus);
   const title = titleOf(currentNode);
@@ -191,22 +218,7 @@ export const SubmissionPage = ({ props }: { props: Props }) => {
         {title ? <h1 className={classes.pageTitle}>{title}</h1> : <Untitled />}
       </header>
       <dl className={`${classes.facts} ${classes.pageFacts}`}>
-        {brief && (
-          <div>
-            <dt>{t("submission.brief")}</dt>
-            <dd>
-              <a href={buildNodeUrl(brief)}>{linkedTitle(brief, renderContext)}</a>
-            </dd>
-          </div>
-        )}
-        {isoDay(created) && (
-          <div>
-            <dt>{t("submission.submittedOn")}</dt>
-            <dd>
-              <time dateTime={isoDay(created)}>{formatDate(created, language)}</time>
-            </dd>
-          </div>
-        )}
+        <SentFacts brief={brief} created={created} />
         {props.shotDate && isoDay(props.shotDate) && (
           <div>
             <dt>{t("submission.shotDate")}</dt>
@@ -233,20 +245,7 @@ export const SubmissionPage = ({ props }: { props: Props }) => {
             <dd>{props.credit}</dd>
           </div>
         )}
-        {props.deskNote && (
-          <div className={classes.note}>
-            <dt>{t("submission.deskNote")}</dt>
-            <dd>{props.deskNote}</dd>
-          </div>
-        )}
-        {usedIn && (
-          <div>
-            <dt>{t("submission.usedIn")}</dt>
-            <dd>
-              <a href={buildNodeUrl(usedIn)}>{linkedTitle(usedIn, renderContext)}</a>
-            </dd>
-          </div>
-        )}
+        <FollowUpFacts deskNote={props.deskNote} usedIn={usedIn} />
       </dl>
       {props.caption && (
         <section className={classes.pageSection} aria-labelledby="ctmd-submission-caption">

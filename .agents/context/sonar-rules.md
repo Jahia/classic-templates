@@ -26,6 +26,7 @@ type information (`projectService`).
 | S7755      | `unicorn/prefer-at`                                | `.at(-1)` instead of `[x.length - 1]`                                                     |
 | S7763      | `unicorn/prefer-export-from`                       | `export { x } from "./y.js"` to re-export                                                 |
 | S7778      | `unicorn/prefer-single-call`                       | one `push(a, b)` instead of two pushes                                                    |
+| S7776      | `unicorn/prefer-set-has`                           | a list only asked "is it in?" is a `Set` with `.has()` (a type guard keeps the narrowing) |
 | S3776      | `sonarjs/cognitive-complexity` (15)                | split long functions into named steps                                                     |
 | S3358      | `sonarjs/no-nested-conditional`                    | no nested ternaries: named constants first                                                |
 | S4624      | `sonarjs/no-nested-template-literals`              | compute the inner string first                                                            |

@@ -42,6 +42,7 @@ export default defineConfig(
       "unicorn/prefer-at": "error", // S7755
       "unicorn/prefer-export-from": "error", // S7763
       "unicorn/prefer-single-call": "error", // S7778
+      "unicorn/prefer-set-has": "error", // S7776
       "unicorn/prefer-global-this": "error", // S7764
       "sonarjs/cognitive-complexity": ["error", 15], // S3776
       "sonarjs/no-nested-conditional": "error", // S3358

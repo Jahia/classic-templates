@@ -6,9 +6,9 @@ import { readString } from "./props.js";
 import classes from "./cta.module.css";
 
 type Variant = "primary" | "secondary" | "onOverlay" | "link";
-const VARIANTS: readonly string[] = ["primary", "secondary", "onOverlay", "link"];
+const VARIANTS: ReadonlySet<string> = new Set(["primary", "secondary", "onOverlay", "link"]);
 const isVariant = (value: unknown): value is Variant =>
-  typeof value === "string" && VARIANTS.includes(value);
+  typeof value === "string" && VARIANTS.has(value);
 
 /** The button style the section asked for (the `variant` parameter of Cta), else "primary". */
 const useVariant = (): Variant => {
