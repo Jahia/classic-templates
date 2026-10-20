@@ -150,8 +150,10 @@ export interface EditorialSpec {
     body?: { en: string; fr?: string }
     /** Switches on "Members only" (mixin ctplmix:membersOnly). */
     membersOnly?: boolean
-    /** YYYY-MM-DD */
-    date: string
+    /** YYYY-MM-DD; left out, the item has no publication date. */
+    date?: string
+    /** A moderated item (mixin ctplmix:moderated) with this status. */
+    moderationStatus?: 'submitted' | 'inReview' | 'accepted' | 'declined'
     author?: string
     tags?: string[]
     /** Category identifiers (j:defaultCategory). */
@@ -182,13 +184,15 @@ export const addEditorial = (folder: string, type: 'ctpl:news' | 'ctpl:article',
             ...(item.tags ? ['jmix:tagged'] : []),
             ...(item.categories ? ['jmix:categorized'] : []),
             ...(item.membersOnly ? ['ctplmix:membersOnly'] : []),
+            ...(item.moderationStatus ? ['ctplmix:moderated'] : []),
         ],
         properties: [
             ...i18nValue('jcr:title', item.title),
             ...i18nValue('teaser', item.teaser),
             ...i18nValue('body', item.body),
             ...(item.membersOnly ? [{ name: 'ctplMembersOnly', value: 'true' }] : []),
-            { name: 'publicationDate', type: 'DATE', value: `${item.date}T09:00:00.000+02:00` },
+            ...(item.date ? [{ name: 'publicationDate', type: 'DATE', value: `${item.date}T09:00:00.000+02:00` }] : []),
+            ...(item.moderationStatus ? [{ name: 'moderationStatus', value: item.moderationStatus }] : []),
             ...(item.author ? [{ name: 'author', value: item.author }] : []),
             ...(item.tags ? [{ name: 'j:tagList', values: item.tags }] : []),
             ...(item.categories ? [{ name: 'j:defaultCategory', type: 'WEAKREFERENCE', values: item.categories }] : []),

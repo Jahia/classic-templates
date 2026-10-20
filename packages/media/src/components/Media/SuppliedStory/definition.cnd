@@ -1,0 +1,26 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
+<ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
+
+// A story a supplier sent from a portal, in answer to a brief or of their own: a story like any
+// other (format, title, teaser, body, image, its supplier's person page as author, topics as
+// categories), moderated (ctplmix:moderated). Stored with the stories of the editorial hub, in a
+// folder only the supplier's company and the editors may read, it stays out of every list until
+// the editors accept it; classic-moderation then opens it to every visitor and publishes it, and
+// the hub's story feeds pick it up like any story (the type extends ctmd:story). brief is the
+// brief it answers (empty for a story pitched without a brief); company and submittedBy are set by
+// the submission action, not typed by the supplier.
+[ctmd:suppliedStory] > ctmd:story, ctplmix:moderated
+ - brief (weakreference, picker[type='editorial']) < ctmd:brief
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - licence (string, choicelist[resourceBundle]) < 'editorial', 'exclusive30'
+ // cnd-check-ignore(missingI18n): set by the submission action, read in any language
+ - company (string)
+ // cnd-check-ignore(missingI18n): set by the submission action, read in any language
+ - submittedBy (string)

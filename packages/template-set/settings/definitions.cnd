@@ -64,6 +64,17 @@
  // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
  - ctaAudience (string, choicelist[resourceBundle]) = 'everyone' autocreated indexed=no < 'everyone', 'guests', 'members'
 
+// Moderated content: an item somebody outside the editorial team submitted (a supplier's story)
+// that the site shows only once accepted. moderationStatus is where it stands; moderationNote is
+// the editors' note to the author. Lists of the template set and of its modules leave out a
+// moderated item that is not accepted, whoever reads them; who may open the item itself is the
+// business of its folder's rights (classic-moderation opens it to every visitor once accepted).
+[ctplmix:moderated] mixin
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - moderationStatus (string, choicelist[resourceBundle]) = 'submitted' autocreated < 'submitted', 'inReview', 'accepted', 'declined'
+ // cnd-check-ignore(missingI18n): written once by an editor to one author, read in any language
+ - moderationNote (string, textarea)
+
 // An image from the media library. Its text alternative is imageAlt when set (what the image
 // means HERE, per language), else the image's own jcr:title; imageDecorative renders alt="" for an
 // image that only decorates (a backdrop). Cards and quotes always treat their image as decorative:

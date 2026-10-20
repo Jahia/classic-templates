@@ -1,6 +1,7 @@
 import { getChildNodes, getNodesByJCRQuery } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper, JCRSessionWrapper } from "org.jahia.services.content";
 import type { JCRSiteNode } from "org.jahia.services.content.decorator";
+import { isListedItem } from "./moderation.js";
 
 /** Sort fields a list may use, and the directions. Nothing else reaches the query string. */
 const CRITERIA = new Set(["publicationDate", "jcr:created", "jcr:lastModified", "jcr:title"]);
@@ -130,11 +131,14 @@ export interface ListResult {
   capped: boolean;
   skippedExcluded: number;
   skippedUntranslated: number;
+  /** Moderated items not accepted yet (ctplmix:moderated): never listed. */
+  skippedModerated: number;
 }
 
 /**
- * Runs a content list: the query, then the excluded items and the items not translated into the
- * page's language filtered out, sliced to `max`. Fetches `(max + excluded) * 2` rows, or `countUpTo`
+ * Runs a content list: the query, then the excluded items, the moderated items not accepted yet
+ * (see moderation.ts) and the items not translated into the page's language filtered out, sliced
+ * to `max`. Fetches `(max + excluded) * 2` rows, or `countUpTo`
  * rows when the caller wants a count for editors.
  */
 export const runList = ({
@@ -166,9 +170,11 @@ export const runList = ({
   const rows = getNodesByJCRQuery(session, query, fetchSize);
   let skippedExcluded = 0;
   let skippedUntranslated = 0;
+  let skippedModerated = 0;
   const items: JCRNodeWrapper[] = [];
   for (const node of rows) {
     if (excluded.has(node.getIdentifier())) skippedExcluded++;
+    else if (!isListedItem(node)) skippedModerated++;
     else if (!node.hasI18N(locale as never)) skippedUntranslated++;
     else if (items.length < max) items.push(node);
   }
@@ -179,6 +185,7 @@ export const runList = ({
     capped: rows.length >= fetchSize,
     skippedExcluded,
     skippedUntranslated,
+    skippedModerated,
   };
 };
 

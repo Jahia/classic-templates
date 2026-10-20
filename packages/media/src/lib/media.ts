@@ -4,16 +4,18 @@ import type { RenderContext } from "org.jahia.services.render";
 import { sortNameOf, validTimeZone } from "./format.js";
 import { readReference, readString } from "./props.js";
 import { buildListQuery, FETCH_LIMIT, pathRegex, type Order } from "./query.js";
+import { isListedItem } from "./moderation.js";
 
 /** Categories a list may expand to (a category and its subcategories) before it stops. */
 const MAX_CATEGORIES = 200;
 
 /**
  * Types a list never leaves out for lack of a translation in the page's language: a speaker has no
- * text of its own, and a submission is typed by a supplier in one language, so a supplier must
- * find it whatever language the page is read in.
+ * text of its own, and a supplied story is typed by a supplier in one language, so a supplier must
+ * find it in their list whatever language the page is read in (the hub's story lists query
+ * ctmd:story, and keep the translation rule).
  */
-const WITHOUT_TRANSLATION = new Set(["ctmd:sessionSpeaker", "ctmd:submission"]);
+const WITHOUT_TRANSLATION = new Set(["ctmd:sessionSpeaker", "ctmd:suppliedStory"]);
 
 /** The nodes a multi-valued weakreference points at, in order, skipping those that do not resolve. */
 export const readReferences = (node: JCRNodeWrapper, name: string): JCRNodeWrapper[] => {
@@ -71,7 +73,9 @@ export const expandCategories = (categories: JCRNodeWrapper[]): string[] => {
 /**
  * Runs a list query under `start`, as the visitor, and makes the fragment depend on everything
  * under `start`: adding, editing or publishing an item there refreshes the list. Items with no
- * translation in the page's language are left out (a list never shows an untitled link).
+ * translation in the page's language are left out (a list never shows an untitled link), and so
+ * are moderated items not accepted yet (ctplmix:moderated, see moderation.ts), unless the list is
+ * a supplier's own (`moderated: "all"`, a submission list cached per user).
  */
 export const runQuery = ({
   session,
@@ -85,6 +89,7 @@ export const runQuery = ({
   reference,
   locale,
   limit = FETCH_LIMIT,
+  moderated = "listed",
 }: {
   session: JCRSessionWrapper;
   renderContext: RenderContext;
@@ -97,6 +102,8 @@ export const runQuery = ({
   reference?: { property: "authors" | "person"; id: string };
   locale: unknown;
   limit?: number;
+  /** "listed" (default): moderated items only once accepted; "all": every status. */
+  moderated?: "listed" | "all";
 }): JCRNodeWrapper[] => {
   server.render.addCacheDependency(
     { flushOnPathMatchingRegexp: `${pathRegex(start.getPath())}(/.*)?` },
@@ -112,7 +119,9 @@ export const runQuery = ({
     reference,
   });
   return getNodesByJCRQuery(session, query, limit).filter(
-    (node) => WITHOUT_TRANSLATION.has(type) || node.hasI18N(locale as never),
+    (node) =>
+      (moderated === "all" || isListedItem(node)) &&
+      (WITHOUT_TRANSLATION.has(type) || node.hasI18N(locale as never)),
   );
 };
 

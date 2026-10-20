@@ -8,17 +8,18 @@ with the [README](../README.md).
 
 ## Start here
 
-| If you want to...                                            | Read                                                     |
-| ------------------------------------------------------------ | -------------------------------------------------------- |
-| Set up a new site: install, languages, header, footer, theme | [Getting started](guides/getting-started.md)             |
-| Understand page templates, areas and page options            | [Pages and templates](guides/pages-and-templates.md)     |
-| Reserve news, articles and pages for signed-in members       | [Members-only content](guides/members-only-content.md)   |
-| Add, edit, translate and publish content                     | [Editing content](guides/editing-content.md)             |
-| Change the theme, light and dark, section backgrounds        | [Themes and appearance](guides/themes-and-appearance.md) |
-| Make pages accessible, publish an accessibility statement    | [Accessibility](guides/accessibility.md)                 |
-| Be found by search engines                                   | [Search engines](guides/seo.md)                          |
-| Use forms, a FAQ, a gallery or a store locator               | [Add-on modules](guides/add-ons.md)                      |
-| Find a quick answer                                          | [Questions and answers](guides/faq.md)                   |
+| If you want to...                                               | Read                                                     |
+| --------------------------------------------------------------- | -------------------------------------------------------- |
+| Set up a new site: install, languages, header, footer, theme    | [Getting started](guides/getting-started.md)             |
+| Understand page templates, areas and page options               | [Pages and templates](guides/pages-and-templates.md)     |
+| Reserve news, articles and pages for signed-in members          | [Members-only content](guides/members-only-content.md)   |
+| Show content written outside the team once an editor accepts it | [Moderated content](guides/moderated-content.md)         |
+| Add, edit, translate and publish content                        | [Editing content](guides/editing-content.md)             |
+| Change the theme, light and dark, section backgrounds           | [Themes and appearance](guides/themes-and-appearance.md) |
+| Make pages accessible, publish an accessibility statement       | [Accessibility](guides/accessibility.md)                 |
+| Be found by search engines                                      | [Search engines](guides/seo.md)                          |
+| Use forms, a FAQ, a gallery or a store locator                  | [Add-on modules](guides/add-ons.md)                      |
+| Find a quick answer                                             | [Questions and answers](guides/faq.md)                   |
 
 ## Components
 

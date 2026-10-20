@@ -1,4 +1,4 @@
-/* A submission's status card. Theme tokens only. */
+/* A supplied story's status card (a supplier's portal). Theme tokens only. */
 
 .card {
   display: flex;
@@ -80,89 +80,31 @@
   color: var(--ctpl-color-danger);
 }
 
-.thumbs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ctpl-space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+/* The story's picture, across the top of the card. */
 .thumb {
-  display: block;
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: var(--ctpl-radius-sm);
-  object-fit: cover;
-}
-.files {
-  color: var(--ctpl-color-text-muted);
-  font-size: var(--ctpl-text-sm);
-}
-
-/* The submission's own page. */
-.page {
-  display: grid;
-  gap: var(--ctpl-space-5);
-  padding-block: var(--ctpl-space-6) var(--ctpl-section-gap);
-}
-.page > * {
-  margin: 0;
-}
-.pageHead {
-  display: grid;
-  gap: var(--ctpl-space-3);
-  max-width: var(--ctpl-measure);
-}
-.pageHead > * {
-  margin: 0;
-}
-.pageStatus {
-  font-size: var(--ctpl-text-sm);
-}
-.pageTitle {
-  font-family: var(--ctpl-font-heading);
-  font-size: var(--ctpl-text-4xl);
-  font-weight: var(--ctpl-heading-weight);
-  letter-spacing: var(--ctpl-heading-tracking);
-  line-height: var(--ctpl-leading-tight);
-  overflow-wrap: anywhere;
-}
-.pageFacts {
-  max-width: var(--ctpl-measure);
-  font-size: var(--ctpl-text-base);
-}
-.pageSection {
-  display: grid;
-  gap: var(--ctpl-space-3);
-}
-.pageSection > * {
-  margin: 0;
-}
-.pageSection h2 {
-  font-family: var(--ctpl-font-heading);
-  font-size: var(--ctpl-text-2xl);
-  font-weight: var(--ctpl-heading-weight);
-}
-.caption {
-  max-width: var(--ctpl-measure);
-  white-space: pre-line;
-}
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-  gap: var(--ctpl-space-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.photo {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--ctpl-radius-md);
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
-.fileList {
-  margin: 0;
-  padding-inline-start: var(--ctpl-space-5);
+.format {
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+/* What was sent, readable here until the story is accepted and on the editorial site. */
+.preview {
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  padding-top: var(--ctpl-space-3);
+}
+.preview summary {
+  cursor: pointer;
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.preview > * + * {
+  margin-top: var(--ctpl-space-2);
+}
+.lead {
+  font-weight: var(--ctpl-font-weight-medium);
 }

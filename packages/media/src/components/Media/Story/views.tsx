@@ -22,6 +22,7 @@ import { Byline, ShareBox, useFormatLabel } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
 import classes from "./story.module.css";
+import { isListedItem } from "../../../lib/moderation.js";
 
 /** Related stories shown under a story, at most; candidates read before ranking. */
 const MAX_RELATED = 3;
@@ -221,6 +222,12 @@ export const StoryFull = ({ props, perUser = false }: { props: Props; perUser?: 
       <Styles />
       {membersOnly && renderContext.isEditMode() && (
         <p className={classes.editNote}>{t("story.membersEdit")}</p>
+      )}
+      {!isListedItem(currentNode) && (
+        // a supplied story not accepted yet: only its supplier and the editors can open it
+        <p className={classes.editNote} data-testid="ctmd-story-pending">
+          {t("story.pending")}
+        </p>
       )}
       <StoryHead props={props} node={currentNode} />
       <ShareBox url={url} title={title} />

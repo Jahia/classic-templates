@@ -226,20 +226,25 @@ ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-el
                  "jexperience-dashboards"]
 ORVANE_ADDON_PREFIXES = ["jsfaqnt", "jsfaqmix", "jsfaq", "jsmediagallerynt", "jsmediagallerymix", "jsstorelocnt",
                          "jsstorelocmix", "fmdb", "fmdbmix", "fmdbext", "fmdbacc", "fmdbaccmix", "wem", "wemnt", "wemmix"]
+# Since v6 Signal holds the stories suppliers send from the portal, and a person page per supplier that names the
+# account it stands for (mixin fmdbcntmix:submitterProfile of formidable-content, whose Create content action files
+# each story under its author's page).
+SIGNAL_ONLY = {"addons": ["formidable-content"], "prefixes": ["fmdbcntmix"]}
 for _site in ("orvane-signal", "orvane-live"):
+    _extra = SIGNAL_ONLY if _site == "orvane-signal" else {"addons": [], "prefixes": []}
     PROFILES[_site] = {
         "package": f"prepackaged-{_site}",
         "sources": ["template-set", "media"],
-        "addon_prefixes": ORVANE_ADDON_PREFIXES,
-        "installed": ["classic-templates", "classic-media"] + ORVANE_ADDONS + PLATFORM_MODULES,
+        "addon_prefixes": ORVANE_ADDON_PREFIXES + _extra["prefixes"],
+        "installed": ["classic-templates", "classic-media"] + ORVANE_ADDONS + _extra["addons"] + PLATFORM_MODULES,
         "only_for_addons": [],
         "conversions": {},
         "text_edits": [],
     }
 
 # Orvane Portal (v5), the suppliers' portal: gated below its home page (the ACLs travel with the
-# export, the groups they name are the project's), the briefs and submissions of classic-media, and
-# the submission form with the Create content action (formidable-content, of formidable-extended-actions; prefix fmdbcnt)
+# export, the groups they name are the project's), the briefs of classic-media (since v6 the stories suppliers send
+# are stored on Signal), and the story and pitch forms with the Create content action (formidable-content, of formidable-extended-actions; prefix fmdbcnt)
 # and the Redirect action (formidable-redirect, same repository; prefix fmdbred).
 # No jExperience on the portal.
 PROFILES["orvane-portal"] = {

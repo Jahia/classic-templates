@@ -68,11 +68,16 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
       ],
       [
         t("query.panel.skipped"),
-        t("query.panel.skippedValue", {
-          excluded: r.skippedExcluded,
-          untranslated: r.skippedUntranslated,
-          language: info.language,
-        }),
+        [
+          t("query.panel.skippedValue", {
+            excluded: r.skippedExcluded,
+            untranslated: r.skippedUntranslated,
+            language: info.language,
+          }),
+          ...(r.skippedModerated > 0
+            ? [t("query.panel.skippedModerated", { count: r.skippedModerated })]
+            : []),
+        ].join(", "),
       ],
     );
   }

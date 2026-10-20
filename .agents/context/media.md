@@ -32,7 +32,7 @@ changing a view. This file says what differs.
 | `ctmd:searchResults`  | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`                                                                                                   | default (`cache.expiration` 0)                                                   |
 | `ctmd:brief`          | `mix:title`, `jmix:mainResource`, `jmix:editorialContent`, `ctmdmix:component`                                                                                 | default (card), card, fullPage                                                   |
 | `ctmd:briefList`      | `mix:title`, `ctmdmix:pageComponent`, `ctplmix:sectionStyle`, `jmix:list`, `jmix:renderableList`, `jmix:cache`                                                 | default (`cache.perUser`)                                                        |
-| `ctmd:submission`     | `mix:title`, `jmix:editorialContent`, `ctmdmix:component` (no `jmix:mainResource`)                                                                             | default and statusCard (`cache.perUser`)                                         |
+| `ctmd:suppliedStory`  | `ctmd:story`, `ctplmix:moderated` (template set)                                                                                                              | statusCard (`cache.perUser`); the rest are the story's        |
 | `ctmd:submissionList` | as the brief list                                                                                                                                              | default (`cache.perUser`)                                                        |
 
 Mixins: `ctmdmix:component`, `ctmdmix:pageComponent` (as travel), `ctmdmix:eventFolder`
@@ -102,27 +102,39 @@ language).
   built in the browser so a cached page never shows a stale count; audio always comes with a
   transcript in a `<details>`.
 
-- **Supplier portal: briefs and submissions** (`ctmd:brief`, `ctmd:submission` and their two lists).
+- **Supplier portal: briefs and supplied stories** (`ctmd:brief`, `ctmd:suppliedStory` and their two lists).
   The module owns types and views only; who may read what is an ACL set by the site (on a brief, a
-  supplier's folder, a submission), never a field. Lists run `getNodesByJCRQuery` with the
+  supplier's folder, a story), never a field. Lists run `getNodesByJCRQuery` with the
   request's own session (`jcrSession`, `lib/media.ts` `runQuery`), so an unreadable item is not
   returned. **Output cache** (checked in Jahia's `AclCacheKeyPartGenerator`): by default a fragment
   is keyed on the roles of the visitor on the rendered node's own path (or, with the groups
   signature, on the principals that carry an ACE somewhere), neither of which sees the ACLs of the
   items a list finds below its folder, and `cache.perUser` makes the key part the user. So
-  `ctmd:briefList`, `ctmd:submissionList`, the submission status card and the submission's own
-  page (`fullPage`; both link a brief and an item only when the visitor may read them) set
-  `cache.perUser: "true"` on their views; the
+  `ctmd:briefList`, `ctmd:submissionList` and the supplied story's status card (it links a brief
+  only when the visitor may read it) set `cache.perUser: "true"` on their views; the
   brief card and page show the same to everyone who can open them and keep the shared cache. A
   list depends on everything under its folder (path regex, `runQuery`). Not verified on a running
   Jahia from this change: render the two lists as two suppliers in both orders after deploying.
   Briefs are sorted in code (`lib/briefs.ts`: deadline, undated last, title as tie-break) and
-  filtered by status in the query (`briefStatus = 'open'`) and in code; submissions are ordered
+  filtered by status in the query (`briefStatus = 'open'`) and in code; supplied stories are ordered
   `jcr:created DESC` in the query and again in code. Briefs are left out of a list for lack of a
-  translation in the page's language (as every list of the module); submissions never are
-  (`WITHOUT_TRANSLATION`): a supplier typed them in one language, and the status card reads the
-  title through `titleOf` (page language, else the first language it exists in, else the node
-  name). `caption`, `credit`, `location`, `deskNote` and the choicelists are not i18n on purpose.
+  translation in the page's language (as every list of the module); in the submission list
+  supplied stories never are (`WITHOUT_TRANSLATION`, keyed on the queried type): a supplier typed
+  them in one language, and the status card reads the title through `titleOf` (page language, else
+  the first language it exists in, else the node name). `company`, `submittedBy`, `moderationNote`
+  and the choicelists are not i18n on purpose.
+- **Moderation** (`ctplmix:moderated` of the template set, decision 2026-10-20). Every list of the
+  module (`runQuery`) and the template set's content list drop a moderated item whose
+  `moderationStatus` is not `accepted`, in code after the query (`lib/moderation.ts`, a copy of the
+  template set's; JCR-SQL2 has no `IS NULL` and `NOT` conditions are slow): a list is cached for many
+  visitors, and an author who may open their own pending story must never put it in a list another
+  visitor is served. Only the submission list asks for every status (`moderated: "all"`), and it is
+  cached per user. Opening an accepted item is not this module's: the OSGi bundle classic-moderation
+  (`packages/moderation`) watches `moderationStatus` in the default workspace and, when the user who
+  set it may publish the item, grants `reader` to `u:guest` and `g:users` on it and on the files it
+  references in its site, then publishes them; a status that leaves `accepted` revokes the item's
+  grants (its files stay open). Verified on 8.2.3.2 with a closed folder (guest 404, accepted 200,
+  declined 404) and with a contributor who may edit but not publish (nothing opened).
   A list whose folder the visitor cannot read counts as a missing start node (nothing live).
   Choice labels shown to visitors are locale keys (`brief.media.*`, `brief.use.*`,
   `submission.status.*`), the editor labels the resource bundle. The status shows as text with a
