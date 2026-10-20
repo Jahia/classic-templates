@@ -1,4 +1,5 @@
 import { Render, jahiaComponent } from "@jahia/javascript-modules-library";
+import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { listLimit, sortSubmissions } from "../../../lib/briefs.js";
 import { RAW, useT } from "../../../lib/i18n.js";
 import { listStart, pageOf, runQuery, startLabel } from "../../../lib/media.js";
@@ -9,6 +10,19 @@ import type { Props } from "./types.js";
 
 /** Supplied stories a list shows, from 1 to 100 (the CND range), 20 by default. */
 const itemCount = (value: number | undefined) => listLimit(value, 20, 100);
+
+/**
+ * Whether the visitor may read the folder that holds `node`: a supplier's stories sit in their company's folder,
+ * which only that company and the editors read. An accepted story is opened to every visitor, its folder is not:
+ * without this test every supplier would find the other companies' accepted stories in their own list.
+ */
+const inReadableFolder = (node: JCRNodeWrapper): boolean => {
+  try {
+    return Boolean(node.getParent());
+  } catch {
+    return false;
+  }
+};
 
 /**
  * The submission list: the supplied stories (ctmd:suppliedStory) under its folder (or the whole
@@ -23,6 +37,9 @@ const itemCount = (value: number | undefined) => listLimit(value, 20, 100);
  * the only list that shows stories not accepted yet (`moderated: "all"`). The list depends on
  * everything under its folder (runQuery), so a new story, or the editors changing a status and
  * publishing it, refreshes it.
+ *
+ * A story is listed only when the visitor may read its folder (inReadableFolder): an accepted story is open to
+ * every visitor, its company's folder is not.
  *
  * Supplied stories are not left out for lack of a translation (see WITHOUT_TRANSLATION in
  * lib/media.ts): the supplier wrote them once, in one language.
@@ -51,7 +68,9 @@ jahiaComponent(
             order: "created",
             locale: currentResource.getLocale(),
             limit: max,
-          }).map((node) => ({ node, created: readString(node, "jcr:created") })),
+          })
+            .filter(inReadableFolder)
+            .map((node) => ({ node, created: readString(node, "jcr:created") })),
         );
     return (
       <ListSection
