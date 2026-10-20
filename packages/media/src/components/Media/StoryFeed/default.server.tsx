@@ -9,8 +9,10 @@ import {
   readReferences,
   runQuery,
   startLabel,
+  titleOf,
 } from "../../../lib/media.js";
 import { readString } from "../../../lib/props.js";
+import { feedCategoriesSentence } from "../../../lib/feedCategories.js";
 import { FORMATS, isFormat } from "../../../lib/query.js";
 import shared from "../../../lib/shared.module.css";
 import cards from "../shared/cards.module.css";
@@ -42,11 +44,13 @@ jahiaComponent(
     const formats = (props.formats ?? []).filter(isFormat);
     let categories = expandCategories(props.filterCategories ?? []);
     let pageWithoutCategory = false;
+    let pageCategoryNodes: JCRNodeWrapper[] | undefined;
     if (props.pageCategories) {
       server.render.addCacheDependency({ node: page }, renderContext);
       // a topic page lists its sub-topics' stories too, as a picked category does
       pageWithoutCategory = categoryIdsOf(page).length === 0;
-      const own = expandCategories(readReferences(page, "j:defaultCategory"));
+      pageCategoryNodes = readReferences(page, "j:defaultCategory");
+      const own = expandCategories(pageCategoryNodes);
       categories = [...new Set([...categories, ...own])];
     }
     const items: JCRNodeWrapper[] =
@@ -66,6 +70,11 @@ jahiaComponent(
     const present = FORMATS.filter((f) => items.some((item) => readString(item, "format") === f));
     const withFilter = props.showFilter === true && present.length > 1;
     const layout = props.layout === "list" || props.layout === "lead" ? props.layout : "grid";
+    // the summary names the categories the feed filters on, picked here or the page's
+    const categorySentence = feedCategoriesSentence(
+      (props.filterCategories ?? []).map(titleOf),
+      pageCategoryNodes?.map(titleOf),
+    );
     const summary = (
       <>
         {t("feed.summary", {
@@ -77,8 +86,7 @@ jahiaComponent(
           max,
           ...RAW,
         })}{" "}
-        {props.pageCategories &&
-          (pageWithoutCategory ? t("feed.pageNoCategory") : t("feed.pageCategories"))}
+        {categorySentence && t(categorySentence.key, { ...categorySentence, ...RAW })}
       </>
     );
     let listClass = cards.grid;
