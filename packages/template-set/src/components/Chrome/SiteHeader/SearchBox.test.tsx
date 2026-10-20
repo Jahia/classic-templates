@@ -22,7 +22,6 @@ const render = (props: Partial<SearchBoxProps> = {}) =>
         value=""
         expanded={false}
         open={false}
-        active={-1}
         options={[]}
         {...props}
       />
@@ -41,13 +40,14 @@ describe("SearchBox, closed (also the server's markup)", () => {
     expect(html).toMatch(/<button type="submit"[^>]*>Search<\/button>/);
   });
 
-  it("is a combobox that owns a hidden list box", () => {
+  it("is a plain search input described by its status, over a hidden list of suggestions", () => {
     const input = /<input[^>]*>/.exec(html)?.[0] ?? "";
-    expect(input).toContain('role="combobox"');
-    expect(input).toContain('aria-expanded="false"');
-    expect(input).toContain('aria-controls="s-list"');
-    expect(input).not.toContain("aria-activedescendant");
-    expect(html).toMatch(/<ul[^>]*id="s-list"[^>]*role="listbox"[^>]*hidden=""/);
+    expect(input).toContain('type="search"');
+    expect(input).toContain('aria-describedby="s-status"');
+    expect(input).not.toContain("role=");
+    expect(html).toMatch(/<ul[^>]*id="s-list"[^>]*hidden=""/);
+    expect(html).toMatch(/<output id="s-status"[^>]*><\/output>/);
+    expect(html).not.toMatch(/role="(combobox|listbox|option|status)"/);
   });
 
   it("has a toggle that names the panel it opens", () => {
@@ -62,7 +62,6 @@ describe("SearchBox, list open", () => {
   const html = render({
     value: "fast",
     open: true,
-    active: 1,
     options: [
       { kind: "item", suggestion: { id: "a", title: "Fast channels", url: "/a.html" } },
       { kind: "item", suggestion: { id: "b", title: "Fast ads", url: "/b.html" } },
@@ -70,15 +69,12 @@ describe("SearchBox, list open", () => {
     ],
   });
 
-  it("exposes the options, the highlighted one and how many there are", () => {
-    const input = /<input[^>]*>/.exec(html)?.[0] ?? "";
-    expect(input).toContain('aria-expanded="true"');
-    expect(input).toContain('aria-activedescendant="s-option-1"');
-    expect(html.match(/role="option"/g)).toHaveLength(3);
+  it("offers each suggestion as a link, the search page last, and says how many there are", () => {
+    expect(html).toMatch(/<a href="\/a.html"[^>]*>Fast channels<\/a>/);
+    expect(html).toMatch(/<a href="\/b.html"[^>]*>Fast ads<\/a>/);
     expect(html).toMatch(
-      /id="s-option-1"[^>]*aria-selected="true"|aria-selected="true"[^>]*id="s-option-1"/,
+      /<a href="\/sites\/s\/home\/search.html\?q=fast"[^>]*>Search for “fast”<\/a>/,
     );
-    expect(html).toContain("Search for “fast”");
     expect(html).toContain("3 suggestions available");
     expect(html).not.toMatch(/<ul[^>]*hidden/);
   });

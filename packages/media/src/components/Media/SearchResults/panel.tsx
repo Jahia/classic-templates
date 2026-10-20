@@ -29,6 +29,7 @@ import {
   useStatusText,
 } from "./parts.js";
 import classes from "./search-results.module.css";
+import shared from "../../../lib/shared.module.css";
 
 export interface PanelProps {
   /** Unique on the page: ids derive from it. */
@@ -119,7 +120,8 @@ export const SearchPanel = (props: PanelProps) => {
       </search>
       <div className={hasFacets ? classes.layout : classes.layoutPlain}>
         {hasFacets && (
-          <div className={classes.side} role="group" aria-label={t("search.filters")}>
+          <fieldset className={classes.side}>
+            <legend className={shared.visuallyHidden}>{t("search.filters")}</legend>
             <FacetPanel
               // switching from the form's fields to controlled ones starts the boxes afresh
               key={interactive ? "live" : "static"}
@@ -136,7 +138,7 @@ export const SearchPanel = (props: PanelProps) => {
                 {t("search.apply")}
               </button>
             )}
-          </div>
+          </fieldset>
         )}
         <div className={classes.main} aria-busy={props.loading}>
           <SelectedFilters
@@ -164,7 +166,6 @@ export const SearchPanel = (props: PanelProps) => {
           <output
             className={statusClass(status)}
             data-testid="ctmd-search-status"
-            role="status"
             aria-live="polite"
             aria-atomic="true"
           >

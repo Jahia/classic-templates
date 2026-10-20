@@ -136,6 +136,10 @@
 .side {
   display: grid;
   gap: var(--ctpl-space-4);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 .main {
   min-width: 0;
@@ -308,12 +312,17 @@
   padding: var(--ctpl-space-2) var(--ctpl-space-3);
   border-radius: var(--ctpl-radius-sm);
   color: var(--ctpl-color-text);
-  cursor: pointer;
+  text-decoration: none;
   overflow-wrap: anywhere;
 }
-.suggestion[aria-selected="true"] {
+.suggestion:hover,
+.suggestion:focus-visible {
   background: var(--ctpl-color-action);
   color: var(--ctpl-color-text-on-action);
+}
+.suggestion:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: calc(-1 * var(--ctpl-focus-offset));
 }
 .suggestionTag {
   font-size: var(--ctpl-text-sm);

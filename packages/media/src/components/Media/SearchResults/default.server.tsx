@@ -49,8 +49,7 @@ const sitesOf = (site: JCRNodeWrapper, scope: string | undefined): Map<string, s
       for (const link of getChildNodes(bar, -1, 0, (n: JCRNodeWrapper) =>
         n.isNodeType("ctpl:link"),
       )) {
-        const target = readReference(link, "j:linknode")?.getResolveSite() as
-          JCRNodeWrapper | undefined;
+        const target = readReference(link, "j:linknode")?.getResolveSite();
         if (target && !sites.has(target.getName())) sites.set(target.getName(), siteLabel(target));
       }
     }
