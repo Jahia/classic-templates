@@ -19,7 +19,9 @@ site's classic-templates theme (light and dark) through its design tokens.
 - **classic-templates**, installed and used by the site (declared module dependency). Install the
   two modules at the same version.
 - Optional: **js-media-gallery**, whose videos a video story shows; **Augmented Search**, for the
-  search results section (the sites indexed).
+  search results section (the sites indexed); **jExperience**, which then receives the visitor's
+  plays, shares, filters and searches as standard events (only while it tracks the visitor, so
+  after consent on a site that asks for it, for example with the classic-templates consent banner).
 
 ## Installation
 

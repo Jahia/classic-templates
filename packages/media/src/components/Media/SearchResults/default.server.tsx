@@ -12,6 +12,7 @@ import { readReference } from "../../../lib/props.js";
 import { excerptParts, kindKey, pageNumber, searchWords } from "../../../lib/search.js";
 import { Section } from "../../../lib/Section.js";
 import { Styles } from "../../../lib/Styles.js";
+import { MediaScript } from "../shared/parts.js";
 import shared from "../../../lib/shared.module.css";
 import cards from "../shared/cards.module.css";
 import type { Props } from "./types.js";
@@ -133,6 +134,11 @@ jahiaComponent(
         labelledBy={title ? headingId : undefined}
       >
         <Styles />
+        {words && !failed && (
+          <span hidden data-ctmd-track-search={words} data-ctmd-track={id}>
+            <MediaScript />
+          </span>
+        )}
         <div className="ctpl-container">
           {title && (
             <Heading level={level} id={headingId}>
