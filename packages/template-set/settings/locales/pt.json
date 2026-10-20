@@ -144,10 +144,6 @@
   "tabs": {
     "noTitle": "Este separador não tem etiqueta neste idioma: nem ele nem o seu conteúdo são apresentados."
   },
-  "network": {
-    "label": "Os nossos sites",
-    "empty": "Adicione uma ligação para a página inicial de cada site do grupo."
-  },
   "notice": {
     "label": "Últimas novidades",
     "dismiss": "Ocultar estas novidades"
