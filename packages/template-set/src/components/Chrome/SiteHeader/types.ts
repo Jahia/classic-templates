@@ -6,6 +6,7 @@ export interface Props {
   brandName?: string;
   showBrandName?: boolean;
   showAccount?: boolean;
+  showSearch?: boolean;
   accountLanding?: JCRNodeWrapper;
   signInPage?: JCRNodeWrapper;
   registerPage?: JCRNodeWrapper;

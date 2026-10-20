@@ -21,7 +21,7 @@
  - room (string) i18n
  - stream (string) i18n
  // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
- - sessionType (string, choicelist[resourceBundle]) = 'talk' autocreated < 'keynote', 'talk', 'panel', 'workshop', 'fireside', 'break'
+ - sessionType (string, choicelist[resourceBundle]) = 'talk' autocreated facetable < 'keynote', 'talk', 'panel', 'workshop', 'fireside', 'break'
  - teaser (string, textarea) i18n
  - body (string, richtext) i18n
  + * (ctmd:sessionSpeaker)

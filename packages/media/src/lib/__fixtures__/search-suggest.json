@@ -1,0 +1,162 @@
+{
+  "search": {
+    "results": {
+      "hits": [
+        {
+          "id": "c1190e65-88c2-4215-8139-f8bf31a17663",
+          "displayableName": "Lumeno Studios opens a 900 square metre LED volume",
+          "link": "/sites/orvane-signal/contents/stories/lumeno-opens-new-led-volume.html",
+          "nodeType": "ctmd:story"
+        },
+        {
+          "id": "f7b1ecb0-c5ad-4535-ae12-98526bc8fc3f",
+          "displayableName": "FAQ",
+          "link": "/sites/orvane-live/home/attend/faq.html",
+          "nodeType": "jnt:page"
+        },
+        {
+          "id": "e6237a4d-b39b-4a22-8698-a732a0a927c7",
+          "displayableName": "Keynote: a net-zero broadcast is a design brief",
+          "link": "/sites/orvane-live/contents/event/keynote-net-zero-design-brief.html",
+          "nodeType": "ctmd:session"
+        },
+        {
+          "id": "df1591d9-ba30-4491-a592-4b85edaf8f4b",
+          "displayableName": "Orvane Live 2026: our impact report",
+          "link": "/sites/orvane-signal/contents/stories/orvane-live-2026-impact-report.html",
+          "nodeType": "ctmd:story"
+        },
+        {
+          "id": "c523e4af-3631-449d-a2a0-8700e9fbc787",
+          "displayableName": "Panel: remote production after the first full season",
+          "link": "/sites/orvane-live/contents/event/panel-remote-production-full-season.html",
+          "nodeType": "ctmd:session"
+        }
+      ]
+    },
+    "tags": {
+      "data": [
+        {
+          "value": "carbon",
+          "count": 5
+        },
+        {
+          "value": "5g broadcast",
+          "count": 2
+        },
+        {
+          "value": "broadcast engineers",
+          "count": 2
+        },
+        {
+          "value": "hiring",
+          "count": 2
+        },
+        {
+          "value": "mobile tv",
+          "count": 2
+        },
+        {
+          "value": "remi",
+          "count": 2
+        },
+        {
+          "value": "trial",
+          "count": 2
+        },
+        {
+          "value": "accessibility",
+          "count": 1
+        },
+        {
+          "value": "apprenticeships",
+          "count": 1
+        },
+        {
+          "value": "archives",
+          "count": 1
+        },
+        {
+          "value": "career changers",
+          "count": 1
+        },
+        {
+          "value": "claire vasseur",
+          "count": 1
+        },
+        {
+          "value": "corsaro",
+          "count": 1
+        },
+        {
+          "value": "crew travel",
+          "count": 1
+        },
+        {
+          "value": "edge",
+          "count": 1
+        },
+        {
+          "value": "football",
+          "count": 1
+        },
+        {
+          "value": "icvfx",
+          "count": 1
+        },
+        {
+          "value": "impact report",
+          "count": 1
+        },
+        {
+          "value": "keynote",
+          "count": 1
+        },
+        {
+          "value": "led volume",
+          "count": 1
+        },
+        {
+          "value": "lisbon",
+          "count": 1
+        },
+        {
+          "value": "lumeno",
+          "count": 1
+        },
+        {
+          "value": "metadata",
+          "count": 1
+        },
+        {
+          "value": "net zero",
+          "count": 1
+        },
+        {
+          "value": "opex",
+          "count": 1
+        },
+        {
+          "value": "orvane live",
+          "count": 1
+        },
+        {
+          "value": "orvane live 2027",
+          "count": 1
+        },
+        {
+          "value": "podcast",
+          "count": 1
+        },
+        {
+          "value": "rights",
+          "count": 1
+        },
+        {
+          "value": "semantic search",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

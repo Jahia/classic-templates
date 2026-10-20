@@ -140,10 +140,6 @@
   "tabs": {
     "noTitle": "Cet onglet n'a pas de libellé dans cette langue : ni lui ni son contenu ne sont affichés."
   },
-  "network": {
-    "label": "Nos sites",
-    "empty": "Ajoutez un lien vers la page d'accueil de chaque site du groupe."
-  },
   "notice": {
     "label": "Dernières informations",
     "dismiss": "Masquer ces informations"
@@ -159,6 +155,20 @@
     "play": "Lecture",
     "empty": "Aucune diapositive : ajoutez des bannières à ce carrousel, une par diapositive.",
     "editStacked": "Toutes les diapositives s'affichent ici, l'une sous l'autre. Les visiteurs en voient une à la fois, avec des boutons pour passer de l'une à l'autre."
+  },
+  "search": {
+    "label": "Rechercher dans le site",
+    "submit": "Rechercher",
+    "toggle": "Rechercher",
+    "suggestions": "Suggestions",
+    "suggestionCount_one": "{{count}} suggestion disponible",
+    "suggestionCount_other": "{{count}} suggestions disponibles",
+    "for": "Rechercher « {{words}} »",
+    "noPage": "Le champ de recherche est activé, mais l'en-tête ne désigne aucune page de recherche : choisissez-en une dans les paramètres de l'en-tête. Les visiteurs ne voient pas de champ de recherche d'ici là."
+  },
+  "network": {
+    "label": "Nos sites",
+    "empty": "Ajoutez un lien vers la page d'accueil de chaque site du groupe."
   },
   "consent": {
     "label": "Vos choix de confidentialité",

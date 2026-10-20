@@ -1,0 +1,170 @@
+/*
+ * The header's search box. Large screens (64rem, as the main navigation): the field and its button
+ * sit inline at the right of the bar. Small screens, once the page's script has run (html.ctpl-js):
+ * a button reveals the field in a panel that drops below the header, over the page, so the bar
+ * and the navigation never move; without the script the field takes its own row. A closed panel is
+ * display: none, so its field is neither seen nor focusable. Theme tokens only.
+ */
+
+.search {
+  display: flex;
+  align-items: center;
+}
+
+.toggle {
+  display: none;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: none;
+  color: var(--ctpl-color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.toggle[aria-expanded="true"] {
+  background: var(--ctpl-color-accent-subtle);
+}
+
+.form {
+  display: flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+}
+
+.combo {
+  position: relative;
+  display: flex;
+  flex: 1;
+}
+.input {
+  width: 14rem;
+  max-width: 100%;
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  font: inherit;
+}
+.submit {
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-4);
+  border: 0;
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  cursor: pointer;
+}
+.submit:hover {
+  background: var(--ctpl-color-action-hover);
+}
+.toggle:focus-visible,
+.submit:focus-visible,
+.input:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+
+.listbox {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-end: 0;
+  z-index: 40;
+  box-sizing: border-box;
+  width: min(26rem, 90vw);
+  margin: var(--ctpl-space-1) 0 0;
+  padding: var(--ctpl-space-1);
+  list-style: none;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  box-shadow: var(--ctpl-shadow-md);
+}
+.listbox[hidden] {
+  display: none;
+}
+.option {
+  display: block;
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-sm);
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.option:hover,
+.option:focus-visible {
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+}
+.option:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: calc(-1 * var(--ctpl-focus-offset));
+}
+.optionSearch {
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  font-weight: var(--ctpl-font-weight-medium);
+}
+
+/* Edit mode: the box is on but the header names no search page. */
+.hint {
+  margin: 0;
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-warning-surface);
+  color: var(--ctpl-color-warning);
+  font-size: var(--ctpl-text-xs);
+}
+
+@media (max-width: 63.999rem) {
+  :global(html.ctpl-js) .toggle {
+    display: inline-flex;
+  }
+  /* With the script: the field drops below the whole header, full width, over the page. */
+  :global(html.ctpl-js) .panel {
+    display: none;
+    position: absolute;
+    z-index: 31;
+    top: 100%;
+    right: 0;
+    left: 0;
+    padding: var(--ctpl-space-3) var(--ctpl-gutter);
+    border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+    background: var(--ctpl-color-surface-raised);
+    box-shadow: var(--ctpl-shadow-lg);
+  }
+  :global(html.ctpl-js) .search[data-open] .panel {
+    display: block;
+  }
+  :global(html.ctpl-js) .panel .form {
+    width: 100%;
+  }
+  :global(html.ctpl-js) .panel .input {
+    width: 100%;
+  }
+  .listbox {
+    inset-inline: 0;
+    width: auto;
+  }
+  /* Without it: the field takes its own full-width row under the brand. */
+  :global(html:not(.ctpl-js)) .search {
+    flex-basis: 100%;
+  }
+  :global(html:not(.ctpl-js)) .form {
+    width: 100%;
+  }
+  :global(html:not(.ctpl-js)) .input {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .toggle {
+    transition: background var(--ctpl-duration-fast) var(--ctpl-ease);
+  }
+}

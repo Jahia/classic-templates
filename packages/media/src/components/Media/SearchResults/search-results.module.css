@@ -1,4 +1,5 @@
-/* The search section: a search box, a count, ranked hits, previous and next. Theme tokens only. */
+/* The search section: a search box with suggestions, facet groups, selected filters, a count,
+   ranked hits, previous and next. Theme tokens only (light and dark follow the theme). */
 
 .form {
   display: grid;
@@ -76,12 +77,260 @@
 }
 .pager {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: var(--ctpl-space-5);
   margin-top: var(--ctpl-space-5);
+}
+.position {
+  color: var(--ctpl-color-text-muted);
 }
 .pager a {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
   font-weight: var(--ctpl-font-weight-medium);
+}
+
+.submit:focus-visible,
+.apply:focus-visible,
+.chip:focus-visible,
+.clear:focus-visible,
+.summary:focus-visible,
+.option:focus-within,
+.pager a:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.input:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: 0;
+}
+
+/* The heading of the results: there for screen reader users to jump to, and where focus goes after
+   a page change; not shown. */
+.resultsHeading {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Facets beside the results from a medium screen up, above them below it (reflow at 320 px). */
+.layout,
+.layoutPlain {
+  display: grid;
+  gap: var(--ctpl-space-6);
+}
+@media (min-width: 52rem) {
+  .layout {
+    grid-template-columns: minmax(14rem, 18rem) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+.side {
+  display: grid;
+  gap: var(--ctpl-space-4);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.main {
+  min-width: 0;
+}
+.main[aria-busy="true"] .results,
+.main[aria-busy="true"] .pager {
+  opacity: 0.6;
+}
+
+.group {
+  min-width: 0;
+  margin: 0;
+  padding: var(--ctpl-space-3) var(--ctpl-space-4) var(--ctpl-space-4);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+}
+.legend {
+  padding: 0 var(--ctpl-space-2);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.options {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.options .options {
+  margin-top: var(--ctpl-space-1);
+  padding-left: var(--ctpl-space-4);
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  min-height: 2.25rem;
+  border-radius: var(--ctpl-radius-sm);
+  cursor: pointer;
+}
+.checkbox {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: 0;
+  accent-color: var(--ctpl-color-action);
+}
+.optionText {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.count {
+  flex: none;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.sub,
+.more {
+  margin-top: var(--ctpl-space-1);
+}
+.summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  color: var(--ctpl-color-link);
+  font-size: var(--ctpl-text-sm);
+  cursor: pointer;
+}
+.summary:hover {
+  color: var(--ctpl-color-link-hover);
+}
+.sub > .options {
+  padding-left: var(--ctpl-space-4);
+}
+.apply {
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-5);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  cursor: pointer;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ctpl-space-2) var(--ctpl-space-3);
+  margin-bottom: var(--ctpl-space-4);
+}
+.chipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  min-height: 2.25rem;
+  padding: 0 var(--ctpl-space-3);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-pill);
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-text);
+  font: inherit;
+  font-size: var(--ctpl-text-sm);
+  text-decoration: none;
+  cursor: pointer;
+}
+.chip:hover {
+  border-color: var(--ctpl-color-accent);
+}
+.chipX {
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.clear {
+  min-height: 2.25rem;
+  padding: 0 var(--ctpl-space-2);
+  border: 0;
+  background: none;
+  color: var(--ctpl-color-link);
+  font: inherit;
+  font-size: var(--ctpl-text-sm);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.clear:hover {
+  color: var(--ctpl-color-link-hover);
+}
+
+/* The search box with its suggestions (island). */
+.combo {
+  position: relative;
+  flex: 1 1 14rem;
+  display: flex;
+}
+.combo .input {
+  flex: 1;
+  min-width: 0;
+}
+.listbox {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline: 0;
+  z-index: 5;
+  margin: var(--ctpl-space-1) 0 0;
+  padding: var(--ctpl-space-1);
+  list-style: none;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  box-shadow: var(--ctpl-shadow-md);
+}
+.listbox[hidden] {
+  display: none;
+}
+.suggestion {
+  display: flex;
+  align-items: baseline;
+  gap: var(--ctpl-space-2);
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-sm);
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.suggestion:hover,
+.suggestion:focus-visible {
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+}
+.suggestion:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: calc(-1 * var(--ctpl-focus-offset));
+}
+.suggestionTag {
+  font-size: var(--ctpl-text-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .main[aria-busy="true"] .results,
+  .main[aria-busy="true"] .pager {
+    transition: opacity var(--ctpl-duration-fast) var(--ctpl-ease);
+  }
 }

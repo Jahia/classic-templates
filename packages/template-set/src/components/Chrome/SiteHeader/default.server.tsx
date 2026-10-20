@@ -8,6 +8,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { readPositive } from "../../../lib/props.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
+import { SearchSlot } from "./SearchSlot.js";
 import type { Props } from "./types.js";
 import classes from "./site-header.module.css";
 
@@ -19,6 +20,10 @@ import classes from "./site-header.module.css";
  * "Sign out" once signed in. It is its own view of this node (account.server.tsx) so that its
  * fragment can vary by page while the rest of the header stays one shared cached fragment.
  *
+ * Search box (optional, "Show a search box", and the Search page set): a GET form to that page,
+ * `q` being the words, with autocomplete as an island (HeaderSearch.client.tsx) when Augmented
+ * Search is there. Without a Search page nothing is shown to visitors, and editors get a hint.
+ *
  * Logo: the light version, plus an optional dark version swapped in by CSS when the page is dark
  * (forced by the site or following the visitor). With the brand name shown, the image is
  * decorative (alt=""); without it, the image carries the brand name as its alt text.
@@ -26,7 +31,7 @@ import classes from "./site-header.module.css";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:siteHeader", displayName: "Site header" },
   (
-    { logo, logoDark, brandName, showBrandName, showAccount }: Props,
+    { logo, logoDark, brandName, showBrandName, showAccount, showSearch }: Props,
     { currentNode, renderContext },
   ) => {
     const { t } = useTranslation("classic-templates");
@@ -38,6 +43,8 @@ jahiaComponent(
     for (const image of [logo, logoDark]) {
       if (image) server.render.addCacheDependency({ node: image }, renderContext);
     }
+
+    const navigation = <RenderChild name="navigation" />;
 
     return (
       <header className={classes.header} data-testid="ctpl-site-header">
@@ -77,7 +84,14 @@ jahiaComponent(
             )}
             {withText && <span className={classes.brandName}>{brand}</span>}
           </a>
-          <RenderChild name="navigation" />
+          {showSearch ? (
+            <div className={classes.end}>
+              {navigation}
+              <SearchSlot />
+            </div>
+          ) : (
+            navigation
+          )}
         </div>
       </header>
     );
