@@ -4,50 +4,40 @@ import { keyResult, type KeyInput } from "./comboboxKeys.js";
 const input = (patch: Partial<KeyInput>): KeyInput => ({
   key: "ArrowDown",
   open: true,
-  active: -1,
+  focus: -1,
   count: 3,
-  fromInput: true,
   ...patch,
 });
 
-describe("keyResult (search combobox)", () => {
-  it("ArrowDown opens a closed list, then moves down and wraps", () => {
+describe("keyResult (search box)", () => {
+  it("ArrowDown opens a closed list, then moves the focus onto the links and wraps", () => {
     expect(keyResult(input({ open: false }))).toEqual({ prevent: true, open: true });
-    expect(keyResult(input({ active: -1 }))).toEqual({ prevent: true, active: 0 });
-    expect(keyResult(input({ active: 2 }))).toEqual({ prevent: true, active: 0 });
+    expect(keyResult(input({ focus: -1 }))).toEqual({ prevent: true, focus: 0 });
+    expect(keyResult(input({ focus: 1 }))).toEqual({ prevent: true, focus: 2 });
+    expect(keyResult(input({ focus: 2 }))).toEqual({ prevent: true, focus: 0 });
   });
 
-  it("ArrowUp moves up and wraps to the last option", () => {
-    expect(keyResult(input({ key: "ArrowUp", active: 1 }))).toEqual({ prevent: true, active: 0 });
-    expect(keyResult(input({ key: "ArrowUp", active: 0 }))).toEqual({ prevent: true, active: 2 });
-    expect(keyResult(input({ key: "ArrowUp", active: -1 }))).toEqual({ prevent: true, active: 2 });
+  it("ArrowUp goes from the input to the last link, and from the first link back to the input", () => {
+    expect(keyResult(input({ key: "ArrowUp", focus: -1 }))).toEqual({ prevent: true, focus: 2 });
+    expect(keyResult(input({ key: "ArrowUp", focus: 0 }))).toEqual({ prevent: true, focus: -1 });
+    expect(keyResult(input({ key: "ArrowUp", focus: 2 }))).toEqual({ prevent: true, focus: 1 });
   });
 
-  it("does nothing for the arrows without options", () => {
+  it("leaves the arrows alone when there is nothing to suggest", () => {
     expect(keyResult(input({ count: 0 }))).toEqual({ prevent: false });
+    expect(keyResult(input({ key: "ArrowUp", count: 0, open: false }))).toEqual({ prevent: false });
   });
 
-  it("Enter on a highlighted option goes to it and cancels the form's submit", () => {
-    expect(keyResult(input({ key: "Enter", active: 1 }))).toEqual({
+  it("Escape on a link returns to the input and closes the list", () => {
+    expect(keyResult(input({ key: "Escape", focus: 1 }))).toEqual({
       prevent: true,
       open: false,
-      active: -1,
-      pick: 1,
+      focus: -1,
     });
   });
 
-  it("Enter with no highlighted option, or a closed list, lets the form submit", () => {
-    expect(keyResult(input({ key: "Enter", active: -1 }))).toEqual({
-      prevent: false,
-      open: false,
-      active: -1,
-    });
-    expect(keyResult(input({ key: "Enter", open: false, active: 1 })).pick).toBeUndefined();
-    expect(keyResult(input({ key: "Enter", active: 5 })).pick).toBeUndefined();
-  });
-
-  it("Escape closes the list, then the panel, then nothing", () => {
-    expect(keyResult(input({ key: "Escape" }))).toEqual({ prevent: true, open: false, active: -1 });
+  it("Escape in the input closes the list, then the panel", () => {
+    expect(keyResult(input({ key: "Escape" }))).toEqual({ prevent: true, open: false });
     expect(keyResult(input({ key: "Escape", open: false, expanded: true }))).toEqual({
       prevent: true,
       collapse: true,
@@ -55,15 +45,9 @@ describe("keyResult (search combobox)", () => {
     expect(keyResult(input({ key: "Escape", open: false }))).toEqual({ prevent: false });
   });
 
-  it("ignores the other keys, and keys of other controls than the input (but Escape)", () => {
+  it("leaves Enter and the other keys to the browser (a link follows, the form submits)", () => {
+    expect(keyResult(input({ key: "Enter", focus: 1 }))).toEqual({ prevent: false });
+    expect(keyResult(input({ key: "Enter" }))).toEqual({ prevent: false });
     expect(keyResult(input({ key: "a" }))).toEqual({ prevent: false });
-    expect(keyResult(input({ key: "Enter", active: 0, fromInput: false }))).toEqual({
-      prevent: false,
-    });
-    expect(keyResult(input({ key: "Escape", fromInput: false }))).toEqual({
-      prevent: true,
-      open: false,
-      active: -1,
-    });
   });
 });

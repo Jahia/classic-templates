@@ -1,9 +1,9 @@
 import type { FocusEvent, KeyboardEvent, Ref } from "react";
 import { useTranslation } from "react-i18next";
-import type { Suggestion } from "../../../lib/headerSearch.js";
+import { searchUrl, type Suggestion } from "../../../lib/headerSearch.js";
 import classes from "./header-search.module.css";
 
-/** The options of the suggestion list: the matching items, then "Search for <words>". */
+/** The suggestions: the matching items, then "Search for <words>". */
 export type Option = { kind: "item"; suggestion: Suggestion } | { kind: "search"; words: string };
 
 /** What the box shows; the handlers are the island's (the server renders it without any). */
@@ -15,17 +15,18 @@ export interface SearchBoxProps {
   value: string;
   /** The panel is open (small screens, with the script). */
   expanded: boolean;
-  /** The suggestion list is open. */
+  /** The list of suggestions is shown. */
   open: boolean;
-  /** The highlighted option, -1 for none. */
-  active: number;
   options: Option[];
   onChange?: (value: string) => void;
   onToggle?: () => void;
+  /** Keys pressed in the input, on a suggestion link or on the toggle. */
   onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
-  onPick?: (option: Option) => void;
+  /** The focus left the input, a suggestion link or the toggle. */
   onBlur?: (event: FocusEvent<HTMLElement>) => void;
   inputRef?: Ref<HTMLInputElement>;
+  /** Called with each suggestion link, so the island can move the focus onto it. */
+  linkRef?: (index: number, link: HTMLAnchorElement | null) => void;
   rootRef?: Ref<HTMLDivElement>;
   toggleRef?: Ref<HTMLButtonElement>;
 }
@@ -37,24 +38,27 @@ const Magnifier = () => (
   </svg>
 );
 
+/** Where a suggestion goes: the item's own page, or the search page for the words typed. */
+const hrefOf = (option: Option, action: string) =>
+  option.kind === "item" ? option.suggestion.url : searchUrl(action, option.words);
+
 /**
  * The markup of the header's search box: a GET form to the search page with an input named `q`
- * (it works without JavaScript), the suggestions as an ARIA 1.2 combobox with a list box, and a
- * toggle that only shows on small screens once the page's script has run.
+ * (it works without JavaScript), the suggestions as a list of plain links under it, a status that
+ * says how many there are, and a toggle that only shows on small screens once the page's script
+ * has run. Native elements only: a link opens with Enter or a click, the form submits the words.
  */
 export const SearchBox = (props: SearchBoxProps) => {
   const { t } = useTranslation("classic-templates");
-  const { id, open, active } = props;
+  const { id, open } = props;
   const listId = `${id}-list`;
   const panelId = `${id}-panel`;
-  const optionId = (index: number) => `${id}-option-${index}`;
+  const statusId = `${id}-status`;
   return (
     <div
       className={classes.search}
       data-open={props.expanded ? "" : undefined}
       data-testid="ctpl-header-search"
-      onBlur={props.onBlur}
-      onKeyDown={props.onKeyDown}
       ref={props.rootRef}
     >
       <button
@@ -63,6 +67,8 @@ export const SearchBox = (props: SearchBoxProps) => {
         aria-expanded={props.expanded}
         aria-controls={panelId}
         onClick={props.onToggle}
+        onKeyDown={props.onKeyDown}
+        onBlur={props.onBlur}
         ref={props.toggleRef}
         data-testid="ctpl-header-search-toggle"
       >
@@ -88,51 +94,48 @@ export const SearchBox = (props: SearchBoxProps) => {
               className={classes.input}
               type="search"
               name="q"
-              role="combobox"
-              aria-autocomplete="list"
-              aria-expanded={open}
-              aria-controls={listId}
-              aria-activedescendant={open && active >= 0 ? optionId(active) : undefined}
+              aria-describedby={statusId}
               autoComplete="off"
               maxLength={200}
               value={props.value}
               onChange={(event) => props.onChange?.(event.target.value)}
+              onKeyDown={props.onKeyDown}
+              onBlur={props.onBlur}
               ref={props.inputRef}
             />
             <ul
               id={listId}
               className={classes.listbox}
-              role="listbox"
               aria-label={t("search.suggestions")}
               hidden={!open}
+              data-testid="ctpl-header-search-suggestions"
             >
               {props.options.map((option, index) => (
-                <li
-                  key={option.kind === "item" ? option.suggestion.id : "search"}
-                  id={optionId(index)}
-                  role="option"
-                  aria-selected={index === active}
-                  className={
-                    option.kind === "search"
-                      ? `${classes.option} ${classes.optionSearch}`
-                      : classes.option
-                  }
-                  // The input keeps focus: a press must not blur it before the click lands.
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={() => props.onPick?.(option)}
-                >
-                  {option.kind === "item"
-                    ? option.suggestion.title
-                    : t("search.for", {
-                        words: option.words,
-                        interpolation: { escapeValue: false },
-                      })}
+                <li key={option.kind === "item" ? option.suggestion.id : "search"}>
+                  <a
+                    href={hrefOf(option, props.action)}
+                    className={
+                      option.kind === "search"
+                        ? `${classes.option} ${classes.optionSearch}`
+                        : classes.option
+                    }
+                    onKeyDown={props.onKeyDown}
+                    onBlur={props.onBlur}
+                    ref={(link) => props.linkRef?.(index, link)}
+                  >
+                    {option.kind === "item"
+                      ? option.suggestion.title
+                      : t("search.for", {
+                          words: option.words,
+                          interpolation: { escapeValue: false },
+                        })}
+                  </a>
                 </li>
               ))}
             </ul>
-            <div role="status" className="ctpl-visually-hidden">
+            <output id={statusId} className="ctpl-visually-hidden">
               {open ? t("search.suggestionCount", { count: props.options.length }) : ""}
-            </div>
+            </output>
           </div>
           <button type="submit" className={classes.submit}>
             {t("search.submit")}
