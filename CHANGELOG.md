@@ -1,5 +1,63 @@
 # classic-templates Changelog
 
+## 0.8.0
+
+### New Features
+
+* New consent banner (`ctpl:consentBanner`) for the footer area of the home page: visitors accept or refuse tracking once, a Privacy settings button after the footer opens it again, and on a site running jExperience the choice switches its tracking on or off for the visitor
+
+* A call to action can be shown to everyone, only to visitors who are not signed in (a "Sign in" button disappears once the visitor signs in) or only to signed-in visitors ("Show the button to", on every call to action); the section around it stays cached for everybody
+
+* Members-only items show the opening paragraphs of their body before the members notice (2 by default, set per item, never the whole body; the rest is not sent), and the notice offers "Create an account" when the site header names a registration page; classic-media stories and sessions can be switched to "Members only" too
+
+* Item pages (news, articles, stories, sessions) list their categories under Topics and their tags under Tags; each tag links to the site's search results for it when the site header names a Search page (new setting); sessions show their topics and tags too
+
+* The labels built into the template set and classic-media views (skip link, menu, sign-in, members-only notices, breadcrumb, list panels, carousel, share, agenda, search and more) now come in European Portuguese (`pt`) besides English and French, and a unit test keeps each `pt.json` and `fr.json` on exactly the keys of `en.json`; editor labels stay English and French
+
+* classic-media: a brief gets a **Submission form** (a Formidable form, shown on the brief's page while the brief is open and replaced by "This brief is closed." once it is closed), and any picture or video of the media library can carry a **Credit** (`ctmdmix:credited`, offered by jContent on every file) that stories and briefs show as a "Photo: ..." caption under the image (EN, FR, PT)
+
+* classic-media gets the content of a supplier portal: briefs (a page with description, deadline, media wanted, quantity, intended use and a mood picture, and a card), submissions (a supplier's files with caption, credit, licence and the picture desk's follow-up, shown as a status card with the status as text and a mark), and two lists computed for the visitor who reads them (a brief that a visitor may not read is absent from their list, and each supplier sees their own submissions); the lists and the status card are cached per user
+
+* New package classic-media (ctmd): people, stories in seven formats (news, feature, opinion, interview, report, video, podcast) with byline, share, transcript, related stories and members-only reports, story feeds by topic and format, event sessions with an agenda (day tabs, filters, event time zone), a speaker gallery with an A-Z index and the key dates of an event, and a search results section on Augmented Search, for media groups running an editorial hub and an event site
+
+* classic-media sends standard jCustomer events when jExperience tracks the visitor (after consent where the site asks for it): video and podcast plays, shares, feed and agenda filters, and search queries, so segments and dashboards can use them; nothing is sent without jExperience or before consent
+
+* New network bar (ctpl:networkBar) for sites that belong to a group: in the home page's header area, above the site header, it shows the group's name and a link to each site of the group, the current site marked for everyone, screen readers included
+
+* Two new pre-packaged sites, Orvane Signal and Orvane Live, the editorial hub and the annual convention of a fictional media group, built with the template set and classic-media; unlike the other pre-packaged sites they keep the content of the add-on modules they show (jsfaq, js-media-gallery, js-store-locator, formidable-elements), declared as dependencies, and they link to each other
+
+* The Orvane pre-packaged sites take their form actions from the formidable-extended-actions modules, outside the Formidable core: Signal and Live enable `formidable-accounts` (Create account, Sign in), the portal enables `formidable-content` (Create content, its mapping stored as one document) and `formidable-redirect` (the redirect to My submissions after an answer)
+
+* A third pre-packaged Orvane site, **Orvane Portal**: the gated portal where the group's photo and video suppliers answer its briefs, with its access rules (closed pages and per-company folders), briefs, earlier submissions and the submission form (Formidable's Create content action). Orvane Signal and Orvane Live are re-exported with the "Work with us" link to it, the header's account entry and Signal's Supplied library.
+
+* The Orvane pre-packaged sites now show personalisation with jExperience: a consent banner, personalised sections on both home pages, an A/B test of the Live hero's call to action and form answers written to the visitor profile; their segments, rules, scoring, goals, personas and audience dashboard ship alongside and load with `scripts/load-jcustomer.py`, which resolves the goals' forms on the target instance
+
+* The pre-packaged Orvane sites carry the showcase's v3 and v4 content: tags and interests, members-only teasers on reports, features and sessions, register pages (Formidable accounts), Orvane Live in Portuguese, Signal stories reused on Live's home, the header search box, the members' "Welcome back" variant and the Reports page A/B test; the jCustomer items gain the account goals (in the shape jExperience's Goals screen lists), the sign-in counter and the member segment. The export leaves out global groups and users, which a granted role pulls into `site-privileged`, and Augmented Search's indexation timestamps on the site node, which made the import of a site fail on an instance running Augmented Search.
+
+* classic-media's search section gets faceted search with autocomplete: filters for topics (a tree), tags, format, type and, for a network search, site, with counts, removable chips and paging without a reload (Elastic Search UI core behind a connector of our own to Augmented Search; without JavaScript the same filters are a GET form); tags on item pages now link to the search page's tag filter (`?tag=`); each result shows its own summary (SEO description, else teaser) with the searched words highlighted, the index excerpt only for items without one; the story format and the session type become facetable: Augmented Search needs `content.mappedNodeTypes` to list `ctmd:story,ctmd:session,ctmd:person,ctplmix:editorialItem.teaser` and a full reindex after upgrading. The site header gets an optional search box with suggestions
+
+* New site setting "Hide from search engines" (ctplNoIndex, off by default) in the Site look section: when ticked, every page of the site carries a robots meta tag with noindex and nofollow, read from the page's own site, so a private or gated site stays out of search results. Nothing changes in the output while it is off. English and French labels and tooltips
+
+* classic-media: a submission has a page of its own, opened from the title of its status card (every fact, the caption, the photos and the other files sent, the picture desk's note), readable only by the supplier's company and the desk; before, the card's only link opened the brief's page and its answer form
+
+* New theme Portal for gated work portals (a supplier or partner area): cool light greys, sans-serif headings, sharp corners and almost flat shadows, a restrained petrol blue for links and buttons and the group's vermilion kept for key values only, checked for WCAG 2.1 AA contrast in light and dark. The site settings gain a Portal choice, with English and French labels
+
+* Two new themes: Signal (warm paper neutrals, serif headings, cobalt links, vermilion buttons, sharp corners) for news and magazine sites, and Live (dusk neutrals, heavy sans-serif headings, violet links, jade buttons, round shapes) for event sites, both checked for WCAG 2.1 AA contrast in light and dark
+
+### Bug Fixes
+
+* The header's account entry now shows the signed-in visitor's name and "Sign out" for site members and other visitors without a back-office role. On a stock Jahia, GraphQL is open to privileged users only, so their entry kept saying "Sign in"; the template set ships a scope (`org.jahia.bundles.api.authorization-classic-templates.yml`) that lets the site's pages ask `currentUser`, on no node: no content becomes readable through GraphQL.
+
+* A brief's answer form is easy to find and styled like the site's other forms: the brief page has an "Answer this brief" button under its facts that leads to the form, each open brief card links to it, and the form is rendered in the template set's add-on scope (it kept the browser's default fields). Radios and checkboxes of a Formidable form now sit beside their labels instead of being drawn as full-width text boxes.
+
+* classic-media: in edit mode, a story feed's summary names the categories it filters on, the ones picked on the feed and the page's own ("Only the stories filed under AI and automation or their subcategories"); before, a feed filtered on a picked category read like one that lists everything
+
+* The release checklist says the demo replication kit leaves every running development build (SNAPSHOT) in place, whatever its version, so a release never replaces the demo instance's build from a demo branch; it also says that the release commit's integration tests fail by design (the test provisioning installs development builds only) and that the next development version's run is the check
+
+* The release checklist names the next development version as the next minor (X.(Y+1).0-SNAPSHOT), as every release so far has done
+
+* A story feed set to "Stories of this page's topics" now lists the stories filed under the page's categories and under their subcategories, as picked categories already did. A topic page whose stories are all filed under its sub-topics listed nothing.
+
 ## 0.7.0
 
 ### New Features
