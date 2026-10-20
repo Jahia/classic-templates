@@ -126,9 +126,11 @@
 
 // Look of the whole site, set on the site node in jContent: no deploy needed to change it.
 // ctplShowBreadcrumb shows the breadcrumb trail above the content of every page except home.
+// ctplNoIndex asks search engines not to index the site nor follow its links (every page).
 [ctplmix:siteSettings] mixin
  extends = jnt:virtualsite
- - ctplTheme (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'ocean', 'terracotta', 'horizon', 'sage', 'slate', 'graphite', 'signal', 'live'
+ - ctplTheme (string, choicelist[resourceBundle]) = 'default' autocreated < 'default', 'ocean', 'terracotta', 'horizon', 'sage', 'slate', 'graphite', 'signal', 'live', 'portal'
  - ctplColorScheme (string, choicelist[resourceBundle]) = 'auto' autocreated < 'auto', 'light', 'dark'
  - ctplShowBreadcrumb (boolean) = true autocreated
  - ctplShareImage (weakreference, picker[type='image']) < jmix:image
+ - ctplNoIndex (boolean) = false autocreated

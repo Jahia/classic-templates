@@ -10,7 +10,7 @@
  * `color-scheme`: the visitor's system preference by default, or the site's choice stamped on
  * <html data-ctpl-scheme="light|dark"> by the Layout. So dark mode is never written twice.
  *
- * Themes: <html data-ctpl-theme="ocean|terracotta|horizon|sage|slate|graphite|signal|live"> (from the site
+ * Themes: <html data-ctpl-theme="ocean|terracotta|horizon|sage|slate|graphite|signal|live|portal"> (from the site
  * settings) overrides tier 2 only.
  * Contrast of every theme x scheme pair is checked by `yarn check:contrast`.
  *
@@ -208,6 +208,29 @@
   --ctpl-jade-300: #5eddc9;
   --ctpl-jade-700: #0b7468;
   --ctpl-jade-800: #095c53;
+
+  /* Portal theme: cool "ledger" greys (a work tool: no warm cast, unlike signal's paper) and a
+     petrol blue for links and buttons. The group's vermilion (signal) stays as the emphasis only. */
+  --ctpl-ledger-25: #f7f8fa;
+  --ctpl-ledger-50: #eef1f4;
+  --ctpl-ledger-100: #e1e6eb;
+  --ctpl-ledger-200: #d0d7de;
+  --ctpl-ledger-300: #b3bcc7;
+  --ctpl-ledger-400: #8792a0;
+  --ctpl-ledger-500: #5f6a77;
+  --ctpl-ledger-600: #48525e;
+  --ctpl-ledger-800: #222932;
+  --ctpl-ledger-850: #1a2028;
+  --ctpl-ledger-900: #11151b;
+  --ctpl-ledger-ink: #10141a;
+  --ctpl-ledger-line: #333b46;
+  --ctpl-petrol-50: #e7f2f5;
+  --ctpl-petrol-200: #a8d2dc;
+  --ctpl-petrol-300: #6fb9ca;
+  --ctpl-petrol-600: #0c6a84;
+  --ctpl-petrol-700: #0a566c;
+  --ctpl-petrol-800: #084354;
+  --ctpl-petrol-deep: #12333d;
 
   --ctpl-stack-sans:
     system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
@@ -517,6 +540,35 @@
   --ctpl-heading-tracking: -0.02em;
   --ctpl-radius-md: 0.75rem;
   --ctpl-radius-lg: 1.25rem;
+}
+
+/* ---- Theme: portal (a gated work portal of a group: cool ledger greys, sans headings, petrol links
+   and buttons, the group's vermilion kept for emphasis only, sharp shapes, flat elevation) ----- */
+:root[data-ctpl-theme="portal"] {
+  --ctpl-color-surface-page: light-dark(var(--ctpl-ledger-25), var(--ctpl-ledger-900));
+  --ctpl-color-surface-raised: light-dark(var(--ctpl-white), var(--ctpl-ledger-850));
+  --ctpl-color-surface-sunken: light-dark(var(--ctpl-ledger-50), var(--ctpl-ledger-850));
+  --ctpl-color-surface-inverse: light-dark(var(--ctpl-ledger-800), var(--ctpl-ledger-100));
+  --ctpl-color-text: light-dark(var(--ctpl-ledger-ink), var(--ctpl-ledger-50));
+  --ctpl-color-text-muted: light-dark(var(--ctpl-ledger-600), var(--ctpl-ledger-300));
+  --ctpl-color-text-inverse: light-dark(var(--ctpl-ledger-50), var(--ctpl-ledger-800));
+  --ctpl-color-border: light-dark(var(--ctpl-ledger-200), var(--ctpl-ledger-line));
+  --ctpl-color-border-strong: light-dark(var(--ctpl-ledger-500), var(--ctpl-ledger-400));
+  --ctpl-color-accent: light-dark(var(--ctpl-petrol-700), var(--ctpl-petrol-300));
+  --ctpl-color-accent-hover: light-dark(var(--ctpl-petrol-800), var(--ctpl-petrol-200));
+  --ctpl-color-accent-subtle: light-dark(var(--ctpl-petrol-50), var(--ctpl-petrol-deep));
+  --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-ledger-900));
+  --ctpl-color-focus: light-dark(var(--ctpl-petrol-600), var(--ctpl-petrol-300));
+  --ctpl-color-highlight: light-dark(var(--ctpl-vermilion-700), var(--ctpl-vermilion-300));
+  --ctpl-color-text-on-highlight: light-dark(var(--ctpl-white), var(--ctpl-ledger-900));
+  --ctpl-font-heading: var(--ctpl-stack-sans);
+  --ctpl-heading-weight: 650;
+  --ctpl-heading-tracking: -0.01em;
+  --ctpl-radius-md: 0.25rem;
+  --ctpl-radius-lg: 0.375rem;
+  --ctpl-shadow-sm: 0 1px 1px color-mix(in srgb, var(--ctpl-color-shadow) 8%, transparent);
+  --ctpl-shadow-md: 0 1px 3px color-mix(in srgb, var(--ctpl-color-shadow) 10%, transparent);
+  --ctpl-shadow-lg: 0 6px 16px color-mix(in srgb, var(--ctpl-color-shadow) 12%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -8,7 +8,7 @@ import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { readString as read } from "../lib/props.js";
 import { fullTitle } from "../lib/share.js";
-import { pageSite, readSiteLook } from "../lib/site.js";
+import { pageSite, readSiteLook, robotsDirective } from "../lib/site.js";
 import { ShareMeta } from "./ShareMeta.jsx";
 
 import "modern-normalize/modern-normalize.css";
@@ -29,9 +29,11 @@ import { languageTag } from "../lib/locale.js";
  *   the site description, so every page has one.
  * - Open Graph and Twitter card tags (ShareMeta): the same title and description, and an image
  *   that is never missing.
+ * - `<meta name="robots" content="noindex, nofollow">` on every page of a site that hides itself
+ *   from search engines (ctplNoIndex on the site settings); nothing at all otherwise.
  * - A skip link to `#main-content`, the id of the template's `<main>`.
  *
- * The rendered page depends on the site node (theme, scheme, title, description), which is not a
+ * The rendered page depends on the site node (theme, scheme, robots, title, description), which is not a
  * child of the page: without an explicit cache dependency, publishing a new theme leaves every
  * cached live page on the old one.
  */
@@ -50,6 +52,7 @@ export const Layout = ({
   server.render.addCacheDependency({ node: site }, renderContext);
   const siteName = site.getTitle() || site.getName();
   const { theme, scheme } = readSiteLook(site);
+  const robots = robotsDirective(site);
   const metaDescription = description || read(site, "j:description");
   const pageTitle = fullTitle(title, siteName);
 
@@ -63,6 +66,7 @@ export const Layout = ({
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{pageTitle}</title>
+        {robots && <meta name="robots" content={robots} />}
         {metaDescription && <meta name="description" content={metaDescription} />}
         <ShareMeta title={pageTitle} description={metaDescription} />
         <AddResources type="css" resources={buildModuleFileUrl("dist/assets/style.css")} />
