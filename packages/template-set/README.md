@@ -49,7 +49,10 @@ light and dark, from its settings, with no code change.
   forms, a FAQ, a media gallery, a store locator), and a token bridge makes them follow the
   site's theme.
 - **Bilingual out of the box.** Every editor label, tooltip and visitor-facing string is
-  available in English and French. While a page is not translated yet, menus, links, cards, the
+  available in English and French, and the visitor-facing strings (the labels built into the
+  views) also in European Portuguese (`pt`). Editor labels and tooltips are English and French
+  only: editors work in those two languages, so there is no `_pt.properties` resource bundle.
+  While a page is not translated yet, menus, links, cards, the
   site map and the breadcrumb show its title in the site's default language.
 
 ## Components
@@ -212,7 +215,7 @@ src/
 settings/
   definitions.cnd                 namespaces (ctpl, ctplmix), base and shared mixins
   import.xml                      pages and folders seeded when a site is created
-  locales/                        visitor-facing strings (en.json, fr.json)
+  locales/                        visitor-facing strings (en.json, fr.json, pt.json)
   resources/                      editor labels and tooltips (.properties, EN and FR)
   content-editor-forms/           Content Editor form overrides
   content-types-icons/            one icon per content type

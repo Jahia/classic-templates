@@ -1,0 +1,147 @@
+{
+  "item": {
+    "noTitle": "Sem título neste idioma: este item é excluído das listas e não tem cabeçalho.",
+    "tags": "Etiquetas"
+  },
+  "image": {
+    "noTitle": "Esta imagem não tem título na biblioteca de multimédia, pelo que não tem texto alternativo."
+  },
+  "richText": {
+    "imageWithoutAlt": "Uma imagem deste texto não tem texto alternativo: é ignorada pelos leitores de ecrã.",
+    "table": "Tabela",
+    "tableNumbered": "Tabela {{number}}",
+    "tableWithoutCaption": "Uma tabela deste texto não tem legenda: dê-lhe uma para que possa ser encontrada e compreendida."
+  },
+  "cta": {
+    "noTarget": "Nenhum destino de ligação neste idioma",
+    "noLabel": "Falta o texto do botão",
+    "noLink": "Este botão tem texto mas não tem ligação: escolha uma página ou um endereço web, ou apague o texto."
+  },
+  "list": {
+    "empty": "Nada para mostrar por agora.",
+    "startMissing": "A pasta de partida está definida mas não foi encontrada aqui (eliminada, ou ainda não publicada): a lista não mostra nada no site em direto."
+  },
+  "format": {
+    "news": "Notícia",
+    "feature": "Reportagem",
+    "opinion": "Opinião",
+    "interview": "Entrevista",
+    "report": "Relatório",
+    "video": "Vídeo",
+    "podcast": "Podcast"
+  },
+  "story": {
+    "by": "Por {{names}}",
+    "and": "e",
+    "readingTime_one": "{{count}} min de leitura",
+    "readingTime_other": "{{count}} min de leitura",
+    "topics": "Temas",
+    "related": "Artigos relacionados",
+    "transcript": "Transcrição",
+    "listen": "Ouvir o episódio",
+    "membersNotice": "O resto deste artigo é exclusivo para membros. Crie uma conta ou inicie sessão para continuar a ler.",
+    "membersEdit": "Exclusivo para membros: os visitantes sem sessão iniciada veem o resumo, os primeiros parágrafos e um aviso para criar conta ou iniciar sessão.",
+    "membersLabel": "Membros",
+    "download": "Transferir o episódio",
+    "captionsMissing": "Adicione as legendas do episódio (um ficheiro WebVTT) para mostrar o leitor de áudio.",
+    "captions": "Legendas",
+    "membersNoticeSignIn": "O resto deste artigo é exclusivo para membros. Inicie sessão para continuar a ler."
+  },
+  "share": {
+    "label": "Partilhar esta página",
+    "share": "Partilhar",
+    "copy": "Copiar ligação",
+    "copied": "Ligação copiada"
+  },
+  "feed": {
+    "filterLabel": "Mostrar",
+    "all": "Todos",
+    "summary": "Lista os artigos ({{formats}}) em {{start}}, do mais recente para o mais antigo, até {{max}}.",
+    "allFormats": "todos os formatos",
+    "pageCategories": "Apenas os artigos classificados nas categorias desta página.",
+    "pageNoCategory": "Esta página não tem categoria: atribua-lhe o seu tema como categoria, ou o feed não mostra nada.",
+    "noMatch": "Nenhum artigo deste formato aqui.",
+    "shown": "Artigos apresentados: {{n}}"
+  },
+  "person": {
+    "stories": "Artigos de {{name}}",
+    "sessions": "Sessões com {{name}}",
+    "profiles": "Perfis"
+  },
+  "session": {
+    "type": {
+      "keynote": "Conferência principal",
+      "talk": "Palestra",
+      "panel": "Painel",
+      "workshop": "Workshop",
+      "fireside": "Conversa informal",
+      "break": "Intervalo"
+    },
+    "role": {
+      "speaker": "Orador",
+      "keynote": "Orador principal",
+      "moderator": "Moderador",
+      "panellist": "Painelista",
+      "host": "Anfitrião"
+    },
+    "time": "{{start}} a {{end}}",
+    "room": "Sala",
+    "stream": "Percurso",
+    "speakers": "Oradores",
+    "zone": "Os horários são apresentados na hora de {{zone}}.",
+    "when": "Quando",
+    "membersNotice": "O resto da descrição desta sessão é exclusivo para membros. Crie uma conta ou inicie sessão para continuar a ler.",
+    "membersEdit": "Exclusivo para membros: os visitantes sem sessão iniciada veem os detalhes da sessão e os primeiros parágrafos da sua descrição, seguidos de um aviso para criar conta ou iniciar sessão.",
+    "membersLabel": "Membros",
+    "membersNoticeSignIn": "O resto da descrição desta sessão é exclusivo para membros. Inicie sessão para continuar a ler."
+  },
+  "agenda": {
+    "days": "Dias",
+    "filters": "Filtrar o programa",
+    "stream": "Percurso",
+    "room": "Sala",
+    "type": "Tipo",
+    "all": "Todos",
+    "noMatch": "Nenhuma sessão corresponde a estes filtros.",
+    "summary": "Lista as sessões em {{start}}, por dia, no fuso horário {{zone}}.",
+    "shown": "Sessões apresentadas: {{n}}"
+  },
+  "gallery": {
+    "index": "Ir para uma letra",
+    "summary": "Lista as pessoas em {{start}} por nome, até {{max}}."
+  },
+  "keyDates": {
+    "dates": "De {{start}} a {{end}}",
+    "venue": "Local",
+    "tomorrow": "Começa amanhã",
+    "startsIn": "Começa dentro de {{days}} dias",
+    "today": "Começa hoje",
+    "running": "A decorrer",
+    "keyDates": "Datas importantes"
+  },
+  "search": {
+    "label": "Pesquisar no site",
+    "submit": "Pesquisar",
+    "count_one": "{{count}} resultado para «{{words}}»",
+    "count_other": "{{count}} resultados para «{{words}}»",
+    "none": "Nenhum resultado para estas palavras. Experimente outras palavras, ou menos palavras.",
+    "unavailable": "A pesquisa não está disponível neste momento. Tente novamente mais tarde.",
+    "pages": "Páginas de resultados",
+    "previous": "Resultados anteriores",
+    "next": "Mais resultados",
+    "kind": {
+      "story": "Artigo",
+      "person": "Pessoa",
+      "session": "Sessão",
+      "news": "Notícia",
+      "article": "Artigo",
+      "page": "Página",
+      "other": "Conteúdo"
+    }
+  },
+  "members": {
+    "title": "Exclusivo para membros",
+    "register": "Criar conta",
+    "signIn": "Iniciar sessão"
+  }
+}

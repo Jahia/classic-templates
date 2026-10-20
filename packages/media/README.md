@@ -8,7 +8,10 @@ Editorial and event content for Jahia sites built on the [classic-templates](../
 template set: stories in seven formats with their own pages, the people who write them and speak at
 events, automatic story feeds, an event programme with day tabs and filters, a speaker gallery and
 the key dates of an event. Built for media groups that run an editorial hub and an event site;
-every text and link is contributed content, in every site language.
+every text and link is contributed content, in every site language. The labels built into the
+views (formats, roles, filters, search, share) come in English, French and European Portuguese
+(`pt`); editor labels and tooltips are English and French only, so there is no `_pt.properties`
+resource bundle.
 
 The module has no page template: its content renders inside classic-templates pages and follows the
 site's classic-templates theme (light and dark) through its design tokens.
