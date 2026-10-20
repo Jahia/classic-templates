@@ -29,7 +29,8 @@ has two more fields in its edit form:
 2. Set **Moderation status** to **Accepted** and save.
 
 That is all: the item and the pictures and files it uses are opened to every visitor and
-published, in every language of the site. It then appears in every list that would show it (for
+published, in every language of the site. An item with no publication date is dated the moment you
+accept it, so it comes first in the lists that show the newest items. It then appears in every list that would show it (for
 a story: the latest stories, its topic pages, its format's lists, search) with no other step.
 
 Accepting needs the **publish** right on the item: an editor who may only edit (a contributor)

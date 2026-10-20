@@ -10,6 +10,8 @@ An OSGi bundle for the classic-templates template set: it opens **moderated cont
   of the site.
 - When the status of an open item leaves `accepted`, the item's grants are revoked and the change
   published (its files stay readable: another page may show them).
+- An accepted editorial item with no publication date (`ctplmix:editorialItem`) is dated the moment it is
+  accepted: lists order items by that date, and an undated one would never reach the top of a feed.
 - It acts on a change only: saving an accepted item again publishes nothing.
 - A user who may edit the item but not publish it changes the status without effect (logged).
 

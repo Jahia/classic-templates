@@ -21,6 +21,7 @@ import javax.jcr.PropertyType;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -51,6 +52,9 @@ public class ModerationService {
     static final Set<String> READER = Collections.singleton("reader");
     /** The access-control entry a grant of a role to guest writes under the node's {@code j:acl}. */
     static final String GUEST_GRANT = "GRANT_u_guest";
+    /** An editorial item of the template set (news, articles, stories): dated by {@link #PUBLICATION_DATE}. */
+    static final String EDITORIAL_ITEM = "ctplmix:editorialItem";
+    static final String PUBLICATION_DATE = "publicationDate";
 
     private ComplexPublicationService publication;
 
@@ -116,6 +120,7 @@ public class ModerationService {
         published.add(node.getIdentifier());
         if (action == Moderation.Action.OPEN) {
             open(node);
+            dateIfMissing(node, Calendar.getInstance());
             for (JCRNodeWrapper file : filesOf(node, site.getPath())) {
                 open(file);
                 published.add(file.getIdentifier());
@@ -133,6 +138,20 @@ public class ModerationService {
     private static void open(JCRNodeWrapper node) throws RepositoryException {
         node.grantRoles(GUEST, READER);
         node.grantRoles(USERS, READER);
+    }
+
+    /**
+     * Dates an accepted editorial item that has no publication date with the moment it is accepted: lists order items
+     * by that date, newest first, and an undated one would never reach the top of a feed.
+     *
+     * @return whether a date was written
+     */
+    static boolean dateIfMissing(JCRNodeWrapper node, Calendar now) throws RepositoryException {
+        if (!node.isNodeType(EDITORIAL_ITEM) || node.hasProperty(PUBLICATION_DATE)) {
+            return false;
+        }
+        node.setProperty(PUBLICATION_DATE, now);
+        return true;
     }
 
     /** Whether the item carries the grant {@link #open} writes. */

@@ -62,6 +62,28 @@ class ModerationServiceTest {
     }
 
     @Test
+    void anAcceptedEditorialItemWithoutDateIsDatedNow() throws Exception {
+        // Verifies that an undated story gets the moment of acceptance, so it reaches the top of the feeds.
+        JCRNodeWrapper item = mock(JCRNodeWrapper.class);
+        when(item.isNodeType("ctplmix:editorialItem")).thenReturn(true);
+        java.util.Calendar now = java.util.Calendar.getInstance();
+        assertTrue(ModerationService.dateIfMissing(item, now));
+        org.mockito.Mockito.verify(item).setProperty("publicationDate", now);
+    }
+
+    @Test
+    void aDatedItemOrOneThatIsNotEditorialKeepsItsDate() throws Exception {
+        // Verifies that an editor's date is kept, and that a non-editorial item is never dated.
+        JCRNodeWrapper dated = mock(JCRNodeWrapper.class);
+        when(dated.isNodeType("ctplmix:editorialItem")).thenReturn(true);
+        when(dated.hasProperty("publicationDate")).thenReturn(true);
+        assertFalse(ModerationService.dateIfMissing(dated, java.util.Calendar.getInstance()));
+        JCRNodeWrapper other = mock(JCRNodeWrapper.class);
+        assertFalse(ModerationService.dateIfMissing(other, java.util.Calendar.getInstance()));
+        org.mockito.Mockito.verify(other, org.mockito.Mockito.never()).setProperty(anyString(), org.mockito.ArgumentMatchers.any(java.util.Calendar.class));
+    }
+
+    @Test
     void anItemIsOpenWhenItsAclHoldsTheGuestGrant() throws Exception {
         // Verifies the open state read from the access-control entries.
         JCRNodeWrapper acl = mock(JCRNodeWrapper.class);
