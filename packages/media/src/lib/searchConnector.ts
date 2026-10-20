@@ -228,7 +228,7 @@ export const createSearchConnector = (options: ConnectorOptions): APIConnector =
       const scope = { ...context, size };
       const head = primed;
       primed = undefined;
-      if (head && head.key === searchKey(state, size)) return responseFromPage(head.page, state);
+      if (head?.key === searchKey(state, size)) return responseFromPage(head.page, state);
       const data = await post(buildSearchQuery(state, scope));
       return responseFromPage(adaptSearchData(data, state, scope), state);
     },

@@ -93,7 +93,7 @@ const SEGMENT = /^[\p{L}\p{N}_.-]+$/u;
  * names, never empty, never `.` or `..`. Undefined when it is not one.
  */
 export const normalizeTopic = (value: string): string | undefined => {
-  const path = value.trim().replaceAll(/^\/+|\/+$/g, "");
+  const path = value.trim().replaceAll(/(?:^\/+)|(?:\/+$)/g, "");
   if (!path || path.length > LIMITS.topicLength) return undefined;
   const segments = path.split("/");
   if (segments.length > LIMITS.topicDepth) return undefined;
