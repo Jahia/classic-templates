@@ -140,10 +140,6 @@
   "tabs": {
     "noTitle": "This tab has no label in this language: it is not shown, nor what it holds."
   },
-  "network": {
-    "label": "Our sites",
-    "empty": "Add a link to the home page of each site of the group."
-  },
   "notice": {
     "label": "Latest updates",
     "dismiss": "Hide these updates"
@@ -169,5 +165,14 @@
     "suggestionCount_other": "{{count}} suggestions available",
     "for": "Search for “{{words}}”",
     "noPage": "The search box is switched on, but the header names no Search page: choose one in the header's settings. Visitors see no search box until then."
+  },
+  "network": {
+    "label": "Our sites",
+    "empty": "Add a link to the home page of each site of the group."
+  },
+  "consent": {
+    "label": "Privacy choices",
+    "editHint": "Visitors see this banner until they accept or refuse, and the settings button after the footer opens it again. To track nothing before they accept, switch tracking off on the site (jExperience: deactivate JavaScript execution on the site, for all pages).",
+    "missingLabels": "This banner is not shown on the live site: give it an accept label, a refuse label and a settings label."
   }
 }
