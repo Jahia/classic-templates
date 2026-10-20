@@ -11,7 +11,7 @@ below.
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | Type-check + build  | `yarn build`                                                                                                                                                                                                                                                                                                 | exit 0, `dist/package.tgz` produced                                    |
 | Unit tests          | `TZ=UTC yarn test:unit` (also run under another time zone when touching dates)                                                                                                                                                                                                                               | all pass                                                               |
-| Maven build (as CI) | `JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn -B clean install` (repository root, the five packages)                                                                                                                                                                                                        | `packages/*/target/` holds the three `.tgz` and the two `.jar`           |
+| Maven build (as CI) | `JAVA_HOME=$(/usr/libexec/java_home -v 17) mvn -B clean install` (repository root, the seven packages)                                                                                                                                                                                                       | `packages/*/target/` holds the three `.tgz` and the four `.jar`        |
 | Lint + format       | `yarn lint && yarn prettier --check .` (and in `tests/`: `yarn lint`)                                                                                                                                                                                                                                        | no error, the SonarQube rules included ([sonar-rules](sonar-rules.md)) |
 | CND                 | `node $AISTARTUPKIT/.claude/skills/jahia-dev-review-cnd/scripts/check-cnd.mjs .` (one path argument; it walks the tree)                                                                                                                                                                                      | PASS                                                                   |
 | No literal colours  | `yarn check:tokens`                                                                                                                                                                                                                                                                                          | no literal colour outside `src/templates/tokens.css`                   |
@@ -44,7 +44,11 @@ its indentation, a nested `<sites>` sits under the groups) and `sitekey` in the 
 folders that share the site's name such as `files/skylantern`, `importSite` through the provisioning
 API), check every page EN and FR answers 200 with one `<h1>` (Skylantern: `tools/check-pages.py
 --site <key>` and `tools/check-breadcrumbs.py` of the skylantern-demo repository), the theme and
-the Open Graph tags, then delete that site. Never import over the real site itself.
+the Open Graph tags, then delete that site. Never import over the real site itself. A site imported through the provisioning API
+has the importing user (`root`) in its `site-administrators` group: remove them from the group
+before exporting that site again, or the export refuses it (a pre-packaged site never carries a
+user). The two Orvane sites link to each other: check them by importing both (Signal, then Live;
+Jahia resolves the references to the site imported second), not under other site keys.
 
 ## Images in tests
 
