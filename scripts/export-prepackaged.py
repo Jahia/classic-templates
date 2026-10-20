@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Exports a demo site into its pre-packaged project (packages/prepackaged-site for classic-dev,
-packages/prepackaged-skylantern for skylantern, packages/prepackaged-orvane-signal and
-packages/prepackaged-orvane-live for the two Orvane sites).
+packages/prepackaged-skylantern for skylantern, packages/prepackaged-orvane-signal,
+packages/prepackaged-orvane-live and packages/prepackaged-orvane-portal for the three Orvane sites).
 
-    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern|orvane-signal|orvane-live] [--from-zip export.zip] [--check]
+    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern|orvane-signal|orvane-live|orvane-portal] [--from-zip export.zip] [--check]
 
 A pre-packaged project installs on an instance that has the modules of this repository it depends
 on (plus the platform modules default, siteSettings and site-settings-seo) and, for a profile that
@@ -15,8 +15,11 @@ described in PROFILES below.
      without users: GET /cms/export/default/<site>_export.zip?exportformat=site&live=true&users=false.
      Only the inner <site>.zip is kept (never roles.zip or mounts.zip). --from-zip reads a
      previously downloaded export instead.
-  2. Rewrites the add-on content that has an equivalent in the template set (the profile's
-     conversions: the jsfaq questions of skylantern become accordions).
+  2. Leaves out the instance's own state: the global groups and users the export pulls in
+     (drop_global_principals) and Augmented Search's indexation timestamps on the site node
+     (drop_search_state), which make the import fail where Augmented Search runs. Then rewrites
+     the add-on content that has an equivalent in the template set (the profile's conversions: the
+     jsfaq questions of skylantern become accordions).
   3. Removes, in repository.xml and live-repository.xml alike:
      - every node whose primary type or one of its mixins belongs to a namespace that neither the
        platform nor the profile's packages declare (the allow-list is read from their CND files:
@@ -214,10 +217,15 @@ PROFILES = {
 }
 
 # The two Orvane sites (a fictional media group, see packages/prepackaged-orvane-*/README.md) show
-# the add-on modules on purpose: their content is kept, and the packages declare the modules.
-ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements"]
+# the add-on modules on purpose: their content is kept, and the packages declare the modules. Since
+# v2 they also show personalisation: jExperience's personalised sections and A/B test (wem*), the
+# form answers mapped to the visitor profile (formidable-jexperience-engine) and the audience
+# dashboard (kibana-dashboards-provider, jexperience-dashboards).
+ORVANE_ADDONS = ["jsfaq", "js-media-gallery", "js-store-locator", "formidable-elements", "formidable-extended-inputs",
+                 "formidable-accounts", "jexperience", "formidable-jexperience-engine", "kibana-dashboards-provider",
+                 "jexperience-dashboards"]
 ORVANE_ADDON_PREFIXES = ["jsfaqnt", "jsfaqmix", "jsfaq", "jsmediagallerynt", "jsmediagallerymix", "jsstorelocnt",
-                         "jsstorelocmix", "fmdb", "fmdbmix"]
+                         "jsstorelocmix", "fmdb", "fmdbmix", "fmdbext", "fmdbacc", "fmdbaccmix", "wem", "wemnt", "wemmix"]
 for _site in ("orvane-signal", "orvane-live"):
     PROFILES[_site] = {
         "package": f"prepackaged-{_site}",
@@ -228,6 +236,22 @@ for _site in ("orvane-signal", "orvane-live"):
         "conversions": {},
         "text_edits": [],
     }
+
+# Orvane Portal (v5), the suppliers' portal: gated below its home page (the ACLs travel with the
+# export, the groups they name are the project's), the briefs and submissions of classic-media, and
+# the submission form with the Create content action (formidable-content, of formidable-extended-actions; prefix fmdbcnt)
+# and the Redirect action (formidable-redirect, same repository; prefix fmdbred).
+# No jExperience on the portal.
+PROFILES["orvane-portal"] = {
+    "package": "prepackaged-orvane-portal",
+    "sources": ["template-set", "media"],
+    "addon_prefixes": ["fmdb", "fmdbmix", "fmdbext", "fmdbcnt", "fmdbred"],
+    "installed": ["classic-templates", "classic-media", "formidable-elements", "formidable-extended-inputs", "formidable-content", "formidable-redirect"]
+    + PLATFORM_MODULES,
+    "only_for_addons": [],
+    "conversions": {},
+    "text_edits": [],
+}
 
 # ---------------------------------------------------------------------------------------------
 # Export download (one session)
@@ -293,7 +317,7 @@ def node_types(element):
 
 
 def qname(name):
-    for p, uri in NS.items():
+    for p, uri in {**NS, **DECLARED}.items():
         if name.startswith("{%s}" % uri):
             return p + ":" + name[len(uri) + 2:]
     if name.startswith("{"):
@@ -311,7 +335,7 @@ def write_element(element, depth, out):
     tag = qname(element.tag)
     attrs = [f'{qname(k)}="{escape(v)}"' for k, v in element.attrib.items()]
     if depth == 0:
-        attrs = [f'xmlns:{p}="{uri}"' for p, uri in NS.items()] + attrs
+        attrs = [f'xmlns:{p}="{uri}"' for p, uri in namespaces_used(element).items()] + attrs
         head = f"<{tag}" + "".join(" " + a for a in attrs)
     else:
         pad = "\n" + indent + " " * (len(tag) + 2)
@@ -332,10 +356,25 @@ def serialize(root):
     return "".join(out)
 
 
+# Namespaces of property and node names other than j and jcr (wem:deactivateJSExecution on a site
+# with jExperience, for example), read from the export's own declarations: the root element declares
+# them only when a name uses them.
+DECLARED = {}
+
+
 def parse(data):
     for p, uri in NS.items():
         ET.register_namespace(p, uri)
+    for _, (p, uri) in ET.iterparse(io.BytesIO(data), events=("start-ns",)):
+        if p and uri not in NS.values() and p not in NS:
+            DECLARED[p] = uri
     return ET.fromstring(data)
+
+
+def namespaces_used(root):
+    """j and jcr, then every declared namespace a node or property name of `root` uses."""
+    uris = {name[1:name.index("}")] for e in root.iter() for name in [e.tag, *e.attrib] if name.startswith("{")}
+    return {**NS, **{p: uri for p, uri in DECLARED.items() if uri in uris}}
 
 
 # ---------------------------------------------------------------------------------------------
@@ -640,6 +679,43 @@ def export_descriptor(text, repository_xml):
 # ---------------------------------------------------------------------------------------------
 
 
+def drop_global_principals(root):
+    """Leaves out the global groups and users an export pulls in: granting a site role to a global
+    group makes Jahia list that group in the site's `site-privileged` group, and the export then
+    carries the group and its users (/groups, /users). A pre-packaged site never carries principals:
+    the project creates its groups and users after the import, and granting the roles adds them to
+    `site-privileged` again. Returns how many elements were removed."""
+    removed = 0
+    for child in list(root):
+        if child.tag.split("}")[-1] in ("groups", "users"):
+            root.remove(child)
+            removed += 1
+    for parent in root.iter():
+        for child in list(parent):
+            member = child.get(J + "member") or ""
+            if child.get(JCR + "primaryType") == "jnt:member" and member.startswith(("#/groups/", "#/users/")):
+                parent.remove(child)
+                removed += 1
+    return removed
+
+
+# Augmented Search writes its indexation state on the site node. Imported, it races the indexation
+# Augmented Search starts on the new site: "indexationStart ... has been modified externally" and the
+# whole site import is rolled back.
+SEARCH_STATE = ("indexationStart", "indexationEnd", "indexationScheduled")
+
+
+def drop_search_state(root):
+    """Leaves out Augmented Search's indexation timestamps (SEARCH_STATE). Returns how many."""
+    removed = 0
+    for element in root.iter():
+        for name in SEARCH_STATE:
+            if name in element.attrib:
+                del element.attrib[name]
+                removed += 1
+    return removed
+
+
 def build(files, descriptor, site, profile, out_site, out_descriptor):
     allowed = allowed_prefixes(profile["sources"]) | set(profile.get("addon_prefixes", ()))
     report = {"allowed": sorted(allowed), "conversions": []}
@@ -650,6 +726,11 @@ def build(files, descriptor, site, profile, out_site, out_descriptor):
         if name not in files:
             sys.exit(f"The site export has no {name}")
         root = parse(files[name])
+        dropped = drop_global_principals(root)
+        if dropped:
+            report.setdefault("principals", []).append(f"{name}: {dropped} global group or user element(s) left out")
+        if drop_search_state(root):
+            report.setdefault("search_state", []).append(f"{name}: Augmented Search indexation timestamps left out")
         converted = []
         apply_conversions(root, site, profile["conversions"], converted)
         report["conversions"] += [f"{name}: {c}" for c in converted]

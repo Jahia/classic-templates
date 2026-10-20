@@ -24,7 +24,7 @@
 
   <properties>
     <jahia-module-type>system</jahia-module-type>
-    <jahia-depends>default,classic-templates,classic-media,jsfaq,js-media-gallery,js-store-locator,formidable-elements</jahia-depends>
+    <jahia-depends>default,classic-templates,classic-media,jsfaq,js-media-gallery,js-store-locator,formidable-elements,jexperience,formidable-jexperience-engine,kibana-dashboards-provider,jexperience-dashboards</jahia-depends>
     <prepackaged.site>orvane-signal</prepackaged.site>
     <sonar.tests />
   </properties>
