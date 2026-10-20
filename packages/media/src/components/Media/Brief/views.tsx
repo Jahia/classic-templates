@@ -27,7 +27,8 @@ const ANSWER_ID = "ctmd-brief-answer";
 
 /** Whether a supplier can answer the brief now: open, with a Formidable form the visitor can read. */
 const isAnswerable = (props: Props, currentNode: JCRNodeWrapper) =>
-  briefStatusOf(props.briefStatus) !== "closed" && readSubmissionForm(currentNode).state === "ready";
+  briefStatusOf(props.briefStatus) !== "closed" &&
+  readSubmissionForm(currentNode).state === "ready";
 
 /** The page language as a BCP 47 tag ("en", "fr"). */
 const useLanguage = () => {
