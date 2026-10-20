@@ -1,64 +1,62 @@
 /**
- * The keyboard model of the search box combobox, pure so it is unit tested. (The template set's
- * header box has the same model in its own lib/headerSearch.ts: the two bundles share no code.)
+ * The keyboard model of the search box and its suggestion links, pure so it is unit tested. (The
+ * template set's header box has the same model in its own lib/headerSearch.ts: the two bundles
+ * share no code.)
  */
 
-/** What the keyboard asks of a combobox with a list of suggestions. */
+/** What the keyboard asks of the search box and its list of suggestion links. */
 export interface KeyInput {
   key: string;
-  /** The list box is open. */
+  /** The list of suggestions is shown. */
   open: boolean;
-  /** The highlighted option, -1 for none. */
-  active: number;
-  /** How many options there are. */
+  /** Where the focus is: the input (-1) or a suggestion link (its index). */
+  focus: number;
+  /** How many suggestion links there are. */
   count: number;
-  /** The key was pressed in the input (not on another control of the box). */
-  fromInput: boolean;
   /** A panel holding the box is open (small screens). */
   expanded?: boolean;
 }
 
-/** The effect of a key: what to change, whether to cancel the browser's own handling, what to do. */
+/** The effect of a key: what to change, whether to cancel the browser's own handling. */
 export interface KeyResult {
-  /** Cancel the key's default (arrow keys scroll, Enter submits the form). */
+  /** Cancel the key's default (arrow keys scroll the page). */
   prevent: boolean;
   open?: boolean;
-  active?: number;
-  /** Go to the option at this index (the highlighted one, on Enter). */
-  pick?: number;
+  /** Move the focus: to the input (-1) or to the suggestion link at this index. */
+  focus?: number;
   /** Close the panel and give the focus back to its button. */
   collapse?: boolean;
 }
 
 const NOTHING: KeyResult = { prevent: false };
 
-const escapeResult = ({ open, expanded }: KeyInput): KeyResult => {
-  if (open) return { prevent: true, open: false, active: -1 };
+const escapeResult = ({ open, focus, expanded }: KeyInput): KeyResult => {
+  if (focus >= 0) return { prevent: true, open: false, focus: -1 };
+  if (open) return { prevent: true, open: false };
   return expanded ? { prevent: true, collapse: true } : NOTHING;
 };
 
-const arrowResult = ({ key, open, active, count }: KeyInput): KeyResult => {
-  if (count === 0) return NOTHING;
+const downResult = ({ open, focus, count }: KeyInput): KeyResult => {
   if (!open) return { prevent: true, open: true };
-  if (key === "ArrowDown") return { prevent: true, active: (active + 1) % count };
-  return { prevent: true, active: active <= 0 ? count - 1 : active - 1 };
+  return { prevent: true, focus: focus + 1 < count ? focus + 1 : 0 };
 };
 
-const enterResult = ({ open, active, count }: KeyInput): KeyResult => {
-  if (open && active >= 0 && active < count) {
-    return { prevent: true, open: false, active: -1, pick: active };
-  }
-  return { prevent: false, open: false, active: -1 };
+const upResult = ({ open, focus, count }: KeyInput): KeyResult => {
+  if (!open) return { prevent: true, open: true };
+  if (focus === -1) return { prevent: true, focus: count - 1 };
+  return { prevent: true, focus: focus - 1 };
 };
 
 /**
- * The keyboard model of the combobox (ARIA 1.2 pattern): ArrowDown and ArrowUp open the list, then
- * move the highlight (wrapping); Enter on a highlighted option goes to it, Enter with none lets the
- * form submit (the words go to the search page); Escape closes the list, then the panel.
+ * The keyboard model of the search box. The suggestions are plain links: ArrowDown opens the list,
+ * then moves the focus from the input onto the links and between them (wrapping); ArrowUp moves
+ * back, from the first link to the input; Escape on a link returns to the input and closes the
+ * list, Escape in the input closes the list, then the panel. Enter is the browser's: on a link it
+ * follows it, in the input it submits the form (the words go to the search page).
  */
 export const keyResult = (input: KeyInput): KeyResult => {
   if (input.key === "Escape") return escapeResult(input);
-  if (!input.fromInput) return NOTHING;
-  if (input.key === "ArrowDown" || input.key === "ArrowUp") return arrowResult(input);
-  return input.key === "Enter" ? enterResult(input) : NOTHING;
+  if (input.count === 0) return NOTHING;
+  if (input.key === "ArrowDown") return downResult(input);
+  return input.key === "ArrowUp" ? upResult(input) : NOTHING;
 };
