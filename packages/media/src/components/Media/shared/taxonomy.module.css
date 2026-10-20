@@ -1,0 +1,31 @@
+/* Topics and tags at the end of an item's page. Theme tokens only. */
+.block {
+  max-width: var(--ctpl-measure);
+}
+.title {
+  margin: 0 0 var(--ctpl-space-3);
+  font-size: var(--ctpl-text-xl);
+}
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.list li {
+  padding: var(--ctpl-space-1) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-pill);
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-text);
+  font-size: var(--ctpl-text-sm);
+}
+.link {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+.link:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}

@@ -5,9 +5,12 @@ import { RAW, useT } from "../../../lib/i18n.js";
 import { JsonLd, useAbsoluteUrl } from "../../../lib/JsonLd.js";
 import { languageTag } from "../../../lib/locale.js";
 import { eventTimeZone, sessionSpeakers, type SpeakerData } from "../../../lib/media.js";
+import { isMembersOnly, teaserParagraphsOf } from "../../../lib/members.js";
 import { RichText } from "../../../lib/RichText.js";
 import { buildSessionLd } from "../../../lib/schema.js";
 import { Styles } from "../../../lib/Styles.js";
+import { MembersWall } from "../shared/MembersWall.js";
+import { Taxonomy } from "../shared/Taxonomy.js";
 import cards from "../shared/cards.module.css";
 import { ShareBox } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
@@ -64,12 +67,21 @@ const speakerNames = (speakers: SpeakerData[], role: (part: string) => string) =
 /**
  * The session's own page, inside the main-resource template of classic-templates. It owns the
  * page's only `<h1>`: the title. Then the day and times in the event's time zone (said in words),
- * room and stream, the share box, the description, the speakers as person cards with the part they
- * play, and the Event JSON-LD.
+ * room and stream, the share box, the description, its topics and tags, the speakers as person
+ * cards with the part they play, and the Event JSON-LD.
+ *
+ * A session switched to "Members only" (ctplmix:membersOnly) keeps all of that for every visitor
+ * but its description: a visitor who is not signed in reads its opening paragraphs, then the
+ * members notice (MembersWall). `perUser` says the view is cached per user ("fullPageMembers"), the
+ * only place the page may tell visitors apart; the shared "fullPage" never renders the whole
+ * description of such a session.
  */
-export const SessionFull = ({ props }: { props: Props }) => {
+export const SessionFull = ({ props, perUser = false }: { props: Props; perUser?: boolean }) => {
   const t = useT();
   const { currentNode, renderContext } = useServerContext();
+  const membersOnly = isMembersOnly(currentNode);
+  const open =
+    !membersOnly || (perUser && (renderContext.isLoggedIn() || renderContext.isEditMode()));
   const toAbsolute = useAbsoluteUrl();
   const when = useWhen(props);
   const id = currentNode.getIdentifier();
@@ -108,7 +120,19 @@ export const SessionFull = ({ props }: { props: Props }) => {
         )}
       </header>
       <ShareBox url={url} title={title} />
-      <RichText html={props.body} className={classes.body} headingLevel={2} />
+      {membersOnly && renderContext.isEditMode() && (
+        <p className={classes.editNote}>{t("session.membersEdit")}</p>
+      )}
+      {open ? (
+        <RichText html={props.body} className={classes.body} headingLevel={2} />
+      ) : (
+        <MembersWall
+          body={props.body}
+          paragraphs={teaserParagraphsOf(currentNode)}
+          kind="session"
+        />
+      )}
+      {open && <Taxonomy />}
       {speakers.length > 0 && (
         <section aria-labelledby={`ctmd-speakers-${id}`}>
           <h2 id={`ctmd-speakers-${id}`} className={classes.speakersTitle}>
@@ -160,6 +184,9 @@ export const SessionCard = ({ props }: { props: Props }) => {
       <div className={cards.body}>
         <p className={cards.meta}>
           <TypeLabel props={props} />
+          {isMembersOnly(currentNode) && (
+            <span className={cards.badge}>{t("session.membersLabel")}</span>
+          )}
           {when.day && <span>{when.day}</span>}
         </p>
         <Heading level={level} className={cards.title}>
@@ -202,6 +229,9 @@ export const SessionCompact = ({ props }: { props: Props }) => {
       <div className={classes.rowBody}>
         <p className={cards.meta}>
           <TypeLabel props={props} />
+          {isMembersOnly(currentNode) && (
+            <span className={cards.badge}>{t("session.membersLabel")}</span>
+          )}
           {props.room && <span>{props.room}</span>}
           {props.stream && <span>{props.stream}</span>}
         </p>

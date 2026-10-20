@@ -37,7 +37,7 @@ Install `classic-media-<version>.tgz` in Jahia (Administration > Modules), or bu
 | Person (`ctmd:person`)                  | An author or a speaker: name, role, organisation, portrait, short bio, biography, profile links                                                               | A content folder. Own page listing their stories and sessions; cards in galleries and lists |
 | Story (`ctmd:story`)                    | News, feature, opinion, interview, report, video or podcast: teaser, body, date, image, authors, a video or an audio file with its transcript, "Members only" | A content folder. Own page with byline, share, related stories; cards in feeds and lists    |
 | Story feed (`ctmd:storyFeed`)           | The latest stories under a folder, of some formats, of some categories or of the page's topics, as cards, a list or a lead story, with format buttons         | A page area, a column, a tab, a free zone                                                   |
-| Session (`ctmd:session`)                | A session of an event: start and end, room, stream, type, description, speakers with their part                                                               | The event's content folder. Own page; rows of the agenda                                    |
+| Session (`ctmd:session`)                | A session of an event: start and end, room, stream, type, description, speakers with their part, "Members only"                                               | The event's content folder. Own page; rows of the agenda                                    |
 | Agenda (`ctmd:agenda`)                  | The sessions of an event, one tab per day, with stream, room and type filters                                                                                 | A page area, a column, a tab, a free zone                                                   |
 | Speaker gallery (`ctmd:speakerGallery`) | The people of a folder as portrait cards, sorted by name, with an A-Z index                                                                                   | A page area, a column, a tab, a free zone                                                   |
 | Search results (`ctmd:searchResults`)   | A search box and the Augmented Search results for the words typed, for this site or its whole network, with previous and next pages                           | A page area, a column, a tab, a free zone                                                   |
@@ -45,6 +45,16 @@ Install `classic-media-<version>.tgz` in Jahia (Administration > Modules), or bu
 
 The event's time zone is a setting of its content folder ("Event" in the folder's options): sessions
 and the agenda show their times in that zone.
+
+Story and session pages end with their **Topics** (categories) and **Tags**; each tag links to the
+site's search results for it when the classic-templates site header names a **Search page**.
+
+Stories and sessions take classic-templates' **Members only** switch: visitors who are not signed in
+read the opening paragraphs of the body (or of the session's description; 2 by default, set per
+item, never the whole text), then a notice with **Create an account** and **Sign in**, the site
+header's registration and sign-in pages, both bringing them back. The rest is not sent to them. A
+session keeps its times, room and speakers public. See classic-templates'
+[Members-only content](../../docs/guides/members-only-content.md).
 
 ## Development
 

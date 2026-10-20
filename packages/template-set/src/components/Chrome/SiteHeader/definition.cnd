@@ -13,6 +13,9 @@
 // (login and logout), not contributed links: accountLanding only names the page to come back to.
 // signInPage replaces Jahia's login screen with a page of the site (one holding a ctpl:signIn
 // section): the entry then links to that page, which sends the visitor on to where they came from.
+// registerPage is the page where visitors create an account (a registration form): the notice of a
+// members-only item links to it, with the item as the place to come back to. searchPage is the
+// page holding the site's search results: the tags of an item's page link to it (?q=<tag>).
 [ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType
  - logo (weakreference, picker[type='image']) < jmix:image
  - logoDark (weakreference, picker[type='image']) < jmix:image
@@ -21,6 +24,8 @@
  - showAccount (boolean) = false autocreated
  - accountLanding (weakreference, picker[type='page']) < jnt:page
  - signInPage (weakreference, picker[type='page']) < jnt:page
+ - registerPage (weakreference, picker[type='page']) < jnt:page
+ - searchPage (weakreference, picker[type='page']) < jnt:page
  + utilityLinks (ctpl:linkList) = ctpl:linkList autocreated
  + languageSwitcher (ctpl:languageSwitcher) = ctpl:languageSwitcher autocreated
  + navigation (ctpl:mainNavigation) = ctpl:mainNavigation autocreated

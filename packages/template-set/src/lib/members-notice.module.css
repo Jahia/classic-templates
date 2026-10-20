@@ -13,3 +13,32 @@
   margin: 0 0 var(--ctpl-space-5);
   color: var(--ctpl-color-text-muted);
 }
+.register {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ctpl-space-3);
+  margin: 0 0 var(--ctpl-space-5);
+}
+.registerLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--ctpl-space-2) var(--ctpl-space-5);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-decoration: none;
+}
+.registerLink:hover {
+  background: var(--ctpl-color-action-hover);
+  color: var(--ctpl-color-text-on-action);
+}
+.registerLink:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.or {
+  color: var(--ctpl-color-text-muted);
+}

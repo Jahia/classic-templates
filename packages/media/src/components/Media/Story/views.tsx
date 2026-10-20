@@ -1,4 +1,4 @@
-import { Render, buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
+import { Render, buildNodeUrl, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { formatDate, isoDay, readingMinutes } from "../../../lib/format.js";
@@ -7,13 +7,16 @@ import { useT } from "../../../lib/i18n.js";
 import { Image } from "../../../lib/Image.js";
 import { JsonLd, useAbsoluteUrl } from "../../../lib/JsonLd.js";
 import { languageTag } from "../../../lib/locale.js";
-import { categoryIdsOf, categoryTitlesOf, runQuery, storyAuthors } from "../../../lib/media.js";
-import { readReference, readString } from "../../../lib/props.js";
+import { categoryIdsOf, runQuery, storyAuthors } from "../../../lib/media.js";
+import { isMembersOnly, teaserParagraphsOf } from "../../../lib/members.js";
+import { readString } from "../../../lib/props.js";
 import { RichText } from "../../../lib/RichText.js";
 import { buildStoryLd } from "../../../lib/schema.js";
 import { related } from "../../../lib/select.js";
 import { Styles } from "../../../lib/Styles.js";
 import cards from "../shared/cards.module.css";
+import { MembersWall } from "../shared/MembersWall.js";
+import { Taxonomy } from "../shared/Taxonomy.js";
 import { Byline, ShareBox, useFormatLabel } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
@@ -25,10 +28,6 @@ const RELATED_CANDIDATES = 60;
 
 /** Formats read as text: they show a reading time. */
 const TEXT_FORMATS = new Set(["news", "feature", "opinion", "interview", "report"]);
-
-/** True for a story switched to "Members only" (ctplmix:membersOnly of classic-templates). */
-const isMembersOnly = (node: JCRNodeWrapper) =>
-  node.hasProperty("ctplMembersOnly") && node.getProperty("ctplMembersOnly").getBoolean();
 
 /** The page language as a BCP 47 tag ("en", "fr"). */
 const useLanguage = () => {
@@ -57,20 +56,6 @@ const Meta = ({ props, withReading }: { props: Props; withReading: boolean }) =>
       )}
     </p>
   );
-};
-
-/** The site's sign-in page (classic-templates header setting), when it has one. */
-const signInPage = (
-  node: JCRNodeWrapper,
-  renderContext: RenderContext,
-): JCRNodeWrapper | undefined => {
-  try {
-    const header = node.getResolveSite().getHome().getNode("siteHeader/header");
-    server.render.addCacheDependency({ node: header }, renderContext);
-    return readReference(header, "signInPage");
-  } catch {
-    return undefined;
-  }
 };
 
 /** Stories sharing the most categories with `story`, newest first among equals. */
@@ -176,13 +161,12 @@ const StoryHead = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => {
 
 /**
  * What a visitor who is not signed in gets of a members-only story: its public face (meta, title,
- * lead, byline, image), a notice and a link to the site's sign-in page. The body, the media and the
+ * lead, byline, image), the opening paragraphs of the body, then the members notice with the
+ * site's registration and sign-in pages (MembersWall). The rest of the body, the media and the
  * transcript are never rendered here.
  */
 const RestrictedStory = ({ props }: { props: Props }) => {
-  const t = useT();
   const { currentNode, renderContext } = useServerContext();
-  const signIn = signInPage(currentNode, renderContext);
   return (
     <article className={`ctpl-container ${classes.full}`} data-testid="ctmd-story-restricted">
       <Styles />
@@ -192,16 +176,7 @@ const RestrictedStory = ({ props }: { props: Props }) => {
           <Image node={props.image} owner={currentNode} renderContext={renderContext} priority />
         </figure>
       )}
-      <div className={classes.notice}>
-        <p>{t("story.membersNotice")}</p>
-        {signIn && (
-          <p>
-            <a className={classes.signIn} href={buildNodeUrl(signIn)}>
-              {t("story.signIn")}
-            </a>
-          </p>
-        )}
-      </div>
+      <MembersWall body={props.body} paragraphs={teaserParagraphsOf(currentNode)} kind="story" />
     </article>
   );
 };
@@ -210,7 +185,7 @@ const RestrictedStory = ({ props }: { props: Props }) => {
  * The story's own page, inside the main-resource template of classic-templates (header, footer,
  * `<title>`, meta description from the teaser). It owns the page's only `<h1>`: the title. Then the
  * byline (each author a link to their page), the share box, the media (video, audio or image), the
- * body, the transcript in a disclosure, the topics, the related stories as cards, and the story's
+ * body, the transcript in a disclosure, the topics and tags (Taxonomy), the related stories as cards, and the story's
  * JSON-LD.
  *
  * `perUser` says the view is cached per user ("fullPageMembers"): the only place the page may tell
@@ -229,7 +204,6 @@ export const StoryFull = ({ props, perUser = false }: { props: Props; perUser?: 
   const id = currentNode.getIdentifier();
   const title = props["jcr:title"];
   const url = toAbsolute(buildNodeUrl(currentNode));
-  const topics = categoryTitlesOf(currentNode, renderContext);
   const relatedItems = relatedStories(currentNode, renderContext);
   const authors = storyAuthors(currentNode, renderContext);
   return (
@@ -252,18 +226,7 @@ export const StoryFull = ({ props, perUser = false }: { props: Props; perUser?: 
           <RichText html={props.transcript} headingLevel={3} />
         </details>
       )}
-      {topics.length > 0 && (
-        <section className={classes.topics} aria-labelledby={`ctmd-topics-${id}`}>
-          <h2 id={`ctmd-topics-${id}`} className={classes.topicsTitle}>
-            {t("story.topics")}
-          </h2>
-          <ul className={classes.topicList}>
-            {topics.map((topic) => (
-              <li key={topic}>{topic}</li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <Taxonomy />
       {relatedItems.length > 0 && (
         <section className={classes.related} aria-labelledby={`ctmd-related-${id}`}>
           <h2 id={`ctmd-related-${id}`}>{t("story.related")}</h2>

@@ -79,3 +79,20 @@ export const accountUrls = (
     graphql: `${base}${GRAPHQL}`,
   };
 };
+
+/**
+ * The site's own page `page` (registration, sign-in) carrying `comeBack` as its `redirect`
+ * parameter, for its form to send the visitor back once done. Undefined when `page` is not a
+ * site-relative path; a `comeBack` that is not one is dropped.
+ */
+export const pageWithComeBack = (
+  page: string | undefined,
+  comeBack: string | undefined,
+): string | undefined => {
+  const safePage = safeLocalPath(page);
+  if (!safePage) return undefined;
+  const safe = safeLocalPath(comeBack);
+  if (!safe) return safePage;
+  const separator = safePage.includes("?") ? "&" : "?";
+  return `${safePage}${separator}redirect=${encodeURIComponent(safe)}`;
+};

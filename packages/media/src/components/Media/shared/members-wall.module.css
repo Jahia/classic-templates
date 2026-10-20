@@ -1,0 +1,68 @@
+/* The opening paragraphs of a members-only item, fading out above the members notice. */
+.opening {
+  position: relative;
+  max-width: var(--ctpl-measure);
+  margin-bottom: var(--ctpl-space-6);
+}
+.opening::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4rem;
+  background: linear-gradient(transparent, var(--ctpl-color-surface-page));
+  pointer-events: none;
+}
+
+.notice {
+  max-width: var(--ctpl-measure);
+  padding: var(--ctpl-space-4) var(--ctpl-space-5);
+  border-inline-start: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+  background: var(--ctpl-color-accent-subtle);
+}
+.notice > p {
+  margin: 0;
+}
+.notice > * + * {
+  margin-top: var(--ctpl-space-3);
+}
+.title {
+  margin: 0;
+  font-size: var(--ctpl-text-xl);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-3);
+}
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-5);
+  border: 2px solid var(--ctpl-color-action);
+  border-radius: var(--ctpl-radius-md);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-decoration: none;
+}
+.primary {
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+}
+.primary:hover {
+  border-color: var(--ctpl-color-action-hover);
+  background: var(--ctpl-color-action-hover);
+  color: var(--ctpl-color-text-on-action);
+}
+.secondary {
+  background: transparent;
+  color: var(--ctpl-color-action);
+}
+.secondary:hover {
+  color: var(--ctpl-color-action-hover);
+}
+.primary:focus-visible,
+.secondary:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}

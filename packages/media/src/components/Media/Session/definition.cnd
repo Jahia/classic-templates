@@ -13,7 +13,9 @@
 // view). start and end are date and time, shown in the event's time zone (ctmdmix:eventFolder on
 // an ancestor folder; UTC without it). room and stream are free texts as shown to visitors. The
 // speakers are child ctmd:sessionSpeaker nodes, in the order shown, each a person and a role.
-[ctmd:session] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component, ctplmix:listable, jmix:list orderable
+// ctplmix:gatedItem offers classic-templates' "Members only" switch: the description is then cut
+// after its opening paragraphs for visitors who are not signed in (view fullPageMembers).
+[ctmd:session] > jnt:content, mix:title, jmix:mainResource, jmix:editorialContent, ctmdmix:component, ctplmix:listable, ctplmix:gatedItem, jmix:list orderable
  - start (date, datetimepicker)
  - end (date, datetimepicker)
  - room (string) i18n
