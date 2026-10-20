@@ -23,7 +23,11 @@ Orvane Signal in English and French (Orvane Live adds Portuguese):
   `orvane` categories (6 topics, 24 sub-topics, carried in `systemsite`);
 - 4 generated videos with English and French captions (js-media-gallery), 3 podcast episodes with
   their transcripts, a newsletter and a contact form (Formidable);
-- the `signal` theme, the network bar linking Orvane Live, the header with search and sign-in.
+- the `signal` theme, the network bar linking Orvane Live, the header with search and sign-in;
+- the stories suppliers send from Orvane Portal (`ctmd:suppliedStory`, moderated): one closed folder
+  per company under `contents/stories/supplied` (and `files/supplied`), three samples (one accepted,
+  so public and listed, one declined, one submitted), and a person page per supplier under
+  `contents/people/suppliers` (mixin `fmdbcntmix:submitterProfile`, of `formidable-content`).
 
 Every person, company, figure, quote and contact is invented (`@orvane.example`, `+351 000 000 000`
 numbers); the footer, the legal pages and the home page say so. The structure was inspired by the
@@ -33,7 +37,7 @@ the instance (`defaultSite=false`) and has the server name `localhost`.
 
 Unlike the classic-dev and Skylantern packages, this one keeps the content of add-on modules on
 purpose (the showcase demonstrates them): it declares `jsfaq`, `js-media-gallery`,
-`js-store-locator` and `formidable-elements` as dependencies.
+`js-store-locator`, `formidable-elements` and `formidable-content` as dependencies.
 
 ## Personalisation (jExperience)
 
@@ -70,7 +74,9 @@ order does not matter.
    `js-store-locator` (1.1.0), Formidable 0.6 or later (`formidable-engine`, `formidable-elements`,
    `formidable-extended-inputs`, and `formidable-accounts` (formidable-extended-actions repository), which creates members' accounts; its
    CAPTCHA requirement `requireCaptcha` in `org.jahia.modules.formidable.accounts` needs a CAPTCHA
-   provider configured, or `false` on a development instance only), and these two modules.
+   provider configured, or `false` on a development instance only), `formidable-content` (same
+   repository; its mixin marks the suppliers' person pages), `classic-moderation` (publishes a
+   supplier's story once an editor accepts it), and these two modules.
    Formidable 0.6 is not released yet: `formidable-accounts`, the password field and the engine
    changes it needs are in Jahia/formidable#406, the Portuguese messages in Jahia/formidable#409.
    Until it ships, build those branches; the official 0.5.0 cannot import the account forms. For the
