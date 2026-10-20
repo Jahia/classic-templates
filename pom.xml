@@ -36,6 +36,9 @@
     <module>packages/media</module>
     <module>packages/prepackaged-site</module>
     <module>packages/prepackaged-skylantern</module>
+    <module>packages/prepackaged-orvane-signal</module>
+    <module>packages/prepackaged-orvane-live</module>
+    <module>packages/prepackaged-orvane-portal</module>
   </modules>
 
   <properties>
