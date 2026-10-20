@@ -1,0 +1,43 @@
+/*
+ * Network bar: a slim band on the inverse surface, above the site header. text-inverse on
+ * surface-inverse is contrast-checked in every theme and scheme (yarn check:contrast); links keep
+ * that colour (the ctpl:link "network" view) and so does the focus ring.
+ */
+.bar {
+  background: var(--ctpl-color-surface-inverse);
+  color: var(--ctpl-color-text-inverse);
+  font-size: var(--ctpl-text-xs);
+}
+.bar :focus-visible {
+  outline-color: var(--ctpl-color-text-inverse);
+}
+
+/* One row when it fits: the name at the start, the sites at the end; on a phone they wrap. */
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 var(--ctpl-space-5);
+}
+
+.label {
+  margin: 0;
+  padding-block: var(--ctpl-space-2);
+  font-weight: var(--ctpl-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hint {
+  flex-basis: 100%;
+}
+
+.sites {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ctpl-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

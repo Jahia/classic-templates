@@ -135,6 +135,10 @@
   "tabs": {
     "noTitle": "Cet onglet n'a pas de libellé dans cette langue : ni lui ni son contenu ne sont affichés."
   },
+  "network": {
+    "label": "Nos sites",
+    "empty": "Ajoutez un lien vers la page d'accueil de chaque site du groupe."
+  },
   "notice": {
     "label": "Dernières informations",
     "dismiss": "Masquer ces informations"

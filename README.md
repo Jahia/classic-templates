@@ -15,13 +15,14 @@ preview with an image when they are shared (Open Graph, Twitter card).
 
 ## What is in this repository
 
-The repository holds four packages, built together and released at the same version.
+The repository holds five packages, built together and released at the same version.
 
 | Package                                                               | Maven coordinates                                                                            | What it is                                                                                                                                                                                                              |
 | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`packages/template-set`](packages/template-set/)                     | `org.jahia.modules.javascript:classic-templates` (`.tgz`)                                    | The **classic-templates** template set: header, footer, breadcrumb, page templates, reusable sections, news and articles, seven themes in light and dark                                                                |
+| [`packages/template-set`](packages/template-set/)                     | `org.jahia.modules.javascript:classic-templates` (`.tgz`)                                    | The **classic-templates** template set: header, footer, breadcrumb, page templates, reusable sections, news and articles, nine themes in light and dark                                                                 |
 | [`packages/travel`](packages/travel/)                                 | `org.jahia.modules.javascript:classic-travel` (`.tgz`)                                       | The **classic-travel** module: destinations, fare offers, fare lists, destination grids and travel tools, for sites built on the template set                                                                           |
 | [`packages/prepackaged-site`](packages/prepackaged-site/)             | `org.jahia.community:classic-templates-prepackaged-website` (`.jar`, and an `import` `.zip`) | The `classic-dev` demo site as a **pre-packaged project**: 19 pages in English and French using every section of the template set, ready to import from Administration                                                  |
+| [`packages/media`](packages/media/) | `org.jahia.modules.javascript:classic-media` (`.tgz`) | The **classic-media** module: stories in seven formats, people, story feeds, event sessions with an agenda, a speaker gallery and key dates, for media sites built on the template set |
 | [`packages/prepackaged-skylantern`](packages/prepackaged-skylantern/) | `org.jahia.community:skylantern-prepackaged-website` (`.jar`, and an `import` `.zip`)        | The `skylantern` demo site (Skylantern Airways, a fictional airline) as a **pre-packaged project**: 36 pages in English and French with destinations and fares from classic-travel, ready to import from Administration |
 
 Shared at the root: the documentation for editors and administrators ([`docs/`](docs/README.md)),
@@ -39,6 +40,8 @@ Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later.
   [getting started](docs/guides/getting-started.md) and the [template set README](packages/template-set/README.md).
 - **classic-travel.** Install `classic-travel-<version>.tgz` next to the template set, then enable
   **classic-travel** on a site that uses the template set. See the [classic-travel README](packages/travel/README.md).
+- **classic-media.** Install `classic-media-<version>.tgz` next to the template set, then enable
+  **classic-media** on a site that uses the template set. See the [classic-media README](packages/media/README.md).
 - **Pre-packaged demo site.** Install the template set and
   `classic-templates-prepackaged-website-<version>.jar` (both on the
   [GitHub releases](https://github.com/Jahia/classic-templates/releases)), then in Administration >
@@ -66,6 +69,7 @@ instance. They need Python 3 and Pillow, and read `JAHIA_URL` and `JAHIA_USER` (
 | `python3 scripts/seed-demo.py --recreate`                          | Deletes and rebuilds the demo site (loses any edits made on it)                                                                                                                                                                                                                                                        |
 | `python3 scripts/seed-addons.py`                                   | Builds the `classic-addons` demo site with the four add-on modules, each in a free zone                                                                                                                                                                                                                                |
 | `python3 scripts/seed-addons.py --contact-only --site classic-dev` | Enables Formidable on a site and adds a contact form to its contact page                                                                                                                                                                                                                                               |
+| `python3 scripts/seed-media-test-site.py` | Builds the `ctmd-test` site: classic-media people, stories of every format, an event with sessions, story feeds, an agenda, a speaker gallery and key dates, in English and French |
 | `python3 scripts/seed-travel-test-site.py`                         | Builds the `ctrv-test` site: classic-travel destinations, fare offers, a fare list, a destination grid and travel tools, in English and French                                                                                                                                                                         |
 | `python3 scripts/export-prepackaged.py`                            | Exports `classic-dev` into `packages/prepackaged-site/src/main/classic-dev/`, keeping the template set's content only (`--check` tells whether the committed export is up to date)                                                                                                                                     |
 | `python3 scripts/export-prepackaged.py --site skylantern`          | Exports `skylantern` into `packages/prepackaged-skylantern/src/main/skylantern/`, keeping the content of the template set and classic-travel (the site itself is seeded from its own demo repository)                                                                                                                  |
@@ -91,7 +95,7 @@ To build: Node.js 22 and Yarn 4 (pinned in `.yarn/releases`; enable it with `cor
 and for the Maven build Java 17 and Maven 3.9.
 
 ```bash
-mvn clean install   # the four packages, as the CI builds them
+mvn clean install   # the five packages, as the CI builds them
 ```
 
 | Artifact                                                                                  | Package                    |
@@ -175,7 +179,7 @@ branch's build, which Jahia then refuses to start again.
 
 ## Releases
 
-The four packages share one version, set in the root `pom.xml`; a release publishes all four.
+The five packages share one version, set in the root `pom.xml`; a release publishes all five.
 The changelog is written with chachalog: every change
 adds a fragment under `.chachalog/` (see `.github/instructions/changelog.instructions.md`), and the
 release turns the fragments into a section of [CHANGELOG.md](CHANGELOG.md). classic-travel's history

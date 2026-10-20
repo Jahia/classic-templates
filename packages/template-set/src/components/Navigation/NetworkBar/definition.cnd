@@ -1,0 +1,17 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+
+// A slim band at the very top of every page naming the group of sites this site belongs to, with
+// one link per site of the group, this one included (the "network" view of ctpl:link). In the home
+// page's header area, before the site header, it shows on every page and is edited from home.
+// label is the band's visible name and its accessible name; each child link targets a site: an
+// internal link to that site's home page (the page picker lists every site) or an external address.
+// The link whose target belongs to the site being viewed is marked as the current one.
+[ctpl:networkBar] > jnt:content, ctplmix:headerComponent, jmix:list orderable
+ - label (string) i18n
+ + * (ctpl:link)

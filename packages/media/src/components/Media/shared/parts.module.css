@@ -1,0 +1,90 @@
+/* Shared parts of the media views: byline, share box. Theme tokens only. */
+
+.byline {
+  overflow-wrap: anywhere;
+}
+.person {
+  color: inherit;
+  font-weight: var(--ctpl-font-weight-medium);
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+}
+.person:hover {
+  color: var(--ctpl-color-link-hover);
+  text-decoration-color: currentColor;
+}
+
+/* Fieldsets (share box, filters) without the browser's border and padding. */
+.share,
+.filters {
+  min-inline-size: 0;
+  border: 0;
+}
+.share {
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+}
+.share[hidden] {
+  display: none;
+}
+/* 44 px tall, like every target of the template set. */
+.shareButton {
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-4);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-pill);
+  background: transparent;
+  color: var(--ctpl-color-text);
+  font: inherit;
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-medium);
+  cursor: pointer;
+}
+.shareButton:hover {
+  border-color: var(--ctpl-color-accent);
+  color: var(--ctpl-color-accent);
+}
+.shareButton[hidden] {
+  display: none;
+}
+
+/* Filter buttons (story feed formats): a row of toggles, the pressed one filled. */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  margin: 0 0 var(--ctpl-space-5);
+  padding: 0;
+}
+.filters[hidden] {
+  display: none;
+}
+.filterLabel {
+  float: inline-start;
+  margin: 0 var(--ctpl-space-2) 0 0;
+  padding: 0;
+  line-height: 2.75rem;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.toggle {
+  min-height: 2.75rem;
+  padding: 0 var(--ctpl-space-4);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-pill);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  font: inherit;
+  font-size: var(--ctpl-text-sm);
+  cursor: pointer;
+}
+.toggle[aria-pressed="true"] {
+  border-color: var(--ctpl-color-accent);
+  background: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+}
+[data-ctmd-item][hidden] {
+  display: none;
+}

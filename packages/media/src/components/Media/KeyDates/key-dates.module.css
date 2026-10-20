@@ -1,0 +1,66 @@
+/* Key dates: the event on one side, its calendar on the other (stacked on a phone). */
+
+.inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--ctpl-space-6);
+  align-items: start;
+}
+@media (max-width: 40rem) {
+  .inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.event > * {
+  margin: 0;
+}
+.event > * + * {
+  margin-top: var(--ctpl-space-3);
+}
+.title {
+  font-size: var(--ctpl-text-3xl);
+}
+.days {
+  font-size: var(--ctpl-text-xl);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.venue {
+  color: var(--ctpl-color-text-muted);
+}
+.countdown {
+  display: inline-block;
+  padding: var(--ctpl-space-1) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-pill);
+  background: var(--ctpl-color-highlight);
+  color: var(--ctpl-color-text-on-highlight);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.countdown[hidden] {
+  display: none;
+}
+.dates {
+  display: grid;
+  gap: var(--ctpl-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.date {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  padding: var(--ctpl-space-3) var(--ctpl-space-4);
+  border-inline-start: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+  background: var(--ctpl-color-surface-raised);
+}
+.when {
+  color: var(--ctpl-color-highlight);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.what {
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.detail {
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}

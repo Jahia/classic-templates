@@ -1,0 +1,28 @@
+/* The A-Z index of a speaker gallery: a row of letters, 44 px targets. */
+
+.index ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-1);
+  margin: 0 0 var(--ctpl-space-5);
+  padding: 0;
+  list-style: none;
+}
+.index a {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  color: var(--ctpl-color-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-decoration: none;
+}
+.index a:hover {
+  background: var(--ctpl-color-accent-subtle);
+}
+/* Jumping to a person leaves room above the card for a sticky header. */
+.person {
+  scroll-margin-top: var(--ctpl-space-8);
+}
