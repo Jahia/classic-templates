@@ -3,7 +3,6 @@ import {
   SUGGEST_MINIMUM,
   keyResult,
   SUGGEST_QUERY,
-  searchUrl,
   suggestVariables,
   suggestionsOf,
   type Suggestion,
@@ -50,13 +49,14 @@ const ask = async (
 };
 
 /**
- * The header's search box with autocomplete: an ARIA 1.2 combobox over the page's own form.
+ * The header's search box with suggestions, over the page's own form.
  *
  * Without JavaScript the server's markup is a plain GET form to the search page. Here, after two
- * characters and a pause, the best five matches of Augmented Search are offered, each linking
- * straight to the item, then "Search for <words>". The arrow keys move through them, Enter picks
- * the highlighted one (or submits the form), Escape closes. If the service is missing or the call
- * fails there is simply no suggestion and no message: the form still works.
+ * characters and a pause, the best five matches of Augmented Search are offered as links, each to
+ * the item, then "Search for <words>". ArrowDown moves the focus onto them, the arrows move between
+ * them, Enter follows the focused link (or, in the input, submits the form), Escape returns to the
+ * input and closes. If the service is missing or the call fails there is simply no suggestion and
+ * no message: the form still works.
  *
  * On small screens (once `html.ctpl-js` is set) a button reveals the field in a panel that drops
  * below the header; Escape closes it and returns focus to the button.
@@ -65,13 +65,13 @@ export default function HeaderSearch({ action, endpoint, language, sites, id }: 
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState(-1);
   const [expanded, setExpanded] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const abortRef = useRef<AbortController>(undefined);
   const inputRef = useRef<HTMLInputElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(
     () => () => {
@@ -90,7 +90,6 @@ export default function HeaderSearch({ action, endpoint, language, sites, id }: 
     const outside = (event: PointerEvent) => {
       if (rootRef.current?.contains(event.target as Node)) return;
       setOpen(false);
-      setActive(-1);
       setExpanded(false);
     };
     globalThis.document.addEventListener("pointerdown", outside);
@@ -105,10 +104,7 @@ export default function HeaderSearch({ action, endpoint, language, sites, id }: 
         ]
       : [];
 
-  const close = () => {
-    setOpen(false);
-    setActive(-1);
-  };
+  const close = () => setOpen(false);
 
   const change = (words: string) => {
     setValue(words);
@@ -126,41 +122,32 @@ export default function HeaderSearch({ action, endpoint, language, sites, id }: 
         if (controller.signal.aborted) return;
         setSuggestions(found);
         setOpen(found.length > 0);
-        setActive(-1);
       });
     }, DELAY);
-  };
-
-  const pick = (option: Option) => {
-    close();
-    globalThis.location.assign(
-      option.kind === "item" ? option.suggestion.url : searchUrl(action, option.words),
-    );
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     const result = keyResult({
       key: event.key,
       open,
-      active,
+      focus: linksRef.current.findIndex((link) => link !== null && link === event.target),
       count: options.length,
-      fromInput: event.target === inputRef.current,
       expanded,
     });
     if (result.prevent) event.preventDefault();
     if (result.open !== undefined) setOpen(result.open);
-    if (result.active !== undefined) setActive(result.active);
+    if (result.focus !== undefined) {
+      (result.focus === -1 ? inputRef.current : linksRef.current[result.focus])?.focus();
+    }
     if (result.collapse) {
       setExpanded(false);
       toggleRef.current?.focus();
     }
-    const chosen = result.pick === undefined ? undefined : options[result.pick];
-    if (chosen) pick(chosen);
   };
 
-  // Focus moved to another control by the keyboard: the list and the panel close.
+  // Focus moved out of the box by the keyboard: the list and the panel close.
   const onBlur = (event: FocusEvent<HTMLElement>) => {
-    if (!event.relatedTarget || event.currentTarget.contains(event.relatedTarget)) return;
+    if (!event.relatedTarget || rootRef.current?.contains(event.relatedTarget)) return;
     close();
     setExpanded(false);
   };
@@ -172,14 +159,15 @@ export default function HeaderSearch({ action, endpoint, language, sites, id }: 
       value={value}
       expanded={expanded}
       open={open}
-      active={active}
       options={options}
       onChange={change}
       onToggle={() => setExpanded(!expanded)}
       onKeyDown={onKeyDown}
-      onPick={pick}
       onBlur={onBlur}
       inputRef={inputRef}
+      linkRef={(index, link) => {
+        linksRef.current[index] = link;
+      }}
       toggleRef={toggleRef}
       rootRef={rootRef}
     />

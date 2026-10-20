@@ -104,7 +104,8 @@ cards and status cards show no credit.
 Put a **Search results** section on the page the site header names as its **Search page**. It shows:
 
 - a **search box** with suggestions: after two characters, up to five matching titles and the tags
-  that match, as an accessible combobox (arrow keys, Enter, Escape);
+  that match, as a list of links under the box (ArrowDown reaches them, the arrows move between them,
+  Enter runs one, Escape returns to the box);
 - **filters** beside the results: **Topics** (the categories, as a tree: top-level topics, their
   sub-topics under a disclosure), **Tags** (the twelve most used, then "More"), **Format** (a
   story's format, a session's type), **Type** (story, session, person, page) and, when the section

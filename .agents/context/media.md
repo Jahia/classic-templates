@@ -190,7 +190,7 @@ placeholder for a different client tree therefore throws "server rendered HTML d
 client" (#418) on every search page, and React regenerates the tree. The island is now a normal one:
 its first render (`useSyncExternalStore` with a `false` server snapshot) is exactly the server's
 markup (`PanelProps.interactive` false: plain input, `form=` fields, "Apply" button, link chips and
-pager), and the combobox, controlled boxes and buttons replace them right after hydration. Rule:
+pager), and the suggestion box, controlled boxes and buttons replace them right after hydration. Rule:
 an island's first client render equals its server HTML, whatever the `clientOnly` flag says.
 To find a mismatch, serve a development build of React from Playwright (route `react`,
 `react/jsx-runtime`, `react-dom`, `react-dom/client` and the engine chunks `react-*.js` /

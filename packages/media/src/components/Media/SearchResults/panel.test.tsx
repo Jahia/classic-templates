@@ -168,21 +168,19 @@ describe("SearchCombobox", () => {
         onChange={() => {}}
         suggest={async () => []}
         onPick={() => {}}
+        hrefOf={() => "/search.html"}
       />
     </I18nextProvider>,
   );
 
-  it("is an ARIA 1.2 combobox that owns a list box, closed to start with", () => {
+  it("is a plain search input described by its status, over a hidden list of suggestion links", () => {
     const input = /<input[^>]*>/.exec(html)?.[0] ?? "";
-    expect(input).toContain('role="combobox"');
-    expect(input).toContain('aria-expanded="false"');
-    expect(input).toContain('aria-autocomplete="list"');
-    expect(input).toMatch(/aria-controls="([^"]+)"/);
-    const controls = /aria-controls="([^"]+)"/.exec(input)?.[1];
-    expect(html).toContain(`id="${controls}"`);
-    expect(html).toMatch(/<ul[^>]*role="listbox"[^>]*aria-label="Suggestions"[^>]*hidden=""/);
-    expect(html).toContain('role="status"');
-    expect(input).not.toContain("aria-activedescendant");
+    expect(input).toContain('type="search"');
+    expect(input).not.toContain("role=");
+    const status = /aria-describedby="([^"]+)"/.exec(input)?.[1];
+    expect(html).toMatch(new RegExp(`<output id="${status}"`));
+    expect(html).toMatch(/<ul[^>]*aria-label="Suggestions"[^>]*hidden=""/);
+    expect(html).not.toMatch(/role="(combobox|listbox|option|status)"/);
   });
 });
 
@@ -218,8 +216,6 @@ describe("hydration: the island's first render is the server's markup", () => {
 describe("the result count is a polite live region", () => {
   it("is a status region holding the count, updated in place", () => {
     const html = render({ ...emptyState(), q: "fast" }, words);
-    expect(html).toMatch(
-      /<output[^>]*role="status"[^>]*aria-live="polite"[^>]*aria-atomic="true"[^>]*>13 results/,
-    );
+    expect(html).toMatch(/<output[^>]*aria-live="polite"[^>]*aria-atomic="true"[^>]*>13 results/);
   });
 });
