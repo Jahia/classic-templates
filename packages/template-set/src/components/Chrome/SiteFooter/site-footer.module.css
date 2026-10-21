@@ -1,8 +1,26 @@
+/* The footer's roles (--ctpl-footer-*) become the page roles inside it, so its link lists, titles
+   and rules follow a theme's footer colours with no change to them. */
 .footer {
+  --ctpl-color-text: var(--ctpl-footer-text);
+  --ctpl-color-text-muted: var(--ctpl-footer-muted);
+  --ctpl-color-border: var(--ctpl-footer-border);
+  --ctpl-color-link-hover: var(--ctpl-footer-link-hover);
   margin-top: auto;
   border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
-  background: var(--ctpl-color-surface-sunken);
+  border-bottom: var(--ctpl-footer-edge);
+  background: var(--ctpl-footer-surface);
   color: var(--ctpl-color-text);
+}
+
+.logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: var(--ctpl-footer-logo-height);
+  margin-bottom: var(--ctpl-space-3);
+}
+.logoUnsized {
+  height: var(--ctpl-footer-logo-height);
 }
 
 .top {
@@ -25,6 +43,7 @@
 .tagline {
   max-width: 28rem;
   color: var(--ctpl-color-text-muted);
+  white-space: pre-line; /* an address keeps its lines */
 }
 
 .columns {

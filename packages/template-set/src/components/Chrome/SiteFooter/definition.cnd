@@ -12,8 +12,10 @@
 
 // The site footer, shared by every page: a brand block with a tagline, link columns, then a bottom
 // bar with the copyright, legal links and social links. A singleton seeded in the home page's
-// footer area, hence hidden from the content type picker.
+// footer area, hence hidden from the content type picker. logo replaces the site name in the brand
+// block (the site name is its text alternative); the tagline keeps its line breaks (an address).
 [ctpl:siteFooter] > jnt:content, ctplmix:footerComponent, jmix:hiddenType
+ - logo (weakreference, picker[type='image']) < jmix:image
  - tagline (string, textarea) i18n
  - copyright (string) i18n
  + columns (ctpl:footerColumns) = ctpl:footerColumns autocreated

@@ -258,6 +258,22 @@
   --ctpl-color-text-on-accent: light-dark(var(--ctpl-white), var(--ctpl-slate-950));
   --ctpl-color-link: var(--ctpl-color-accent);
   --ctpl-color-link-hover: var(--ctpl-color-accent-hover);
+
+  /* Breadcrumb band and footer: their own roles, aliased to the page's by default, so a theme can
+     give them a band of their own (a dark breadcrumb band, a dark footer) without touching views. */
+  --ctpl-breadcrumb-surface: transparent;
+  --ctpl-breadcrumb-text: var(--ctpl-color-text-muted);
+  --ctpl-breadcrumb-link: var(--ctpl-color-link);
+  --ctpl-breadcrumb-current: var(--ctpl-color-text);
+  --ctpl-breadcrumb-current-weight: var(--ctpl-font-weight-bold);
+  --ctpl-breadcrumb-padding-block: var(--ctpl-space-4) 0;
+  --ctpl-footer-surface: var(--ctpl-color-surface-sunken);
+  --ctpl-footer-text: var(--ctpl-color-text);
+  --ctpl-footer-muted: var(--ctpl-color-text-muted);
+  --ctpl-footer-border: var(--ctpl-color-border);
+  --ctpl-footer-link-hover: var(--ctpl-color-link-hover);
+  --ctpl-footer-edge: 0 solid transparent;
+  --ctpl-footer-logo-height: 2.5rem;
   --ctpl-color-focus: light-dark(var(--ctpl-navy-600), var(--ctpl-navy-300));
 
   /* Emphasis: prices, key figures, a value that must stand out. Every theme gets the theme's

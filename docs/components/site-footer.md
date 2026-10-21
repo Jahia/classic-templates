@@ -23,10 +23,11 @@ You do not add the footer: it already exists, in the footer area of the home pag
 
 ### Site footer
 
-| Label as shown in the editor | What it does                                        | Notes                                                     |
-| ---------------------------- | --------------------------------------------------- | --------------------------------------------------------- |
-| Tagline                      | One or two sentences under the site name.           | Per language. Optional.                                   |
-| Copyright                    | The copyright line, for example "© {year} Company". | Per language. `{year}` is replaced with the current year. |
+| Label as shown in the editor | What it does                                                                                                  | Notes                                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Footer logo                  | A logo shown in the footer instead of the site name, for example a version drawn for the footer's background. | Optional. The site name is its text alternative. An SVG or a PNG about 40 pixels high. |
+| Tagline                      | One or two sentences under the site name.                                                                     | Per language. Optional. Line breaks are kept, so it can hold an address.               |
+| Copyright                    | The copyright line, for example "© {year} Company".                                                           | Per language. `{year}` is replaced with the current year.                              |
 
 The site name at the top of the footer is the **site title**, set in the site's settings. It is not a field of the footer.
 
@@ -37,6 +38,10 @@ The **Footer columns** hold the columns of links. Each column is a [Link list](l
 ### Legal links and social links
 
 Two [link lists](links-and-link-lists.md) in the bottom bar. New sites get them with the titles "Legal information" and "Follow us". These titles are not shown on screen: they name each group for screen readers.
+
+A social link to LinkedIn, YouTube, X, Facebook, Instagram, GitHub, TikTok, Bluesky, Threads,
+Pinterest, Vimeo or WhatsApp shows as the network's icon; its title (else the network's name) is
+read out by screen readers. A link to any other address shows its title as text.
 
 ## How it behaves
 
