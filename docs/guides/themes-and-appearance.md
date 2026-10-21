@@ -105,6 +105,13 @@ Photos and images are shown as they are in both schemes. For text over a photo i
 [Hero banner](../components/hero-banner.md), the **Photo darkening** field keeps the text readable:
 choose **Strong** for bright or busy photos.
 
+## Breadcrumb band and footer colours
+
+A theme can also give the breadcrumb a band of its own and the footer its own colours, through
+the `--ctpl-breadcrumb-*` tokens (surface, text, link, current page and its weight, padding) and the
+`--ctpl-footer-*` tokens (surface, text, muted text, rules, link hover, a bottom edge, logo
+height). By default they repeat the page's colours, so the look does not change.
+
 ## What needs a developer
 
 These changes are not settings and need a new version of the module:

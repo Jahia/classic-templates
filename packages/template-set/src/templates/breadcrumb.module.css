@@ -1,3 +1,9 @@
+/* The band behind the trail spans the page; a theme colours it (--ctpl-breadcrumb-*). */
+.band {
+  background: var(--ctpl-breadcrumb-surface);
+  color: var(--ctpl-breadcrumb-text);
+}
+
 /* Breadcrumb trail: small text, a drawn chevron between crumbs (no separator text to read out). */
 .trail {
   display: flex;
@@ -5,10 +11,9 @@
   align-items: center;
   gap: var(--ctpl-space-1) var(--ctpl-space-2);
   margin: 0;
-  padding: var(--ctpl-space-4) 0 0;
+  padding-block: var(--ctpl-breadcrumb-padding-block);
   list-style: none;
   font-size: var(--ctpl-text-sm);
-  color: var(--ctpl-color-text-muted);
 }
 .crumb {
   display: inline-flex;
@@ -26,9 +31,9 @@
   transform: rotate(45deg);
 }
 .crumb a {
-  color: var(--ctpl-color-link);
+  color: var(--ctpl-breadcrumb-link);
 }
 .crumb [aria-current="page"] {
-  color: var(--ctpl-color-text);
-  font-weight: var(--ctpl-font-weight-bold);
+  color: var(--ctpl-breadcrumb-current);
+  font-weight: var(--ctpl-breadcrumb-current-weight);
 }

@@ -1,15 +1,22 @@
 import {
   RenderChild,
   RenderChildren,
+  buildNodeUrl,
   jahiaComponent,
   server,
 } from "@jahia/javascript-modules-library";
+import type { JCRNodeWrapper } from "org.jahia.services.content";
+import { readPositive } from "../../../lib/props.js";
 import type { Props } from "./types.js";
 import classes from "./site-footer.module.css";
 import { pageSite } from "../../../lib/site.js";
 
+/** An image Jahia knows no size of (an SVG) gets the footer logo height, or it would draw 0 wide. */
+const unsized = (image: JCRNodeWrapper): boolean =>
+  !(readPositive(image, "j:width") && readPositive(image, "j:height"));
+
 /**
- * The site footer: brand block (site name, tagline) and link columns, then a bottom bar with the
+ * The site footer: brand block (logo or site name, tagline) and link columns, then a bottom bar with the
  * copyright, legal links and social links. `{year}` in the copyright is replaced with the current
  * year, so "© {year} Company" never goes stale. The footer is seeded with a copyright, so the
  * landmark is never empty.
@@ -22,17 +29,31 @@ jahiaComponent(
     // {year} must turn over on 1 January: this small fragment re-renders at least once a day.
     properties: { "cache.expiration": "86400" },
   },
-  ({ tagline, copyright }: Props, { renderContext }) => {
+  ({ logo, tagline, copyright }: Props, { renderContext }) => {
     const site = pageSite(renderContext);
     server.render.addCacheDependency({ node: site }, renderContext); // the footer shows the site title
     const siteName = site.getTitle() || site.getName();
+    if (logo) server.render.addCacheDependency({ node: logo }, renderContext);
+    const logoClass =
+      logo && unsized(logo) ? [classes.logo, classes.logoUnsized].join(" ") : classes.logo;
     const year = String(new Date().getFullYear());
 
     return (
       <footer className={classes.footer} data-testid="ctpl-site-footer">
         <div className={`ctpl-container ${classes.top}`}>
           <div className={classes.brand}>
-            <p className={classes.siteName}>{siteName}</p>
+            {logo ? (
+              <img
+                className={logoClass}
+                src={buildNodeUrl(logo)}
+                width={readPositive(logo, "j:width")}
+                height={readPositive(logo, "j:height")}
+                alt={siteName}
+                data-testid="ctpl-footer-logo"
+              />
+            ) : (
+              <p className={classes.siteName}>{siteName}</p>
+            )}
             {tagline && <p className={classes.tagline}>{tagline}</p>}
           </div>
           <RenderChild name="columns" />
