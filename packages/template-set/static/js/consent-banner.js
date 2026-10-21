@@ -5,7 +5,8 @@
  *   data-ctpl-consent-days, then hide it;
  * - with jExperience on the page (window.wem), its tracking follows the choice: wem.enableWem()
  *   after Accept, wem.disableWem() after Refuse, and again on later pages when its own switch
- *   (wemInitConfig.activateWem) no longer matches the stored choice;
+ *   (wemInitConfig.activateWem) no longer matches the stored choice; the page's copy of that
+ *   switch follows the choice at once, for scripts that read it on the same page;
  * - every choice, and the stored one on each page, is announced with a `ctpl:consent` event on
  *   document (detail: { status: "granted" | "denied" }) and data-ctpl-consent on <html>, for any
  *   other script that must wait for consent;
@@ -44,7 +45,13 @@
       wem.enableWem();
     } else if (status === "denied" && active !== false && typeof wem.disableWem === "function") {
       wem.disableWem();
+    } else {
+      return;
     }
+    // The page's own copy of the switch was written at page load: keep it in step with the choice,
+    // or scripts that read it on this page (Formidable's jExperience bridge sends a form's answers
+    // only while it is not false) behave as if the visitor had not chosen until the next page.
+    if (config) config.activateWem = status === "granted";
   }
 
   function announce(status) {
