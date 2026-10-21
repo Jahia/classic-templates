@@ -106,7 +106,17 @@ describe('Main navigation - mega menu style and menu promotion', () => {
 
     it('shows no promotion for a top-level page without one, and closes with Escape', () => {
         cy.visit(page('about'))
-        openPanel('About').then(($panel) => cy.wrap($panel).find(promo).should('not.exist'))
+        openPanel('About').then(($panel) => {
+            cy.wrap($panel).find(promo).should('not.exist')
+            // Without a promotion the subpage columns take the whole width of the panel.
+            const panel = $panel[0].getBoundingClientRect()
+            const style = getComputedStyle($panel[0])
+            const inner = panel.width - Number.parseFloat(style.paddingLeft) - Number.parseFloat(style.paddingRight)
+            cy.wrap($panel)
+                .find('ul')
+                .first()
+                .then(($list) => expect($list[0].getBoundingClientRect().width).to.be.closeTo(inner, 2))
+        })
         cy.focused().type('{esc}')
         cy.get('[data-ctpl-subnav-toggle][aria-expanded="true"]').should('not.exist')
     })

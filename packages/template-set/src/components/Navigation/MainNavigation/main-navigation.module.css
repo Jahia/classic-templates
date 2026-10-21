@@ -253,6 +253,10 @@ a.link3:hover {
     visibility: visible;
     transition-delay: 0s;
   }
+  /* No promotion (none set, or set but empty): the columns take the whole width. */
+  .mega .panel:not(:has(.promo)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .mega .level2 {
     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
     align-content: start;
