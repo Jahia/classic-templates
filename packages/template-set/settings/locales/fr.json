@@ -45,7 +45,8 @@
     "articleNoticeRegister": "Cet article est réservé aux membres. Connectez-vous ou créez un compte pour lire la suite."
   },
   "links": {
-    "label": "Liens"
+    "label": "Liens",
+    "social": "Réseaux sociaux"
   },
   "image": {
     "missing": "Aucune image sélectionnée",

@@ -63,6 +63,26 @@ jahiaComponent(
   },
 );
 
+/** "social": a row of social network links, each drawn as the network's icon (ctpl:link "icon"). */
+jahiaComponent(
+  { componentType: "view", nodeType: "ctpl:linkList", name: "social", displayName: "Social links" },
+  ({ "jcr:title": title }: Props, { currentNode, renderContext }) => {
+    const { t } = useTranslation("classic-templates");
+    if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
+    return (
+      <nav
+        aria-label={title || t("links.social")}
+        data-testid="ctpl-link-list-social"
+        data-list-name={currentNode.getName()}
+      >
+        <ul className={classes.social}>
+          <RenderChildren view="icon" />
+        </ul>
+      </nav>
+    );
+  },
+);
+
 /** "column": a titled column of links (footer). */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:linkList", name: "column", displayName: "Link column" },

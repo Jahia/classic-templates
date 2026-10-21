@@ -38,3 +38,20 @@
   text-decoration-thickness: 2px;
   text-underline-offset: 0.35em;
 }
+
+/* "icon" view: a social network's icon, 44 px target, the link's name kept for screen readers. */
+.iconLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  color: inherit;
+}
+.iconLink:hover {
+  color: var(--ctpl-color-link-hover);
+}
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}

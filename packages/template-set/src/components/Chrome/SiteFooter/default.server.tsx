@@ -66,7 +66,7 @@ jahiaComponent(
               </p>
             )}
             <RenderChild name="legal" view="inline" />
-            <RenderChild name="social" view="inline" />
+            <RenderChild name="social" view="social" />
           </div>
         </div>
       </footer>

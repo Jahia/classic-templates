@@ -39,6 +39,10 @@ The **Footer columns** hold the columns of links. Each column is a [Link list](l
 
 Two [link lists](links-and-link-lists.md) in the bottom bar. New sites get them with the titles "Legal information" and "Follow us". These titles are not shown on screen: they name each group for screen readers.
 
+A social link to LinkedIn, YouTube, X, Facebook, Instagram, GitHub, TikTok, Bluesky, Threads,
+Pinterest, Vimeo or WhatsApp shows as the network's icon; its title (else the network's name) is
+read out by screen readers. A link to any other address shows its title as text.
+
 ## How it behaves
 
 - The site name always shows, so the footer is never empty.
