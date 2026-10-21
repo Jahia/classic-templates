@@ -39,7 +39,7 @@ The **footer area of the home page**, once: the banner then shows on every page 
 
 ### With jExperience
 
-When jExperience runs on the site, **Accept** switches its tracking on for the visitor and **Refuse** switches it off. For nothing to be recorded **before** the visitor chooses, switch tracking off by default on the site: in jContent, open the site's properties and, in the jExperience options, deactivate JavaScript execution for the site and all its pages (`wemmix:deactivateJSExecution`, value "All"). Tracking then only starts for a visitor who accepts.
+When jExperience runs on the site, **Accept** switches its tracking on for the visitor and **Refuse** switches it off. For nothing to be recorded **before** the visitor chooses, switch tracking off by default on the site: in jContent, open the site's properties and, in the jExperience options, deactivate JavaScript execution for the site and all its pages (`wemmix:deactivateJSExecution`, value "All"). Tracking then only starts for a visitor who accepts. The choice applies on the page where it is made too: a form sent right after **Accept** reaches the visitor's profile (Formidable's jExperience mapping), without waiting for the next page.
 
 Until a visitor accepts, every personalised section shows its default content.
 
