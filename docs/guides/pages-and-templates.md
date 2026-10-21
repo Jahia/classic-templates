@@ -78,7 +78,10 @@ A top-level page can feature something in its panel of the main menu when the me
 - an **image** from the media library, with its alternative text, or marked decorative when the
   title and the link already say it all;
 - a **promotion title** and a **promotion text** (one or two sentences, plain text);
-- a **link** and its **button label**, for example to a featured product or event page.
+- a **link** and its **button label**, for example to a featured product or event page: choose
+  **Page of this site** or **Web address** in **Link**, then pick the page in **Page of this site**
+  or type the address in **Web address** below it (on a page, both fields are always shown; the
+  **Link** choice says which one the button uses).
 
 The promotion shows beside the page's subpages on large screens and under them on small screens.
 It is ignored on deeper pages and with the **Dropdown** menu style. Publish the page to update it

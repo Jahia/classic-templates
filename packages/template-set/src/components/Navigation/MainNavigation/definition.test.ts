@@ -24,7 +24,7 @@ describe("main navigation menu style", () => {
 describe("menu promotion of a page", () => {
   it("is a page option built on the shared media and call-to-action mixins", () => {
     expect(shared).toMatch(
-      /\[ctplmix:navPromo\] > ctplmix:media, ctplmix:cta mixin\s+extends = jnt:page\s+- promoTitle \(string\) i18n\s+- promoText \(string, textarea\) i18n/,
+      /\[ctplmix:navPromo\] > ctplmix:media, ctplmix:cta mixin\s+extends = jnt:page\s+- promoTitle \(string\) i18n\s+- promoText \(string, textarea\) i18n\s+- promoLink \(weakreference, picker\[type='editoriallink'\]\) i18n < 'jmix:droppableContent', 'jnt:page'\s+- promoUrl \(string\) i18n/,
     );
   });
 
@@ -37,6 +37,10 @@ describe("menu promotion of a page", () => {
         "ctplmix_navPromo.promoTitle.ui.tooltip",
         "ctplmix_navPromo.promoText",
         "ctplmix_navPromo.promoText.ui.tooltip",
+        "ctplmix_navPromo.promoLink",
+        "ctplmix_navPromo.promoLink.ui.tooltip",
+        "ctplmix_navPromo.promoUrl",
+        "ctplmix_navPromo.promoUrl.ui.tooltip",
       ]) {
         expect(label(bundle, key)).toBe(true);
       }
