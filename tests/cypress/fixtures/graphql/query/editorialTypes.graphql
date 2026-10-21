@@ -1,0 +1,10 @@
+query editorialTypes($types: [String]!) {
+    jcr {
+        nodeTypes(filter: { includeTypes: $types }) {
+            nodes {
+                name
+                isNodeType(type: { types: ["jmix:editorialContent"] })
+            }
+        }
+    }
+}
