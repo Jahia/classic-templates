@@ -41,6 +41,53 @@ describe("pageSite", () => {
   });
 });
 
+/** A site carrying a theme module's mixin (`name`, declared by `module`), with or without settings. */
+const providerSite = (name: string, module: string, props: Record<string, string> = {}) => {
+  const mixin = {
+    getName: () => name,
+    getLocalName: () => name.split(":")[1],
+    getSystemId: () => module,
+    isNodeType: (type: string) => type === "ctplmix:themeProvider" || type === name,
+  };
+  const hasSettings = Object.keys(props).length > 0;
+  return {
+    isNodeType: (type: string) =>
+      type === "ctplmix:themeProvider" || (hasSettings && type === "ctplmix:siteSettings"),
+    getMixinNodeTypes: () => [
+      { ...mixin, getName: () => "jmix:accessControlled", isNodeType: () => false },
+      mixin,
+    ],
+    hasProperty: (prop: string) => prop in props,
+    getProperty: (prop: string) => ({ getString: () => props[prop] }),
+  } as never;
+};
+
+describe("readSiteLook with a theme from another module", () => {
+  it("takes the theme key from the mixin and the module from its definition", () => {
+    expect(readSiteLook(providerSite("acmemix:acme", "acme-theme"))).toEqual({
+      theme: "acme",
+      themeModule: "acme-theme",
+    });
+  });
+
+  it("wins over the ctplTheme choice and keeps the colour scheme", () => {
+    expect(
+      readSiteLook(
+        providerSite("acmemix:acme", "acme-theme", { ctplTheme: "sage", ctplColorScheme: "dark" }),
+      ),
+    ).toEqual({ theme: "acme", themeModule: "acme-theme", scheme: "dark" });
+  });
+
+  it("ignores a mixin whose name is not a plain CSS identifier", () => {
+    expect(readSiteLook(providerSite("acmemix:Acme_Theme", "acme-theme"))).toEqual({});
+  });
+
+  it("declares the provider mixin without properties, with labels in every language", () => {
+    expect(cnd).toMatch(/^\[ctplmix:themeProvider\] mixin\s*$/m);
+    for (const bundle of [en, fr]) expect(bundle).toMatch(/^ctplmix_themeProvider=.+$/m);
+  });
+});
+
 describe("readSiteLook", () => {
   it("accepts the portal theme and the colour scheme", () => {
     expect(readSiteLook(settingsSite({ ctplTheme: "portal", ctplColorScheme: "dark" }))).toEqual({

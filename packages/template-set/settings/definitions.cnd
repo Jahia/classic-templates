@@ -129,6 +129,14 @@
  extends = jnt:contentFolder
  - ctplListingPage (weakreference, picker[type='page']) < jnt:page
 
+// A theme supplied by another module. That module declares its own site mixin extending this one,
+// e.g. [acmemix:acme] > ctplmix:themeProvider mixin extends = jnt:virtualsite, offered in the site's
+// edit form once the module is enabled on the site. Switched on, it wins over ctplTheme: the
+// Layout stamps the mixin's local name as data-ctpl-theme ("acme") and loads the declaring
+// module's dist/assets/style.css, whose :root[data-ctpl-theme="acme"] block sets the tokens.
+// No property and no `extends`: it is never offered on its own.
+[ctplmix:themeProvider] mixin
+
 // Look of the whole site, set on the site node in jContent: no deploy needed to change it.
 // ctplShowBreadcrumb shows the breadcrumb trail above the content of every page except home.
 // ctplNoIndex asks search engines not to index the site nor follow its links (every page).
