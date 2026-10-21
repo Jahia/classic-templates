@@ -16,28 +16,63 @@ const THEMES = new Set([
 ]);
 const SCHEMES = new Set(["light", "dark"]);
 
+/** The mixin a theme module's own site mixin extends (settings/definitions.cnd). */
+export const THEME_PROVIDER = "ctplmix:themeProvider";
+/** A theme key is stamped in an attribute selector: keep it to a plain CSS identifier. */
+const THEME_KEY = /^[a-z][a-z0-9-]*$/;
+
 export interface SiteLook {
   /** Stamped as <html data-ctpl-theme>; undefined for the default theme (the :root tokens). */
   theme?: string;
   /** Stamped as <html data-ctpl-scheme>; undefined for "auto" (follow the visitor's system). */
   scheme?: string;
+  /** The module supplying the theme, whose stylesheet the Layout loads after the template set's. */
+  themeModule?: string;
+}
+
+/** The node type definition's owner, as Jahia's ExtendedNodeType exposes it. */
+interface ThemeMixin {
+  getName(): string;
+  getLocalName(): string;
+  getSystemId(): string;
+  isNodeType(name: string): boolean;
 }
 
 /**
- * Reads the site's theme and colour scheme from the ctplmix:siteSettings mixin.
+ * A theme supplied by another module: the first mixin of the site that extends
+ * ctplmix:themeProvider. The theme key is the mixin's local name (`acmemix:acme` gives `acme`) and
+ * the module is the one that declares the mixin, so the template set never names the module.
+ */
+const themeFromModule = (site: JCRSiteNode): Pick<SiteLook, "theme" | "themeModule"> => {
+  const mixins = site.getMixinNodeTypes() as unknown as ThemeMixin[];
+  for (const mixin of mixins) {
+    if (mixin.getName() === THEME_PROVIDER || !mixin.isNodeType(THEME_PROVIDER)) continue;
+    const theme = mixin.getLocalName();
+    const themeModule = mixin.getSystemId();
+    if (THEME_KEY.test(theme) && themeModule) return { theme, themeModule };
+  }
+  return {};
+};
+
+/**
+ * Reads the site's theme and colour scheme.
  *
- * The mixin is optional (an administrator switches it on in the site's edit form), so this never
- * assumes it is there, and only returns values the stylesheet knows: an unknown value falls back
- * to the default look rather than producing an attribute no CSS matches.
+ * A theme supplied by another module (a site mixin extending ctplmix:themeProvider, switched on in
+ * the site's edit form once that module is enabled on the site) wins over the ctplTheme choice.
+ * Otherwise the theme comes from the ctplmix:siteSettings mixin, which is optional too, so this
+ * never assumes it is there and only returns values the stylesheet knows: an unknown value falls
+ * back to the default look rather than producing an attribute no CSS matches.
  */
 export const readSiteLook = (site: JCRSiteNode): SiteLook => {
-  if (!site.isNodeType("ctplmix:siteSettings")) return {};
+  const provided = site.isNodeType(THEME_PROVIDER) ? themeFromModule(site) : {};
+  if (!site.isNodeType("ctplmix:siteSettings")) return provided;
   const theme = site.hasProperty("ctplTheme") ? site.getProperty("ctplTheme").getString() : "";
   const scheme = site.hasProperty("ctplColorScheme")
     ? site.getProperty("ctplColorScheme").getString()
     : "";
   return {
-    theme: THEMES.has(theme) ? theme : undefined,
+    theme: provided.theme ?? (THEMES.has(theme) ? theme : undefined),
+    themeModule: provided.themeModule,
     scheme: SCHEMES.has(scheme) ? scheme : undefined,
   };
 };

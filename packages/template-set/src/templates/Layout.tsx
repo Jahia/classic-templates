@@ -23,7 +23,8 @@ import { languageTag } from "../lib/locale.js";
  *
  * - `<html lang>` from the rendering locale, never a literal.
  * - `data-ctpl-theme` / `data-ctpl-scheme` from the site settings: switching theme or light/dark
- *   is an attribute change, set by an administrator in jContent with no deploy.
+ *   is an attribute change, set by an administrator in jContent with no deploy. A theme supplied
+ *   by another module (readSiteLook) also loads that module's stylesheet, after this one.
  * - `<title>` is "<page> | <site>": `jcr:title` stays the short page name.
  * - `<meta name="description">` from the page's (or main resource's) description, falling back to
  *   the site description, so every page has one.
@@ -51,7 +52,7 @@ export const Layout = ({
   const site = pageSite(renderContext);
   server.render.addCacheDependency({ node: site }, renderContext);
   const siteName = site.getTitle() || site.getName();
-  const { theme, scheme } = readSiteLook(site);
+  const { theme, scheme, themeModule } = readSiteLook(site);
   const robots = robotsDirective(site);
   const metaDescription = description || read(site, "j:description");
   const pageTitle = fullTitle(title, siteName);
@@ -70,6 +71,12 @@ export const Layout = ({
         {metaDescription && <meta name="description" content={metaDescription} />}
         <ShareMeta title={pageTitle} description={metaDescription} />
         <AddResources type="css" resources={buildModuleFileUrl("dist/assets/style.css")} />
+        {themeModule && (
+          <AddResources
+            type="css"
+            resources={buildModuleFileUrl("dist/assets/style.css", { moduleName: themeModule })}
+          />
+        )}
       </head>
       <body>
         <a className="ctpl-skip-link" href="#main-content">
