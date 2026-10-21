@@ -49,6 +49,7 @@
 
 .brand {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   gap: var(--ctpl-space-3);
   color: var(--ctpl-color-text);
@@ -61,7 +62,19 @@
 .logoLight,
 .logoDark {
   width: auto;
-  max-height: 2.75rem;
+  max-width: 100%;
+  max-height: var(--ctpl-logo-max-height);
+}
+.logoUnsized {
+  height: var(--ctpl-logo-max-height);
+}
+/* A wide logo never runs off a small screen: it narrows to the width available, keeping its ratio. */
+@media (max-width: 47.999rem) {
+  .logoUnsized {
+    width: calc(100vw - 2 * var(--ctpl-gutter));
+    max-width: 20rem;
+    height: auto;
+  }
 }
 .logoDark {
   display: none;
@@ -71,6 +84,21 @@
   font-size: var(--ctpl-text-xl);
   font-weight: var(--ctpl-heading-weight);
   letter-spacing: var(--ctpl-heading-tracking);
+}
+/* A tagline beside the brand, after a thin rule; large screens only, where there is room for it. */
+.brandCaption {
+  display: none;
+  max-width: 14rem;
+  padding-inline-start: var(--ctpl-space-3);
+  border-inline-start: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+  line-height: 1.3;
+}
+@media (min-width: 48rem) {
+  .brandCaption {
+    display: block;
+  }
 }
 
 /* Dark logo: when the site forces dark, or follows a visitor whose system is dark. */
@@ -86,5 +114,49 @@
   }
   :global(:root:not([data-ctpl-scheme])) .logoDark {
     display: block;
+  }
+}
+
+/* ---- Two rows (headerLayout "twoRows") ---------------------------------------------------
+ * Top row: the brand, then the search box and the tools (utility links, account entry,
+ * languages) at the right. The main menu has its own row below, full width: a mega menu panel
+ * then opens right under it. */
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ctpl-space-2) var(--ctpl-space-5);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.navRow {
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  background: var(--ctpl-color-surface-sunken);
+}
+@media (min-width: 64rem) {
+  /* The menu centred in its row; the search box fills the middle of the top row. */
+  .navRow :global(.ctpl-container) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 3.25rem;
+  }
+  .twoRows .end {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+  .searchWrap {
+    display: flex;
+    flex: 1 1 auto;
+    max-width: 56rem;
+    margin-inline-end: auto;
+  }
+  .searchWrap div,
+  .searchWrap form {
+    flex: 1 1 auto;
+  }
+  .searchWrap input {
+    width: 100%;
   }
 }

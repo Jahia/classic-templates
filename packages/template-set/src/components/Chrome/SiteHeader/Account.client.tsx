@@ -9,6 +9,8 @@ interface Props {
   signOutHref: string;
   /** The GraphQL endpoint that tells who the visitor is. */
   graphqlUrl: string;
+  /** The site's registration page, offered to guests beside "Sign in"; none when unset. */
+  registerHref?: string;
 }
 
 const WHO = "{ currentUser { username displayName } }";
@@ -33,7 +35,12 @@ const nameOf = (answer: unknown): string | undefined => {
  * session cookie) and swaps the sign-in link for the name and the sign-out link. A failed or
  * refused request leaves the sign-in link, which is always correct for someone not recognised.
  */
-export default function Account({ signInHref, signOutHref, graphqlUrl }: Readonly<Props>) {
+export default function Account({
+  signInHref,
+  signOutHref,
+  graphqlUrl,
+  registerHref,
+}: Readonly<Props>) {
   const { t } = useTranslation("classic-templates");
   const [name, setName] = useState<string>();
 
@@ -53,10 +60,19 @@ export default function Account({ signInHref, signOutHref, graphqlUrl }: Readonl
   }, [graphqlUrl]);
 
   if (!name) {
-    return (
+    const signIn = (
       <a className={classes.link} href={signInHref} data-testid="ctpl-account-sign-in">
         {t("account.signIn")}
       </a>
+    );
+    if (!registerHref) return signIn;
+    return (
+      <span className={classes.signedIn}>
+        <a className={classes.link} href={registerHref} data-testid="ctpl-account-register">
+          {t("account.register")}
+        </a>
+        {signIn}
+      </span>
     );
   }
   return (

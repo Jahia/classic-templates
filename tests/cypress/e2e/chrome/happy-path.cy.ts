@@ -1,4 +1,4 @@
-import { addNode, deleteSite, publishAndWaitJobEnding } from '@jahia/cypress'
+import { addNode, deleteSite, publishAndWaitJobEnding, setNodeProperty } from '@jahia/cypress'
 import { siteKeyFor } from '../../support/constants'
 import { addLink, addPage, chromeOf, createTestSite, jsonLd, uuidOf } from '../../support/test-helpers'
 
@@ -41,6 +41,7 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
             },
         )
         addPage(chrome.home, { name: 'contact', template: 'content', title: { en: 'Contact', fr: 'Contact' } })
+        setNodeProperty(chrome.header, 'brandCaption', 'Building since 1938', 'en')
         publishAndWaitJobEnding(`/sites/${siteKey}`, ['en', 'fr'])
         cy.logout()
     })
@@ -65,6 +66,13 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
         cy.get('[data-testid="ctpl-brand"]')
             .should('have.attr', 'href', `/sites/${siteKey}/home.html`)
             .and('contain.text', siteKey)
+    })
+
+    it('shows the brand caption inside the home link on large screens, and hides it on small ones', () => {
+        cy.visit(page('contact'))
+        cy.get('[data-testid="ctpl-brand"]').contains('span', 'Building since 1938').should('be.visible')
+        cy.viewport(375, 812)
+        cy.get('[data-testid="ctpl-brand"]').contains('span', 'Building since 1938').should('not.be.visible')
     })
 
     it('builds the main menu three levels deep from the page tree', () => {
