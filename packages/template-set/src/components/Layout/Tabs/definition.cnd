@@ -9,7 +9,7 @@
 // One tab of a ctpl:tabs section: its label (jcr:title) and an ordered list where editors drop
 // page sections (rich text, accordions, card grids...), like a ctpl:column. Never hidden: editors
 // select it in Page Builder to add sections to it.
-[ctpl:tab] > jnt:content, mix:title, jmix:list orderable
+[ctpl:tab] > jnt:content, mix:title, jmix:list, jmix:editorialContent orderable
  + * (ctplmix:pageComponent)
 
 // A page section of tabs with an optional h2 heading (jcr:title). Tabs are ordered by the editor;
