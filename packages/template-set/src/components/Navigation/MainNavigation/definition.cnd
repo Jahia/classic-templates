@@ -11,5 +11,9 @@
 // the menu by creating, ordering and hiding pages ("Hide from navigation" page option).
 // Not a ctplmix:component: an autocreated part of the header, never offered in generic content
 // lists (jmix:accessControllableContent keeps it referenceable, like every content node here).
+// navStyle "mega" opens each top-level page as a full-width panel: its sub-pages in columns, their
+// own sub-pages listed under each, and the page's "Menu promotion" (ctplmix:navPromo) beside them.
 [ctpl:mainNavigation] > jnt:content, jmix:accessControllableContent
  - navDepth (long) = 3 autocreated < '[1,3]'
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - navStyle (string, choicelist[resourceBundle]) = 'dropdown' autocreated indexed=no < 'dropdown', 'mega'

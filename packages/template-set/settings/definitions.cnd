@@ -121,6 +121,15 @@
  - ctplHideBreadcrumb (boolean) = false autocreated
  - ctplMembersOnly (boolean) = false autocreated
 
+// "Menu promotion" of a top-level page: a featured card (image, title, text and one call to action)
+// shown beside the page's sub-pages when the main navigation uses the mega menu style. Set on the
+// page itself, so the editor who owns a section of the site owns its promotion; ignored on deeper
+// pages and in the dropdown style.
+[ctplmix:navPromo] > ctplmix:media, ctplmix:cta mixin
+ extends = jnt:page
+ - promoTitle (string) i18n
+ - promoText (string, textarea) i18n
+
 // Optional setting of a content folder (news, articles, any folder of items with their own page):
 // the page that lists its items. An item's breadcrumb, and its schema.org BreadcrumbList, then go
 // through that page (Home > News > item) instead of Home > item. Sub-folders inherit it: the
