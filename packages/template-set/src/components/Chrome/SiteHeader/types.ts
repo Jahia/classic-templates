@@ -5,6 +5,8 @@ export interface Props {
   logoDark?: JCRNodeWrapper;
   brandName?: string;
   showBrandName?: boolean;
+  brandCaption?: string;
+  headerLayout?: "oneRow" | "twoRows";
   showAccount?: boolean;
   showSearch?: boolean;
   accountLanding?: JCRNodeWrapper;
