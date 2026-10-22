@@ -1,5 +1,6 @@
 import { jahiaComponent } from "@jahia/javascript-modules-library";
-import { bodyViewOf, PageAreas } from "../PageAreas.jsx";
+import { bodyViewOf } from "../../lib/bodyView.js";
+import { PageAreas } from "../PageAreas.jsx";
 import { PageShell } from "../PageShell.jsx";
 import type { PageProps } from "./types.js";
 

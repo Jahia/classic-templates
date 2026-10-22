@@ -1,7 +1,8 @@
 import { buildNodeUrl, jahiaComponent } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import { MembersNotice } from "../../lib/MembersNotice.js";
-import { AreaList, type AreaName, bodyViewOf } from "../PageAreas.jsx";
+import { bodyViewOf } from "../../lib/bodyView.js";
+import { AreaList, type AreaName } from "../PageAreas.jsx";
 import { PageHeading } from "../PageShell.jsx";
 import type { PageProps } from "./types.js";
 import classes from "../page-areas.module.css";

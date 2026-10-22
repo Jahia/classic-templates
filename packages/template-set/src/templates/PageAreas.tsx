@@ -8,13 +8,6 @@ import classes from "./page-areas.module.css";
 export type AreaName = "hero" | "main";
 
 /**
- * A view of the page that another module registers for a template of its own (see the ctplShell
- * view): a name, nothing that could reach another node type or a path.
- */
-export const bodyViewOf = (value: unknown): string | undefined =>
-  typeof value === "string" && /^[A-Za-z][\w-]{0,63}$/.test(value) ? value : undefined;
-
-/**
  * The areas of a page, as editors fill them; or, when `body` names a view of the page, that view: a
  * module's own template (its areas, their allowed types and counts) inside this shell.
  */
