@@ -6,6 +6,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { buildMainNavigation, type NavItem } from "../../../lib/navigation.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
+import { MenuPromo } from "./MenuPromo.js";
 import type { Props } from "./types.js";
 import classes from "./main-navigation.module.css";
 
@@ -33,10 +34,14 @@ const Chevron = () => (
  * (aria-expanded) open things, Escape, an outside click or focus leaving an item close them, and
  * the current page gets aria-current. The active page is set in the browser, not here: the
  * header is one cached fragment shared by every page, so server-side state would be wrong.
+ *
+ * navStyle "mega" keeps the same markup and script and changes the panel: full width under the
+ * header, the sub-pages in columns, and the top-level page's "Menu promotion" beside them
+ * (MenuPromo). On small screens it reads as the dropdown style, the promotion under the list.
  */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:mainNavigation", displayName: "Main navigation" },
-  ({ navDepth }: Props, { renderContext, currentNode }) => {
+  ({ navDepth, navStyle }: Props, { renderContext, currentNode }) => {
     const { t } = useTranslation("classic-templates");
     const items = buildMainNavigation(
       chromeOwner(pageSite(renderContext)),
@@ -45,10 +50,11 @@ jahiaComponent(
     );
     if (items.length === 0) return null;
     const listId = `ctpl-nav-${currentNode.getIdentifier()}`;
+    const mega = navStyle === "mega";
 
     return (
       <nav
-        className={classes.nav}
+        className={mega ? `${classes.nav} ${classes.mega}` : classes.nav}
         aria-label={t("nav.main")}
         data-ctpl-nav
         data-testid="ctpl-main-navigation"
@@ -110,6 +116,9 @@ jahiaComponent(
                           </li>
                         ))}
                       </ul>
+                      {mega && item.promo && (
+                        <MenuPromo page={item.promo} renderContext={renderContext} />
+                      )}
                     </div>
                   </>
                 )}
