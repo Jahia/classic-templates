@@ -1,9 +1,21 @@
-import { JImage, server } from "@jahia/javascript-modules-library";
+import { JImage, Render, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useT } from "./i18n.js";
 import { readString } from "./props.js";
 import classes from "./shared.module.css";
+
+/** A Cloudinary 3D model (picked where an image goes) renders through its own view, not an `<img>`. */
+const MODEL_3D = "cloudynt:model3d";
+
+/** False where the type is not defined (no Cloudinary module): `isNodeType` may throw there. */
+export const isModel3d = (node: JCRNodeWrapper): boolean => {
+  try {
+    return node.isNodeType(MODEL_3D);
+  } catch {
+    return false;
+  }
+};
 
 /**
  * An image from the media library, with the classic-templates ctplmix:media rules.
@@ -18,7 +30,8 @@ import classes from "./shared.module.css";
  * - `priority` for the image at the top of a page (eager, high fetch priority); every other image
  *   loads lazily.
  * The image node is a cache dependency: renaming it in the library updates the alt text. A content
- * image whose library title is empty would silently get alt="": edit mode flags it.
+ * image whose library title is empty would silently get alt="": edit mode flags it. A Cloudinary
+ * 3D model (cloudynt:model3d) renders its own default view instead, in `className`.
  */
 export const Image = ({
   node,
@@ -39,6 +52,15 @@ export const Image = ({
   sizes?: string[];
 }) => {
   const t = useT();
+  if (isModel3d(node)) {
+    return className ? (
+      <span className={className}>
+        <Render node={node} />
+      </span>
+    ) : (
+      <Render node={node} />
+    );
+  }
   server.render.addCacheDependency({ node }, renderContext);
   const hidden = decorative || (owner ? readString(owner, "imageDecorative") === "true" : false);
   const title = (owner && readString(owner, "imageAlt")) || readString(node, "jcr:title") || "";
