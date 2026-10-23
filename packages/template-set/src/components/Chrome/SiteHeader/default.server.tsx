@@ -1,4 +1,5 @@
 import {
+  JImage,
   Render,
   RenderChild,
   buildNodeUrl,
@@ -6,7 +7,6 @@ import {
   server,
 } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
-import { readPositive } from "../../../lib/props.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
 import { SearchSlot } from "./SearchSlot.js";
 import type { Props } from "./types.js";
@@ -65,21 +65,19 @@ jahiaComponent(
         <div className={`ctpl-container ${classes.bar}`}>
           <a className={classes.brand} href={buildNodeUrl(home)} data-testid="ctpl-brand">
             {logo && (
-              <img
+              <JImage
+                src={logo}
                 className={logoDark ? classes.logoLight : classes.logo}
-                src={buildNodeUrl(logo)}
-                width={readPositive(logo, "j:width")}
-                height={readPositive(logo, "j:height")}
                 alt={withText ? "" : brand}
+                loading="eager"
               />
             )}
             {logo && logoDark && (
-              <img
+              <JImage
+                src={logoDark}
                 className={classes.logoDark}
-                src={buildNodeUrl(logoDark)}
-                width={readPositive(logoDark, "j:width")}
-                height={readPositive(logoDark, "j:height")}
                 alt={withText ? "" : brand}
+                loading="eager"
               />
             )}
             {withText && <span className={classes.brandName}>{brand}</span>}
