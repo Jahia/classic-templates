@@ -48,6 +48,8 @@ On those components the **Text alternative** field is ignored.
 
 The site reserves the image's space before it loads, so the page does not jump. The photo of a banner at the top of a page loads first. Other images load when the visitor scrolls near them.
 
+Each image also lists resized versions, so a phone can load a smaller file than a wide screen. The resizing happens only when the site runs with a digital asset manager (Cloudinary, Keepeek) or an image resizer (Cloudimage). Without one, every version is the original file, and the page shows the same image as before. Images whose size the media library does not know (WebP files on some Jahia versions) cannot reserve their space.
+
 ## Good practice
 
 - Give every image in the media library a meaningful title, in every language. It is the default alternative wherever you reuse the image.

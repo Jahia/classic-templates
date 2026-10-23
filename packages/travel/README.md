@@ -14,7 +14,7 @@ site's classic-templates theme (light and dark) through its design tokens.
 
 ## Requirements
 
-- Jahia 8.2.1 or later with `javascript-modules-engine` 1.2 or later.
+- Jahia 8.2.1 or later with `javascript-modules-engine` 1.3 or later.
 - **classic-templates**, installed and used by the site (declared module dependency): the travel
   types reuse its mixins, page areas, tabs, content list and design tokens. Install the two modules
   at the same version.
