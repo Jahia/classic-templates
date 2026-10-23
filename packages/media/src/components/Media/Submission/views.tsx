@@ -1,4 +1,4 @@
-import { buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
+import { JImage, buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import {
@@ -14,7 +14,7 @@ import { Heading, useParamHeadingLevel } from "../../../lib/Heading.js";
 import { useT } from "../../../lib/i18n.js";
 import { languageTag } from "../../../lib/locale.js";
 import { readReferences, titleOf } from "../../../lib/media.js";
-import { readPositive, readString } from "../../../lib/props.js";
+import { readString } from "../../../lib/props.js";
 import { Styles } from "../../../lib/Styles.js";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
@@ -36,13 +36,10 @@ const Thumbnail = ({
   const { renderContext } = useServerContext();
   server.render.addCacheDependency({ node }, renderContext);
   return (
-    <img
+    <JImage
+      src={node}
       className={className}
-      src={buildNodeUrl(node)}
       alt={readString(node, "jcr:title") ?? node.getName()}
-      width={readPositive(node, "j:width")}
-      height={readPositive(node, "j:height")}
-      loading="lazy"
       decoding="async"
     />
   );

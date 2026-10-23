@@ -162,7 +162,7 @@ See the [add-ons guide](../../docs/guides/add-ons.md).
 
 ## Requirements
 
-- Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later.
+- Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.3 or later.
 - To build: Node.js 22 and Yarn 4 (pinned in the repository's `.yarn/releases`; enable it with `corepack enable`).
   For the Maven build: Java 17 and Maven 3.9.
 - Recommended on sites: Jahia's `sitemap` module.

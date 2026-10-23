@@ -6,7 +6,7 @@ the first things to set up before editors start writing pages.
 ## Requirements
 
 - Jahia 8.2.1 or later.
-- The `javascript-modules-engine` module, version 1.2 or a later 1.x version.
+- The `javascript-modules-engine` module, version 1.3 or a later 1.x version.
 - Recommended: Jahia's `sitemap` module, to generate `sitemap.xml` for search engines. See
   [Search engines](seo.md#sitemapxml-for-search-engines).
 

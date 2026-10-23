@@ -106,6 +106,9 @@ describe('Content components - hero banner, image and text, rich text, columns',
                     .should('have.attr', 'alt', 'Test landscape')
                     .and('have.attr', 'loading', 'eager')
                     .and('have.attr', 'width', '1200')
+                // JImage (javascript-modules 1.3): resized candidates, the full width when eager.
+                cy.get('img').should('have.attr', 'sizes', '100vw')
+                cy.get('img').should('have.attr', 'srcset').and('match', /\?w=\d+ \d+w/)
                 cy.get('[data-testid="ctpl-cta"]')
                     .should('have.text', 'Go')
                     .and('have.attr', 'href', `/sites/${siteKey}/home/showcase.html`)
@@ -121,6 +124,8 @@ describe('Content components - hero banner, image and text, rich text, columns',
                 cy.get('h2').should('have.text', 'Our story')
                 cy.get('strong').should('have.text', 'upon')
                 cy.get('img').should('have.attr', 'loading', 'lazy').and('have.attr', 'height', '675')
+                cy.get('img').should('have.attr', 'sizes', 'auto, 100vw')
+                cy.get('img').should('have.attr', 'srcset').and('match', /\?w=\d+ \d+w/)
             })
     })
 
