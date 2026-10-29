@@ -74,19 +74,19 @@ The first line sums up the settings, for example: "Lists News item under content
 
 Then one line per setting:
 
-| Line           | What it tells you                                                                                                                                                              |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Content        | The type of content listed.                                                                                                                                                    |
-| Under          | Where the list looks: the site's name for the whole site, else the folder or page path.                                                                                        |
-| Sort           | The sort field and direction.                                                                                                                                                  |
-| Maximum        | The number of items asked for.                                                                                                                                                 |
-| Item label     | Whether items show their content type or their first category.                                                                                                                 |
-| Display        | "cards" or "compact list".                                                                                                                                                     |
-| Categories     | "all categories", or the selected categories followed by how many categories they cover with their subcategories, for example "(4 categories with subcategories)".             |
-| Excluded       | "none", or the titles of the items left out on purpose.                                                                                                                        |
-| Found          | How many items are shown out of how many match, for example "3 shown of 6 matching". A "+" after the number means there are more than the panel counted (it counts up to 500). |
-| Left out       | How many matching items were skipped: "1 excluded, 2 not translated into fr".                                                                                                  |
-| JCR-SQL2 query | A collapsed line with the technical query, for developers.                                                                                                                     |
+| Line           | What it tells you                                                                                                                                                                                                |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Content        | The type of content listed.                                                                                                                                                                                      |
+| Under          | Where the list looks: the site's name for the whole site, else the folder or page path, followed by **Open in jContent (new tab)**, which opens that folder (or page) in jContent to manage what the list shows. |
+| Sort           | The sort field and direction.                                                                                                                                                                                    |
+| Maximum        | The number of items asked for.                                                                                                                                                                                   |
+| Item label     | Whether items show their content type or their first category.                                                                                                                                                   |
+| Display        | "cards" or "compact list".                                                                                                                                                                                       |
+| Categories     | "all categories", or the selected categories followed by how many categories they cover with their subcategories, for example "(4 categories with subcategories)".                                               |
+| Excluded       | "none", or the titles of the items left out on purpose.                                                                                                                                                          |
+| Found          | How many items are shown out of how many match, for example "3 shown of 6 matching". A "+" after the number means there are more than the panel counted (it counts up to 500).                                   |
+| Left out       | How many matching items were skipped: "1 excluded, 2 not translated into fr".                                                                                                                                    |
+| JCR-SQL2 query | A collapsed line with the technical query, for developers.                                                                                                                                                       |
 
 If the chosen type cannot be listed, the panel shows "This content type cannot be listed."
 

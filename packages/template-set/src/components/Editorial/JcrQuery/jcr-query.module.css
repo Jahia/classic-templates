@@ -54,6 +54,10 @@
 .panelRow dd {
   margin: 0;
 }
+.panelLink {
+  margin-inline-start: var(--ctpl-space-2);
+  white-space: nowrap;
+}
 .panelQuery {
   margin-top: var(--ctpl-space-2);
 }

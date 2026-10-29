@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { I18nextProvider } from "react-i18next";
 import { describe, expect, it } from "vitest";
 import en from "../../../../settings/locales/en.json";
-import { SearchBox, SearchHint, type SearchBoxProps } from "./SearchBox.js";
+import { SearchBox, type SearchBoxProps } from "./SearchBox.js";
 
 await i18next.init({
   lng: "en",
@@ -90,16 +90,5 @@ describe("SearchBox, list open", () => {
     expect(hostile).not.toContain("<img");
     expect(hostile).toContain("&lt;img");
     expect(hostile).toContain("Search for “&lt;b&gt;”");
-  });
-});
-
-describe("SearchHint", () => {
-  it("tells editors the header needs a search page", () => {
-    const html = renderToStaticMarkup(
-      <I18nextProvider i18n={i18next}>
-        <SearchHint />
-      </I18nextProvider>,
-    );
-    expect(html).toContain("names no Search page");
   });
 });

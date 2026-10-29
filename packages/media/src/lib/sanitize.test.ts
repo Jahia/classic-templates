@@ -147,6 +147,7 @@ describe("sanitizeRichText - accessibility (RGAA)", () => {
       html: '<img alt="" src="/a.png">',
       imageWithoutAlt: true,
       tableWithoutCaption: false,
+      headingsRenumbered: false,
     });
     expect(sanitizeRichTextWithReport('<img src="/a.png" alt="">').imageWithoutAlt).toBe(false);
     // The pattern is global: a second call starts from the beginning again.

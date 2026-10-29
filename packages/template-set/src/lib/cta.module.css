@@ -60,9 +60,4 @@
 
 .hint {
   margin: var(--ctpl-space-4) 0 0;
-  padding: var(--ctpl-space-1) var(--ctpl-space-2);
-  border-radius: var(--ctpl-radius-sm);
-  background: var(--ctpl-color-warning-surface);
-  color: var(--ctpl-color-warning);
-  font-size: var(--ctpl-text-sm);
 }

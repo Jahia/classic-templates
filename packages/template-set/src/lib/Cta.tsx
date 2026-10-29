@@ -6,6 +6,7 @@ import { audienceOf } from "./audience.js";
 import { readString } from "./props.js";
 import { resolveLink } from "./resolveLink.js";
 import classes from "./cta.module.css";
+import { EditNote } from "./EditNote.js";
 
 /**
  * The call to action stored on `node` by ctplmix:cta (Jahia link picker + ctaLabel). Renders a
@@ -64,8 +65,8 @@ export const Cta = ({
   else if (ctaLabel) hint = t("cta.noLink"); // a label, but "No link"
   if (!hint) return null;
   return (
-    <p className={classes.hint} data-testid="ctpl-cta-hint">
+    <EditNote className={classes.hint} testId="ctpl-cta-hint">
       {hint}
-    </p>
+    </EditNote>
   );
 };

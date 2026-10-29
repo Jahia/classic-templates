@@ -19,6 +19,12 @@
   font-size: var(--ctpl-text-sm);
 }
 
+.hint {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+
 .input {
   min-height: 2.75rem;
   padding: var(--ctpl-space-2) var(--ctpl-space-3);

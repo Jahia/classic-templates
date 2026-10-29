@@ -8,6 +8,7 @@ import { Tile } from "../../../lib/Tile.js";
 import { cardShows, teaserTarget } from "./cards.js";
 import type { CardProps, ContentTeaserProps } from "./types.js";
 import classes from "./card-grid.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /*
  * The card grid's other displays: the grid renders its children with the view named after its
@@ -38,8 +39,8 @@ jahiaComponent(
           icon={image && <Image node={image} renderContext={renderContext} decorative />}
           testId="ctpl-icon-tile"
         >
-          {isEdit && !heading && <p className="ctpl-edit-hint">{t("cards.noTitle")}</p>}
-          {isEdit && missingTarget && <p className="ctpl-edit-hint">{t("link.noTarget")}</p>}
+          {isEdit && !heading && <EditNote>{t("cards.noTitle")}</EditNote>}
+          {isEdit && missingTarget && <EditNote>{t("link.noTarget")}</EditNote>}
         </Tile>
       </li>
     );
@@ -61,7 +62,7 @@ jahiaComponent(
     if (!image) {
       return isEdit ? (
         <li className={classes.logoItem}>
-          <p className="ctpl-edit-hint">{t("cards.logoMissing")}</p>
+          <EditNote>{t("cards.logoMissing")}</EditNote>
         </li>
       ) : null;
     }
@@ -79,7 +80,7 @@ jahiaComponent(
         ) : (
           <span className={classes.logo}>{logo}</span>
         )}
-        {isEdit && missingTarget && <p className="ctpl-edit-hint">{t("link.noTarget")}</p>}
+        {isEdit && missingTarget && <EditNote>{t("link.noTarget")}</EditNote>}
       </li>
     );
   },
@@ -100,7 +101,7 @@ jahiaComponent(
     if (!target) {
       return renderContext.isEditMode() ? (
         <li className={classes.item}>
-          <p className="ctpl-edit-hint">{t("cards.teaserMissing")}</p>
+          <EditNote>{t("cards.teaserMissing")}</EditNote>
         </li>
       ) : null;
     }
@@ -119,7 +120,7 @@ jahiaComponent(
     const { t } = useTranslation("classic-templates");
     return renderContext.isEditMode() ? (
       <li className={classes.logoItem}>
-        <p className="ctpl-edit-hint">{t("cards.teaserNotInLogos")}</p>
+        <EditNote>{t("cards.teaserNotInLogos")}</EditNote>
       </li>
     ) : null;
   },

@@ -4,7 +4,7 @@ Type: `ctpl:signIn`
 
 ## What it is
 
-A section with a username field, a password field and a button, which signs the visitor in without
+A section with an e-mail or username field, a password field and a button, which signs the visitor in without
 leaving the site. Put it on the page the header's sign-in entry points to (see
 [Members-only content](../guides/members-only-content.md#make-the-headers-sign-in-go-to-your-own-page)).
 The same form appears inside the notice that guests get in place of a reserved news item, article
@@ -24,13 +24,16 @@ own, called "Sign in", hidden from the navigation.
 | Page after sign-in           | Where visitors go once signed in when they did not come from another page.   | Optional. Empty: the home page. Visitors sent by a reserved page or by the header go back to that page. |
 | Background                   | Background of the section. See [Section backgrounds](section-style.md).      | Default: page background.                                                                               |
 
-The words of the form ("Username", "Password", "Sign in", the error messages) are part of the
+The words of the form ("E-mail or username", its hint, "Password", "Sign in", the error messages) are part of the
 template set, translated for each language of the site.
 
 ## How it behaves
 
-- A visitor types a username and a password and presses the button (or Enter). The page stays
-  where it is while the platform checks them.
+- A visitor types their e-mail address or their username and a password, and presses the button
+  (or Enter). The page stays where it is while the platform checks them.
+- The platform signs in by username. An account created by a registration form has its e-mail as
+  username, so its owner can type either; an account created another way (by an administrator, an
+  import) signs in with its username, the e-mail does not find it.
 - Wrong credentials: a message appears above the form, the fields keep their content, nothing else
   changes. Another failure (the server cannot be reached) shows a different message.
 - Correct credentials: the visitor goes to the page named by `?redirect=` in the address when it is

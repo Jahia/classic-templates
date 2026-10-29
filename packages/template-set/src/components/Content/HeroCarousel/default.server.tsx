@@ -12,6 +12,7 @@ import { carouselInterval } from "../../../lib/carousel.js";
 import { SectionHeading } from "../../../lib/Heading.js";
 import type { Props } from "./types.js";
 import classes from "./hero-carousel.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 const Chevron = ({ back }: { back?: boolean }) => (
   <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false">
@@ -160,11 +161,9 @@ const EditView = ({ node, title, hideTitle, total }: ViewProps & { total: number
       aria-labelledby={title ? headingId : undefined}
     >
       <CarouselHeading node={node} id={headingId} title={title} hidden={hideTitle} />
-      <p className={`ctpl-container ${classes.editHint}`}>
-        <span className="ctpl-edit-hint">
-          {t(total === 0 ? "carousel.empty" : "carousel.editStacked")}
-        </span>
-      </p>
+      <EditNote level={total === 0 ? "hidden" : "info"} container className={classes.editHint}>
+        {t(total === 0 ? "carousel.empty" : "carousel.editStacked")}
+      </EditNote>
       <div className={classes.track}>
         <RenderChildren />
       </div>
