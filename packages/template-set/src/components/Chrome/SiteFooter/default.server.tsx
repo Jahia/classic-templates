@@ -1,7 +1,7 @@
 import {
+  JImage,
   RenderChild,
   RenderChildren,
-  buildNodeUrl,
   jahiaComponent,
   server,
 } from "@jahia/javascript-modules-library";
@@ -43,11 +43,9 @@ jahiaComponent(
         <div className={`ctpl-container ${classes.top}`}>
           <div className={classes.brand}>
             {logo ? (
-              <img
+              <JImage
+                src={logo}
                 className={logoClass}
-                src={buildNodeUrl(logo)}
-                width={readPositive(logo, "j:width")}
-                height={readPositive(logo, "j:height")}
                 alt={siteName}
                 data-testid="ctpl-footer-logo"
               />

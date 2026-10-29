@@ -1,5 +1,6 @@
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import {
+  JImage,
   Render,
   RenderChild,
   buildNodeUrl,
@@ -76,21 +77,19 @@ jahiaComponent(
     const brandLink = (
       <a className={classes.brand} href={buildNodeUrl(home)} data-testid="ctpl-brand">
         {logo && (
-          <img
+          <JImage
+            src={logo}
             className={`${logoDark ? classes.logoLight : classes.logo}${sizeClass(logo)}`}
-            src={buildNodeUrl(logo)}
-            width={readPositive(logo, "j:width")}
-            height={readPositive(logo, "j:height")}
             alt={withText ? "" : brand}
+            loading="eager"
           />
         )}
         {logo && logoDark && (
-          <img
+          <JImage
+            src={logoDark}
             className={`${classes.logoDark}${sizeClass(logoDark)}`}
-            src={buildNodeUrl(logoDark)}
-            width={readPositive(logoDark, "j:width")}
-            height={readPositive(logoDark, "j:height")}
             alt={withText ? "" : brand}
+            loading="eager"
           />
         )}
         {withText && <span className={classes.brandName}>{brand}</span>}

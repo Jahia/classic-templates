@@ -18,7 +18,7 @@ site's classic-templates theme (light and dark) through its design tokens.
 
 ## Requirements
 
-- Jahia 8.2.1 or later with `javascript-modules-engine` 1.2 or later.
+- Jahia 8.2.1 or later with `javascript-modules-engine` 1.3 or later.
 - **classic-templates**, installed and used by the site (declared module dependency). Install the
   two modules at the same version.
 - Optional: **js-media-gallery**, whose videos a video story shows; **Augmented Search**, for the

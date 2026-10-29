@@ -33,7 +33,7 @@ the CI workflows, the changelog and the agent harness ([`.agents/`](.agents/READ
 
 ## Install
 
-Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.2 or later.
+Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.3 or later.
 
 - **Template set.** Download `classic-templates-<version>.tgz` from the
   [GitHub releases](https://github.com/Jahia/classic-templates/releases) and install it in Jahia
