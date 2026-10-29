@@ -35,6 +35,7 @@ export const RichText = ({
     html: clean,
     imageWithoutAlt,
     tableWithoutCaption,
+    headingsRenumbered,
   } = sanitizeRichTextWithReport(html, {
     headingLevel,
     idPrefix: `rt-${currentNode.getIdentifier().slice(0, 8)}-`,
@@ -51,6 +52,9 @@ export const RichText = ({
       />
       {isEdit && imageWithoutAlt && (
         <EditNote level="a11y">{t("richText.imageWithoutAlt")}</EditNote>
+      )}
+      {isEdit && headingsRenumbered && (
+        <EditNote level="a11y">{t("richText.headingsRenumbered")}</EditNote>
       )}
       {isEdit && tableWithoutCaption && (
         <EditNote level="a11y">{t("richText.tableWithoutCaption")}</EditNote>

@@ -86,8 +86,11 @@ a single language, the switcher is not shown.
 
 ## Edit-mode hints
 
-In Page Builder, some components show a short hint when something is missing. Visitors never see
-these hints. Each one tells you what to fix:
+In Page Builder, components show a short hint for what the page cannot show you: something missing,
+something visitors will not see, an accessibility problem, where content is reused. Visitors never
+see these hints, nor does Preview. They come in three looks: a neutral one that explains, an amber
+one for something visitors will not see, and a red one that starts with **Accessibility:**. Each one
+tells you what to do:
 
 | Hint                                                                                                                                             | Where                         | What to do                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -106,6 +109,20 @@ these hints. Each one tells you what to fix:
 | Nothing to show yet.                                                                                                                             | content lists                 | The list found nothing. On the live site the section is hidden, unless you fill in **Text when empty**.                                                                       |
 | The start folder is set but cannot be found here (deleted, or not published yet): the list shows nothing on the live site.                       | content lists                 | Pick an existing folder in **Look under**, or publish it.                                                                                                                     |
 | This content type cannot be listed.                                                                                                              | content lists                 | Pick another value in **Content to list**.                                                                                                                                    |
+
+Page Builder also says, above the page and next to reused content:
+
+| Hint                                                                                                                       | Where                         | What to do                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------- |
+| The header and footer are shared by every page: they are edited on the home page, not here.                                | every page but home           | Open the home page to change the header or the footer.                                  |
+| This page has no description of its own: search engines and shared links get the site's description.                       | any page                      | Fill in the page's **Description** in its properties.                                   |
+| The browser title "..." has N characters: search results show about 60.                                                    | any page                      | Shorten the page title: the browser title is "page title \| site name".                 |
+| The site asks search engines not to index it (site settings): this page does not show in search results.                   | every page                    | Expected on a test or private site; on a public site, turn off the setting on the site. |
+| The page title is hidden on screen: screen readers and search engines still read it.                                       | pages with **Hide title**     | Make the hero banner say the same thing as the title.                                   |
+| Reused content: "title" (site). It is edited where it comes from, and every change shows wherever it is reused (N places). | content pasted as a reference | Edit the original to change it everywhere; paste a copy instead to change it here only. |
+| The reused content is not published: visitors see nothing here until it is.                                                | content pasted as a reference | Publish the original.                                                                   |
+| The reused content no longer exists, or you cannot read it.                                                                | content pasted as a reference | Remove the reference or pick another item.                                              |
+| Accessibility: This text's headings use level 1, or skip a level: they are shown renumbered.                               | text sections                 | Start the text's main parts at **Heading 2** and go down one level at a time.           |
 
 A content list also shows, in edit mode only, a summary of its settings, for example "Lists News
 item under contents/news, newest first, up to 3.", followed by what it found and what it left out

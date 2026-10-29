@@ -330,6 +330,8 @@ type Outline = {
   counts: Map<string, number>;
   headingsOpen: number;
   previous: number;
+  /** A heading came more than one level below the previous one, as written. */
+  skipped: boolean;
 };
 
 const ascending = (a: number, b: number) => a - b;
@@ -453,7 +455,9 @@ const openElement = (
   if (HEADING.test(name)) {
     // A heading inside a heading closes it, as the browser does.
     if (outline.headingsOpen > 0) out += closeTo(outline, (n) => HEADING.test(n));
-    outline.previous = Math.min(level(Number(name[1])), outline.previous + 1);
+    const wanted = level(Number(name[1]));
+    if (wanted > outline.previous + 1) outline.skipped = true;
+    outline.previous = Math.min(wanted, outline.previous + 1);
     written = `h${outline.previous}`;
     outline.headingsOpen++;
   }
@@ -469,6 +473,12 @@ export interface SanitizeReport {
   imageWithoutAlt: boolean;
   /** A table had no caption (its region is named with the table label). */
   tableWithoutCaption: boolean;
+  /**
+   * The editor's headings needed renumbering beyond the shift under the block's heading: a level 1
+   * heading, a level used with the one above it missing (h2 and h4, no h3), or a heading more than
+   * one level below the previous one. The output is whole either way; edit mode says so.
+   */
+  headingsRenumbered: boolean;
 }
 
 /** The written start tag of an element that is not a table, the table's scroll region included. */
@@ -514,6 +524,7 @@ const finish = (
     counts: new Map(),
     headingsOpen: 0,
     previous: clamp(base) - 1,
+    skipped: false,
   };
   const attributes = { ids, seenIds: new Set<string>(), prefix };
   const tables: Tables = { label: tableLabel, total, count: 0, withoutCaption: false };
@@ -539,7 +550,14 @@ const finish = (
   }
   out += html.slice(at);
   while (outline.stack.length) out += closeLast(outline);
-  return { html: out, imageWithoutAlt, tableWithoutCaption: tables.withoutCaption };
+  const written = [...levels].sort(ascending);
+  const gap = written.some((level, index) => index > 0 && level - written[index - 1] > 1);
+  return {
+    html: out,
+    imageWithoutAlt,
+    tableWithoutCaption: tables.withoutCaption,
+    headingsRenumbered: levels.has(1) || gap || outline.skipped,
+  };
 };
 
 export interface SanitizeOptions {
@@ -565,7 +583,13 @@ export const sanitizeRichTextWithReport = (
     tableLabel = defaultTableLabel,
   }: SanitizeOptions = {},
 ): SanitizeReport => {
-  if (!html) return { html: "", imageWithoutAlt: false, tableWithoutCaption: false };
+  if (!html)
+    return {
+      html: "",
+      imageWithoutAlt: false,
+      tableWithoutCaption: false,
+      headingsRenumbered: false,
+    };
   const prefix = PREFIX.test(idPrefix) ? idPrefix : DEFAULT_PREFIX;
   return finish(filterTags(html, prefix), headingLevel, prefix, tableLabel);
 };

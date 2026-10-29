@@ -13,6 +13,7 @@
     "photo": "Photo: {{credit}}"
   },
   "richText": {
+    "headingsRenumbered": "This text's headings use level 1, or skip a level: they are shown renumbered so the page outline stays whole. Start the text's main parts at Heading 2 and go down one level at a time.",
     "imageWithoutAlt": "An image in this text has no alternative text: it is ignored by screen readers.",
     "table": "Table",
     "tableNumbered": "Table {{number}}",

@@ -39,9 +39,15 @@ export const PageAreas = ({
   const { t } = useTranslation("classic-templates");
   const { currentNode, renderContext } = useServerContext();
   const gated = gatingPageOf(currentNode, renderContext) !== undefined;
+  const hiddenTitleNote = hideTitle && title && (
+    <EditNote level="info" container testId="ctpl-page-hidden-title">
+      {t("pageNotes.hiddenTitle")}
+    </EditNote>
+  );
   if (!gated)
     return (
       <>
+        {hiddenTitleNote}
         <PageHeading title={title} hidden={hideTitle} />
         <AreaList areas={areas} />
       </>
@@ -54,6 +60,7 @@ export const PageAreas = ({
       <EditNote level="info" container className={classes.editNote} testId="ctpl-members-edit-note">
         {t("members.pageEditNote")}
       </EditNote>
+      {hiddenTitleNote}
       <PageHeading title={title} hidden={hideTitle} />
       <AreaList areas={areas} />
     </>
