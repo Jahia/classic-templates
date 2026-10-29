@@ -1,4 +1,19 @@
 {
+  "pageNotes": {
+    "chromeLocked": "O cabeçalho e o rodapé são comuns a todas as páginas: editam-se na página inicial, não aqui.",
+    "noDescription": "Esta página não tem descrição própria: os motores de busca e as ligações partilhadas recebem a do site. Adicione uma nas propriedades da página (Descrição).",
+    "longTitle": "O título do navegador «{{title}}» tem {{count}} caracteres: os resultados de pesquisa mostram cerca de {{max}}. Um título de página mais curto lê-se por inteiro.",
+    "noIndex": "O site pede aos motores de busca que não o indexem (definições do site): esta página não aparece nos resultados de pesquisa.",
+    "hiddenTitle": "O título da página está oculto no ecrã: os leitores de ecrã e os motores de busca continuam a lê-lo, por isso o banner deve dizer o mesmo."
+  },
+  "reference": {
+    "reused": "Conteúdo reutilizado: «{{title}}» ({{site}}). Edita-se na origem, e cada alteração aparece em todos os locais onde é reutilizado ({{count}} locais).",
+    "unpublished": "O conteúdo reutilizado não está publicado: os visitantes não veem nada aqui até que o seja.",
+    "missing": "O conteúdo reutilizado já não existe, ou não o pode ler: nada aparece aqui no site público. Remova esta referência ou escolha outro elemento."
+  },
+  "editNote": {
+    "a11y": "Acessibilidade:"
+  },
   "layout": {
     "skipToContent": "Saltar para o conteúdo principal"
   },
@@ -109,6 +124,7 @@
       "foundValue": "{{shown}} apresentados de {{matching}}{{more}} correspondentes",
       "skipped": "Omitidos",
       "skippedValue": "{{excluded}} excluídos, {{untranslated}} não traduzidos para {{language}}",
+      "openInJContent": "Abrir no jContent (novo separador)",
       "query": "Consulta JCR-SQL2"
     },
     "aToZ": "de A a Z",
@@ -132,6 +148,7 @@
     "empty": "Esta citação não tem texto neste idioma: não é apresentada."
   },
   "richText": {
+    "headingsRenumbered": "Os títulos deste texto usam o nível 1 ou saltam um nível: são mostrados renumerados para que a estrutura da página fique completa. Comece as partes principais do texto no Título 2 e desça um nível de cada vez.",
     "imageWithoutAlt": "Uma imagem deste texto não tem alternativa textual: edite a imagem no editor e descreva-a, ou marque-a como decorativa com um texto vazio.",
     "table": "Tabela",
     "tableNumbered": "Tabela {{number}}",

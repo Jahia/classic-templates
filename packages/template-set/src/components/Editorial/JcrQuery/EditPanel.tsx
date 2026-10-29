@@ -1,8 +1,11 @@
 import type { JCRNodeWrapper } from "org.jahia.services.content";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { readString } from "../../../lib/props.js";
 import type { ListResult } from "../../../lib/query.js";
 import classes from "./jcr-query.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
+import { JContentLink } from "../../../lib/JContentLink.js";
 
 const titleOf = (node: JCRNodeWrapper) => readString(node, "jcr:title") ?? node.getName();
 
@@ -10,6 +13,8 @@ export interface PanelInfo {
   typeLabel: string;
   typeValid: boolean;
   startLabel: string;
+  /** The node listed under: linked to jContent (lib/JContentLink.tsx) unless `startMissing`. */
+  startNode: JCRNodeWrapper;
   startMissing: boolean;
   criteria: string;
   direction: "asc" | "desc";
@@ -26,7 +31,8 @@ export interface PanelInfo {
 /**
  * Edit mode only: everything the list is doing, so an editor can tell why it shows what it shows
  * (or nothing): the settings resolved to labels, what the query found and skipped, warnings, and
- * the JCR-SQL2 query for developers.
+ * the JCR-SQL2 query for developers. The start folder links to jContent (a new tab, so Page Builder
+ * stays open), where the editor manages what the list shows.
  */
 export const EditPanel = ({ info }: { info: PanelInfo }) => {
   const { t } = useTranslation("classic-templates");
@@ -38,9 +44,19 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
   const dateOrder = ascending ? "query.oldest" : "query.newest";
   const order = t(alphabetical ? alphabeticalOrder : dateOrder);
   const sortLabel = t(`query.sort.${info.criteria.replace(":", "_")}`);
-  const rows: [string, string][] = [
+  const start: ReactNode = (
+    <>
+      {info.startLabel}
+      <JContentLink
+        node={info.startMissing ? undefined : info.startNode}
+        className={classes.panelLink}
+        testId="ctpl-jcr-query-jcontent"
+      />
+    </>
+  );
+  const rows: [string, ReactNode][] = [
     [t("query.panel.type"), info.typeLabel],
-    [t("query.panel.start"), info.startLabel],
+    [t("query.panel.start"), start],
     [t("query.panel.sort"), `${sortLabel}, ${order}`],
     [t("query.panel.max"), String(info.max)],
     [t("query.panel.display"), t(`query.layout.${info.layout}`)],
@@ -89,11 +105,9 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
         })}
       </p>
       {info.startMissing && (
-        <p className="ctpl-edit-hint" data-testid="ctpl-jcr-query-start-missing">
-          {t("query.startMissing")}
-        </p>
+        <EditNote testId="ctpl-jcr-query-start-missing">{t("query.startMissing")}</EditNote>
       )}
-      {!info.typeValid && <p className="ctpl-edit-hint">{t("query.invalidType")}</p>}
+      {!info.typeValid && <EditNote>{t("query.invalidType")}</EditNote>}
       <dl className={classes.panelList}>
         {rows.map(([label, value]) => (
           <div key={label} className={classes.panelRow}>

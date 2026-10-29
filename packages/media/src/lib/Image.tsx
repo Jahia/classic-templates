@@ -3,7 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useT } from "./i18n.js";
 import { readPositive, readString } from "./props.js";
-import classes from "./shared.module.css";
+import { EditNote } from "./EditNote.js";
 
 /**
  * An image from the media library, with the classic-templates ctplmix:media rules.
@@ -52,7 +52,9 @@ export const Image = ({
   return (
     <>
       {img}
-      <span className={classes.hint}>{t("image.noTitle")}</span>
+      <EditNote level="a11y" inline>
+        {t("image.noTitle")}
+      </EditNote>
     </>
   );
 };

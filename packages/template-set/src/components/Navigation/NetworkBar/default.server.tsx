@@ -3,6 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { useTranslation } from "react-i18next";
 import type { Props } from "./types.js";
 import classes from "./network-bar.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /**
  * The network bar: the group's name and one link per site of the group (ctpl:link, "network"
@@ -31,7 +32,9 @@ jahiaComponent(
             {label || t("network.label")}
           </p>
           {isEdit && empty && (
-            <p className={`ctpl-edit-hint ${classes.hint}`}>{t("network.empty")}</p>
+            <EditNote level="info" className={classes.hint}>
+              {t("network.empty")}
+            </EditNote>
           )}
           <ul className={classes.sites}>
             <RenderChildren view="network" />

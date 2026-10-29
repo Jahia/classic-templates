@@ -4,6 +4,7 @@ import { useT } from "./i18n.js";
 import { readString } from "./props.js";
 import { resolveLink } from "./resolveLink.js";
 import classes from "./cta.module.css";
+import { EditNote } from "./EditNote.js";
 
 /**
  * The call to action stored on `node` by classic-templates' ctplmix:cta (Jahia link picker +
@@ -40,8 +41,8 @@ export const Cta = ({
   else if (ctaLabel) hint = t("cta.noLink");
   if (!hint) return null;
   return (
-    <p className={classes.hint} data-testid="ctrv-cta-hint">
+    <EditNote className={classes.hint} testId="ctrv-cta-hint">
       {hint}
-    </p>
+    </EditNote>
   );
 };

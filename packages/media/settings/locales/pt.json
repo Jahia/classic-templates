@@ -1,4 +1,7 @@
 {
+  "editNote": {
+    "a11y": "Acessibilidade:"
+  },
   "item": {
     "noTitle": "Sem título neste idioma: este item é excluído das listas e não tem cabeçalho.",
     "tags": "Etiquetas"
@@ -10,6 +13,7 @@
     "photo": "Foto: {{credit}}"
   },
   "richText": {
+    "headingsRenumbered": "Os títulos deste texto usam o nível 1 ou saltam um nível: são mostrados renumerados para que a estrutura da página fique completa. Comece as partes principais do texto no Título 2 e desça um nível de cada vez.",
     "imageWithoutAlt": "Uma imagem deste texto não tem texto alternativo: é ignorada pelos leitores de ecrã.",
     "table": "Tabela",
     "tableNumbered": "Tabela {{number}}",

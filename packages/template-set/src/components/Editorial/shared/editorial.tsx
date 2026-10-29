@@ -16,6 +16,7 @@ import { teaserHtml, teaserParagraphs } from "../../../lib/teaser.js";
 import { Tile } from "../../../lib/Tile.js";
 import classes from "./editorial.module.css";
 import { languageTag } from "../../../lib/locale.js";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /** Props shared by ctpl:news and ctpl:article (ctplmix:editorialItem + mix:title). */
 export interface EditorialProps {
@@ -169,9 +170,7 @@ const Meta = ({
 const Untitled = () => {
   const { t } = useTranslation("classic-templates");
   const { renderContext } = useServerContext();
-  return renderContext.isEditMode() ? (
-    <p className={classes.missing}>{t("editorial.noTitle")}</p>
-  ) : null;
+  return renderContext.isEditMode() ? <EditNote>{t("editorial.noTitle")}</EditNote> : null;
 };
 
 /**
@@ -260,10 +259,10 @@ const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
   const title = props["jcr:title"];
   return (
     <article className={classes.full} data-testid={`ctpl-${kind}-full`}>
-      {isMembersOnly(currentNode) && renderContext.isEditMode() && (
-        <p className={`ctpl-container ${classes.editNote}`} data-testid="ctpl-members-edit-note">
+      {isMembersOnly(currentNode) && (
+        <EditNote level="info" container testId="ctpl-members-edit-note">
           {t("members.editNote")}
-        </p>
+        </EditNote>
       )}
       <header className={`ctpl-container ${classes.head}`}>
         <Meta kind={kind} node={currentNode} props={props} />

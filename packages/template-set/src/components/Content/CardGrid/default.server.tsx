@@ -9,6 +9,7 @@ import { cardShows, hasVisibleCard, teaserTarget } from "./cards.js";
 import { childView, displayOf } from "./display.js";
 import type { CardProps, ContentTeaserProps, Props } from "./types.js";
 import classes from "./card-grid.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /**
  * A section of hand-picked cards: written cards and teasers of existing news items or articles,
@@ -93,7 +94,7 @@ jahiaComponent(
                 )}
               </Heading>
             ) : (
-              isEdit && <p className="ctpl-edit-hint">{t("cards.noTitle")}</p>
+              isEdit && <EditNote>{t("cards.noTitle")}</EditNote>
             )}
             {text && <p className={classes.text}>{text}</p>}
             {link && heading && linkLabel && (
@@ -101,7 +102,7 @@ jahiaComponent(
                 {linkLabel}
               </span>
             )}
-            {isEdit && missingTarget && <p className="ctpl-edit-hint">{t("link.noTarget")}</p>}
+            {isEdit && missingTarget && <EditNote>{t("link.noTarget")}</EditNote>}
           </div>
         </article>
       </li>
@@ -122,7 +123,7 @@ jahiaComponent(
     if (!target) {
       return renderContext.isEditMode() ? (
         <li className={classes.item}>
-          <p className="ctpl-edit-hint">{t("cards.teaserMissing")}</p>
+          <EditNote>{t("cards.teaserMissing")}</EditNote>
         </li>
       ) : null;
     }

@@ -22,6 +22,7 @@ import { Byline, ShareBox, useFormatLabel } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
 import classes from "./story.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /** Related stories shown under a story, at most; candidates read before ranking. */
 const MAX_RELATED = 3;
@@ -129,9 +130,9 @@ const StoryMedia = ({ props, node }: { props: Props; node: JCRNodeWrapper }) => 
             <a href={audioUrl} download>
               {t("story.download")}
             </a>
-            {renderContext.isEditMode() && (
-              <span className={classes.editNote}> {t("story.captionsMissing")}</span>
-            )}
+            <EditNote level="a11y" inline>
+              {t("story.captionsMissing")}
+            </EditNote>
           </p>
         )}
       </figure>
@@ -219,9 +220,7 @@ export const StoryFull = ({ props, perUser = false }: { props: Props; perUser?: 
       data-ctmd-track={id}
     >
       <Styles />
-      {membersOnly && renderContext.isEditMode() && (
-        <p className={classes.editNote}>{t("story.membersEdit")}</p>
-      )}
+      {membersOnly && <EditNote level="info">{t("story.membersEdit")}</EditNote>}
       <StoryHead props={props} node={currentNode} />
       <ShareBox url={url} title={title} />
       <StoryMedia props={props} node={currentNode} />

@@ -3,6 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useTranslation } from "react-i18next";
 import { readPositive, readString } from "./props.js";
+import { EditNote } from "./EditNote.js";
 
 /**
  * An image from the media library.
@@ -58,7 +59,9 @@ export const Image = ({
   return (
     <>
       {img}
-      <span className="ctpl-edit-hint">{t("image.noTitle")}</span>
+      <EditNote level="a11y" inline>
+        {t("image.noTitle")}
+      </EditNote>
     </>
   );
 };

@@ -8,6 +8,7 @@ import { Cta } from "../../../lib/Cta.js";
 import { consentDays } from "../../../lib/consent.js";
 import type { Props } from "./types.js";
 import classes from "./consent-banner.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /**
  * The tracking-consent banner, placed once in the shared footer area (home page): a region with
@@ -68,9 +69,13 @@ jahiaComponent(
               {props.text && <p className={classes.text}>{props.text}</p>}
               <Cta node={currentNode} renderContext={renderContext} variant="link" />
               {isEdit && (
-                <p className={`ctpl-edit-hint ${classes.hint}`} data-testid="ctpl-consent-hint">
+                <EditNote
+                  level={complete ? "info" : "hidden"}
+                  className={classes.hint}
+                  testId="ctpl-consent-hint"
+                >
                   {complete ? t("consent.editHint") : t("consent.missingLabels")}
-                </p>
+                </EditNote>
               )}
             </div>
             <div className={classes.actions}>

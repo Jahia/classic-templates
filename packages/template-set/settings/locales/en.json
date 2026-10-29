@@ -1,4 +1,19 @@
 {
+  "pageNotes": {
+    "chromeLocked": "The header and footer are shared by every page: they are edited on the home page, not here.",
+    "noDescription": "This page has no description of its own: search engines and shared links get the site's description. Add one in the page's properties (Description).",
+    "longTitle": "The browser title “{{title}}” has {{count}} characters: search results show about {{max}}. A shorter page title reads in full.",
+    "noIndex": "The site asks search engines not to index it (site settings): this page does not show in search results.",
+    "hiddenTitle": "The page title is hidden on screen: screen readers and search engines still read it, so the hero banner should say the same thing."
+  },
+  "reference": {
+    "reused": "Reused content: “{{title}}” ({{site}}). It is edited where it comes from, and every change shows wherever it is reused ({{count}} places).",
+    "unpublished": "The reused content is not published: visitors see nothing here until it is.",
+    "missing": "The reused content no longer exists, or you cannot read it: nothing shows here on the live site. Remove this reference or pick another item."
+  },
+  "editNote": {
+    "a11y": "Accessibility:"
+  },
   "layout": {
     "skipToContent": "Skip to main content"
   },
@@ -109,6 +124,7 @@
       "foundValue": "{{shown}} shown of {{matching}}{{more}} matching",
       "skipped": "Left out",
       "skippedValue": "{{excluded}} excluded, {{untranslated}} not translated into {{language}}",
+      "openInJContent": "Open in jContent (new tab)",
       "query": "JCR-SQL2 query"
     },
     "aToZ": "A to Z",
@@ -132,6 +148,7 @@
     "empty": "This quote has no text in this language: it is not shown."
   },
   "richText": {
+    "headingsRenumbered": "This text's headings use level 1, or skip a level: they are shown renumbered so the page outline stays whole. Start the text's main parts at Heading 2 and go down one level at a time.",
     "imageWithoutAlt": "An image in this text has no text alternative: edit the image in the rich-text editor and describe it, or mark it decorative with an empty text.",
     "table": "Table",
     "tableNumbered": "Table {{number}}",
