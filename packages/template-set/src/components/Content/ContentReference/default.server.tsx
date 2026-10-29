@@ -16,7 +16,8 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const reusedNode = (reference: JCRNodeWrapper): JCRNodeWrapper | undefined => {
   try {
     if (!reference.hasProperty("j:node")) return undefined;
-    return (reference.getProperty("j:node").getNode() as JCRNodeWrapper | null) ?? undefined;
+    const id = reference.getProperty("j:node").getString();
+    return UUID.test(id) ? reference.getSession().getNodeByIdentifier(id) : undefined;
   } catch {
     return undefined;
   }
