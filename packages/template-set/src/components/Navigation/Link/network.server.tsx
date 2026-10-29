@@ -4,6 +4,7 @@ import { resolveLink } from "../../../lib/resolveLink.js";
 import { pageSite } from "../../../lib/site.js";
 import type { Props } from "./types.js";
 import classes from "./link.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /**
  * "network": one site of a network bar (ctpl:networkBar). Same rules as the default view (an <li>,
@@ -29,7 +30,7 @@ jahiaComponent(
       return (
         <li className={classes.item} data-testid="ctpl-network-site">
           {label || t("link.untitled")}
-          {missingTarget && <span className={classes.hint}>{t("link.noTarget")}</span>}
+          {missingTarget && <EditNote inline>{t("link.noTarget")}</EditNote>}
         </li>
       );
     }

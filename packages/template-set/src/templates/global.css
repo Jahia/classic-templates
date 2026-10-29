@@ -173,12 +173,38 @@ video {
 }
 
 /* Edit-mode hints (a missing translation, label or image title): never rendered on the live site. */
+/* Edit-mode notes (lib/EditNote.tsx, and its copies in classic-media and classic-travel): Page
+   Builder only. `hidden` (the default) says what visitors will not see, `info` explains, `a11y`
+   names an accessibility problem and starts with a label. */
 .ctpl-edit-hint {
-  display: inline-block;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
   margin: var(--ctpl-space-1) 0;
   padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border-inline-start: 3px solid currentcolor;
   border-radius: var(--ctpl-radius-sm);
   background: var(--ctpl-color-warning-surface);
   color: var(--ctpl-color-warning);
-  font-size: var(--ctpl-text-xs);
+  font-size: var(--ctpl-text-sm);
+  line-height: 1.4;
+}
+
+span.ctpl-edit-hint {
+  display: inline-block;
+  margin-inline-start: var(--ctpl-space-2);
+}
+
+.ctpl-edit-hint[data-level="info"] {
+  background: var(--ctpl-color-surface-sunken);
+  color: var(--ctpl-color-text);
+}
+
+.ctpl-edit-hint[data-level="a11y"] {
+  background: var(--ctpl-color-danger-surface);
+  color: var(--ctpl-color-danger);
+}
+
+.ctpl-edit-hint-label {
+  font-weight: var(--ctpl-font-weight-bold);
 }

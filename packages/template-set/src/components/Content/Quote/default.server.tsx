@@ -5,6 +5,7 @@ import { Image } from "../../../lib/Image.js";
 import { Section } from "../../../lib/Section.js";
 import type { Props } from "./types.js";
 import classes from "./quote.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /**
  * A quotation with the person's name, role and portrait: a figure with a blockquote and its
@@ -20,9 +21,7 @@ jahiaComponent(
   ) => {
     const { t } = useTranslation("classic-templates");
     if (!quote) {
-      return renderContext.isEditMode() ? (
-        <p className="ctpl-container ctpl-edit-hint">{t("quote.empty")}</p>
-      ) : null;
+      return renderContext.isEditMode() ? <EditNote container>{t("quote.empty")}</EditNote> : null;
     }
     return (
       <Section surface={ctplSurface} testId="ctpl-quote">

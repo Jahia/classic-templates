@@ -4,6 +4,7 @@ import { chromeOwner, pageSite } from "../lib/site.js";
 import { Breadcrumb } from "./Breadcrumb.jsx";
 import { StructuredData } from "./StructuredData.jsx";
 import { Layout } from "./Layout.jsx";
+import { PageEditNotes } from "./PageEditNotes.jsx";
 import classes from "./page-shell.module.css";
 
 /**
@@ -12,7 +13,8 @@ import classes from "./page-shell.module.css";
  * so the skip link jumps over it. Every page also carries its schema.org JSON-LD (StructuredData).
  *
  * Header and footer are AbsoluteAreas owned by the home page (see chromeOwner): they render on
- * every page, are edited from the home page, and are read-only on every other page.
+ * every page, are edited from the home page, and are read-only on every other page, where Page
+ * Builder says so above the header (PageEditNotes, with the page's search notes).
  * Each area only accepts its own singleton type (ctpl:headerArea / ctpl:footerArea).
  *
  * The page's one `<h1>` is placed by each template with <PageHeading> (after the hero on content
@@ -39,6 +41,7 @@ export const PageShell = ({
   return (
     <Layout title={title} description={description}>
       <div className={classes.shell}>
+        <PageEditNotes title={title} description={description} />
         <AbsoluteArea
           name="siteHeader"
           parent={owner}

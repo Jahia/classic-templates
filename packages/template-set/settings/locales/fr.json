@@ -1,4 +1,19 @@
 {
+  "pageNotes": {
+    "chromeLocked": "L'en-tête et le pied de page sont communs à toutes les pages : ils se modifient sur la page d'accueil, pas ici.",
+    "noDescription": "Cette page n'a pas de description propre : les moteurs de recherche et les liens partagés reçoivent celle du site. Ajoutez-en une dans les propriétés de la page (Description).",
+    "longTitle": "Le titre du navigateur « {{title}} » compte {{count}} caractères : les résultats de recherche en montrent environ {{max}}. Un titre de page plus court se lit en entier.",
+    "noIndex": "Le site demande aux moteurs de recherche de ne pas l'indexer (paramètres du site) : cette page n'apparaît pas dans les résultats de recherche.",
+    "hiddenTitle": "Le titre de la page est masqué à l'écran : les lecteurs d'écran et les moteurs de recherche le lisent toujours, la bannière doit donc dire la même chose."
+  },
+  "reference": {
+    "reused": "Contenu réutilisé : « {{title}} » ({{site}}). Il se modifie à sa source, et chaque modification apparaît partout où il est réutilisé ({{count}} emplacements).",
+    "unpublished": "Le contenu réutilisé n'est pas publié : les visiteurs ne voient rien ici tant qu'il ne l'est pas.",
+    "missing": "Le contenu réutilisé n'existe plus, ou vous ne pouvez pas le lire : rien ne s'affiche ici sur le site en ligne. Supprimez cette référence ou choisissez un autre élément."
+  },
+  "editNote": {
+    "a11y": "Accessibilité :"
+  },
   "layout": {
     "skipToContent": "Aller au contenu principal"
   },
@@ -22,11 +37,12 @@
   },
   "signin": {
     "formLabel": "Connexion",
-    "username": "Identifiant",
+    "username": "E-mail ou identifiant",
+    "usernameHint": "L'adresse e-mail de votre inscription, ou votre identifiant.",
     "password": "Mot de passe",
     "submit": "Se connecter",
     "submitting": "Connexion en cours...",
-    "rejected": "L'identifiant ou le mot de passe n'est pas correct. Vérifiez-les et réessayez.",
+    "rejected": "L'e-mail, l'identifiant ou le mot de passe n'est pas correct. Vérifiez-les et réessayez.",
     "unknown": "La connexion n'a pas abouti. Réessayez dans un instant.",
     "signedInAs": "Vous êtes connecté en tant que {{name}}.",
     "continue": "Continuer"
@@ -109,6 +125,7 @@
       "foundValue": "{{shown}} affichés sur {{matching}}{{more}} correspondants",
       "skipped": "Écartés",
       "skippedValue": "{{excluded}} exclus, {{untranslated}} non traduits en {{language}}",
+      "openInJContent": "Ouvrir dans jContent (nouvel onglet)",
       "query": "Requête JCR-SQL2"
     },
     "aToZ": "de A à Z",
@@ -132,6 +149,7 @@
     "empty": "Cette citation n'a pas de texte dans cette langue : elle n'est pas affichée."
   },
   "richText": {
+    "headingsRenumbered": "Les titres de ce texte utilisent le niveau 1 ou sautent un niveau : ils sont affichés renumérotés pour que le plan de la page reste complet. Commencez les grandes parties du texte au Titre 2 et descendez d'un niveau à la fois.",
     "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : modifiez l'image dans l'éditeur et décrivez-la, ou marquez-la décorative avec un texte vide.",
     "table": "Tableau",
     "tableNumbered": "Tableau {{number}}",

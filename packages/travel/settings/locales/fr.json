@@ -1,4 +1,7 @@
 {
+  "editNote": {
+    "a11y": "Accessibilité :"
+  },
   "item": {
     "noTitle": "Pas de titre dans cette langue : cet élément n'apparaît dans aucune liste et n'a pas de titre."
   },
@@ -6,6 +9,7 @@
     "noTitle": "Cette image n'a pas de titre dans la médiathèque : elle n'a donc pas d'alternative textuelle."
   },
   "richText": {
+    "headingsRenumbered": "Les titres de ce texte utilisent le niveau 1 ou sautent un niveau : ils sont affichés renumérotés pour que le plan de la page reste complet. Commencez les grandes parties du texte au Titre 2 et descendez d'un niveau à la fois.",
     "imageWithoutAlt": "Une image de ce texte n'a pas d'alternative textuelle : les lecteurs d'écran l'ignorent.",
     "table": "Tableau",
     "tableNumbered": "Tableau {{number}}",
