@@ -191,3 +191,99 @@ a.link3:hover {
 :global(html:not(.ctpl-js)) .subToggle {
   display: none;
 }
+
+/* ---- Mega menu style (navStyle "mega") ----------------------------------------------------
+ * Same markup and script: large screens open a full-width panel under the header (the item is not
+ * positioned, so the panel is placed against the header), the sub-pages in columns and the
+ * page's menu promotion beside them; small screens read as the dropdown style, the promotion
+ * under the list. */
+.promo {
+  display: grid;
+  align-content: start;
+  gap: var(--ctpl-space-2);
+}
+.promoMedia img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--ctpl-radius-md);
+}
+.promoTitle {
+  margin: 0;
+  color: var(--ctpl-color-text);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.promoText {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+
+@media (min-width: 64rem) {
+  .mega .item1 {
+    position: static;
+  }
+  /*
+   * The panel hangs from the bottom of the header, not of the entry: between the two lies a strip
+   * of header whose height depends on the logo and the bar. Crossing it, the pointer leaves the
+   * entry, so a closing panel stays visible a moment (the visibility transition's delay) and the
+   * pointer reaches it before it goes: the panel is inside the entry, so hovering it keeps it
+   * open. Closed, it is visibility: hidden, so it takes no click and no keyboard focus.
+   */
+  .mega .panel {
+    display: grid;
+    visibility: hidden;
+    right: 0;
+    left: 0;
+    min-width: 0;
+    /* Full-width background, content in line with the page container. */
+    padding: var(--ctpl-space-5) max(var(--ctpl-gutter), calc((100% - var(--ctpl-container)) / 2))
+      var(--ctpl-space-6);
+    border-width: var(--ctpl-border-width) 0;
+    border-radius: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(14rem, 22rem);
+    gap: var(--ctpl-space-6);
+    transition: visibility 0s linear 250ms;
+  }
+  .mega .subToggle[aria-expanded="true"] + .panel,
+  :global(html:not(.ctpl-js)) .mega .item1:focus-within > .panel {
+    display: grid;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  /* No promotion (none set, or set but empty): the columns take the whole width. */
+  .mega .panel:not(:has(.promo)) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mega .level2 {
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    align-content: start;
+    gap: var(--ctpl-space-4) var(--ctpl-space-6);
+  }
+  .mega .link2 {
+    font-weight: var(--ctpl-font-weight-bold);
+  }
+  .mega .promo {
+    padding: var(--ctpl-space-4);
+    border-radius: var(--ctpl-radius-lg);
+    background: var(--ctpl-color-surface-sunken);
+  }
+}
+
+@media (min-width: 64rem) and (hover: hover) {
+  /* The panel under the pointer sits above one still closing, when moving to the next entry. */
+  .mega .item1:hover:not([data-ctpl-dismissed]) > .panel {
+    z-index: 21;
+    display: grid;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
+
+@media (max-width: 63.999rem) {
+  .promo {
+    margin-top: var(--ctpl-space-3);
+  }
+}

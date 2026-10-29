@@ -12,6 +12,8 @@ export interface NavItem {
   title: string;
   href?: string;
   children: NavItem[];
+  /** The page itself when it carries a "Menu promotion" (ctplmix:navPromo), for the mega menu. */
+  promo?: JCRNodeWrapper;
 }
 
 /** Marked "noIndex" by Jahia's sitemap module; false when that module is not installed. */
@@ -89,6 +91,7 @@ const build = (
     id: child.getIdentifier(),
     ...describe(child, renderContext),
     children: depth > 1 ? build(child, depth - 1, renderContext, includeHidden) : [],
+    promo: child.isNodeType("ctplmix:navPromo") ? child : undefined,
   }));
 
 /**

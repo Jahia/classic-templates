@@ -111,6 +111,24 @@ Every page's edit form offers a **Page options** section. Switch it on to use th
   sections. Restrict the page's areas to registered users too if their content must not be readable
   through other addresses: see [Members-only content](members-only-content.md).
 
+## Menu promotion
+
+A top-level page can feature something in its panel of the main menu when the menu uses the
+**Mega menu** style (see [Site header](../components/site-header.md#main-navigation)). Switch on
+**Menu promotion** in the page's edit form, then fill in what you need, all optional:
+
+- an **image** from the media library, with its alternative text, or marked decorative when the
+  title and the link already say it all;
+- a **promotion title** and a **promotion text** (one or two sentences, plain text);
+- a **link** and its **button label**, for example to a featured product or event page: choose
+  **Page of this site** or **Web address** in **Link**, then pick the page in **Page of this site**
+  or type the address in **Web address** below it (on a page, both fields are always shown; the
+  **Link** choice says which one the button uses).
+
+The promotion shows beside the page's subpages on large screens and under them on small screens.
+It is ignored on deeper pages and with the **Dropdown** menu style. Publish the page to update it
+on the live site.
+
 ## Page title and description
 
 Each page has a **title** and a **description**, in every language.

@@ -51,9 +51,10 @@ It has no fields. It shows a link to the current page in each other language of 
 
 ### Main navigation
 
-| Label as shown in the editor | What it does                             | Notes                                           |
-| ---------------------------- | ---------------------------------------- | ----------------------------------------------- |
-| Menu depth                   | How many levels of pages the menu shows. | Default: 3. From 1 (top-level pages only) to 3. |
+| Label as shown in the editor | What it does                                                                                     | Notes                                                                                                 |
+| ---------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| Menu depth                   | How many levels of pages the menu shows.                                                         | Default: 3. From 1 (top-level pages only) to 3.                                                       |
+| Menu style                   | **Dropdown**: a small list under each top-level page. **Mega menu**: a full-width panel instead. | Default: Dropdown. The mega menu suits sites with many sections and pages, and shows menu promotions. |
 
 The menu stores no links of its own. You shape it by creating, ordering, renaming and hiding pages.
 
@@ -86,6 +87,12 @@ On large screens:
 - Its panel of level 2 pages opens when the visitor points at the entry or presses the arrow button. Level 3 pages are listed under their level 2 page inside the panel.
 - The Escape key closes the panel and returns to its arrow button. A click elsewhere, or moving the focus out of the entry, closes it too.
 - The entry of the current page (and its parent entries) is highlighted.
+
+With the **Mega menu** style, on large screens:
+
+- The panel of a top-level page spans the whole width under the header. Its level 2 pages sit in columns, each with its level 3 pages listed under it.
+- Beside the columns, the panel shows the page's **Menu promotion** when it has one: an image, a title, a sentence or two and a link. Set it on the top-level page itself, in its edit form (see [Pages and templates](../guides/pages-and-templates.md#menu-promotion)). Promotions of deeper pages are not shown.
+- On small screens the mega menu works like the dropdown style, with the promotion under the list of subpages.
 
 ### Sign-in entry
 
