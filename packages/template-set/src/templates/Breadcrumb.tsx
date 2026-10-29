@@ -86,27 +86,25 @@ export const Breadcrumb = () => {
   const trail = breadcrumbOf(mainNode, renderContext, t("breadcrumb.home"));
   if (!trail) return null;
   return (
-    <nav
-      aria-label={t("breadcrumb.label")}
-      className="ctpl-container"
-      data-testid="ctpl-breadcrumb"
-    >
-      <ol className={classes.trail}>
-        {trail.crumbs.map((crumb) => (
-          <li key={crumb.href ?? "current"} className={classes.crumb}>
-            {crumb.href ? (
-              <a href={crumb.href}>{crumb.title}</a>
-            ) : (
-              <span aria-current="page">{crumb.title}</span>
-            )}
-          </li>
-        ))}
-      </ol>
-      {trail.unlisted && renderContext.isEditMode() && (
-        <EditNote level="info" testId="ctpl-breadcrumb-hint">
-          {t("breadcrumb.noListingPage")}
-        </EditNote>
-      )}
+    <nav aria-label={t("breadcrumb.label")} className={classes.band} data-testid="ctpl-breadcrumb">
+      <div className="ctpl-container">
+        <ol className={classes.trail}>
+          {trail.crumbs.map((crumb) => (
+            <li key={crumb.href ?? "current"} className={classes.crumb}>
+              {crumb.href ? (
+                <a href={crumb.href}>{crumb.title}</a>
+              ) : (
+                <span aria-current="page">{crumb.title}</span>
+              )}
+            </li>
+          ))}
+        </ol>
+        {trail.unlisted && renderContext.isEditMode() && (
+          <EditNote level="info" testId="ctpl-breadcrumb-hint">
+            {t("breadcrumb.noListingPage")}
+          </EditNote>
+        )}
+      </div>
     </nav>
   );
 };

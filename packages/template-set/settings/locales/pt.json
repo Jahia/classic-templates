@@ -62,7 +62,8 @@
     "articleNoticeRegister": "Este artigo é reservado a membros. Inicie sessão ou crie uma conta para continuar a ler."
   },
   "links": {
-    "label": "Ligações"
+    "label": "Ligações",
+    "social": "Redes sociais"
   },
   "image": {
     "missing": "Nenhuma imagem selecionada",

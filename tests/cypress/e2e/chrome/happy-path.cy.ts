@@ -155,6 +155,11 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
             cy.get('[aria-current="page"]').should('have.text', 'Strategy')
         })
         cy.get('[data-testid="ctpl-breadcrumb"] + main#main-content').should('exist')
+        // The band spans the page; the trail sits in the page container inside it.
+        cy.get('[data-testid="ctpl-breadcrumb"]').then(($band) => {
+            cy.window().then((win) => expect(Math.round($band[0].getBoundingClientRect().width)).to.eq(win.innerWidth))
+        })
+        cy.get('[data-testid="ctpl-breadcrumb"] > .ctpl-container > ol').should('exist')
         // The same trail for search engines, as a schema.org BreadcrumbList.
         jsonLd().then((node) => {
             const items = node('BreadcrumbList')?.itemListElement as { name: string; position: number }[]
