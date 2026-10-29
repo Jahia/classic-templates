@@ -4,6 +4,7 @@ import { audienceOf, showsTo } from "./audience.js";
 import { Cta } from "./Cta.js";
 import { readString } from "./props.js";
 import classes from "./cta.module.css";
+import { EditNote } from "./EditNote.js";
 
 type Variant = "primary" | "secondary" | "onOverlay" | "link";
 const VARIANTS: ReadonlySet<string> = new Set(["primary", "secondary", "onOverlay", "link"]);
@@ -49,9 +50,9 @@ jahiaComponent(
         <>
           {button}
           {audience !== "everyone" && (
-            <p className={classes.hint} data-testid="ctpl-cta-audience">
+            <EditNote level="info" className={classes.hint} testId="ctpl-cta-audience">
               {t(`cta.audience.${audience}`)}
-            </p>
+            </EditNote>
           )}
         </>
       );

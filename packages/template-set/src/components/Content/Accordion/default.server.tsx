@@ -15,6 +15,7 @@ import { RichText } from "../../../lib/RichText.js";
 import { Section } from "../../../lib/Section.js";
 import type { ItemProps, Props } from "./types.js";
 import classes from "./accordion.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /** True when at least one entry has a heading in this language (the others are not rendered). */
 const hasItems = (node: JCRNodeWrapper) =>
@@ -104,7 +105,7 @@ jahiaComponent(
     const Heading = headingTag(level);
     const isEdit = renderContext.isEditMode();
     if (!title) {
-      return isEdit ? <p className="ctpl-edit-hint">{t("accordion.noTitle")}</p> : null;
+      return isEdit ? <EditNote>{t("accordion.noTitle")}</EditNote> : null;
     }
     const id = anchorOf("acc-", currentNode.getName());
     const answer = <RichText html={body} headingLevel={level + 1} />;

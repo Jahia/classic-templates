@@ -1,9 +1,16 @@
-import { type FormEvent, useId, useState } from "react";
+import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { destinationOf, loginOutcome } from "../../../lib/signin.js";
 import classes from "./sign-in.module.css";
 
 interface Props {
+  /**
+   * Prefix of the ids that tie labels, hint and error to the fields, set by the server. Not `useId`:
+   * an island hydrates as a root of its own, so `useId` gives the server render one id and the
+   * browser another; React keeps the server's attributes, and anything rendered later (the error,
+   * `aria-describedby` after a failed attempt) pointed at ids that did not exist.
+   */
+  idBase: string;
   /** Jahia's login servlet (`<contextPath>/cms/login`). */
   loginUrl: string;
   /** Jahia's logout servlet, with the page to come back to. Used when the visitor is signed in. */
@@ -38,7 +45,11 @@ const go = (destination: string | undefined) => {
 };
 
 /**
- * The in-site sign-in form: username, password, one button.
+ * The in-site sign-in form: e-mail or username, password, one button.
+ *
+ * Jahia's login servlet takes a username. An account created by a registration form has its e-mail
+ * as username, so its owner can type either; an account whose username is not its e-mail signs in
+ * with the username. The hint under the label says so.
  *
  * It posts to Jahia's own login servlet in `restMode` (the call the platform's login page and the
  * persona panel make): the answer is a bare "OK" or "unauthorized", the session cookie is set on
@@ -51,6 +62,7 @@ const go = (destination: string | undefined) => {
  * serves them all. Without JavaScript the form does nothing: signing in needs the island.
  */
 export default function SignInForm({
+  idBase: id,
   loginUrl,
   logoutUrl,
   siteKey,
@@ -60,7 +72,6 @@ export default function SignInForm({
   signedInAs,
 }: Readonly<Props>) {
   const { t } = useTranslation("classic-templates");
-  const id = useId();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -120,6 +131,7 @@ export default function SignInForm({
   };
 
   const errorId = `${id}-error`;
+  const hintId = `${id}-username-hint`;
   return (
     <form
       className={classes.form}
@@ -136,6 +148,9 @@ export default function SignInForm({
         <label className={classes.label} htmlFor={`${id}-username`}>
           {t("signin.username")}
         </label>
+        <p className={classes.hint} id={hintId}>
+          {t("signin.usernameHint")}
+        </p>
         <input
           className={classes.input}
           id={`${id}-username`}
@@ -149,7 +164,7 @@ export default function SignInForm({
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           aria-invalid={error === "rejected" ? true : undefined}
-          aria-describedby={error ? errorId : undefined}
+          aria-describedby={error ? `${hintId} ${errorId}` : hintId}
         />
       </div>
       <div className={classes.field}>

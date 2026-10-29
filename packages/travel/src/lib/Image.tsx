@@ -3,7 +3,7 @@ import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useT } from "./i18n.js";
 import { readString } from "./props.js";
-import classes from "./shared.module.css";
+import { EditNote } from "./EditNote.js";
 
 /** A Cloudinary 3D model (picked where an image goes) renders through its own view, not an `<img>`. */
 const MODEL_3D = "cloudynt:model3d";
@@ -79,7 +79,9 @@ export const Image = ({
   return (
     <>
       {img}
-      <span className={classes.hint}>{t("image.noTitle")}</span>
+      <EditNote level="a11y" inline>
+        {t("image.noTitle")}
+      </EditNote>
     </>
   );
 };

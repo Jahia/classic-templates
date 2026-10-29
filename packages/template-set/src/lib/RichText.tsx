@@ -1,6 +1,7 @@
 import { useServerContext } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import { sanitizeRichTextWithReport } from "./sanitize.js";
+import { EditNote } from "./EditNote.js";
 
 /**
  * Renders a rich-text property written by an editor in the Jahia rich-text editor.
@@ -35,6 +36,7 @@ export const RichText = ({
     html: clean,
     imageWithoutAlt,
     tableWithoutCaption,
+    headingsRenumbered,
   } = sanitizeRichTextWithReport(html, {
     headingLevel,
     idPrefix: `rt-${currentNode.getIdentifier().slice(0, 8)}-`,
@@ -52,10 +54,13 @@ export const RichText = ({
         dangerouslySetInnerHTML={{ __html: clean }}
       />
       {isEdit && imageWithoutAlt && (
-        <p className="ctpl-edit-hint">{t("richText.imageWithoutAlt")}</p>
+        <EditNote level="a11y">{t("richText.imageWithoutAlt")}</EditNote>
+      )}
+      {isEdit && headingsRenumbered && (
+        <EditNote level="a11y">{t("richText.headingsRenumbered")}</EditNote>
       )}
       {isEdit && tableWithoutCaption && (
-        <p className="ctpl-edit-hint">{t("richText.tableWithoutCaption")}</p>
+        <EditNote level="a11y">{t("richText.tableWithoutCaption")}</EditNote>
       )}
     </>
   );

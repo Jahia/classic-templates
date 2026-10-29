@@ -147,10 +147,21 @@ describe("sanitizeRichText - accessibility (RGAA)", () => {
       html: '<img alt="" src="/a.png">',
       imageWithoutAlt: true,
       tableWithoutCaption: false,
+      headingsRenumbered: false,
     });
     expect(sanitizeRichTextWithReport('<img src="/a.png" alt="">').imageWithoutAlt).toBe(false);
     // The pattern is global: a second call starts from the beginning again.
     expect(sanitizeRichTextWithReport('<img src="/b.png">').imageWithoutAlt).toBe(true);
+  });
+
+  it("reports headings it had to renumber beyond the shift under the block's heading", () => {
+    const report = (html: string) =>
+      sanitizeRichTextWithReport(html, { headingLevel: 3 }).headingsRenumbered;
+    expect(report("<h2>A</h2><p>x</p><h3>B</h3>")).toBe(false);
+    expect(report("<h1>A</h1><p>x</p>")).toBe(true);
+    expect(report("<h2>A</h2><h4>B</h4>")).toBe(true);
+    expect(report("<h3>A</h3><h2>B</h2>")).toBe(true);
+    expect(report("<p>no heading</p>")).toBe(false);
   });
 
   it("prefixes ids per block, so two blocks never share one", () => {

@@ -25,6 +25,8 @@ import { categoryTitlesOf } from "../shared/editorial.js";
 import type { Props } from "./types.js";
 import classes from "./notice-bar.module.css";
 import { pageSite } from "../../../lib/site.js";
+import { EditNote } from "../../../lib/EditNote.js";
+import { JContentLink } from "../../../lib/JContentLink.js";
 
 /** The translation key of an item's type label, as cards show it ("News", "Article"). */
 const kindKey = (item: JCRNodeWrapper) =>
@@ -118,7 +120,11 @@ jahiaComponent(
             {props.label || t("notice.label")}
           </p>
           {isEdit && (
-            <p className={`ctpl-edit-hint ${classes.hint}`} data-testid="ctpl-notice-summary">
+            <EditNote
+              level={warning ? "hidden" : "info"}
+              className={classes.hint}
+              testId="ctpl-notice-summary"
+            >
               {warning ??
                 t("query.summary", {
                   type: typeLabel(type, locale),
@@ -127,7 +133,13 @@ jahiaComponent(
                   max,
                   interpolation: { escapeValue: false },
                 })}
-            </p>
+              {!warning && (
+                <>
+                  {" "}
+                  <JContentLink node={start} />
+                </>
+              )}
+            </EditNote>
           )}
           {items.length > 0 && (
             <ul className={classes.items}>

@@ -114,11 +114,6 @@
 /* Edit mode: the box is on but the header names no search page. */
 .hint {
   margin: 0;
-  padding: var(--ctpl-space-1) var(--ctpl-space-2);
-  border-radius: var(--ctpl-radius-sm);
-  background: var(--ctpl-color-warning-surface);
-  color: var(--ctpl-color-warning);
-  font-size: var(--ctpl-text-xs);
 }
 
 @media (max-width: 63.999rem) {
