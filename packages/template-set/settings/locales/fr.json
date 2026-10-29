@@ -32,6 +32,7 @@
   },
   "account": {
     "signIn": "Se connecter",
+    "register": "Créer un compte",
     "signOut": "Se déconnecter",
     "signedInAs": "Connecté en tant que"
   },

@@ -1,0 +1,14 @@
+mutation setHeaderRegisterPage($headerPath: String!, $register: String!) {
+    jcr {
+        mutateNode(pathOrId: $headerPath) {
+            setPropertiesBatch(
+                properties: [{ name: "showAccount", value: "true" }, { name: "headerLayout", value: "twoRows" }]
+            ) {
+                path
+            }
+            registerPage: mutateProperty(name: "registerPage") {
+                setValue(value: $register, type: WEAKREFERENCE)
+            }
+        }
+    }
+}

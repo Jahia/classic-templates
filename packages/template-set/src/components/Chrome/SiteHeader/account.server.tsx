@@ -4,6 +4,7 @@ import type { JCRSiteNode } from "org.jahia.services.content.decorator";
 import type { RenderContext } from "org.jahia.services.render";
 import { accountUrls, safeLocalPath } from "../../../lib/account.js";
 import { asGuest, guestCanRead, pageUrlById } from "../../../lib/access.js";
+import { registerHref } from "../../../lib/headerPages.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
 import Account from "./Account.client.jsx";
 import type { Props } from "./types.js";
@@ -54,7 +55,8 @@ const signInPageUrl = (
 };
 
 /**
- * The sign-in / sign-out entry of the header's utility bar (view "account" of the site header,
+ * The sign-in / sign-out entry of the header's utility bar, with "Register" beside "Sign in" for
+ * guests when the header names a registration page (view "account" of the site header,
  * rendered by its default view when "Show a sign-in entry" is on).
  *
  * The HTML is the same for every visitor, whoever renders it first: it carries the guest version
@@ -99,7 +101,12 @@ jahiaComponent(
       <div data-testid="ctpl-account" data-ctpl-account>
         <Island
           component={Account}
-          props={{ signInHref: urls.signIn, signOutHref: urls.signOut, graphqlUrl: urls.graphql }}
+          props={{
+            signInHref: urls.signIn,
+            signOutHref: urls.signOut,
+            graphqlUrl: urls.graphql,
+            registerHref: registerHref(renderContext, currentResource.getLocale(), landing),
+          }}
         />
       </div>
     );
