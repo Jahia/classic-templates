@@ -62,7 +62,8 @@
     "articleNoticeRegister": "This article is reserved for members. Sign in or create an account to read on."
   },
   "links": {
-    "label": "Links"
+    "label": "Links",
+    "social": "Social networks"
   },
   "image": {
     "missing": "No image selected",

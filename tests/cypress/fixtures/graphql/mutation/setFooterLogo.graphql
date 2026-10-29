@@ -1,0 +1,9 @@
+mutation setFooterLogo($footerPath: String!, $logo: String!) {
+    jcr {
+        mutateNode(pathOrId: $footerPath) {
+            logo: mutateProperty(name: "logo") {
+                setValue(value: $logo, type: WEAKREFERENCE)
+            }
+        }
+    }
+}
