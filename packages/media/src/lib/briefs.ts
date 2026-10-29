@@ -17,11 +17,11 @@ export type MediaWanted = (typeof MEDIA_WANTED)[number];
 export const USAGES = ["storyIllustration", "social", "eventScreens"] as const;
 export type Usage = (typeof USAGES)[number];
 
-/** The licence a supplier grants on a submission (ctmd:submission licence). */
+/** The licence a supplier grants on a supplied story (ctmd:suppliedStory licence). */
 export const LICENCES = ["editorial", "exclusive30"] as const;
 export type Licence = (typeof LICENCES)[number];
 
-/** The statuses of a submission (ctmd:submission submissionStatus), in the order of its life. */
+/** The moderation statuses of a supplied story (ctplmix:moderated moderationStatus), in the order of its life. */
 export const SUBMISSION_STATUSES = ["submitted", "inReview", "accepted", "declined"] as const;
 export type SubmissionStatus = (typeof SUBMISSION_STATUSES)[number];
 

@@ -23,7 +23,7 @@
     <!-- Helpers copied from the template set and classic-travel on purpose (separate bundles, no
          TypeScript import across modules, see .agents/context/media.md): left out of the
          duplication count. Keep the list in step with the files copied. -->
-    <sonar.cpd.exclusions>**/lib/sanitize.ts,**/lib/sanitize.test.ts,**/lib/resolveLink.ts,**/lib/urls.ts,**/lib/urls.test.ts,**/lib/locale.ts,**/lib/Cta.tsx,**/lib/Heading.tsx,**/lib/Image.tsx,**/lib/JsonLd.tsx,**/lib/RichText.tsx,**/lib/Section.tsx,**/lib/Styles.tsx,**/lib/level.ts,**/lib/level.test.ts,**/lib/props.ts,**/lib/i18n.ts,**/lib/teaser.ts,**/lib/teaser.test.ts,**/lib/locales.test.ts,**/lib/comboboxKeys.ts,**/lib/comboboxKeys.test.ts,**/lib/*.module.css,**/components/Media/shared/cards.module.css,**/components/Media/shared/Untitled.tsx,**/scripts/check-tokens.mjs,**/eslint.config.js,static/js/media.js</sonar.cpd.exclusions>
+    <sonar.cpd.exclusions>**/lib/sanitize.ts,**/lib/sanitize.test.ts,**/lib/resolveLink.ts,**/lib/urls.ts,**/lib/urls.test.ts,**/lib/locale.ts,**/lib/Cta.tsx,**/lib/Heading.tsx,**/lib/Image.tsx,**/lib/JsonLd.tsx,**/lib/RichText.tsx,**/lib/Section.tsx,**/lib/Styles.tsx,**/lib/level.ts,**/lib/level.test.ts,**/lib/props.ts,**/lib/i18n.ts,**/lib/teaser.ts,**/lib/teaser.test.ts,**/lib/locales.test.ts,**/lib/comboboxKeys.ts,**/lib/comboboxKeys.test.ts,**/lib/moderation.ts,**/lib/moderation.test.ts,**/lib/*.module.css,**/components/Media/shared/cards.module.css,**/components/Media/shared/Untitled.tsx,**/scripts/check-tokens.mjs,**/eslint.config.js,static/js/media.js</sonar.cpd.exclusions>
     <sonar.tests />
   </properties>
 

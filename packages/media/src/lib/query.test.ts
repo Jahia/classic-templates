@@ -74,13 +74,13 @@ describe("buildListQuery for briefs and submissions", () => {
 
   it("orders submissions newest first and filters on their own status property", () => {
     const sql = buildListQuery({
-      type: "ctmd:submission",
+      type: "ctmd:suppliedStory",
       startPath: "/sites/p",
       order: "created",
       statuses: ["accepted", "inReview"],
     });
     expect(sql).toContain(
-      "(item.[submissionStatus] = 'accepted' OR item.[submissionStatus] = 'inReview')",
+      "(item.[moderationStatus] = 'accepted' OR item.[moderationStatus] = 'inReview')",
     );
     expect(sql.endsWith("ORDER BY item.[jcr:created] DESC")).toBe(true);
   });

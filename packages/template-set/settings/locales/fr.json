@@ -109,7 +109,8 @@
       "foundValue": "{{shown}} affichés sur {{matching}}{{more}} correspondants",
       "skipped": "Écartés",
       "skippedValue": "{{excluded}} exclus, {{untranslated}} non traduits en {{language}}",
-      "query": "Requête JCR-SQL2"
+      "query": "Requête JCR-SQL2",
+      "skippedModerated": "{{count}} en attente de modération"
     },
     "aToZ": "de A à Z",
     "zToA": "de Z à A"

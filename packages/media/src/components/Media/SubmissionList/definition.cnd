@@ -8,8 +8,8 @@
 <ctmd = 'http://www.jahia.org/classic-media/nt/1.0'>
 <ctmdmix = 'http://www.jahia.org/classic-media/mix/1.0'>
 
-// A page section listing submissions automatically, the newest first: a supplier's own submissions
-// and what became of them. Its heading is the optional jcr:title (an h2); the cta is the "see all"
+// A page section listing supplied stories automatically (ctmd:suppliedStory), the newest first: a
+// supplier's own stories and what became of them. Its heading is the optional jcr:title (an h2); the cta is the "see all"
 // link. folder is the content folder (or any node) to look under (empty: the whole site). The list
 // is computed for the visitor who reads it: a submission the visitor may not read is simply
 // absent, so each supplier sees their own (the view is cached per user). emptyText is shown when

@@ -4,6 +4,7 @@
   - packages/template-set    the classic-templates template set (JavaScript module, .tgz)
   - packages/travel          the classic-travel module (JavaScript module, .tgz)
   - packages/media           the classic-media module (JavaScript module, .tgz)
+  - packages/moderation      classic-moderation, opens accepted moderated content (OSGi bundle, .jar)
   - packages/prepackaged-site the classic-dev demo site as a pre-packaged project (.jar)
   - packages/prepackaged-skylantern the skylantern demo site as a pre-packaged project (.jar)
   The JavaScript packages are standalone Yarn projects: their pom.xml installs Node and Yarn,
@@ -34,6 +35,7 @@
     <module>packages/template-set</module>
     <module>packages/travel</module>
     <module>packages/media</module>
+    <module>packages/moderation</module>
     <module>packages/prepackaged-site</module>
     <module>packages/prepackaged-skylantern</module>
     <module>packages/prepackaged-orvane-signal</module>

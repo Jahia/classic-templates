@@ -143,6 +143,12 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   toggle (checked in `forms.editForm`). Views end with `<Cta node renderContext />`, which renders
   nothing on a node without the mixin, edit mode included. There is no call-to-action banner type:
   a rich text on the accent surface with the call to action switched on is the banner.
+- **Moderated content** (`ctplmix:moderated`, 2026-10-20): `moderationStatus` (submitted, inReview,
+  accepted, declined) and `moderationNote`. The content list drops a moderated item that is not
+  accepted, in code after the query (`src/lib/moderation.ts`), and counts it in its edit panel;
+  classic-media's lists do the same. Opening an accepted item to visitors and publishing it is the
+  OSGi bundle `packages/moderation` (classic-moderation), the only Java of the repository: a
+  JavaScript module cannot react to a save. See `media.md`, "Moderation".
 - **A call to action can be limited to guests or to signed-in visitors** (`ctaAudience`, default
   everyone). A limited button goes through its own view, `ctaForAudience` on `ctplmix:cta`, cached
   per user (`renderContext.isLoggedIn()`), rendered as a fragment inside the section's: the

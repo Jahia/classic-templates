@@ -35,20 +35,20 @@ Install `classic-media-<version>.tgz` in Jahia (Administration > Modules), or bu
 
 ## Content types
 
-| Type                                    | What it is                                                                                                                                                                      | Where it goes                                                                               |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| Person (`ctmd:person`)                  | An author or a speaker: name, role, organisation, portrait, short bio, biography, profile links                                                                                 | A content folder. Own page listing their stories and sessions; cards in galleries and lists |
-| Story (`ctmd:story`)                    | News, feature, opinion, interview, report, video or podcast: teaser, body, date, image, authors, a video or an audio file with its transcript, "Members only"                   | A content folder. Own page with byline, share, related stories; cards in feeds and lists    |
-| Story feed (`ctmd:storyFeed`)           | The latest stories under a folder, of some formats, of some categories or of the page's topics, as cards, a list or a lead story, with format buttons                           | A page area, a column, a tab, a free zone                                                   |
-| Session (`ctmd:session`)                | A session of an event: start and end, room, stream, type, description, speakers with their part, "Members only"                                                                 | The event's content folder. Own page; rows of the agenda                                    |
-| Agenda (`ctmd:agenda`)                  | The sessions of an event, one tab per day, with stream, room and type filters                                                                                                   | A page area, a column, a tab, a free zone                                                   |
-| Speaker gallery (`ctmd:speakerGallery`) | The people of a folder as portrait cards, sorted by name, with an A-Z index                                                                                                     | A page area, a column, a tab, a free zone                                                   |
-| Search results (`ctmd:searchResults`)   | A search box with suggestions, filters (topics, tags, format, type, site) and the Augmented Search results, for this site or its whole network, with paging                     | A page area, a column, a tab, a free zone                                                   |
-| Key dates (`ctmd:keyDates`)             | An event's days and venue, a countdown, its key dates, a call to action                                                                                                         | A page area, a column, a tab, a free zone                                                   |
-| Brief (`ctmd:brief`)                    | What the group needs from its photo and video suppliers: description, deadline, media wanted, quantity, intended use, status, a mood picture                                    | A content folder, readable by the suppliers it targets. Own page; cards in the brief list   |
-| Brief list (`ctmd:briefList`)           | The briefs the visitor may read, open ones unless asked otherwise, the nearest deadline first, as cards                                                                         | A page area, a column, a tab, a free zone                                                   |
-| Submission (`ctmd:submission`)          | What a supplier sent in answer to a brief, with a page of its own: files, caption, credit, licence, shooting date and place, status, the picture desk's note, where it was used | A content folder, readable by its supplier and the desk. No page of its own                 |
-| Submission list (`ctmd:submissionList`) | The submissions the visitor may read, the newest first, as status cards                                                                                                         | A page area, a column, a tab, a free zone                                                   |
+| Type                                    | What it is                                                                                                                                                    | Where it goes                                                                               |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Person (`ctmd:person`)                  | An author or a speaker: name, role, organisation, portrait, short bio, biography, profile links                                                               | A content folder. Own page listing their stories and sessions; cards in galleries and lists |
+| Story (`ctmd:story`)                    | News, feature, opinion, interview, report, video or podcast: teaser, body, date, image, authors, a video or an audio file with its transcript, "Members only" | A content folder. Own page with byline, share, related stories; cards in feeds and lists    |
+| Story feed (`ctmd:storyFeed`)           | The latest stories under a folder, of some formats, of some categories or of the page's topics, as cards, a list or a lead story, with format buttons         | A page area, a column, a tab, a free zone                                                   |
+| Session (`ctmd:session`)                | A session of an event: start and end, room, stream, type, description, speakers with their part, "Members only"                                               | The event's content folder. Own page; rows of the agenda                                    |
+| Agenda (`ctmd:agenda`)                  | The sessions of an event, one tab per day, with stream, room and type filters                                                                                 | A page area, a column, a tab, a free zone                                                   |
+| Speaker gallery (`ctmd:speakerGallery`) | The people of a folder as portrait cards, sorted by name, with an A-Z index                                                                                   | A page area, a column, a tab, a free zone                                                   |
+| Search results (`ctmd:searchResults`)   | A search box with suggestions, filters (topics, tags, format, type, site) and the Augmented Search results, for this site or its whole network, with paging   | A page area, a column, a tab, a free zone                                                   |
+| Key dates (`ctmd:keyDates`)             | An event's days and venue, a countdown, its key dates, a call to action                                                                                       | A page area, a column, a tab, a free zone                                                   |
+| Brief (`ctmd:brief`)                    | What the group needs from its photo and video suppliers: description, deadline, media wanted, quantity, intended use, status, a mood picture                  | A content folder, readable by the suppliers it targets. Own page; cards in the brief list   |
+| Brief list (`ctmd:briefList`)           | The briefs the visitor may read, open ones unless asked otherwise, the nearest deadline first, as cards                                                       | A page area, a column, a tab, a free zone                                                   |
+| Supplied story (`ctmd:suppliedStory`)   | A story a supplier sent from a portal (a `ctmd:story`, moderated): it joins the story lists once the editors accept it                                        |
+| Submission list (`ctmd:submissionList`) | The supplied stories the visitor may read, the newest first, whatever their status, as status cards                                                           | A page area, a column, a tab, a free zone                                                   |
 
 The event's time zone is a setting of its content folder ("Event" in the folder's options): sessions
 and the agenda show their times in that zone.
@@ -57,34 +57,41 @@ Story and session pages end with their **Topics** (categories) and **Tags**; eac
 site's search results filtered by it (`?tag=<tag>`) when the classic-templates site header names a
 **Search page**.
 
-### Briefs and submissions (supplier portal)
+### Briefs and supplied stories (supplier portal)
 
-For a gated supplier portal where photo and video suppliers read the group's **briefs** and follow
-their own **submissions**. The module holds the content types and the views; who sees what is
-decided by Jahia's ACLs, never by a field.
+For a gated supplier portal where the group's suppliers (agencies, studios, freelance writers and
+photographers) read its **briefs** and send **stories**, which the editorial site publishes once
+the editors accept them. The module holds the content types and the views; who sees what is
+decided by Jahia's rights, never by a field.
 
 - A **Brief** is a main resource with its own page (description, deadline, media wanted, quantity,
   intended use, a mood picture) and a card for lists. A closed brief says so in words, on its card
   and on its page. Pick a **Submission form** on the brief: a Formidable form (`fmdb:form`),
   shown on the brief's page, under the heading "Answer this brief", while the brief is open; a
   closed brief shows "This brief is closed." instead. Without a form the page shows none (edit mode
-  says so). Formidable is not a dependency of the module: install it on the instance, and give the
-  form a save action (or one that creates the submission) and the access suppliers need. The
-  form posts from the brief's page.
-- A **Submission** is shown as a **status card** whose title opens the **submission's own page**
-  (every fact, the caption, the photos and the other files sent, the desk's note), readable by
-  those the ACLs let read the submission only (anyone else gets "not found"). The card shows its
-  title, the brief it
-  answers (linked when the visitor may read it), the day it was submitted, its status as text with
-  a mark (never colour alone), the picture desk's note, the item that used the media once accepted
-  and small thumbnails. Its values are typed once by the supplier and are not translated; the
-  title is shown in whichever language it exists.
+  says so). Formidable is not a dependency of the module: install it on the instance, with an
+  action that creates the story (formidable-content's **Create content**). The form posts from the
+  brief's page.
+- A **Supplied story** (`ctmd:suppliedStory`) is a story like any other (format, title, teaser,
+  text, picture, authors, topics), written by a supplier, plus the brief it answers, the licence,
+  the company and who sent it, and a **moderation status** (`ctplmix:moderated` of the template
+  set: submitted, in review, accepted, declined, with a note to the author). Store supplied stories
+  with the site's stories, in a folder per company that only that company and the editors may
+  read. **Every list leaves out a story that is not accepted**, whoever reads it; on its own page a
+  story not accepted yet says so to the few who may open it. When an editor who may publish sets
+  **Accepted**, classic-moderation opens the story and its files to every visitor and publishes
+  them: it then appears in the story feeds, topic pages, related stories and search like any story.
+- The **Submission list** shows a supplier the stories of their company, whatever their status, as
+  **status cards**: format, title (a link to the story once accepted), the brief it answers (linked
+  when the visitor may read it), the day it was sent, its status as text with a mark (never colour
+  alone), the licence, the editors' note, its picture, and, until it is accepted, a preview of the
+  lead and text. A supplied story is typed once, in one language: the list shows it whatever the
+  page's language; the story feeds, which follow the page's language, show it in that language
+  only until it is translated.
 - The **Brief list** and the **Submission list** are computed **for the visitor who reads them**:
-  the query runs with the visitor's own session, so a brief or a submission the visitor may not
-  read is simply absent, and two suppliers get two different lists. The two list views are cached
-  **per user**, as is the status card, so a list built for one supplier is never served to
-  another. Restrict a brief or a supplier's folder with an ACL (read for the right users or
-  groups only); the lists then follow.
+  the query runs with the visitor's own session, so a brief or a story the visitor may not read is
+  simply absent, and two suppliers get two different lists. The two list views are cached **per
+  user**, as is the status card, so a list built for one supplier is never served to another.
 - Closed briefs leave the brief list unless **Show closed briefs** is on; briefs are ordered by
   deadline, those without one last. A list with nothing to show displays its own text, or leaves
   the section out when it has none.

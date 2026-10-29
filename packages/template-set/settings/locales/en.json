@@ -109,7 +109,8 @@
       "foundValue": "{{shown}} shown of {{matching}}{{more}} matching",
       "skipped": "Left out",
       "skippedValue": "{{excluded}} excluded, {{untranslated}} not translated into {{language}}",
-      "query": "JCR-SQL2 query"
+      "query": "JCR-SQL2 query",
+      "skippedModerated": "{{count}} awaiting moderation"
     },
     "aToZ": "A to Z",
     "zToA": "Z to A"

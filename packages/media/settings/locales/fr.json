@@ -48,7 +48,8 @@
     "download": "Télécharger l'épisode",
     "captionsMissing": "Ajoutez les sous-titres de l'épisode (un fichier WebVTT) pour afficher le lecteur audio.",
     "captions": "Sous-titres",
-    "membersNoticeSignIn": "La suite de ce récit est réservée aux membres. Connectez-vous pour lire la suite."
+    "membersNoticeSignIn": "La suite de ce récit est réservée aux membres. Connectez-vous pour lire la suite.",
+    "pending": "Proposé, pas encore publié : seuls son auteur et la rédaction peuvent ouvrir cet article tant que la rédaction ne l'a pas accepté."
   },
   "share": {
     "label": "Partager cette page",
@@ -149,27 +150,19 @@
     "brief": "Brief",
     "submittedOn": "Date d'envoi",
     "statusLabel": "Statut",
-    "deskNote": "Note du service photo",
-    "usedIn": "Utilisée dans",
-    "photos": "Photos envoyées",
-    "moreFiles_one": "{{count}} autre fichier",
-    "moreFiles_other": "{{count}} autres fichiers",
+    "note": "Note de la rédaction",
     "status": {
       "submitted": "Envoyée",
       "inReview": "En cours d'examen",
       "accepted": "Acceptée",
       "declined": "Refusée"
     },
-    "caption": "Légende",
-    "shotDate": "Prise de vue le",
-    "location": "Lieu",
     "licenceLabel": "Licence",
-    "credit": "Crédit",
-    "files": "Fichiers envoyés",
     "licence": {
       "editorial": "Usage éditorial sur tous les sites du groupe",
       "exclusive30": "Exclusivité de 30 jours"
-    }
+    },
+    "preview": "Revoir ce que vous avez envoyé"
   },
   "submissionList": {
     "summary": "Liste les propositions sous {{start}} que chaque visiteur peut lire, les plus récentes d'abord, jusqu'à {{max}}."

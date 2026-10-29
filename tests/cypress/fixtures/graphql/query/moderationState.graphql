@@ -1,0 +1,15 @@
+query moderationState($path: String!, $workspace: Workspace!) {
+    jcr(workspace: $workspace) {
+        nodeByPath(path: $path) {
+            status: property(name: "moderationStatus") {
+                value
+            }
+            date: property(name: "publicationDate") {
+                value
+            }
+            guestGrant: descendant(relPath: "j:acl/GRANT_u_guest") {
+                path
+            }
+        }
+    }
+}

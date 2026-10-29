@@ -48,7 +48,8 @@
     "download": "Download the episode",
     "captionsMissing": "Add the episode's captions (a WebVTT file) to show the audio player.",
     "captions": "Captions",
-    "membersNoticeSignIn": "The rest of this story is for members. Sign in to read on."
+    "membersNoticeSignIn": "The rest of this story is for members. Sign in to read on.",
+    "pending": "Submitted, not published yet: only its author and the editors can open this story until the editors accept it."
   },
   "share": {
     "label": "Share this page",
@@ -149,27 +150,19 @@
     "brief": "Brief",
     "submittedOn": "Submitted on",
     "statusLabel": "Status",
-    "deskNote": "Picture desk note",
-    "usedIn": "Used in",
-    "photos": "Photos sent",
-    "moreFiles_one": "{{count}} more file",
-    "moreFiles_other": "{{count}} more files",
+    "note": "Note from the editors",
     "status": {
       "submitted": "Submitted",
       "inReview": "In review",
       "accepted": "Accepted",
       "declined": "Declined"
     },
-    "caption": "Caption",
-    "shotDate": "Shot on",
-    "location": "Location",
     "licenceLabel": "Licence",
-    "credit": "Credit line",
-    "files": "Files sent",
     "licence": {
       "editorial": "Editorial use on every site of the group",
       "exclusive30": "Exclusive for 30 days"
-    }
+    },
+    "preview": "Preview what you sent"
   },
   "submissionList": {
     "summary": "Lists the submissions under {{start}} that each visitor may read, newest first, up to {{max}}."

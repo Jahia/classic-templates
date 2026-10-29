@@ -48,7 +48,8 @@
     "download": "Transferir o episódio",
     "captionsMissing": "Adicione as legendas do episódio (um ficheiro WebVTT) para mostrar o leitor de áudio.",
     "captions": "Legendas",
-    "membersNoticeSignIn": "O resto deste artigo é exclusivo para membros. Inicie sessão para continuar a ler."
+    "membersNoticeSignIn": "O resto deste artigo é exclusivo para membros. Inicie sessão para continuar a ler.",
+    "pending": "Enviado, ainda não publicado: só o autor e a redação podem abrir este artigo até a redação o aceitar."
   },
   "share": {
     "label": "Partilhar esta página",
@@ -149,27 +150,19 @@
     "brief": "Briefing",
     "submittedOn": "Data de envio",
     "statusLabel": "Estado",
-    "deskNote": "Nota da redação de fotografia",
-    "usedIn": "Utilizada em",
-    "photos": "Fotografias enviadas",
-    "moreFiles_one": "mais {{count}} ficheiro",
-    "moreFiles_other": "mais {{count}} ficheiros",
+    "note": "Nota da redação",
     "status": {
       "submitted": "Enviada",
       "inReview": "Em análise",
       "accepted": "Aceite",
       "declined": "Recusada"
     },
-    "caption": "Legenda",
-    "shotDate": "Data da fotografia",
-    "location": "Local",
     "licenceLabel": "Licença",
-    "credit": "Crédito",
-    "files": "Ficheiros enviados",
     "licence": {
       "editorial": "Uso editorial em todos os sites do grupo",
       "exclusive30": "Exclusividade de 30 dias"
-    }
+    },
+    "preview": "Rever o que enviou"
   },
   "submissionList": {
     "summary": "Lista as propostas em {{start}} que cada visitante pode ler, das mais recentes para as mais antigas, até {{max}}."
