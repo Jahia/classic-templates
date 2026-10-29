@@ -21,6 +21,7 @@ import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
 import classes from "./brief.module.css";
 import ctaClasses from "../../../lib/cta.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /** The id of the answer section: the brief page's "Answer this brief" button and the cards link to it. */
 const ANSWER_ID = "ctmd-brief-answer";
@@ -120,9 +121,9 @@ const SubmissionSlot = ({ props }: { props: Props }) => {
   if (state === "none") {
     if (!renderContext.isEditMode()) return null;
     return (
-      <p className={classes.editNote}>
+      <EditNote>
         {t(form.state === "unavailable" ? "brief.formUnavailable" : "brief.noForm")}
-      </p>
+      </EditNote>
     );
   }
   if (form.state !== "ready") return null;
@@ -204,9 +205,7 @@ export const BriefFull = ({ props }: { props: Props }) => {
       )}
       <RichText html={props.description} className={classes.body} headingLevel={2} />
       <SubmissionSlot props={props} />
-      {renderContext.isEditMode() && !props.description && (
-        <p className={classes.editNote}>{t("brief.noDescription")}</p>
-      )}
+      {!props.description && <EditNote>{t("brief.noDescription")}</EditNote>}
     </article>
   );
 };

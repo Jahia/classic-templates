@@ -7,6 +7,7 @@ import { SectionHeading } from "../../../lib/Heading.js";
 import { Section } from "../../../lib/Section.js";
 import type { KeyFigureProps, Props } from "./types.js";
 import classes from "./key-figures.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /** True when at least one figure has a value in this language (the others are not rendered). */
 const hasFigures = (node: JCRNodeWrapper) =>
@@ -61,7 +62,7 @@ jahiaComponent(
     if (!value) {
       return renderContext.isEditMode() ? (
         <li className={classes.figure}>
-          <p className="ctpl-edit-hint">{t("figures.noValue")}</p>
+          <EditNote>{t("figures.noValue")}</EditNote>
         </li>
       ) : null;
     }

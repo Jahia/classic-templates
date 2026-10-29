@@ -1,7 +1,7 @@
 import { useServerContext } from "@jahia/javascript-modules-library";
 import { RAW, useT } from "./i18n.js";
 import { sanitizeRichTextWithReport } from "./sanitize.js";
-import classes from "./shared.module.css";
+import { EditNote } from "./EditNote.js";
 
 /**
  * Renders a rich-text property written by an editor (a destination's body, a fare's conditions, a
@@ -49,9 +49,11 @@ export const RichText = ({
         // eslint-disable-next-line @eslint-react/dom/no-dangerously-set-innerhtml -- sanitized just above (lib/sanitize.ts), see the component comment
         dangerouslySetInnerHTML={{ __html: clean }}
       />
-      {isEdit && imageWithoutAlt && <p className={classes.hint}>{t("richText.imageWithoutAlt")}</p>}
+      {isEdit && imageWithoutAlt && (
+        <EditNote level="a11y">{t("richText.imageWithoutAlt")}</EditNote>
+      )}
       {isEdit && tableWithoutCaption && (
-        <p className={classes.hint}>{t("richText.tableWithoutCaption")}</p>
+        <EditNote level="a11y">{t("richText.tableWithoutCaption")}</EditNote>
       )}
     </>
   );

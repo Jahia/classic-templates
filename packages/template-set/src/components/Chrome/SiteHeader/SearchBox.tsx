@@ -145,13 +145,3 @@ export const SearchBox = (props: SearchBoxProps) => {
     </div>
   );
 };
-
-/** The edit-mode hint: the box is on but the header names no search page. */
-export const SearchHint = () => {
-  const { t } = useTranslation("classic-templates");
-  return (
-    <p className={classes.hint} data-testid="ctpl-header-search-hint">
-      {t("search.noPage")}
-    </p>
-  );
-};

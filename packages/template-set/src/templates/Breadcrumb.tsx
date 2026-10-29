@@ -7,6 +7,7 @@ import { chromeOwner, pageSite } from "../lib/site.js";
 import { titleOf } from "../lib/title.js";
 import { type Trail, type TrailTree, buildTrail } from "../lib/trail.js";
 import classes from "./breadcrumb.module.css";
+import { EditNote } from "../lib/EditNote.js";
 
 /**
  * The site's nodes as lib/trail.ts sees them, with the cache dependencies of the trail: every page
@@ -102,9 +103,9 @@ export const Breadcrumb = () => {
         ))}
       </ol>
       {trail.unlisted && renderContext.isEditMode() && (
-        <p className="ctpl-edit-hint" data-testid="ctpl-breadcrumb-hint">
+        <EditNote level="info" testId="ctpl-breadcrumb-hint">
           {t("breadcrumb.noListingPage")}
-        </p>
+        </EditNote>
       )}
     </nav>
   );

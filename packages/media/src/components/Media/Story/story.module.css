@@ -80,13 +80,6 @@
   font-size: var(--ctpl-text-xl);
 }
 
-.editNote {
-  padding: var(--ctpl-space-2) var(--ctpl-space-3);
-  background: var(--ctpl-color-warning-surface);
-  color: var(--ctpl-color-warning);
-  font-size: var(--ctpl-text-sm);
-}
-
 .tile {
   min-height: 100%;
 }

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { readString } from "../../../lib/props.js";
 import type { ListResult } from "../../../lib/query.js";
 import classes from "./jcr-query.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 const titleOf = (node: JCRNodeWrapper) => readString(node, "jcr:title") ?? node.getName();
 
@@ -89,11 +90,9 @@ export const EditPanel = ({ info }: { info: PanelInfo }) => {
         })}
       </p>
       {info.startMissing && (
-        <p className="ctpl-edit-hint" data-testid="ctpl-jcr-query-start-missing">
-          {t("query.startMissing")}
-        </p>
+        <EditNote testId="ctpl-jcr-query-start-missing">{t("query.startMissing")}</EditNote>
       )}
-      {!info.typeValid && <p className="ctpl-edit-hint">{t("query.invalidType")}</p>}
+      {!info.typeValid && <EditNote>{t("query.invalidType")}</EditNote>}
       <dl className={classes.panelList}>
         {rows.map(([label, value]) => (
           <div key={label} className={classes.panelRow}>

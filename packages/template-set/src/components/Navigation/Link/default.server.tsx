@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { resolveLink } from "../../../lib/resolveLink.js";
 import type { Props } from "./types.js";
 import classes from "./link.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /**
  * One list item. The parent list owns the <ul>; this view renders the <li> so the list keeps valid
@@ -24,7 +25,7 @@ jahiaComponent(
       return (
         <li className={classes.item} data-testid="ctpl-link">
           {label || t("link.untitled")}
-          {missingTarget && <span className={classes.hint}>{t("link.noTarget")}</span>}
+          {missingTarget && <EditNote inline>{t("link.noTarget")}</EditNote>}
         </li>
       );
     }

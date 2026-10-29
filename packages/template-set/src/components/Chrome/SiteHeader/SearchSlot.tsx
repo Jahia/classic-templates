@@ -1,7 +1,8 @@
 import { Island, useServerContext } from "@jahia/javascript-modules-library";
 import { searchPageHref, suggestionSites } from "../../../lib/headerPages.js";
 import HeaderSearch from "./HeaderSearch.client.jsx";
-import { SearchBox, SearchHint } from "./SearchBox.js";
+import { SearchBox } from "./SearchBox.js";
+import { SearchHint } from "./SearchHint.js";
 
 /**
  * The header's search box, when "Show a search box" is on: nothing for visitors while the header

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { gatingPageOf } from "../lib/pageGate.js";
 import { PageHeading } from "./PageShell.jsx";
 import classes from "./page-areas.module.css";
+import { EditNote } from "../lib/EditNote.js";
 
 /** The areas a template offers, in order. Home and content pages: hero and main; full-width: main. */
 export type AreaName = "hero" | "main";
@@ -50,9 +51,9 @@ export const PageAreas = ({
   }
   return (
     <>
-      <p className={`ctpl-container ${classes.editNote}`} data-testid="ctpl-members-edit-note">
+      <EditNote level="info" container className={classes.editNote} testId="ctpl-members-edit-note">
         {t("members.pageEditNote")}
-      </p>
+      </EditNote>
       <PageHeading title={title} hidden={hideTitle} />
       <AreaList areas={areas} />
     </>

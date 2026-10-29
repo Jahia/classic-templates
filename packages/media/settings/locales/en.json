@@ -1,4 +1,7 @@
 {
+  "editNote": {
+    "a11y": "Accessibility:"
+  },
   "item": {
     "noTitle": "No title in this language: this item is left out of lists and has no heading.",
     "tags": "Tags"

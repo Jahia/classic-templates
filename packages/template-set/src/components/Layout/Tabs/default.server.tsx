@@ -14,6 +14,7 @@ import { readString } from "../../../lib/props.js";
 import { Section } from "../../../lib/Section.js";
 import type { Props, TabProps } from "./types.js";
 import classes from "./tabs.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /** True when at least one tab has a label in this language (the others are not rendered). */
 const hasTabs = (node: JCRNodeWrapper) =>
@@ -92,7 +93,7 @@ jahiaComponent(
             {title}
           </Heading>
         ) : (
-          <p className="ctpl-edit-hint">{t("tabs.noTitle")}</p>
+          <EditNote>{t("tabs.noTitle")}</EditNote>
         )}
         <div className={classes.content}>
           <RenderChildren />

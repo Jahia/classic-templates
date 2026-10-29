@@ -1,4 +1,7 @@
 {
+  "editNote": {
+    "a11y": "Accessibilité :"
+  },
   "layout": {
     "skipToContent": "Aller au contenu principal"
   },

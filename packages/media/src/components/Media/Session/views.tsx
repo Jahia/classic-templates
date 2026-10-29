@@ -16,6 +16,7 @@ import { ShareBox } from "../shared/parts.js";
 import { Untitled } from "../shared/Untitled.js";
 import type { Props } from "./types.js";
 import classes from "./session.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /** The page language, the event's zone, and the session's times in that zone. */
 const useWhen = (props: Props) => {
@@ -120,9 +121,7 @@ export const SessionFull = ({ props, perUser = false }: { props: Props; perUser?
         )}
       </header>
       <ShareBox url={url} title={title} />
-      {membersOnly && renderContext.isEditMode() && (
-        <p className={classes.editNote}>{t("session.membersEdit")}</p>
-      )}
+      {membersOnly && <EditNote level="info">{t("session.membersEdit")}</EditNote>}
       {open ? (
         <RichText html={props.body} className={classes.body} headingLevel={2} />
       ) : (
