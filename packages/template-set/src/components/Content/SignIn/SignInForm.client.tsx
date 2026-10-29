@@ -1,9 +1,16 @@
-import { type FormEvent, useId, useState } from "react";
+import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { destinationOf, loginOutcome } from "../../../lib/signin.js";
 import classes from "./sign-in.module.css";
 
 interface Props {
+  /**
+   * Prefix of the ids that tie labels, hint and error to the fields, set by the server. Not `useId`:
+   * an island hydrates as a root of its own, so `useId` gives the server render one id and the
+   * browser another; React keeps the server's attributes, and anything rendered later (the error,
+   * `aria-describedby` after a failed attempt) pointed at ids that did not exist.
+   */
+  idBase: string;
   /** Jahia's login servlet (`<contextPath>/cms/login`). */
   loginUrl: string;
   /** Jahia's logout servlet, with the page to come back to. Used when the visitor is signed in. */
@@ -55,6 +62,7 @@ const go = (destination: string | undefined) => {
  * serves them all. Without JavaScript the form does nothing: signing in needs the island.
  */
 export default function SignInForm({
+  idBase: id,
   loginUrl,
   logoutUrl,
   siteKey,
@@ -64,7 +72,6 @@ export default function SignInForm({
   signedInAs,
 }: Readonly<Props>) {
   const { t } = useTranslation("classic-templates");
-  const id = useId();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
