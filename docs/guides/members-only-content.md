@@ -84,7 +84,7 @@ area name) is not restricted until you do the same.
 
 ## The sign-in form
 
-The [Sign-in form](../components/sign-in.md) is a page section: username, password and a button,
+The [Sign-in form](../components/sign-in.md) is a page section: e-mail or username, password and a button,
 which signs the visitor in **without leaving the site** (it uses the platform's own sign-in, so the
 session is an ordinary one). It is also what the notices of reserved items and pages contain.
 

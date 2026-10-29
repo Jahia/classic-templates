@@ -22,11 +22,12 @@
   },
   "signin": {
     "formLabel": "Iniciar sessão",
-    "username": "Nome de utilizador",
+    "username": "E-mail ou nome de utilizador",
+    "usernameHint": "O e-mail com que se registou, ou o seu nome de utilizador.",
     "password": "Palavra-passe",
     "submit": "Iniciar sessão",
     "submitting": "A iniciar sessão...",
-    "rejected": "O nome de utilizador ou a palavra-passe não estão corretos. Verifique-os e tente novamente.",
+    "rejected": "O e-mail, o nome de utilizador ou a palavra-passe não estão corretos. Verifique-os e tente novamente.",
     "unknown": "Não foi possível iniciar sessão. Tente novamente dentro de instantes.",
     "signedInAs": "Sessão iniciada como {{name}}.",
     "continue": "Continuar"

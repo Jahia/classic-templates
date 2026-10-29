@@ -28,7 +28,7 @@ export const SignInPanel = ({
   preview?: boolean;
   signedInAs?: string;
 }) => {
-  const { renderContext } = useServerContext();
+  const { renderContext, currentNode } = useServerContext();
   const site = pageSite(renderContext);
   const contextPath = renderContext.getRequest().getContextPath();
   const urls = accountUrls(contextPath, undefined, buildNodeUrl(chromeOwner(site)));
@@ -37,6 +37,7 @@ export const SignInPanel = ({
       <Island
         component={SignInForm}
         props={{
+          idBase: `ctpl-signin-form-${currentNode.getIdentifier()}`,
           loginUrl: loginRoute(contextPath),
           logoutUrl: urls.signOut,
           siteKey: site.getSiteKey(),
