@@ -21,6 +21,6 @@
 
 // One key date of an event: its title (jcr:title), the day, an optional detail. Never hidden:
 // editors select each date in Page Builder.
-[ctmd:keyDate] > jnt:content, mix:title
+[ctmd:keyDate] > jnt:content, mix:title, jmix:editorialContent
  - date (date, datepicker)
  - detail (string) i18n

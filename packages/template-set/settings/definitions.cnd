@@ -16,8 +16,11 @@
 // Groups every classic-templates type in the content type selector.
 [ctplmix:component] > jmix:droppableContent, jmix:accessControllableContent mixin
 
-// Can be dropped in a page's main area.
-[ctplmix:pageComponent] > ctplmix:component mixin
+// Can be dropped in a page's main area. Editorial content: Augmented Search indexes its text with
+// the page by default (indexedSubNodeTypes = jmix:editorialContent), jContent lists it in a page's
+// content and offers Translate on it. Header and footer components are not page components: their
+// labels are not indexed with every page.
+[ctplmix:pageComponent] > ctplmix:component, jmix:editorialContent mixin
 
 // Can be dropped in a page's hero area (one banner at the top of the page).
 [ctplmix:heroComponent] > ctplmix:component mixin

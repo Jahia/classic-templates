@@ -9,7 +9,7 @@
 // One entry of a ctpl:accordion: its heading (jcr:title, the question or label visitors click) and
 // the rich text it reveals. openByDefault shows the entry open when the page loads. Never hidden:
 // editors select each entry in Page Builder.
-[ctpl:accordionItem] > jnt:content, mix:title
+[ctpl:accordionItem] > jnt:content, mix:title, jmix:editorialContent
  - body (string, richtext) i18n
  - openByDefault (boolean) = false autocreated
 

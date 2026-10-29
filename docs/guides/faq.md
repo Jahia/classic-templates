@@ -87,6 +87,10 @@ Forms come from the Formidable module. Enable it on your site, add a **Free zone
 page, and place a form reference to your form inside it. See
 [Place a Formidable form](add-ons.md#place-a-formidable-form).
 
+### Does the site search find the text of my sections?
+
+Yes, with Augmented Search: the text of every section of a page (a text section, a card, an FAQ answer, a tab, a key figure) is indexed with that page, with Augmented Search's default settings. The header, the footer and the consent banner are not, so their labels do not match every page. After upgrading from a version where sections were not indexed, ask your administrator for one full reindex.
+
 ### How do I reserve a page or a news item for members?
 
 Tick **Members only** in the page's **Page options**, or switch on the **Members only** section of a news item or article, then publish. Visitors who are not signed in get a sign-in form instead. Read what this protects, and what it only hides, in [Members-only content](members-only-content.md).

@@ -10,7 +10,7 @@
 // link target (internal page, web address or none). The whole card is clickable; linkLabel is an
 // optional visible link text, nothing by default. An internal link without a title shows the
 // target page's title. Never hidden: editors select each card in Page Builder.
-[ctpl:card] > jnt:content, mix:title, ctplmix:media, ctplmix:linkTo
+[ctpl:card] > jnt:content, mix:title, ctplmix:media, ctplmix:linkTo, jmix:editorialContent
  - text (string, textarea) i18n
  - linkLabel (string) i18n
 
