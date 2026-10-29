@@ -16,8 +16,11 @@
 // Groups every classic-templates type in the content type selector.
 [ctplmix:component] > jmix:droppableContent, jmix:accessControllableContent mixin
 
-// Can be dropped in a page's main area.
-[ctplmix:pageComponent] > ctplmix:component mixin
+// Can be dropped in a page's main area. Editorial content: Augmented Search indexes its text with
+// the page by default (indexedSubNodeTypes = jmix:editorialContent), jContent lists it in a page's
+// content and offers Translate on it. Header and footer components are not page components: their
+// labels are not indexed with every page.
+[ctplmix:pageComponent] > ctplmix:component, jmix:editorialContent mixin
 
 // Can be dropped in a page's hero area (one banner at the top of the page).
 [ctplmix:heroComponent] > ctplmix:component mixin
@@ -128,6 +131,14 @@
 [ctplmix:listingPage] mixin
  extends = jnt:contentFolder
  - ctplListingPage (weakreference, picker[type='page']) < jnt:page
+
+// A theme supplied by another module. That module declares its own site mixin extending this one,
+// e.g. [acmemix:acme] > ctplmix:themeProvider mixin extends = jnt:virtualsite, offered in the site's
+// edit form once the module is enabled on the site. Switched on, it wins over ctplTheme: the
+// Layout stamps the mixin's local name as data-ctpl-theme ("acme") and loads the declaring
+// module's dist/assets/style.css, whose :root[data-ctpl-theme="acme"] block sets the tokens.
+// No property and no `extends`: it is never offered on its own.
+[ctplmix:themeProvider] mixin
 
 // Look of the whole site, set on the site node in jContent: no deploy needed to change it.
 // ctplShowBreadcrumb shows the breadcrumb trail above the content of every page except home.

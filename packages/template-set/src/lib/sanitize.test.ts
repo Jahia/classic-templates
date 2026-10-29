@@ -322,23 +322,36 @@ describe("sanitizeRichText - text and markup boundaries", () => {
   });
 
   it("runs in linear time, long tags included", () => {
-    const inputs = [
-      "</p>".repeat(280_000), // 1.12M characters of closing tags with no element
-      "<p>".repeat(370_000),
-      "<p><b>".repeat(100_000) + "</p>".repeat(100_000),
-      `<p ${"a ".repeat(200_000)}>x</p>`,
-      `<p ${"a= ".repeat(100_000)}>x</p>`,
-      `<a href="/x" ${"title=y ".repeat(10_000)}>x</a>`, // an 80 KB tag
-      "a<".repeat(500_000),
-      "<h2>".repeat(100_000) + "</h3>".repeat(100_000),
-      '<a href="#x">'.repeat(100_000),
+    // Each input grows with n. On 8 times the input a linear sanitizer takes about 8 times as long
+    // and a quadratic one 64 times: the ratio holds on a slow runner, where a duration limit fails.
+    const inputs: Array<(n: number) => string> = [
+      (n) => "</p>".repeat(5 * n), // closing tags with no element
+      (n) => "<p>".repeat(5 * n),
+      (n) => "<p><b>".repeat(2 * n) + "</p>".repeat(2 * n),
+      (n) => `<p ${"a ".repeat(80 * n)}>x</p>`,
+      (n) => `<p ${"a= ".repeat(80 * n)}>x</p>`,
+      (n) => `<a href="/x" ${"title=y ".repeat(20 * n)}>x</a>`, // a 1.3 MB tag at 8000
+      (n) => "a<".repeat(20 * n),
+      (n) => "<h2>".repeat(2 * n) + "</h3>".repeat(2 * n),
+      (n) => '<a href="#x">'.repeat(2 * n),
     ];
+    /** Best of three runs, in milliseconds: a garbage collection slows one run, not all three. */
+    const time = (input: string) => {
+      let best = Number.POSITIVE_INFINITY;
+      for (let run = 0; run < 3; run++) {
+        const start = performance.now();
+        sanitizeRichText(input);
+        best = Math.min(best, performance.now() - start);
+      }
+      return best;
+    };
     for (const input of inputs) {
-      const start = performance.now();
-      sanitizeRichText(input);
-      expect(performance.now() - start).toBeLessThan(1000);
+      const small = time(input(1000));
+      const large = time(input(8000));
+      expect(large / small, input(1)).toBeLessThan(32);
+      expect(large, input(1)).toBeLessThan(10_000); // last guard, against a sanitizer that hangs
     }
-  });
+  }, 60_000);
 });
 
 describe("sanitizeRichText - ids and anchors", () => {

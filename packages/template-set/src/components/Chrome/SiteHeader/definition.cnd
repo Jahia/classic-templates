@@ -18,11 +18,17 @@
 // page holding the site's search results: the tags of an item's page link to its tag filter
 // (?tag=<tag>). showSearch adds a search box to the header (a GET form to searchPage, `q` being the
 // words) with suggestions from Augmented Search when it is installed; it needs searchPage.
+// brandCaption is a short line beside the brand (a tagline), part of the link to the home page,
+// shown on large screens only. headerLayout "twoRows" puts the brand, the search box, the utility
+// links, the account entry and the languages on a top row, and the main menu on its own row below.
 [ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType
  - logo (weakreference, picker[type='image']) < jmix:image
  - logoDark (weakreference, picker[type='image']) < jmix:image
  - brandName (string) i18n
  - showBrandName (boolean) = true autocreated
+ - brandCaption (string) i18n
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - headerLayout (string, choicelist[resourceBundle]) = 'oneRow' autocreated indexed=no < 'oneRow', 'twoRows'
  - showAccount (boolean) = false autocreated
  - showSearch (boolean) = false autocreated
  - accountLanding (weakreference, picker[type='page']) < jnt:page

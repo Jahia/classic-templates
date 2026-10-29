@@ -77,6 +77,28 @@ describe('Consent banner - asks once, remembers the choice, opens again from the
         cy.focused().should('have.attr', 'data-testid', 'ctpl-consent-settings')
     })
 
+    it("keeps jExperience's switch on the page in step with the choice, for scripts that read it at once", () => {
+        // jExperience stands in as a stub: the banner calls it and the page's copy of the switch
+        // (digitalData.wemInitConfig.activateWem, written at page load) must follow the choice
+        // on this page, or Formidable's bridge sends no answers until the next page.
+        type Tracked = { wem: { calls: string[] }; digitalData: { wemInitConfig: { activateWem: boolean } } }
+        cy.visit(live, {
+            onBeforeLoad(win) {
+                const w = win as unknown as Tracked & { wem: Record<string, unknown> }
+                w.digitalData = { wemInitConfig: { activateWem: false } }
+                const calls: string[] = []
+                w.wem = { calls, enableWem: () => calls.push('enable'), disableWem: () => calls.push('disable') }
+            },
+        })
+        cy.get('[data-testid="ctpl-consent-accept"]').click()
+        cy.window().its('wem.calls').should('deep.equal', ['enable'])
+        cy.window().its('digitalData.wemInitConfig.activateWem').should('equal', true)
+        cy.get('[data-testid="ctpl-consent-settings"]').click()
+        cy.get('[data-testid="ctpl-consent-refuse"]').click()
+        cy.window().its('wem.calls').should('deep.equal', ['enable', 'disable'])
+        cy.window().its('digitalData.wemInitConfig.activateWem').should('equal', false)
+    })
+
     it('does not ask again, and the settings button opens the banner to change the choice', () => {
         cy.setCookie('ctpl-consent', 'granted')
         cy.visit(live)

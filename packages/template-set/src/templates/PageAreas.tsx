@@ -8,13 +8,20 @@ import { EditNote } from "../lib/EditNote.js";
 /** The areas a template offers, in order. Home and content pages: hero and main; full-width: main. */
 export type AreaName = "hero" | "main";
 
-/** The areas of a page, as editors fill them. */
-export const AreaList = ({ areas }: { areas: AreaName[] }) => (
-  <>
-    {areas.includes("hero") && <Area name="hero" nodeType="ctpl:heroArea" />}
-    {areas.includes("main") && <Area name="main" nodeType="ctpl:pageArea" />}
-  </>
-);
+/**
+ * The areas of a page, as editors fill them; or, when `body` names a view of the page, that view: a
+ * module's own template (its areas, their allowed types and counts) inside this shell.
+ */
+export const AreaList = ({ areas, body }: { areas: AreaName[]; body?: string }) => {
+  const { currentNode } = useServerContext();
+  if (body) return <Render node={currentNode} view={body} />;
+  return (
+    <>
+      {areas.includes("hero") && <Area name="hero" nodeType="ctpl:heroArea" />}
+      {areas.includes("main") && <Area name="main" nodeType="ctpl:pageArea" />}
+    </>
+  );
+};
 
 /**
  * The body of a page template: the page's `<h1>` and its areas, or, on a members-only page (the
@@ -31,10 +38,13 @@ export const PageAreas = ({
   title,
   hideTitle,
   areas,
+  body,
 }: {
   title?: string;
   hideTitle?: boolean;
   areas: AreaName[];
+  /** A view of the page rendered in place of the areas (another module's template body). */
+  body?: string;
 }) => {
   const { t } = useTranslation("classic-templates");
   const { currentNode, renderContext } = useServerContext();
@@ -49,11 +59,17 @@ export const PageAreas = ({
       <>
         {hiddenTitleNote}
         <PageHeading title={title} hidden={hideTitle} />
-        <AreaList areas={areas} />
+        <AreaList areas={areas} body={body} />
       </>
     );
   if (!renderContext.isEditMode()) {
-    return <Render node={currentNode} view="membersGate" parameters={{ areas: areas.join(",") }} />;
+    return (
+      <Render
+        node={currentNode}
+        view="membersGate"
+        parameters={{ areas: areas.join(","), ...(body ? { body } : {}) }}
+      />
+    );
   }
   return (
     <>
@@ -62,7 +78,7 @@ export const PageAreas = ({
       </EditNote>
       {hiddenTitleNote}
       <PageHeading title={title} hidden={hideTitle} />
-      <AreaList areas={areas} />
+      <AreaList areas={areas} body={body} />
     </>
   );
 };

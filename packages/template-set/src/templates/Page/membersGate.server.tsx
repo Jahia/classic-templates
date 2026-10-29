@@ -1,6 +1,7 @@
 import { buildNodeUrl, jahiaComponent } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import { MembersNotice } from "../../lib/MembersNotice.js";
+import { bodyViewOf } from "../../lib/bodyView.js";
 import { AreaList, type AreaName } from "../PageAreas.jsx";
 import { PageHeading } from "../PageShell.jsx";
 import type { PageProps } from "./types.js";
@@ -34,11 +35,12 @@ jahiaComponent(
   ) => {
     const { t } = useTranslation("classic-templates");
     const areas = areasOf(currentResource.getModuleParams().get("areas"));
+    const body = bodyViewOf(currentResource.getModuleParams().get("body"));
     if (renderContext.isLoggedIn()) {
       return (
         <>
           <PageHeading title={title} hidden={ctplHideTitle} />
-          <AreaList areas={areas} />
+          <AreaList areas={areas} body={body} />
         </>
       );
     }

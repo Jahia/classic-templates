@@ -35,6 +35,48 @@ in a **Free zone** section. See [Add-ons](add-ons.md).
 
 The full list of components is in the [component index](../components/index.md).
 
+## Structured templates from another module
+
+The three templates are free: editors place any section anywhere in the main area. A project that
+wants pages built the same way every time (a product page: banner, product families, highlights,
+then a call to action) can add its own template in a module of its own and keep the template set's
+header, breadcrumb, page title, footer, theme and members-only gate around it.
+
+That module registers two things on `jnt:page`:
+
+- a **template** that renders the template set's page shell with the module parameter `body`, the
+  name of the view below:
+
+  ```tsx
+  <Render node={currentNode} view="ctplShell" parameters={{ body: "productPageBody" }} />
+  ```
+
+- the **body view** (`productPageBody`), which places the areas in order, each with the types it
+  takes and how many:
+
+  ```tsx
+  <Area
+    name="families"
+    nodeType="ns:cardGridArea"
+    allowedNodeTypes={["ctpl:cardGrid"]}
+    numberOfItems={6}
+  />
+  ```
+
+`allowedNodeTypes` and `numberOfItems` only filter what the editor offers: GraphQL, the Jahia MCP
+server or a script can still put any section in the area. To make the repository itself refuse
+another type, give each area a node type of its own whose child definition admits only that type,
+and keep the hero in a `ctpl:heroArea` (the hero banner spans the full width only there):
+
+```cnd
+[ns:cardGridArea] > jnt:content, jmix:list, jmix:hiddenType orderable
+ + * (ctpl:cardGrid)
+```
+
+The repository does not count items: the number per area stays the editor's limit. The view name
+must start with a letter and hold only letters, digits, `-` and `_` (64 characters at most);
+otherwise the shell renders the page title alone.
+
 ## News and articles have their own page
 
 News items and articles are not pages. They live in the `contents/news` and `contents/articles`
