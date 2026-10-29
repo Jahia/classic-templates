@@ -38,7 +38,11 @@ const go = (destination: string | undefined) => {
 };
 
 /**
- * The in-site sign-in form: username, password, one button.
+ * The in-site sign-in form: e-mail or username, password, one button.
+ *
+ * Jahia's login servlet takes a username. An account created by a registration form has its e-mail
+ * as username, so its owner can type either; an account whose username is not its e-mail signs in
+ * with the username. The hint under the label says so.
  *
  * It posts to Jahia's own login servlet in `restMode` (the call the platform's login page and the
  * persona panel make): the answer is a bare "OK" or "unauthorized", the session cookie is set on
@@ -120,6 +124,7 @@ export default function SignInForm({
   };
 
   const errorId = `${id}-error`;
+  const hintId = `${id}-username-hint`;
   return (
     <form
       className={classes.form}
@@ -136,6 +141,9 @@ export default function SignInForm({
         <label className={classes.label} htmlFor={`${id}-username`}>
           {t("signin.username")}
         </label>
+        <p className={classes.hint} id={hintId}>
+          {t("signin.usernameHint")}
+        </p>
         <input
           className={classes.input}
           id={`${id}-username`}
@@ -149,7 +157,7 @@ export default function SignInForm({
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           aria-invalid={error === "rejected" ? true : undefined}
-          aria-describedby={error ? errorId : undefined}
+          aria-describedby={error ? `${hintId} ${errorId}` : hintId}
         />
       </div>
       <div className={classes.field}>

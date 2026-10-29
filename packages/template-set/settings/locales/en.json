@@ -22,11 +22,12 @@
   },
   "signin": {
     "formLabel": "Sign in",
-    "username": "Username",
+    "username": "E-mail or username",
+    "usernameHint": "The e-mail address you registered with, or your username.",
     "password": "Password",
     "submit": "Sign in",
     "submitting": "Signing in...",
-    "rejected": "The username or password is not right. Check them and try again.",
+    "rejected": "The e-mail, username or password is not right. Check them and try again.",
     "unknown": "Signing in did not work. Try again in a moment.",
     "signedInAs": "You are signed in as {{name}}.",
     "continue": "Continue"
