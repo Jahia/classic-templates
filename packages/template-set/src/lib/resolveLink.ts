@@ -33,10 +33,29 @@ export interface LinkState {
   missingTarget: boolean;
 }
 
-/** The "internal" branch of resolveLink: the picked page or content (j:linknode). */
+/**
+ * The properties holding a node's link target. A page cannot take Jahia's link fields
+ * (jmix:internalLink and jmix:externalLink extend jnt:content only), so a page's link (its menu
+ * promotion, ctplmix:navPromo) is in promoLink / promoUrl; j:linknode / j:url still count on a page
+ * that carries them.
+ */
+const linkFields = (node: JCRNodeWrapper): { page: string; url: string } => {
+  if (!node.isNodeType("jnt:page")) return { page: "j:linknode", url: "j:url" };
+  return {
+    page:
+      node.hasProperty("promoLink") || !node.hasProperty("j:linknode") ? "promoLink" : "j:linknode",
+    url:
+      read(node, "promoUrl") !== undefined || read(node, "j:url") === undefined
+        ? "promoUrl"
+        : "j:url",
+  };
+};
+
+/** The "internal" branch of resolveLink: the picked page or content (j:linknode, promoLink on a page). */
 const resolveInternal = (node: JCRNodeWrapper, renderContext?: RenderContext): LinkState => {
-  if (!node.hasProperty("j:linknode")) return { missingTarget: true };
-  const reference = node.getProperty("j:linknode");
+  const field = linkFields(node).page;
+  if (!node.hasProperty(field)) return { missingTarget: true };
+  const reference = node.getProperty(field);
   try {
     const target = reference.getNode() as JCRNodeWrapper;
     if (renderContext) server.render.addCacheDependency({ node: target }, renderContext);
@@ -64,9 +83,9 @@ const resolveInternal = (node: JCRNodeWrapper, renderContext?: RenderContext): L
   }
 };
 
-/** The "external" branch of resolveLink: the contributed URL (j:url), if allow-listed. */
+/** The "external" branch of resolveLink: the contributed URL (j:url, promoUrl on a page), if allow-listed. */
 const resolveExternal = (node: JCRNodeWrapper): LinkState => {
-  const url = read(node, "j:url")?.trim();
+  const url = read(node, linkFields(node).url)?.trim();
   if (!url || !isSafeExternalUrl(url)) return { missingTarget: true };
   return {
     link: { href: url, external: true, targetTitle: read(node, "j:linkTitle") },
