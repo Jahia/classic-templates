@@ -126,7 +126,8 @@ Page Builder also says, above the page and next to reused content:
 
 A content list also shows, in edit mode only, a summary of its settings, for example "Lists News
 item under contents/news, newest first, up to 3.", followed by what it found and what it left out
-(excluded items, items not translated into the page's language). See
+(excluded items, items not translated into the page's language), with a link that opens the folder
+it lists in jContent. The news ticker's summary has the same link. See
 [Content list](../components/content-list.md).
 
 ## Publishing

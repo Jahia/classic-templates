@@ -26,6 +26,7 @@ import type { Props } from "./types.js";
 import classes from "./notice-bar.module.css";
 import { pageSite } from "../../../lib/site.js";
 import { EditNote } from "../../../lib/EditNote.js";
+import { JContentLink } from "../../../lib/JContentLink.js";
 
 /** The translation key of an item's type label, as cards show it ("News", "Article"). */
 const kindKey = (item: JCRNodeWrapper) =>
@@ -132,6 +133,12 @@ jahiaComponent(
                   max,
                   interpolation: { escapeValue: false },
                 })}
+              {!warning && (
+                <>
+                  {" "}
+                  <JContentLink node={start} />
+                </>
+              )}
             </EditNote>
           )}
           {items.length > 0 && (

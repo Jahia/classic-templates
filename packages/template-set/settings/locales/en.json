@@ -124,6 +124,7 @@
       "foundValue": "{{shown}} shown of {{matching}}{{more}} matching",
       "skipped": "Left out",
       "skippedValue": "{{excluded}} excluded, {{untranslated}} not translated into {{language}}",
+      "openInJContent": "Open in jContent (new tab)",
       "query": "JCR-SQL2 query"
     },
     "aToZ": "A to Z",

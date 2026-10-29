@@ -97,6 +97,7 @@ jahiaComponent(
                 typeLabel: typeLabel(type, locale),
                 typeValid,
                 startLabel: startLabelOf(start, site),
+                startNode: start,
                 startMissing,
                 criteria: props.criteria ?? "publicationDate",
                 direction: props.sortDirection === "asc" ? "asc" : "desc",
