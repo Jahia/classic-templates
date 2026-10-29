@@ -19,7 +19,7 @@
   <groupId>org.jahia.modules.javascript</groupId>
   <artifactId>classic-templates-root</artifactId>
   <name>Classic Templates Root</name>
-  <version>0.9.0</version>
+  <version>0.10.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <description>Classic Templates monorepo: the template set, classic-travel, classic-media and the pre-packaged demo sites</description>
 
