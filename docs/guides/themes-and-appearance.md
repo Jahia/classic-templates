@@ -44,6 +44,13 @@ Every theme is checked for sufficient text contrast (WCAG 2.1 AA) in both light 
 
 Each theme also has an **emphasis colour**, used for values that must stand out, such as key figures and prices. It is the theme's main colour in Classic, Ocean and Terracotta, an orange in Horizon, a coral in Sage, a green in Slate, a crimson in Graphite, a vermilion in Signal, a jade green in Live and the group's vermilion in Portal. Horizon is designed light first: its dark version keeps the same navy, teal and orange family. Sage is calm and rounded, with serif headings; Slate is crisper, with sans-serif headings and squarer shapes. Graphite is the most neutral: true charcoal greys with sans-serif headings and squared corners, where crimson is reserved for buttons and key values. Signal is made for news and magazine sites: warm paper whites, serif headings and sharp corners, cobalt links and vermilion buttons. Live is made for event sites: cool dusk greys, heavy sans-serif headings and round shapes, violet links and jade buttons; it reads well in dark. Portal is made for gated work portals, such as a supplier or partner area: cool light greys, sans-serif headings, sharp corners and almost flat shadows, and a restrained petrol blue for links and buttons, with the group's vermilion kept for key values only. It shares Signal's sharp shapes so the two read as one family, and pairs well with the **Hide from search engines** setting.
 
+### A theme from another module
+
+A brand theme can come from a module of its own, installed next to the template set. Once that
+module is enabled on the site, the site's edit form offers its theme as an option (for example
+**Acme theme**) beside **Site look**. Switched on, it replaces the theme chosen in **Site look**;
+**Light or dark** still applies. Switch it off to go back to the chosen theme.
+
 ### Accent and action
 
 A theme has two main colours. The **accent** colours links, navigation, tabs and tinted backgrounds. The **action** colours the call-to-action buttons (the filled and the outlined button of a section, the submit button of a form). In Classic, Ocean, Terracotta and Horizon the two are the same colour. Sage uses a deep green-teal accent with coral buttons, and Slate a slate-ink accent with green buttons, Graphite a charcoal accent with crimson buttons, Signal a cobalt accent with vermilion buttons and Live a violet accent with jade buttons, so the buttons stand out from the text links.
@@ -117,3 +124,23 @@ These changes are not settings and need a new version of the module:
 For developers: a theme is a set of design token overrides in one CSS file, and components never
 contain colours or fonts of their own. See the Theming section of the module's
 [README](../../README.md#themes).
+
+A brand theme that must not ship with the template set lives in its own module, with no change
+here. That module declares a site mixin extending `ctplmix:themeProvider`, and puts its token block
+in its own `dist/assets/style.css`, under the mixin's local name:
+
+```cnd
+[acmemix:acme] > ctplmix:themeProvider mixin
+ extends = jnt:virtualsite
+```
+
+```css
+:root[data-ctpl-theme="acme"] {
+  --ctpl-color-accent: light-dark(#0a5, #6d9);
+  /* every colour role, in light and dark, as the template set's themes do */
+}
+```
+
+With the option on, the Layout stamps `data-ctpl-theme="acme"` and loads that stylesheet after
+its own. Check the contrast of every role in both schemes in that module: the template set's
+`yarn check:contrast` only covers its own themes.
