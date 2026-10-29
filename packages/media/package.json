@@ -1,6 +1,6 @@
 {
   "name": "classic-media",
-  "version": "0.9.0-SNAPSHOT",
+  "version": "0.9.0",
   "description": "Editorial and event content types (stories, people, sessions, feeds, agenda, speakers, key dates) for media sites built on the classic-templates template set",
   "license": "MIT",
   "type": "module",
