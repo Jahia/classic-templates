@@ -9,7 +9,12 @@ import {
 import type { JCRNodeWrapper, JCRSessionWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
 import { useTranslation } from "react-i18next";
-import { CUSTOM_MENU_QUERY, dependencyFor, toNavItems, type ResolvedEntry } from "../../../lib/customMenu.js";
+import {
+  CUSTOM_MENU_QUERY,
+  dependencyFor,
+  toNavItems,
+  type ResolvedEntry,
+} from "../../../lib/customMenu.js";
 import { EditNote } from "../../../lib/EditNote.js";
 import { buildMainNavigation, type NavItem } from "../../../lib/navigation.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
@@ -19,7 +24,15 @@ import classes from "./main-navigation.module.css";
 
 const NEW_TAB = { target: "_blank", rel: "noopener noreferrer" };
 
-const ItemLink = ({ item, className, newTabText }: { item: NavItem; className: string; newTabText: string }) => {
+const ItemLink = ({
+  item,
+  className,
+  newTabText,
+}: {
+  item: NavItem;
+  className: string;
+  newTabText: string;
+}) => {
   if (!item.href) {
     return <span className={className}>{item.title}</span>;
   }
@@ -56,7 +69,8 @@ jahiaComponent(
   { componentType: "view", nodeType: "ctpl:mainNavigation", displayName: "Main navigation" },
   ({ navDepth, navStyle, menuSource, menu }: Props, { renderContext, currentNode, jcrSession }) => {
     const depth = navDepth ?? 3;
-    const pageTree = () => buildMainNavigation(chromeOwner(pageSite(renderContext)), depth, renderContext);
+    const pageTree = () =>
+      buildMainNavigation(chromeOwner(pageSite(renderContext)), depth, renderContext);
     const listId = `ctpl-nav-${currentNode.getIdentifier()}`;
     const mega = navStyle === "mega";
     if (menuSource === "menu" && menu) {
@@ -72,8 +86,14 @@ jahiaComponent(
         />
       );
     }
-    return <NavigationMarkup items={pageTree()} mega={mega} listId={listId} renderContext={renderContext} />;
-
+    return (
+      <NavigationMarkup
+        items={pageTree()}
+        mega={mega}
+        listId={listId}
+        renderContext={renderContext}
+      />
+    );
   },
 );
 
@@ -90,8 +110,10 @@ const NavigationMarkup = ({
   renderContext: RenderContext;
 }) => {
   const { t } = useTranslation("classic-templates");
-  if (items.length === 0) return null;
-    return (
+  if (items.length === 0) {
+    return null;
+  }
+  return (
     <nav
       className={mega ? `${classes.nav} ${classes.mega}` : classes.nav}
       aria-label={t("nav.main")}
@@ -142,12 +164,20 @@ const NavigationMarkup = ({
                     <ul className={classes.level2}>
                       {item.children.map((sub) => (
                         <li key={sub.id} className={classes.item2} data-ctpl-nav-item>
-                          <ItemLink item={sub} className={classes.link2} newTabText={t("link.newTab")} />
+                          <ItemLink
+                            item={sub}
+                            className={classes.link2}
+                            newTabText={t("link.newTab")}
+                          />
                           {sub.children.length > 0 && (
                             <ul className={classes.level3}>
                               {sub.children.map((deep) => (
                                 <li key={deep.id} data-ctpl-nav-item>
-                                  <ItemLink item={deep} className={classes.link3} newTabText={t("link.newTab")} />
+                                  <ItemLink
+                                    item={deep}
+                                    className={classes.link3}
+                                    newTabText={t("link.newTab")}
+                                  />
                                 </li>
                               ))}
                             </ul>
@@ -203,8 +233,15 @@ const CustomMenuNavigation = ({
       maxDepth: depth,
     },
   });
-  const resolved = (data as { menuManager?: { resolvedMenu?: { items: ResolvedEntry[]; dependencies: string[] } | null } } | undefined)
-    ?.menuManager?.resolvedMenu;
+  const resolved = (
+    data as
+      | {
+          menuManager?: {
+            resolvedMenu?: { items: ResolvedEntry[]; dependencies: string[] } | null;
+          };
+        }
+      | undefined
+  )?.menuManager?.resolvedMenu;
   if (errors?.length || !resolved) {
     return (
       <>
@@ -213,7 +250,12 @@ const CustomMenuNavigation = ({
             {t("nav.customMenuUnavailable")}
           </EditNote>
         )}
-        <NavigationMarkup items={pageTree()} mega={mega} listId={listId} renderContext={renderContext} />
+        <NavigationMarkup
+          items={pageTree()}
+          mega={mega}
+          listId={listId}
+          renderContext={renderContext}
+        />
       </>
     );
   }
@@ -234,5 +276,7 @@ const CustomMenuNavigation = ({
       return node ? buildNodeUrl(node) : undefined;
     },
   });
-  return <NavigationMarkup items={items} mega={mega} listId={listId} renderContext={renderContext} />;
+  return (
+    <NavigationMarkup items={items} mega={mega} listId={listId} renderContext={renderContext} />
+  );
 };

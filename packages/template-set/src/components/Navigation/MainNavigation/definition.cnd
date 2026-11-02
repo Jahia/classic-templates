@@ -24,5 +24,8 @@
  - navStyle (string, choicelist[resourceBundle]) = 'dropdown' autocreated indexed=no < 'dropdown', 'mega'
  // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
  - menuSource (string, choicelist[resourceBundle]) = 'pageTree' autocreated indexed=no < 'pageTree', 'menu'
- // cnd-check-ignore(weakrefNoConstraint): a Menu Manager menu (mnu:menu, that module's type), checked by the view
- - menu (weakreference, choicelist[nodes='$currentSite/menus;mnu:menu']) indexed=no
+ // The choice list filters on jnt:content, never on Menu Manager's own type: the engine (1.4) turns every
+ // type the CND names into a requirement of the bundle, and classic-templates would not start where Menu
+ // Manager is not installed
+ // cnd-check-ignore(weakrefNoConstraint): a Menu Manager menu, checked by the view
+ - menu (weakreference, choicelist[nodes='$currentSite/menus;jnt:content']) indexed=no

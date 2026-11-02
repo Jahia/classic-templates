@@ -64,7 +64,11 @@ const addressOf = (entry: ResolvedEntry, resolvers: Resolvers): string | undefin
  * a menu label of the page tree), an external link keeps the address the resolver checked, a top-level
  * item carries its promotion (whose button falls back to the item's own address).
  */
-export const toNavItems = (entries: ResolvedEntry[] | null | undefined, resolvers: Resolvers, top = true): NavItem[] =>
+export const toNavItems = (
+  entries: ResolvedEntry[] | null | undefined,
+  resolvers: Resolvers,
+  top = true,
+): NavItem[] =>
   (entries ?? []).map((entry) => {
     const href = addressOf(entry, resolvers);
     const promo = top ? entry.promotion : undefined;
@@ -87,10 +91,13 @@ export const toNavItems = (entries: ResolvedEntry[] | null | undefined, resolver
     };
   });
 
-const escapeRegex = (text: string): string => text.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
+const escapeRegex = (text: string): string =>
+  text.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
 
 /** A cache dependency for one entry of the resolver's list ("/*" stands for a subtree). */
-export const dependencyFor = (entry: string): { path: string } | { flushOnPathMatchingRegexp: string } =>
+export const dependencyFor = (
+  entry: string,
+): { path: string } | { flushOnPathMatchingRegexp: string } =>
   entry.endsWith("/*")
     ? { flushOnPathMatchingRegexp: `${escapeRegex(entry.slice(0, -2))}(/.*)?` }
     : { path: entry };
