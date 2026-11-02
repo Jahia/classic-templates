@@ -4,6 +4,7 @@ import { resolveLink } from "../../../lib/resolveLink.js";
 import { socialIconOf } from "../../../lib/socialIcons.js";
 import type { Props } from "./types.js";
 import classes from "./link.module.css";
+import { EditNote } from "../../../lib/EditNote.js";
 
 /**
  * "icon": a link to a social network shows the network's icon (src/lib/socialIcons.ts, recognised
@@ -25,7 +26,7 @@ jahiaComponent(
       return (
         <li className={classes.item} data-testid="ctpl-link">
           {label || t("link.untitled")}
-          {missingTarget && <span className={classes.hint}>{t("link.noTarget")}</span>}
+          {missingTarget && <EditNote inline>{t("link.noTarget")}</EditNote>}
         </li>
       );
     }
