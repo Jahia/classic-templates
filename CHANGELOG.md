@@ -1,5 +1,17 @@
 # classic-templates Changelog
 
+## 0.10.0
+
+### New Features
+
+* The header's main navigation can show a menu built in jContent > Menus (the Menu Manager module) instead of the page tree: a new **Menu source** setting (Page tree or Custom menu) and the menu to show. The dropdown and mega menu styles, the keyboard behaviour and the current-page marking stay the same; the mega menu shows the promotions of the menu's top-level items. A menu that cannot be read, or a site without Menu Manager, shows the page tree (with a note in edit mode).
+
+* The page, header and footer areas accept navigation components of other modules, marked with Jahia's `jmix:navMenuComponent` (for example Menu Manager's Menu component), next to the template set's own sections. Nothing changes for existing content; the change installs over a site that already has content.
+
+### Bug Fixes
+
+* In edit mode, a social link shown as an icon whose target page is gone says so in the shared edit note, like the other link views; the note had no style
+
 ## 0.9.0
 
 ### New Features
