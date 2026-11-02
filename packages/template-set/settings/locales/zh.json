@@ -25,7 +25,8 @@
   "nav": {
     "main": "主导航",
     "menu": "菜单",
-    "submenu": "显示“{{title}}”子菜单"
+    "submenu": "显示“{{title}}”子菜单",
+    "customMenuUnavailable": "此页眉使用的自定义菜单无法读取（已删除、未发布，或缺少 Menu Manager 模块）：访问者看到的是页面树。"
   },
   "lang": {
     "label": "语言"
