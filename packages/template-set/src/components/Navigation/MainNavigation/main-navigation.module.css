@@ -220,6 +220,20 @@ a.link3:hover {
   color: var(--ctpl-color-text-muted);
   font-size: var(--ctpl-text-sm);
 }
+.promoLink {
+  justify-self: start;
+  color: var(--ctpl-color-link);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+.promoLink:hover {
+  color: var(--ctpl-color-link-hover);
+}
+.promoLink:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
 
 @media (min-width: 64rem) {
   .mega .item1 {

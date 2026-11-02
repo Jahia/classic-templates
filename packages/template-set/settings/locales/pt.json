@@ -25,7 +25,8 @@
   "nav": {
     "main": "Navegação principal",
     "menu": "Menu",
-    "submenu": "Mostrar o submenu {{title}}"
+    "submenu": "Mostrar o submenu {{title}}",
+    "customMenuUnavailable": "Este cabeçalho usa um menu personalizado que não pode ser lido (eliminado, não publicado, ou o módulo Menu Manager está em falta): os visitantes veem a árvore de páginas."
   },
   "lang": {
     "label": "Idioma"

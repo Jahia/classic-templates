@@ -1,4 +1,6 @@
+import { JImage } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
+import type { PromoData } from "../../../lib/navigation.js";
 import type { RenderContext } from "org.jahia.services.render";
 import { Cta } from "../../../lib/Cta.js";
 import { Image } from "../../../lib/Image.js";
@@ -52,3 +54,25 @@ export const MenuPromo = ({
     </div>
   );
 };
+
+/**
+ * The promotion of a top-level item of a Menu Manager menu, already resolved for the visitor: the
+ * same place and look as a page's Menu promotion. The image's text alternative is the one written for
+ * the promotion, else the image's title (JImage's default); the button falls back to the item's link.
+ */
+export const MenuPromoData = ({ promo }: { promo: PromoData }) => (
+  <div className={classes.promo} data-testid="ctpl-menu-promo">
+    {promo.image && (
+      <div className={classes.promoMedia}>
+        <JImage src={promo.image} {...(promo.imageAlt ? { alt: promo.imageAlt } : {})} />
+      </div>
+    )}
+    <p className={classes.promoTitle}>{promo.title}</p>
+    {promo.text && <p className={classes.promoText}>{promo.text}</p>}
+    {promo.href && promo.linkLabel && (
+      <a className={classes.promoLink} href={promo.href}>
+        {promo.linkLabel}
+      </a>
+    )}
+  </div>
+);

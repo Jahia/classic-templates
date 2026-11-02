@@ -13,7 +13,16 @@
 // lists (jmix:accessControllableContent keeps it referenceable, like every content node here).
 // navStyle "mega" opens each top-level page as a full-width panel: its sub-pages in columns, their
 // own sub-pages listed under each, and the page's "Menu promotion" (ctplmix:navPromo) beside them.
+// menuSource "menu" shows a menu of the site built in jContent > Menus (the Menu Manager module)
+// instead of the page tree, with the same styles: its items, their labels in the visitor's language
+// (with the menu's fallback), what the visitor may read, and the promotions of its top-level items.
+// The menu is chosen in `menu` (Menu Manager's own type, so no constraint here: the view checks it). A
+// menu that cannot be read, or a site without Menu Manager, shows the page tree.
 [ctpl:mainNavigation] > jnt:content, jmix:accessControllableContent
  - navDepth (long) = 3 autocreated < '[1,3]'
  // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
  - navStyle (string, choicelist[resourceBundle]) = 'dropdown' autocreated indexed=no < 'dropdown', 'mega'
+ // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
+ - menuSource (string, choicelist[resourceBundle]) = 'pageTree' autocreated indexed=no < 'pageTree', 'menu'
+ // cnd-check-ignore(weakrefNoConstraint): a Menu Manager menu (mnu:menu, that module's type), checked by the view
+ - menu (weakreference, choicelist[nodes='$currentSite/menus;mnu:menu']) indexed=no
