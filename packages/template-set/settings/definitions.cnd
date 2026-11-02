@@ -35,14 +35,20 @@
 [ctpl:heroArea] > jnt:content, jmix:list, jmix:hiddenType orderable
  + * (ctplmix:heroComponent)
 
+// The page, header and footer areas also take navigation components of other modules, marked with
+// Jahia's core jmix:navMenuComponent (Menu Manager's mnu:navigation): a second residual line, since the
+// types listed on one line must all match. Neither module depends on the other.
 [ctpl:pageArea] > jnt:content, jmix:list, jmix:hiddenType orderable
  + * (ctplmix:pageComponent)
+ + * (jmix:navMenuComponent)
 
 [ctpl:headerArea] > jnt:content, jmix:list, jmix:hiddenType orderable
  + * (ctplmix:headerComponent)
+ + * (jmix:navMenuComponent)
 
 [ctpl:footerArea] > jnt:content, jmix:list, jmix:hiddenType orderable
  + * (ctplmix:footerComponent)
+ + * (jmix:navMenuComponent)
 
 // ---- Shared property groups ---------------------------------------------------------------------
 
