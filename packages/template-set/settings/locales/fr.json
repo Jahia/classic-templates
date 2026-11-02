@@ -25,7 +25,8 @@
   "nav": {
     "main": "Navigation principale",
     "menu": "Menu",
-    "submenu": "Afficher le sous-menu {{title}}"
+    "submenu": "Afficher le sous-menu {{title}}",
+    "customMenuUnavailable": "Cet en-tête utilise un menu personnalisé qui ne peut pas être lu (supprimé, non publié, ou module Menu Manager absent) : les visiteurs voient l'arborescence des pages."
   },
   "lang": {
     "label": "Langue"

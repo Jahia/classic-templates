@@ -14,6 +14,20 @@ export interface NavItem {
   children: NavItem[];
   /** The page itself when it carries a "Menu promotion" (ctplmix:navPromo), for the mega menu. */
   promo?: JCRNodeWrapper;
+  /** A custom menu item's promotion (Menu Manager), already resolved, for the mega menu. */
+  promoData?: PromoData;
+  /** A custom menu item's link opens in a new tab. */
+  newTab?: boolean;
+}
+
+/** A promotion as Menu Manager resolves it, with its image node and the button's address. */
+export interface PromoData {
+  title: string;
+  text?: string;
+  image?: JCRNodeWrapper;
+  imageAlt?: string;
+  linkLabel?: string;
+  href?: string;
 }
 
 /** Marked "noIndex" by Jahia's sitemap module; false when that module is not installed. */

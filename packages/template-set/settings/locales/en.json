@@ -25,7 +25,8 @@
   "nav": {
     "main": "Main navigation",
     "menu": "Menu",
-    "submenu": "Show the {{title}} submenu"
+    "submenu": "Show the {{title}} submenu",
+    "customMenuUnavailable": "This header uses a custom menu that cannot be read (deleted, not published, or the Menu Manager module is missing): visitors see the page tree."
   },
   "lang": {
     "label": "Language"
