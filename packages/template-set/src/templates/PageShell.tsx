@@ -15,7 +15,9 @@ import classes from "./page-shell.module.css";
  * Header and footer are AbsoluteAreas owned by the home page (see chromeOwner): they render on
  * every page, are edited from the home page, and are read-only on every other page, where Page
  * Builder says so above the header (PageEditNotes, with the page's search notes).
- * Each area only accepts its own singleton type (ctpl:headerArea / ctpl:footerArea).
+ * Each area only accepts its own singleton type (ctpl:headerArea / ctpl:footerArea). The footer area
+ * offers editors its own components only: a menu of another module goes in the footer's columns
+ * (ctpl:footerColumns), since one dropped in the area renders after the whole footer.
  *
  * The page's one `<h1>` is placed by each template with <PageHeading> (after the hero on content
  * pages). The main-resource template renders none: the item's fullPage view owns its `<h1>`.
@@ -56,6 +58,7 @@ export const PageShell = ({
           name="siteFooter"
           parent={owner}
           nodeType="ctpl:footerArea"
+          allowedNodeTypes={["ctplmix:footerComponent"]}
           readOnly={readOnly}
         />
         <StructuredData name={title} description={description} />

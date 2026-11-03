@@ -1,6 +1,6 @@
 # Site footer
 
-Types: `ctpl:siteFooter` (Site footer), with its parts `ctpl:footerColumns` (Footer columns) and `ctpl:linkList` (link lists)
+Types: `ctpl:siteFooter` (Site footer), with its parts `ctpl:footerColumns` (Footer columns) and `ctpl:linkList` (link lists); the columns also take a menu of another module (Menu Manager's Menu)
 
 ![The site footer: the site name "Classic Dev" and a tagline, three columns of links titled Company, Services and Resources, then a bottom bar with "© 2026. All rights reserved.", the legal links (Legal notice, Privacy policy, Site map, Accessibility: partially compliant) and the social links LinkedIn and GitHub](../images/site-footer.png)
 
@@ -35,6 +35,10 @@ The site name at the top of the footer is the **site title**, set in the site's 
 
 The **Footer columns** hold the columns of links. Each column is a [Link list](links-and-link-lists.md) with a title: add a link list to add a column, and reorder the lists to reorder the columns.
 
+The columns also take a **menu** built in jContent > Menus, when the site runs the Menu Manager module: add a Menu to the footer columns (in Page Builder, the columns' add button lists it with the link lists), choose the menu and its **Columns** view. The menu takes a row of the columns of its own, inside the footer and in its colours, and lays out its own columns there; reorder it with the link lists to put it above or below them. Set its depth to one or two levels: a footer is no place for a full site menu.
+
+Add the menu to the footer columns, not to the footer area around the footer: the footer area no longer offers it, and a menu already placed there shows after the whole footer.
+
 ### Legal links and social links
 
 Two [link lists](links-and-link-lists.md) in the bottom bar. New sites get them with the titles "Legal information" and "Follow us". These titles are not shown on screen: they name each group for screen readers.
@@ -48,6 +52,7 @@ read out by screen readers. A link to any other address shows its title as text.
 - The site name always shows, so the footer is never empty.
 - `{year}` in the copyright becomes the current year, and turns over by itself on 1 January. Write "© {year} Company" once and never update it.
 - **Columns:** each link list shows as a column, its title as a heading above its links. On narrower screens the columns wrap to fewer per row.
+- **Menu:** a menu in the columns shows in the view chosen for it, across a whole row of the columns.
 - **Bottom bar:** the legal links and the social links show as rows of links after the copyright.
 - A link list with no link shows nothing on the live site. It stays visible in edit mode so you can fill it.
 - Links follow the [link rules](links-and-link-lists.md): a link with no target in the current language shows as plain text, and edit mode shows "No link target in this language".

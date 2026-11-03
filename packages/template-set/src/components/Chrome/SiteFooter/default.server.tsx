@@ -1,7 +1,9 @@
 import {
+  AddContentButtons,
   JImage,
+  Render,
   RenderChild,
-  RenderChildren,
+  getChildNodes,
   jahiaComponent,
   server,
 } from "@jahia/javascript-modules-library";
@@ -72,12 +74,29 @@ jahiaComponent(
   },
 );
 
-/** The footer's columns: each child link list renders as a titled column. */
+/**
+ * The footer's columns, in the editor's order: a link list renders as a titled column; a navigation
+ * component of another module (a Menu Manager menu) renders in the view the editor chose, across a
+ * whole row of the columns, so its own columns line up with the link lists inside the footer.
+ */
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:footerColumns", displayName: "Footer columns" },
-  () => (
+  (_props, { currentNode, renderContext }) => (
     <div className={classes.columns} data-testid="ctpl-footer-columns">
-      <RenderChildren view="column" />
+      {getChildNodes(currentNode, -1).map((child: JCRNodeWrapper) =>
+        child.isNodeType("ctpl:linkList") ? (
+          <Render key={child.getIdentifier()} node={child} view="column" />
+        ) : (
+          <div
+            key={child.getIdentifier()}
+            className={classes.menuRow}
+            data-testid="ctpl-footer-menu"
+          >
+            <Render node={child} />
+          </div>
+        ),
+      )}
+      {renderContext.isEditMode() && <AddContentButtons />}
     </div>
   ),
 );
