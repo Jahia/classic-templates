@@ -1,5 +1,9 @@
 # classic-templates Changelog
 
+## 0.11.0
+
+* A menu built in jContent > Menus (Menu Manager's Menu, or any navigation component marked `jmix:navMenuComponent`) can be added to the footer columns, next to the link lists: it takes a row of the columns of its own, inside the footer and in its colours, in the view chosen for it. The footer area around the footer no longer offers navigation components in Page Builder, since a menu dropped there rendered after the whole footer (after the consent bar, on the page background); a menu already placed there still shows there until it is moved into the columns. The change installs over a site that already has content.
+
 ## 0.10.1
 
 * The labels built into the template set's views (skip link, menu, sign-in, members-only notices, breadcrumb, list panels, carousel, search, consent banner and the edit-mode notes) now come in Japanese (`ja`) and Simplified Chinese (`zh`), checked against `en.json` by the locale test. Before, a page in either language rendered the English labels on the server and raw keys (`search.submit`, `account.signIn`) once the header's islands loaded in the browser.
