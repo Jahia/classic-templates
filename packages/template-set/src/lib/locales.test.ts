@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import en from "../../settings/locales/en.json";
 import fr from "../../settings/locales/fr.json";
+import ja from "../../settings/locales/ja.json";
 import pt from "../../settings/locales/pt.json";
+import zh from "../../settings/locales/zh.json";
 
 type Tree = { [key: string]: string | Tree };
 
@@ -21,6 +23,8 @@ const referenceKeys = reference.map(([key]) => key);
 describe.each([
   ["fr", fr],
   ["pt", pt],
+  ["ja", ja],
+  ["zh", zh],
 ] as const)("%s.json against en.json", (_language, locale) => {
   const entries = flatten(locale);
 

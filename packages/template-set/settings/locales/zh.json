@@ -1,0 +1,203 @@
+{
+  "pageNotes": {
+    "chromeLocked": "页眉和页脚由所有页面共享：请在首页编辑，而不是在这里。",
+    "noDescription": "此页面没有自己的描述：搜索引擎和分享链接会使用网站的描述。请在页面属性（描述）中添加。",
+    "longTitle": "浏览器标题“{{title}}”有 {{count}} 个字符：搜索结果大约显示 {{max}} 个。较短的页面标题可以完整显示。",
+    "noIndex": "此网站要求搜索引擎不要将其编入索引（网站设置）：此页面不会出现在搜索结果中。",
+    "hiddenTitle": "页面标题在屏幕上被隐藏：屏幕阅读器和搜索引擎仍会读取它，因此主横幅应表达相同的内容。"
+  },
+  "reference": {
+    "reused": "复用内容：“{{title}}”（{{site}}）。它在来源处编辑，每次修改都会显示在所有复用它的地方（{{count}} 处）。",
+    "unpublished": "复用的内容尚未发布：发布之前，访客在这里看不到任何内容。",
+    "missing": "复用的内容已不存在，或您无权读取：线上网站在这里不会显示任何内容。请删除此引用或选择其他条目。"
+  },
+  "editNote": {
+    "a11y": "无障碍："
+  },
+  "layout": {
+    "skipToContent": "跳到主要内容"
+  },
+  "link": {
+    "noTarget": "此语言没有链接目标",
+    "newTab": "在新标签页中打开",
+    "untitled": "无标题链接"
+  },
+  "nav": {
+    "main": "主导航",
+    "menu": "菜单",
+    "submenu": "显示“{{title}}”子菜单",
+    "customMenuUnavailable": "此页眉使用的自定义菜单无法读取（已删除、未发布，或缺少 Menu Manager 模块）：访问者看到的是页面树。"
+  },
+  "lang": {
+    "label": "语言"
+  },
+  "account": {
+    "signIn": "登录",
+    "register": "注册",
+    "signOut": "退出登录",
+    "signedInAs": "当前登录："
+  },
+  "signin": {
+    "formLabel": "登录",
+    "username": "电子邮件或用户名",
+    "usernameHint": "您注册时使用的电子邮件地址，或您的用户名。",
+    "password": "密码",
+    "submit": "登录",
+    "submitting": "正在登录...",
+    "rejected": "电子邮件、用户名或密码不正确。请检查后重试。",
+    "unknown": "登录失败。请稍后重试。",
+    "signedInAs": "您已以 {{name}} 的身份登录。",
+    "continue": "继续"
+  },
+  "members": {
+    "badge": "会员专享",
+    "title": "会员专享",
+    "newsNotice": "此新闻仅限会员阅读。请登录后继续阅读。",
+    "articleNotice": "此文章仅限会员阅读。请登录后继续阅读。",
+    "pageNotice": "此页面仅限会员查看。请登录后查看。",
+    "editNote": "会员专享：未登录的访客会看到摘要、正文的开头几段，然后是包含登录表单和注册链接的提示。",
+    "pageEditNote": "会员专享页面：未登录的访客会看到标题、提示和登录表单，而不是下面的各个部分。",
+    "register": "创建账户",
+    "orSignIn": "如果您已有账户，请在下方登录。",
+    "newsNoticeRegister": "此新闻仅限会员阅读。请登录或创建账户后继续阅读。",
+    "articleNoticeRegister": "此文章仅限会员阅读。请登录或创建账户后继续阅读。"
+  },
+  "links": {
+    "label": "链接",
+    "social": "社交网络"
+  },
+  "image": {
+    "missing": "未选择图片",
+    "noTitle": "此图片在媒体库中没有标题，因此没有替代文本。"
+  },
+  "cta": {
+    "noLabel": "缺少按钮标签",
+    "noLink": "此按钮有标签但没有链接：请选择一个页面或网址，或清除标签。",
+    "audience": {
+      "guests": "仅向未登录的访客显示。",
+      "members": "仅向已登录的访客显示。"
+    }
+  },
+  "editorial": {
+    "news": "新闻",
+    "article": "文章",
+    "by": "作者：{{author}}",
+    "readingTime_one": "阅读时间 {{count}} 分钟",
+    "readingTime_other": "阅读时间 {{count}} 分钟",
+    "topics": "主题",
+    "noTitle": "此语言没有标题：此条目不会出现在列表中。",
+    "tags": "标签"
+  },
+  "query": {
+    "summary": "按{{order}}列出 {{start}} 下的{{type}}，最多 {{max}} 条。",
+    "newest": "最新优先",
+    "oldest": "最早优先",
+    "empty": "暂无内容。",
+    "startMissing": "已设置起始文件夹，但在这里找不到（已删除或尚未发布）：线上网站的列表不会显示任何内容。",
+    "invalidType": "无法列出此内容类型。",
+    "sort": {
+      "publicationDate": "发布日期",
+      "jcr_created": "创建日期",
+      "jcr_lastModified": "最后修改时间",
+      "jcr_title": "标题"
+    },
+    "layout": {
+      "grid": "卡片",
+      "list": "紧凑列表"
+    },
+    "itemLabel": {
+      "none": "无",
+      "type": "内容类型",
+      "category": "第一个分类，否则为内容类型"
+    },
+    "panel": {
+      "type": "内容",
+      "start": "位于",
+      "sort": "排序",
+      "max": "最多",
+      "display": "显示方式",
+      "itemLabel": "条目标签",
+      "categories": "分类",
+      "allCategories": "所有分类",
+      "withSubcategories_one": "（{{count}} 个分类，含子分类）",
+      "withSubcategories_other": "（{{count}} 个分类，含子分类）",
+      "excluded": "排除",
+      "none": "无",
+      "found": "找到",
+      "foundValue": "共 {{matching}}{{more}} 条匹配，显示 {{shown}} 条",
+      "skipped": "未列出",
+      "skippedValue": "排除 {{excluded}} 条，{{untranslated}} 条未翻译为 {{language}}",
+      "openInJContent": "在 jContent 中打开（新标签页）",
+      "query": "JCR-SQL2 查询"
+    },
+    "aToZ": "A 到 Z",
+    "zToA": "Z 到 A"
+  },
+  "breadcrumb": {
+    "label": "面包屑导航",
+    "home": "首页",
+    "noListingPage": "此面包屑导航跳过了列出此条目的页面。要显示它，请在条目所在内容文件夹的列表页面设置中选择该页面。"
+  },
+  "cards": {
+    "teaserMissing": "请选择要在此卡片中显示的新闻或文章。",
+    "noTitle": "此卡片没有此语言的标题：不会显示标题。",
+    "logoMissing": "此标志没有图片：不会显示。",
+    "teaserNotInLogos": "现有条目的卡片不会显示在标志条中。"
+  },
+  "figures": {
+    "noValue": "此数据没有此语言的值：不会显示。"
+  },
+  "quote": {
+    "empty": "此引言没有此语言的文本：不会显示。"
+  },
+  "richText": {
+    "headingsRenumbered": "此文本的标题使用了 1 级标题或跳过了某一级：已重新编号显示，以保持页面结构完整。请从 2 级标题开始编写文本的主要部分，并逐级向下。",
+    "imageWithoutAlt": "此文本中的一张图片没有替代文本：请在富文本编辑器中编辑图片并添加描述，或用空文本将其标记为装饰性图片。",
+    "table": "表格",
+    "tableNumbered": "表 {{number}}",
+    "tableWithoutCaption": "此文本中的一个表格没有标题：请在富文本编辑器（表格属性）中添加。标题会为屏幕阅读器说明表格的名称。"
+  },
+  "accordion": {
+    "expandAll": "全部展开",
+    "collapseAll": "全部折叠",
+    "noTitle": "此条目没有此语言的标题：不会显示。"
+  },
+  "tabs": {
+    "noTitle": "此标签页没有此语言的标签：标签页及其内容都不会显示。"
+  },
+  "notice": {
+    "label": "最新动态",
+    "dismiss": "隐藏这些动态"
+  },
+  "carousel": {
+    "label": "精选",
+    "roleDescription": "轮播",
+    "slideRole": "幻灯片",
+    "slideOf": "第 {{index}} 张，共 {{total}} 张",
+    "previous": "上一张",
+    "next": "下一张",
+    "pause": "暂停",
+    "play": "播放",
+    "empty": "还没有幻灯片：请向此轮播添加主横幅，每张幻灯片一个。",
+    "editStacked": "这里所有幻灯片依次排列显示。访客一次只看到一张，并可用按钮切换。"
+  },
+  "search": {
+    "label": "搜索本站",
+    "submit": "搜索",
+    "toggle": "搜索",
+    "suggestions": "建议",
+    "suggestionCount_one": "有 {{count}} 条建议",
+    "suggestionCount_other": "有 {{count}} 条建议",
+    "for": "搜索“{{words}}”",
+    "noPage": "搜索框已开启，但页眉未指定搜索页面：请在页眉设置中选择一个。在此之前，访客看不到搜索框。"
+  },
+  "network": {
+    "label": "我们的网站",
+    "empty": "请为集团的每个网站添加一个指向其首页的链接。"
+  },
+  "consent": {
+    "label": "隐私选择",
+    "editHint": "访客在接受或拒绝之前会一直看到此横幅，页脚后的设置按钮可以再次打开它。如需在访客接受之前不进行任何跟踪，请在网站上关闭跟踪（jExperience：在网站的所有页面上停用 JavaScript 执行）。",
+    "missingLabels": "此横幅不会显示在线上网站上：请填写接受、拒绝和设置的标签。"
+  }
+}
