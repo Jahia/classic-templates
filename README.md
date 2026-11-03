@@ -9,7 +9,7 @@ preview with an image when they are shared (Open Graph, Twitter card).
 
 ![The demo home page in the Classic theme](docs/images/home.png)
 
-> **Latest release:** [0.10.1](https://github.com/Jahia/classic-templates/releases/tag/0_10_1) (November 2026).
+> **Latest release:** [0.11.0](https://github.com/Jahia/classic-templates/releases/tag/0_11_0) (November 2026).
 > Every version is described in the [changelog](CHANGELOG.md); `main` holds the next version in
 > development.
 
