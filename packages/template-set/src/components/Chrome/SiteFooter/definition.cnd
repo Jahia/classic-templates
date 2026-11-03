@@ -6,9 +6,12 @@
 <ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
 <ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
 
-// The columns of titled link lists in the footer.
+// The columns of the footer: titled link lists, and navigation components of other modules marked with
+// Jahia's core jmix:navMenuComponent (Menu Manager's Menu), which take a whole row of the columns. A
+// second residual line, since the types listed on one line must all match.
 [ctpl:footerColumns] > jnt:content, jmix:list orderable
  + * (ctpl:linkList)
+ + * (jmix:navMenuComponent)
 
 // The site footer, shared by every page: a brand block with a tagline, link columns, then a bottom
 // bar with the copyright, legal links and social links. A singleton seeded in the home page's

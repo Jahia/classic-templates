@@ -51,6 +51,11 @@
   grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   gap: var(--ctpl-space-6);
 }
+/* A menu of another module takes a whole row of the columns and lays out its own columns in it. */
+.menuRow {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
 
 .bottom {
   border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
