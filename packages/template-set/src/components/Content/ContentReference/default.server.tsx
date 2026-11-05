@@ -7,6 +7,7 @@ import {
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { useTranslation } from "react-i18next";
 import { EditNote } from "../../../lib/EditNote.js";
+import { LanguageVisibilityNote } from "../../../lib/LanguageVisibilityNote.js";
 
 /** Above this many, the note says "50+": the number only tells the editor how widely it is shared. */
 const MAX_COUNTED = 50;
@@ -55,7 +56,8 @@ const stringOf = (node: JCRNodeWrapper, name: string): string | undefined =>
  *
  * In edit mode a note says where the content comes from and how many references show it (an edit
  * changes all of them), that visitors see nothing while it is not published, or that it no longer
- * exists. The count is a query run in edit mode only, bounded.
+ * exists. The count is a query run in edit mode only, bounded. A reference switched off in some
+ * languages says so too (the reused content's own sections say it for the content).
  */
 jahiaComponent(
   {
@@ -103,6 +105,7 @@ jahiaComponent(
         {!published && (
           <EditNote testId="ctpl-reference-unpublished">{t("reference.unpublished")}</EditNote>
         )}
+        <LanguageVisibilityNote testId="ctpl-reference-language-visibility" />
         {rendered}
       </>
     );

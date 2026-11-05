@@ -199,5 +199,10 @@
     "label": "Privacy choices",
     "editHint": "Visitors see this banner until they accept or refuse, and the settings button after the footer opens it again. To track nothing before they accept, switch tracking off on the site (jExperience: deactivate JavaScript execution on the site, for all pages).",
     "missingLabels": "This banner is not shown on the live site: give it an accept label, a refuse label and a settings label."
+  },
+  "visibilityNote": {
+    "separator": ", ",
+    "shownOnly": "Shown in {{shown}} only: hidden in {{hidden}} (Visibility).",
+    "hiddenEverywhere": "Switched off in every language (Visibility): no visitor sees it."
   }
 }
