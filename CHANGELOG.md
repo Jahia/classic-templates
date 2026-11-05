@@ -1,5 +1,9 @@
 # classic-templates Changelog
 
+## 0.12.0
+
+* In Page Builder, a section, a news ticker, reused content or a page switched off in some of the site's languages (**Visibility > Content visibility by language**) says so on its first line: "Shown in Chinese only: hidden in English, Japanese (Visibility)". The frame shows such a block in every language, visitors of the other languages never get it; the note is amber in a language that hides it. Edit mode only: preview and the live site are unchanged.
+
 ## 0.11.0
 
 * A menu built in jContent > Menus (Menu Manager's Menu, or any navigation component marked `jmix:navMenuComponent`) can be added to the footer columns, next to the link lists: it takes a row of the columns of its own, inside the footer and in its colours, in the view chosen for it. The footer area around the footer no longer offers navigation components in Page Builder, since a menu dropped there rendered after the whole footer (after the consent bar, on the page background); a menu already placed there still shows there until it is moved into the columns. The change installs over a site that already has content.
