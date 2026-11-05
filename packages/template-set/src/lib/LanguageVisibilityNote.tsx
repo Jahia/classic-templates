@@ -1,4 +1,4 @@
-import { getSiteLocales, useServerContext } from "@jahia/javascript-modules-library";
+import { useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import { useTranslation } from "react-i18next";
 import { EditNote } from "./EditNote.js";
@@ -35,11 +35,16 @@ export const LanguageVisibilityNote = ({
     .getProperty(INVALID_LANGUAGES)
     .getValues()
     .map((value: { getString(): string }) => value.getString());
-  const locales = getSiteLocales();
+  // The page's own site, never getSiteLocales(): it reads renderContext.getSite(), which is another
+  // site when several share a server name (Jahia Cloud, CI test sites on localhost).
+  const site = pageSite(renderContext);
+  const locales = Object.fromEntries(
+    site.getLanguagesAsLocales().map((locale) => [locale.toString(), locale]),
+  );
   const { shown, hidden } = languageVisibility(
     invalid,
     Object.keys(locales),
-    pageSite(renderContext).getDefaultLanguage(),
+    site.getDefaultLanguage(),
   );
   if (hidden.length === 0) return null;
 
