@@ -199,5 +199,10 @@
     "label": "隐私选择",
     "editHint": "访客在接受或拒绝之前会一直看到此横幅，页脚后的设置按钮可以再次打开它。如需在访客接受之前不进行任何跟踪，请在网站上关闭跟踪（jExperience：在网站的所有页面上停用 JavaScript 执行）。",
     "missingLabels": "此横幅不会显示在线上网站上：请填写接受、拒绝和设置的标签。"
+  },
+  "visibilityNote": {
+    "separator": "、",
+    "shownOnly": "仅在{{shown}}中显示：在{{hidden}}中隐藏（可见性）。",
+    "hiddenEverywhere": "所有语言均已隐藏（可见性）：访客看不到此内容。"
   }
 }

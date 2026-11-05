@@ -26,6 +26,7 @@ import type { Props } from "./types.js";
 import classes from "./notice-bar.module.css";
 import { pageSite } from "../../../lib/site.js";
 import { EditNote } from "../../../lib/EditNote.js";
+import { LanguageVisibilityNote } from "../../../lib/LanguageVisibilityNote.js";
 import { JContentLink } from "../../../lib/JContentLink.js";
 
 /** The translation key of an item's type label, as cards show it ("News", "Article"). */
@@ -115,6 +116,7 @@ jahiaComponent(
             key="ctpl-notice-bar"
           />
         )}
+        <LanguageVisibilityNote container />
         <div className={`ctpl-container ${classes.inner}`}>
           <p id={labelId} className={props.label ? classes.label : "ctpl-visually-hidden"}>
             {props.label || t("notice.label")}

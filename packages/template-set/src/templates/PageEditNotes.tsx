@@ -1,6 +1,7 @@
 import { useServerContext } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import { EditNote } from "../lib/EditNote.js";
+import { LanguageVisibilityNote } from "../lib/LanguageVisibilityNote.js";
 import { fullTitle } from "../lib/share.js";
 import { chromeOwner, pageSite, robotsDirective } from "../lib/site.js";
 
@@ -14,6 +15,7 @@ export const TITLE_SHOWN = 60;
  *   edited on the home page.
  * - Search: the page has no description of its own (search engines get the site's), its browser
  *   title is longer than search results show, the site asks search engines not to index it.
+ * - The page is switched off in some of the site's languages (Visibility): it answers 404 there.
  *
  * Edit mode only (EditNote): nothing of it reaches preview, live or the live cache.
  */
@@ -46,6 +48,7 @@ export const PageEditNotes = ({ title, description }: { title?: string; descript
           })}
         </EditNote>
       )}
+      <LanguageVisibilityNote node={mainNode} container testId="ctpl-page-language-visibility" />
       {robotsDirective(site) && (
         <EditNote level="info" container testId="ctpl-page-noindex">
           {t("pageNotes.noIndex")}
