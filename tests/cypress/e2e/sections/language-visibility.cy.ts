@@ -8,6 +8,8 @@ const page = `${site}/home/visibility`
 const live = `${site}/home/visibility.html`
 const editFrame = (lang: string) => `/cms/editframe/default/${lang}${live}`
 const note = '[data-testid="ctpl-language-visibility"]'
+// DOMParser, not Cypress.$(body): jQuery finds nothing in a whole HTML page.
+const notesIn = (body: string) => [...new DOMParser().parseFromString(body, 'text/html').querySelectorAll(note)]
 
 describe('Sections - switched off in some languages', () => {
     before(() => {
@@ -46,16 +48,16 @@ describe('Sections - switched off in some languages', () => {
     it('says in Page Builder which languages a section shows in, as a warning where it is hidden', () => {
         cy.login()
         cy.request(editFrame('en')).then(({ body }) => {
-            const notes = Cypress.$(body).find(note)
+            const notes = notesIn(body)
             expect(notes).to.have.length(1)
-            expect(notes.attr('data-level')).to.eq('info')
-            expect(notes.text()).to.contain('Shown in English only: hidden in French')
+            expect(notes[0].getAttribute('data-level')).to.eq('info')
+            expect(notes[0].textContent).to.contain('Shown in English only: hidden in French')
         })
         cy.request(editFrame('fr')).then(({ body }) => {
-            const notes = Cypress.$(body).find(note)
+            const notes = notesIn(body)
             expect(notes).to.have.length(1)
-            expect(notes.attr('data-level')).to.eq('hidden')
-            expect(notes.text()).to.contain('masqué en français')
+            expect(notes[0].getAttribute('data-level')).to.eq('hidden')
+            expect(notes[0].textContent).to.contain('masqué en français')
         })
         cy.logout()
     })
