@@ -12,3 +12,8 @@
       - 'js:mvn:org.jahia.modules.javascript/classic-travel/LATEST/tgz'
   autoStart: true
   uninstallPreviousVersion: true
+
+- installBundle:
+      - 'js:mvn:org.jahia.modules.javascript/classic-media/LATEST/tgz'
+  autoStart: true
+  uninstallPreviousVersion: true
