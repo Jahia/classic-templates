@@ -1,12 +1,8 @@
-import {
-  buildNodeUrl,
-  getSiteLocales,
-  jahiaComponent,
-  server,
-} from "@jahia/javascript-modules-library";
+import { buildNodeUrl, jahiaComponent, server } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import classes from "./language-switcher.module.css";
 import { languageTag } from "../../../lib/locale.js";
+import { pageSite } from "../../../lib/site.js";
 
 const capitalise = (s: string, lang: string) => s.charAt(0).toLocaleUpperCase(lang) + s.slice(1);
 
@@ -20,6 +16,10 @@ const capitalise = (s: string, lang: string) => s.charAt(0).toLocaleUpperCase(la
  *
  * Site locale keys can be regional ("fr_CA"): BCP 47 tags (toLanguageTag, "fr-CA") are used for
  * hreflang, lang and case mapping, and the current page is matched on the full locale.
+ *
+ * The languages are those of the page's own site, never getSiteLocales(): it reads
+ * renderContext.getSite(), which in live is the site named after the request host when there is
+ * one, another site than the page's when several sites are served under one host (Jahia Cloud).
  */
 jahiaComponent(
   {
@@ -40,7 +40,12 @@ jahiaComponent(
             .map((v: { getString(): string }) => v.getString())
         : [],
     );
-    const links = Object.entries(getSiteLocales())
+    const site = pageSite(renderContext);
+    const locales = renderContext.isLiveMode()
+      ? site.getActiveLiveLanguagesAsLocales()
+      : site.getLanguagesAsLocales();
+    const links = locales
+      .map((locale) => [locale.toString(), locale] as const)
       .filter(([code, locale]) => !invalid.has(code) && mainNode.hasI18N(locale))
       .map(([code, locale]) => ({
         code,
