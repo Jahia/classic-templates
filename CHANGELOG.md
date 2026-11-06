@@ -1,5 +1,11 @@
 # classic-templates Changelog
 
+## 0.12.1
+
+* The language switcher lists the languages of the page's own site. In live, Jahia takes the site named after the request host as the request's site, so where several sites are served under one host (Jahia Cloud) a page could list another site's languages, and lose its switcher when it had fewer translations in common.
+
+* The nightly integration tests install classic-media too: without it the editorial-types spec, which checks `ctmd:keyDate`, failed every night against the release and snapshot Jahia images.
+
 ## 0.12.0
 
 * In Page Builder, a section, a news ticker, reused content or a page switched off in some of the site's languages (**Visibility > Content visibility by language**) says so on its first line: "Shown in Chinese only: hidden in English, Japanese (Visibility)". The frame shows such a block in every language, visitors of the other languages never get it; the note is amber in a language that hides it. Edit mode only: preview and the live site are unchanged.
