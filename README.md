@@ -168,7 +168,8 @@ template set, covers the happy path, authorization and edge cases, and deletes t
 In CI the suites run through the shared Jahia integration-test workflow, which installs every
 SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`), on every change to the
 code, and nightly against the release and snapshot Jahia images with the latest published snapshots
-(`tests/provisioning-manifest-snapshot.yml`).
+of the template set, classic-travel and classic-media (`tests/provisioning-manifest-snapshot.yml`; a
+package the specs use and the manifest leaves out fails every night).
 
 A pull request that changes no package skips the build, Sonar and the integration tests (about 23
 minutes); only the light checks run. That covers Markdown, `docs/`, the changelog, the agent harness
