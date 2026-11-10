@@ -35,6 +35,20 @@
   --fmdb-step-done-color: var(--ctpl-color-success);
   --fmdb-step-number-bg: var(--ctpl-color-surface-sunken);
   --fmdb-step-active-number-bg: var(--ctpl-color-accent);
+  /* Every colour Formidable defaults to a light value: left unmapped, the step numbers stayed
+     #374151 on the dark surface (1.6:1) and the active number white on the light dark-mode accent. */
+  --fmdb-step-active-border: var(--ctpl-color-accent);
+  --fmdb-step-done-border: var(--ctpl-color-success);
+  --fmdb-step-number-color: var(--ctpl-color-text-muted);
+  --fmdb-step-active-number-color: var(--ctpl-color-text-on-accent);
+  --fmdb-step-done-number-bg: var(--ctpl-color-success);
+  --fmdb-step-done-number-color: var(--ctpl-color-surface-page);
+  --fmdb-validation-warning-color: var(--ctpl-color-warning);
+  --fmdb-field-action-checking-color: var(--ctpl-color-text-muted);
+  --fmdb-spinner-overlay-bg: color-mix(in srgb, var(--ctpl-color-surface-page) 92%, transparent);
+  --fmdb-spinner-color: var(--ctpl-color-accent);
+  --fmdb-spinner-track-color: var(--ctpl-color-border);
+  --fmdb-spinner-text-color: var(--ctpl-color-text-muted);
 }
 
 /* Formidable leaves fields, labels and layout to the template set (docs/styling). Visible labels,
@@ -81,6 +95,60 @@
   color: var(--ctpl-color-text-muted);
   font-size: var(--ctpl-text-sm);
 }
+/* The help is rich text: its paragraph's page margin put the gap below the help, not between fields. */
+.ctpl-addon .fmdb-form-help > :last-child {
+  margin-block-end: 0;
+}
+/* A step and a fieldset hold their own fields: the form's gap reaches its direct children only, so
+   in a multi-step form each label touched the field above. Formidable hides an inactive step and a
+   field a rule hides with an inline display: none, which this rule does not override. */
+.ctpl-addon :is(.fmdb-step, .fmdb-fieldset-elements) {
+  display: grid;
+  gap: var(--ctpl-space-5);
+}
+/* A legend is no grid item, so the group's gap does not reach it. A fieldset's legend titles a
+   group of fields: larger than a field label, so the two do not read as one level. */
+.ctpl-addon .fmdb-group-legend {
+  margin-block-end: var(--ctpl-space-2);
+}
+.ctpl-addon .fmdb-fieldset-legend {
+  margin-block-end: var(--ctpl-space-3);
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-lg);
+}
+/* The text-field box squeezed the colour swatch into a 3 px line across the whole column:
+   a swatch the size of a field's height, its own padding as the frame. */
+.ctpl-addon .fmdb-form-control[type="color"] {
+  inline-size: 4.5rem;
+  block-size: 3rem;
+  padding: var(--ctpl-space-1);
+  cursor: pointer;
+}
+.ctpl-addon .fmdb-form-control[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.ctpl-addon .fmdb-form-control[type="color"]::-webkit-color-swatch {
+  border: 0;
+  border-radius: var(--ctpl-radius-sm);
+}
+.ctpl-addon .fmdb-form-control[type="color"]::-moz-color-swatch {
+  border: 0;
+  border-radius: var(--ctpl-radius-sm);
+}
+/* The file button is the browser's: a site button instead of a grey system one in both schemes. */
+.ctpl-addon .fmdb-form-control[type="file"]::file-selector-button {
+  margin-inline-end: var(--ctpl-space-3);
+  padding: var(--ctpl-space-2) var(--ctpl-space-4);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-sm);
+  background: var(--ctpl-color-surface-sunken);
+  color: var(--ctpl-color-text);
+  font: inherit;
+  cursor: pointer;
+}
+.ctpl-addon .fmdb-form-control[type="file"]::file-selector-button:hover {
+  background: var(--ctpl-color-accent-subtle);
+}
 .ctpl-addon .fmdb-group-items {
   display: grid;
   gap: var(--ctpl-space-2);
@@ -102,6 +170,19 @@
   background: none;
   accent-color: var(--ctpl-color-action);
 }
+/* A consent field (formidable-extended-inputs) lays itself out, the box beside its sentence and the
+   terms link under the sentence: the group grid above put the box, the sentence and the link on
+   three rows. Its indent follows the box size set above, not the module's 1.5rem. */
+.ctpl-addon .fmdb-form-group.fmdbext-consent {
+  display: flex;
+  gap: var(--ctpl-space-1) var(--ctpl-space-2);
+}
+.ctpl-addon .fmdbext-consent .fmdbext-consent-input {
+  margin-block-start: 0.125em;
+}
+.ctpl-addon .fmdbext-consent :is(.fmdbext-consent-terms-link, .fmdb-form-help, .fmdbext-edit-warning) {
+  margin-inline-start: calc(1.25rem + var(--ctpl-space-2));
+}
 .ctpl-addon .fmdb-message-success {
   padding: var(--ctpl-space-4);
   border-radius: var(--ctpl-radius-md);
@@ -113,6 +194,39 @@
   border-radius: var(--ctpl-radius-md);
   background: var(--ctpl-color-danger-surface);
   color: var(--ctpl-color-text);
+}
+
+/* Page Builder chrome Formidable draws in the form (actions zones, field actions, hidden fields,
+   fields a rule hides): light cards by default, the brightest blocks of a dark page. Site
+   surfaces instead, and a rule-hidden field keeps the live layout (full width, not shrunk). */
+.ctpl-addon {
+  --fmdb-zone-actions-border: var(--ctpl-border-width) dashed var(--ctpl-color-border-strong);
+  --fmdb-zone-actions-bg: var(--ctpl-color-surface-sunken);
+  --fmdb-zone-actions-color: var(--ctpl-color-text);
+  --fmdb-zone-actions-muted: var(--ctpl-color-text-muted);
+  --fmdb-zone-actions-card-bg: var(--ctpl-color-surface-raised);
+  --fmdb-zone-actions-card-border: var(--ctpl-color-border);
+  --fmdb-zone-actions-rank-bg: var(--ctpl-color-accent-subtle);
+  --fmdb-zone-actions-rank-color: var(--ctpl-color-text);
+  --fmdb-zone-actions-warning-bg: var(--ctpl-color-warning-surface);
+  --fmdb-zone-actions-warning-border: var(--ctpl-color-warning);
+  --fmdb-zone-actions-warning-color: var(--ctpl-color-text);
+  --fmdb-zone-actions-error-bg: var(--ctpl-color-danger-surface);
+  --fmdb-zone-actions-error-border: var(--ctpl-color-danger);
+  --fmdb-zone-actions-error-color: var(--ctpl-color-text);
+  --fmdb-logic-target-card-display: grid;
+  --fmdb-logic-target-card-bg: var(--ctpl-color-surface-sunken);
+  --fmdb-logic-target-card-shadow: 0 0 0 var(--ctpl-space-2) var(--ctpl-color-surface-sunken);
+
+  /* formidable-extended-inputs */
+  --fmdbext-chip-border: var(--ctpl-color-border-strong);
+  --fmdbext-focus: var(--ctpl-color-focus);
+  --fmdbext-rating-off: var(--ctpl-color-border-strong);
+  --fmdbext-switch-off-bg: var(--ctpl-color-border-strong);
+  --fmdbext-end-labels-color: var(--ctpl-color-text-muted);
+  --fmdbext-warning-fg: var(--ctpl-color-text);
+  --fmdbext-warning-bg: var(--ctpl-color-warning-surface);
+  --fmdbext-warning-border: var(--ctpl-color-warning);
 }
 
 /* ---- jsfaq, js-media-gallery, js-store-locator: each reads its own custom properties with its
