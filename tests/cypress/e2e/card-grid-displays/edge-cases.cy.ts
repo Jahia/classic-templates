@@ -22,7 +22,7 @@ describe('Card grid displays - what a logo strip leaves out, decorative logos, d
             addContent(page, 'main', 'ctpl:pageArea', {}).then(() => {
                 // A logo strip holding only what it cannot show: nothing on the live site.
                 addContent(`${page}/main`, 'empty', 'ctpl:cardGrid', { 'jcr:title': { en: 'Hollow', fr: 'Creux' } }, [
-                    { name: 'display', value: 'logos' },
+                    { name: 'j:view', value: 'logos' },
                 ]).then(() => {
                     addContent(`${page}/main/empty`, 'noimage', 'ctpl:card', {
                         'jcr:title': { en: 'No image', fr: 'Sans image' },
@@ -33,7 +33,8 @@ describe('Card grid displays - what a logo strip leaves out, decorative logos, d
                         ]),
                     )
                 })
-                // An unlinked decorative logo is skipped by screen readers.
+                // An unlinked decorative logo is skipped by screen readers. This grid keeps the legacy
+                // display value (before 0.13.0, no j:view): the default view still draws it as a logo strip.
                 addContent(`${page}/main`, 'deco', 'ctpl:cardGrid', { 'jcr:title': { en: 'Decor', fr: 'Décor' } }, [
                     { name: 'display', value: 'logos' },
                 ]).then(() =>

@@ -12332,11 +12332,12 @@
                         jcr:uuid="2b71240e-2dbb-447d-80ff-4d3ee2638230">
                      <partners columns="4"
                                ctplSurface="default"
-                               display="logos"
+                               display="cards"
                                j:lastPublished="2026-10-14T13:41:08.318Z"
                                j:lastPublishedBy="root"
                                j:originWS="default"
                                j:published="true"
+                               j:view="logos"
                                jcr:created="2026-10-13T17:14:03.103Z"
                                jcr:createdBy="root"
                                jcr:lastModified="2026-10-13T17:14:03.113Z"

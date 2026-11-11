@@ -10,4 +10,5 @@
 // a comfortable reading measure ("readable") or lets it use the full content width ("wide").
 [ctpl:richText] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle
  - body (string, richtext) i18n
+ // cnd-check-ignore(viewSwitch): a width token (reading measure or the container) on the same markup
  - width (string, choicelist[resourceBundle]) = 'readable' autocreated < 'readable', 'wide'

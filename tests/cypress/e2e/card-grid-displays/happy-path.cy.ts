@@ -42,7 +42,7 @@ describe('Card grid displays - icon tiles and logo strip', () => {
                             'tiles',
                             'ctpl:cardGrid',
                             { 'jcr:title': { en: 'Ways to get help', fr: "Obtenir de l'aide" } },
-                            [{ name: 'display', value: 'iconTiles' }],
+                            [{ name: 'j:view', value: 'iconTiles' }],
                         ).then(() => {
                             addContent(
                                 `${page}/main/tiles`,
@@ -70,7 +70,7 @@ describe('Card grid displays - icon tiles and logo strip', () => {
                             'partners',
                             'ctpl:cardGrid',
                             { 'jcr:title': { en: 'Partners', fr: 'Partenaires' } },
-                            [{ name: 'display', value: 'logos' }],
+                            [{ name: 'j:view', value: 'logos' }],
                         ).then(() => {
                             // Linked: named after the card title.
                             addContent(

@@ -23,12 +23,18 @@
 // A page section of hand-picked cards with an optional h2 heading (jcr:title) and a lead text
 // under it. Editors mix written cards (ctpl:card) and teasers of existing content
 // (ctpl:contentTeaser), in any order. columns sets how many cards sit on a row on large screens;
-// the grid wraps to fewer columns on small ones. display draws the same cards as cards (image,
-// title, text), as outlined icon tiles (the image is a small icon, the whole tile is the link) or
-// as a strip of logos (the image only, optionally linked; teasers are left out).
-[ctpl:cardGrid] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+// the grid wraps to fewer columns on small ones. Three renderings of the same cards, chosen in
+// Layout > Select a view (jmix:renderable): the default view draws cards (image, title, text),
+// "iconTiles" outlined icon tiles (the image is a small icon, the whole tile is the link), "logos" a
+// strip of logos (the image only, optionally linked; teasers are left out). display is the legacy
+// choice of the three, hidden since 0.13.0 (removing a released property is refused):
+// scripts/migrate-views.groovy moves its values to j:view, and the default view still reads it for
+// grids not moved yet.
+[ctpl:cardGrid] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list, jmix:renderable orderable
+ // cnd-check-ignore(viewSwitch): a column count, one modifier class of the same grid
  - columns (string, choicelist[resourceBundle]) = '3' autocreated < '2', '3', '4'
- - display (string, choicelist[resourceBundle]) = 'cards' autocreated < 'cards', 'iconTiles', 'logos'
+ // cnd-check-ignore(viewSwitch): legacy and hidden, the "iconTiles" and "logos" views replace it; the default view reads it only for grids not moved to j:view yet (scripts/migrate-views.groovy) and for live until their next publication
+ - display (string, choicelist[resourceBundle]) = 'cards' autocreated hidden < 'cards', 'iconTiles', 'logos'
  - introText (string, textarea) i18n
  + * (ctpl:card)
  + * (ctpl:contentTeaser)

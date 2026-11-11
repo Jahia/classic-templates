@@ -19,16 +19,21 @@
 // (?tag=<tag>). showSearch adds a search box to the header (a GET form to searchPage, `q` being the
 // words) with suggestions from Augmented Search when it is installed; it needs searchPage.
 // brandCaption is a short line beside the brand (a tagline), part of the link to the home page,
-// shown on large screens only. headerLayout "twoRows" puts the brand, the search box, the utility
-// links, the account entry and the languages on a top row, and the main menu on its own row below.
-[ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType
+// shown on large screens only. Two renderings, chosen in Layout > Select a view (jmix:renderable):
+// the default view (one row) and "twoRows" (the brand, the search box, the utility links, the
+// account entry and the languages on a top row, the main menu on its own row below).
+// headerLayout is the legacy choice of the two, hidden since 0.13.0 (removing a released property is
+// refused): scripts/migrate-views.groovy moves its "twoRows" to j:view, and the default view still
+// reads it for headers not moved yet.
+[ctpl:siteHeader] > jnt:content, ctplmix:headerComponent, jmix:hiddenType, jmix:renderable
  - logo (weakreference, picker[type='image']) < jmix:image
  - logoDark (weakreference, picker[type='image']) < jmix:image
  - brandName (string) i18n
  - showBrandName (boolean) = true autocreated
  - brandCaption (string) i18n
  // cnd-check-ignore(missingI18n): a choice among fixed values, labelled in the resource bundles
- - headerLayout (string, choicelist[resourceBundle]) = 'oneRow' autocreated indexed=no < 'oneRow', 'twoRows'
+ // cnd-check-ignore(viewSwitch): legacy and hidden, the "twoRows" view replaces it; the default view reads it only for headers not moved to j:view yet (scripts/migrate-views.groovy) and for live until their next publication
+ - headerLayout (string, choicelist[resourceBundle]) = 'oneRow' autocreated hidden indexed=no < 'oneRow', 'twoRows'
  - showAccount (boolean) = false autocreated
  - showSearch (boolean) = false autocreated
  - accountLanding (weakreference, picker[type='page']) < jnt:page

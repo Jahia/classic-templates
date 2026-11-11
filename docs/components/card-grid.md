@@ -11,9 +11,9 @@ A section of hand-picked cards in a grid, with an optional title and lead text. 
 - **Card:** a card you write yourself, with a title, a short text, an image and a link.
 - **Card of an existing item:** a card that shows an existing news item or article, with its own title, image and teaser. It changes when the item is edited.
 
-The same cards can be drawn three ways, with the grid's **Display** field:
+The same cards can be drawn three ways. Each is a view of the grid, chosen in Content Editor > **Layout** > **Select a view** (**Rendu** > **Sélectionnez une vue** in French):
 
-- **Cards** (default): image, title, text and link text, in 2 to 4 columns.
+- **Cards** (`default`, or no view chosen): image, title, text and link text, in 2 to 4 columns.
 - **Icon tiles:** outlined square tiles with the card image as a small icon, the title and the text. The whole tile is the link. Good for a set of short entry points ("Write to us", "Service status").
 - **Logo strip:** the card images only, in a row that wraps, each optionally linked. Good for partners or certifications.
 
@@ -34,10 +34,10 @@ Cards are added inside the card grid. Reorder them in Page Builder or jContent.
 | ---------------------------- | ---------------------------------------------------------------------- | ---------------------------------------- |
 | Title                        | The section heading.                                                   | Per language. Optional. Level 2 heading. |
 | Lead text                    | A sentence or two under the title, above the cards.                    | Per language. Optional.                  |
-| Display                      | **Cards**, **Icon tiles** or **Logo strip** (see above).               | Default: Cards.                          |
-| Cards per row                | **2 cards**, **3 cards** or **4 cards** side by side on large screens. | Default: 3 cards. Cards display only.    |
+| Cards per row                | **2 cards**, **3 cards** or **4 cards** side by side on large screens. | Default: 3 cards. Cards view only.       |
 | Background                   | Page background, Light band or Accent tint.                            | See [Section style](section-style.md).   |
 | Call to action               | Optional toggle. Adds a button after the cards.                        | See [Call to action](call-to-action.md). |
+| Select a view (Layout)       | **default** (cards), **Icon tiles** or **Logo strip** (see above).     | Default: cards.                          |
 
 ### Card
 
