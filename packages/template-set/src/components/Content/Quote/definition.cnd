@@ -13,4 +13,5 @@
  - quote (string, textarea) i18n
  - author (string)
  - authorRole (string) i18n
+ // cnd-check-ignore(viewSwitch): the size of the same figure (a pull quote is the large type size), one modifier class
  - variant (string, choicelist[resourceBundle]) = 'standard' autocreated < 'standard', 'large'

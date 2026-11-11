@@ -12,5 +12,6 @@
 // The zone gives them the section's surface, heading and width; templates/addons.css maps their
 // CSS variables onto the theme's tokens.
 [ctpl:freeZone] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:sectionStyle, jmix:list orderable
+ // cnd-check-ignore(viewSwitch): a width token (container, reading measure or full bleed) on the same section markup
  - width (string, choicelist[resourceBundle]) = 'container' autocreated < 'container', 'reading', 'full'
  + * (jmix:droppableContent)
