@@ -1,5 +1,5 @@
 import { Render, RenderChildren, jahiaComponent } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, headingTag, useItemHeadingLevel } from "../../../lib/Heading.js";
 import { Image } from "../../../lib/Image.js";
@@ -67,7 +67,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:card", displayName: "Card" },
   ({ "jcr:title": title, text, linkLabel, image }: CardProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const Heading = headingTag(useItemHeadingLevel(currentNode));
     const isEdit = renderContext.isEditMode();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
@@ -117,7 +117,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:contentTeaser", displayName: "Content teaser" },
   (_props: ContentTeaserProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const level = useItemHeadingLevel(currentNode);
     const target = teaserTarget(currentNode);
     if (!target) {

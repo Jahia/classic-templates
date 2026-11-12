@@ -3,7 +3,7 @@ import {
   buildModuleFileUrl,
   jahiaComponent,
 } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { Cta } from "../../../lib/Cta.js";
 import { consentDays } from "../../../lib/consent.js";
 import type { Props } from "./types.js";
@@ -31,7 +31,7 @@ import { EditNote } from "../../../lib/EditNote.js";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:consentBanner", displayName: "Consent banner" },
   (props: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const isEdit = renderContext.isEditMode();
     const title = props["jcr:title"];
     const { acceptLabel, refuseLabel, settingsLabel } = props;

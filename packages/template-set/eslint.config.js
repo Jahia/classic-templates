@@ -50,6 +50,29 @@ export default defineConfig(
     },
   },
 
+  // Labels go through lib/labels.ts (islands) or lib/pageLabels.ts (server), which pick the
+  // Traditional Chinese set on zh_HK, zh_TW and zh_MO pages; a bare useTranslation() would render
+  // Simplified Chinese there.
+  {
+    files: ["src/**/*.ts", "src/**/*.tsx"],
+    ignores: ["src/lib/labels.ts", "**/*.test.ts", "**/*.test.tsx"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          paths: [
+            {
+              name: "react-i18next",
+              importNames: ["useTranslation"],
+              message:
+                "Use usePageLabels() (server, lib/pageLabels.ts) or useLabels(locale) (island, lib/labels.ts).",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
   // Ignore the same files as the package .gitignore
   includeIgnoreFile(path.resolve(import.meta.dirname, ".gitignore")),
 );

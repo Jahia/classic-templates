@@ -5,7 +5,7 @@ import {
   server,
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { EditNote } from "../../../lib/EditNote.js";
 import { LanguageVisibilityNote } from "../../../lib/LanguageVisibilityNote.js";
 
@@ -66,7 +66,7 @@ jahiaComponent(
     displayName: "Reused content",
   },
   (_, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const isEdit = renderContext.isEditMode();
     const reused = reusedNode(currentNode);
     if (!reused) {

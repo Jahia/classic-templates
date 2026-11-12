@@ -1,6 +1,6 @@
 import { RenderChildren, getChildNodes, jahiaComponent } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { SectionHeading } from "../../../lib/Heading.js";
 import type { Props } from "./types.js";
 import classes from "./link-list.module.css";
@@ -47,7 +47,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:linkList", name: "inline", displayName: "Inline links" },
   ({ "jcr:title": title }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
     return (
       <nav
@@ -67,7 +67,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:linkList", name: "social", displayName: "Social links" },
   ({ "jcr:title": title }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
     return (
       <nav
@@ -87,7 +87,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:linkList", name: "column", displayName: "Link column" },
   ({ "jcr:title": title }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     if (!renderContext.isEditMode() && isEmpty(currentNode)) return null;
     const headingId = `ctpl-links-${currentNode.getIdentifier()}`;
     return (

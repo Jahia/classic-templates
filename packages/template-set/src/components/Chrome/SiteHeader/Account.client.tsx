@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useLabels } from "../../../lib/labels.js";
 import classes from "./account.module.css";
 
 interface Props {
@@ -11,6 +11,8 @@ interface Props {
   graphqlUrl: string;
   /** The site's registration page, offered to guests beside "Sign in"; none when unset. */
   registerHref?: string;
+  /** The page's locale ("zh_HK"): Traditional Chinese pages get the Traditional labels. */
+  language: string;
 }
 
 const WHO = "{ currentUser { username displayName } }";
@@ -40,8 +42,9 @@ export default function Account({
   signOutHref,
   graphqlUrl,
   registerHref,
+  language,
 }: Readonly<Props>) {
-  const { t } = useTranslation("classic-templates");
+  const { t } = useLabels(language);
   const [name, setName] = useState<string>();
 
   useEffect(() => {

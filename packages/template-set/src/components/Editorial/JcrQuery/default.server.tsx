@@ -1,6 +1,6 @@
 import { Render, jahiaComponent, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, useHeadingLevel } from "../../../lib/Heading.js";
 import { itemLabelMode } from "../../../lib/itemLabel.js";
@@ -39,7 +39,7 @@ const EDIT_COUNT = 500;
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:jcrQuery", displayName: "Content list" },
   (props: Props, { currentNode, renderContext, jcrSession, currentResource }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const level = useHeadingLevel(currentNode); // hooks before any early return
     const isEdit = renderContext.isEditMode();
     const site = pageSite(renderContext);

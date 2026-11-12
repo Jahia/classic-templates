@@ -1,7 +1,7 @@
 import { Render } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import { audienceOf } from "./audience.js";
 import { readString } from "./props.js";
 import { resolveLink } from "./resolveLink.js";
@@ -39,7 +39,7 @@ export const Cta = ({
   /** Set by the "ctaForAudience" view once it decided this visitor sees the button. */
   audienceChecked?: boolean;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   if (!audienceChecked && audienceOf(readString(node, "ctaAudience")) !== "everyone") {
     return <Render node={node} view="ctaForAudience" parameters={{ variant }} />;
   }

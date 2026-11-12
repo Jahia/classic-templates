@@ -1,7 +1,7 @@
 import { JImage, Render, server } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import { readString } from "./props.js";
 import { EditNote } from "./EditNote.js";
 
@@ -56,7 +56,7 @@ export const Image = ({
   /** The text alternative, when the caller resolves it (see above). */
   alt?: string;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   if (isModel3d(node)) {
     return className ? (
       <span className={className}>

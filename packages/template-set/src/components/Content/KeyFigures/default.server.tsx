@@ -1,6 +1,6 @@
 import { RenderChildren, getChildNodes, jahiaComponent } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { Cta } from "../../../lib/Cta.js";
 import { readString } from "../../../lib/props.js";
 import { SectionHeading } from "../../../lib/Heading.js";
@@ -58,7 +58,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:keyFigure", displayName: "Key figure" },
   ({ value, label, detail }: KeyFigureProps, { renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     if (!value) {
       return renderContext.isEditMode() ? (
         <li className={classes.figure}>

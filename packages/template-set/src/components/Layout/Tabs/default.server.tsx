@@ -6,7 +6,7 @@ import {
   jahiaComponent,
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { anchorOf } from "../../../lib/anchor.js";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, headingTag, useItemHeadingLevel } from "../../../lib/Heading.js";
@@ -77,7 +77,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:tab", displayName: "Tab" },
   ({ "jcr:title": title }: TabProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const Heading = headingTag(useItemHeadingLevel(currentNode));
     const isEdit = renderContext.isEditMode();
     if (!title && !isEdit) return null;

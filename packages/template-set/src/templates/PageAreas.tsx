@@ -1,5 +1,5 @@
 import { Area, Render, useServerContext } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../lib/pageLabels.js";
 import { gatingPageOf } from "../lib/pageGate.js";
 import { PageHeading } from "./PageShell.jsx";
 import classes from "./page-areas.module.css";
@@ -46,7 +46,7 @@ export const PageAreas = ({
   /** A view of the page rendered in place of the areas (another module's template body). */
   body?: string;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { currentNode, renderContext } = useServerContext();
   const gated = gatingPageOf(currentNode, renderContext) !== undefined;
   const hiddenTitleNote = hideTitle && title && (

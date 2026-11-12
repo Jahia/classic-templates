@@ -1,5 +1,5 @@
 import { type FormEvent, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useLabels } from "../../../lib/labels.js";
 import { destinationOf, loginOutcome } from "../../../lib/signin.js";
 import classes from "./sign-in.module.css";
 
@@ -28,6 +28,8 @@ interface Props {
   preview?: boolean;
   /** The signed-in visitor's name, known when the server rendered it for a signed-in visitor. */
   signedInAs?: string;
+  /** The page's locale ("zh_HK"): Traditional Chinese pages get the Traditional labels. */
+  language: string;
 }
 
 /** Where the visitor goes after signing in (lib/signin.ts decides): read in the browser only. */
@@ -70,8 +72,9 @@ export default function SignInForm({
   stay,
   preview,
   signedInAs,
+  language,
 }: Readonly<Props>) {
-  const { t } = useTranslation("classic-templates");
+  const { t } = useLabels(language);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);

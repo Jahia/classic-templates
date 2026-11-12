@@ -204,5 +204,213 @@
     "separator": "、",
     "shownOnly": "仅在{{shown}}中显示：在{{hidden}}中隐藏（可见性）。",
     "hiddenEverywhere": "所有语言均已隐藏（可见性）：访客看不到此内容。"
+  },
+  "zh-Hant": {
+    "pageNotes": {
+      "chromeLocked": "頁首和頁尾由所有頁面共享：請在首頁編輯，而不是在這裡。",
+      "noDescription": "此頁面沒有自己的描述：搜尋引擎和分享連結會使用網站的描述。請在頁面屬性（描述）中新增。",
+      "longTitle": "瀏覽器標題「{{title}}」有 {{count}} 個字元：搜尋結果大約顯示 {{max}} 個。較短的頁面標題可以完整顯示。",
+      "noIndex": "此網站要求搜尋引擎不要將其編入索引（網站設定）：此頁面不會出現在搜尋結果中。",
+      "hiddenTitle": "頁面標題在螢幕上被隱藏：螢幕閱讀器和搜尋引擎仍會讀取它，因此主橫幅應表達相同的內容。"
+    },
+    "reference": {
+      "reused": "重用內容：「{{title}}」（{{site}}）。它在來源處編輯，每次修改都會顯示在所有重用它的地方（{{count}} 處）。",
+      "unpublished": "重用的內容尚未發佈：發佈之前，訪客在這裡看不到任何內容。",
+      "missing": "重用的內容已不存在，或您無權讀取：線上網站在這裡不會顯示任何內容。請刪除此引用或選擇其他項目。"
+    },
+    "editNote": {
+      "a11y": "無障礙："
+    },
+    "layout": {
+      "skipToContent": "跳到主要內容"
+    },
+    "link": {
+      "noTarget": "此語言沒有連結目標",
+      "newTab": "在新標籤頁中開啟",
+      "untitled": "無標題連結"
+    },
+    "nav": {
+      "main": "主導覽",
+      "menu": "選單",
+      "submenu": "顯示「{{title}}」子選單",
+      "customMenuUnavailable": "此頁首使用的自訂選單無法讀取（已刪除、未發佈，或缺少 Menu Manager 模組）：訪客看到的是頁面樹。"
+    },
+    "lang": {
+      "label": "語言"
+    },
+    "account": {
+      "signIn": "登入",
+      "register": "註冊",
+      "signOut": "登出",
+      "signedInAs": "目前登入："
+    },
+    "signin": {
+      "formLabel": "登入",
+      "username": "電子郵件或使用者名稱",
+      "usernameHint": "您註冊時使用的電子郵件地址，或您的使用者名稱。",
+      "password": "密碼",
+      "submit": "登入",
+      "submitting": "正在登入...",
+      "rejected": "電子郵件、使用者名稱或密碼不正確。請檢查後重試。",
+      "unknown": "登入失敗。請稍後重試。",
+      "signedInAs": "您已以 {{name}} 的身份登入。",
+      "continue": "繼續"
+    },
+    "members": {
+      "badge": "會員專享",
+      "title": "會員專享",
+      "newsNotice": "此新聞僅限會員閱讀。請登入後繼續閱讀。",
+      "articleNotice": "此文章僅限會員閱讀。請登入後繼續閱讀。",
+      "pageNotice": "此頁面僅限會員查看。請登入後查看。",
+      "editNote": "會員專享：未登入的訪客會看到摘要、正文的開頭幾段，然後是包含登入表單和註冊連結的提示。",
+      "pageEditNote": "會員專享頁面：未登入的訪客會看到標題、提示和登入表單，而不是下面的各個部分。",
+      "register": "建立帳戶",
+      "orSignIn": "如果您已有帳戶，請在下方登入。",
+      "newsNoticeRegister": "此新聞僅限會員閱讀。請登入或建立帳戶後繼續閱讀。",
+      "articleNoticeRegister": "此文章僅限會員閱讀。請登入或建立帳戶後繼續閱讀。"
+    },
+    "links": {
+      "label": "連結",
+      "social": "社交網絡"
+    },
+    "image": {
+      "missing": "未選擇圖片",
+      "noTitle": "此圖片在媒體庫中沒有標題，因此沒有替代文字。"
+    },
+    "cta": {
+      "noLabel": "缺少按鈕標籤",
+      "noLink": "此按鈕有標籤但沒有連結：請選擇一個頁面或網址，或清除標籤。",
+      "audience": {
+        "guests": "僅向未登入的訪客顯示。",
+        "members": "僅向已登入的訪客顯示。"
+      }
+    },
+    "editorial": {
+      "news": "新聞",
+      "article": "文章",
+      "by": "作者：{{author}}",
+      "readingTime_one": "閱讀時間 {{count}} 分鐘",
+      "readingTime_other": "閱讀時間 {{count}} 分鐘",
+      "topics": "主題",
+      "noTitle": "此語言沒有標題：此項目不會出現在列表中。",
+      "tags": "標籤"
+    },
+    "query": {
+      "summary": "按{{order}}列出 {{start}} 下的{{type}}，最多 {{max}} 條。",
+      "newest": "最新優先",
+      "oldest": "最早優先",
+      "empty": "暫無內容。",
+      "startMissing": "已設定起始資料夾，但在這裡找不到（已刪除或尚未發佈）：線上網站的列表不會顯示任何內容。",
+      "invalidType": "無法列出此內容類型。",
+      "sort": {
+        "publicationDate": "發佈日期",
+        "jcr_created": "建立日期",
+        "jcr_lastModified": "最後修改時間",
+        "jcr_title": "標題"
+      },
+      "layout": {
+        "grid": "卡片",
+        "list": "緊湊列表"
+      },
+      "itemLabel": {
+        "none": "無",
+        "type": "內容類型",
+        "category": "第一個分類，否則為內容類型"
+      },
+      "panel": {
+        "type": "內容",
+        "start": "位於",
+        "sort": "排序",
+        "max": "最多",
+        "display": "顯示方式",
+        "itemLabel": "項目標籤",
+        "categories": "分類",
+        "allCategories": "所有分類",
+        "withSubcategories_one": "（{{count}} 個分類，含子分類）",
+        "withSubcategories_other": "（{{count}} 個分類，含子分類）",
+        "excluded": "排除",
+        "none": "無",
+        "found": "找到",
+        "foundValue": "共 {{matching}}{{more}} 條匹配，顯示 {{shown}} 條",
+        "skipped": "未列出",
+        "skippedValue": "排除 {{excluded}} 條，{{untranslated}} 條未翻譯為 {{language}}",
+        "openInJContent": "在 jContent 中開啟（新標籤頁）",
+        "query": "JCR-SQL2 查詢"
+      },
+      "aToZ": "A 到 Z",
+      "zToA": "Z 到 A"
+    },
+    "breadcrumb": {
+      "label": "麵包屑導覽",
+      "home": "首頁",
+      "noListingPage": "此麵包屑導覽跳過了列出此項目的頁面。要顯示它，請在項目所在內容資料夾的列表頁面設定中選擇該頁面。"
+    },
+    "cards": {
+      "teaserMissing": "請選擇要在此卡片中顯示的新聞或文章。",
+      "noTitle": "此卡片沒有此語言的標題：不會顯示標題。",
+      "logoMissing": "此標誌沒有圖片：不會顯示。",
+      "teaserNotInLogos": "現有項目的卡片不會顯示在標誌條中。"
+    },
+    "figures": {
+      "noValue": "此數據沒有此語言的值：不會顯示。"
+    },
+    "quote": {
+      "empty": "此引言沒有此語言的文字：不會顯示。"
+    },
+    "richText": {
+      "headingsRenumbered": "此文字的標題使用了 1 級標題或跳過了某一級：已重新編號顯示，以保持頁面結構完整。請從 2 級標題開始編寫文字的主要部分，並逐級向下。",
+      "imageWithoutAlt": "此文字中的一張圖片沒有替代文字：請在富文本編輯器中編輯圖片並新增描述，或用空文字將其標記為裝飾性圖片。",
+      "table": "表格",
+      "tableNumbered": "表 {{number}}",
+      "tableWithoutCaption": "此文字中的一個表格沒有標題：請在富文本編輯器（表格屬性）中新增。標題會為螢幕閱讀器說明表格的名稱。"
+    },
+    "accordion": {
+      "expandAll": "全部展開",
+      "collapseAll": "全部摺疊",
+      "noTitle": "此項目沒有此語言的標題：不會顯示。"
+    },
+    "tabs": {
+      "noTitle": "此標籤頁沒有此語言的標籤：標籤頁及其內容都不會顯示。"
+    },
+    "notice": {
+      "label": "最新動態",
+      "dismiss": "隱藏這些動態"
+    },
+    "carousel": {
+      "label": "精選",
+      "roleDescription": "輪播",
+      "slideRole": "幻燈片",
+      "slideOf": "第 {{index}} 張，共 {{total}} 張",
+      "previous": "上一張",
+      "next": "下一張",
+      "pause": "暫停",
+      "play": "播放",
+      "empty": "還沒有幻燈片：請向此輪播新增主橫幅，每張幻燈片一個。",
+      "editStacked": "這裡所有幻燈片依次排列顯示。訪客一次只看到一張，並可用按鈕切換。"
+    },
+    "search": {
+      "label": "搜尋本站",
+      "submit": "搜尋",
+      "toggle": "搜尋",
+      "suggestions": "建議",
+      "suggestionCount_one": "有 {{count}} 條建議",
+      "suggestionCount_other": "有 {{count}} 條建議",
+      "for": "搜尋「{{words}}」",
+      "noPage": "搜尋框已開啟，但頁首未指定搜尋頁面：請在頁首設定中選擇一個。在此之前，訪客看不到搜尋框。"
+    },
+    "network": {
+      "label": "我們的網站",
+      "empty": "請為集團的每個網站新增一個指向其首頁的連結。"
+    },
+    "consent": {
+      "label": "隱私選擇",
+      "editHint": "訪客在接受或拒絕之前會一直看到此橫幅，頁尾後的設定按鈕可以再次開啟它。如需在訪客接受之前不進行任何追蹤，請在網站上關閉追蹤（jExperience：在網站的所有頁面上停用 JavaScript 執行）。",
+      "missingLabels": "此橫幅不會顯示在線上網站上：請填寫接受、拒絕和設定的標籤。"
+    },
+    "visibilityNote": {
+      "separator": "、",
+      "shownOnly": "僅在{{shown}}中顯示：在{{hidden}}中隱藏（可見性）。",
+      "hiddenEverywhere": "所有語言均已隱藏（可見性）：訪客看不到此內容。"
+    }
   }
 }

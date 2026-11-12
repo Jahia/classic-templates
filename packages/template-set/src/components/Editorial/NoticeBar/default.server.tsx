@@ -6,7 +6,7 @@ import {
   server,
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { Cta } from "../../../lib/Cta.js";
 import { formatDate, isoDay } from "../../../lib/dates.js";
 import { chooseItemLabel, itemLabelMode } from "../../../lib/itemLabel.js";
@@ -61,7 +61,7 @@ const CloseIcon = () => (
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:noticeBar", displayName: "Notice bar" },
   (props: Props, { currentNode, renderContext, jcrSession, currentResource }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const isEdit = renderContext.isEditMode();
     const site = pageSite(renderContext);
     const startMissing = !props.startNode && currentNode.hasProperty("startNode");

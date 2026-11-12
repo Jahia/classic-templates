@@ -44,7 +44,7 @@ inventory, which shared mixins does it reuse (`ctplmix:cta`, `ctplmix:media`, `c
   `settings/locales/en.json` and `fr.json`.
 - Rich text: the shared `RichText` component, never `dangerouslySetInnerHTML` directly.
 - Contributed URLs: through the shared link helper (scheme allow-list).
-- Interactive behaviour: a `.client.tsx` island with serialisable props, `useTranslation("classic-templates")`,
+- Interactive behaviour: a `.client.tsx` island with serialisable props, `useLabels(language)` from `lib/labels.ts` with the page locale passed as a prop (server components: `usePageLabels()`; never `useTranslation` directly, `yarn lint` refuses it),
   rendered flat in edit mode.
 
 ## 4. Deploy and test

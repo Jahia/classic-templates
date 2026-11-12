@@ -1,10 +1,9 @@
 import { buildNodeUrl, jahiaComponent, server } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import classes from "./language-switcher.module.css";
+import { languageNames } from "../../../lib/languageName.js";
 import { languageTag } from "../../../lib/locale.js";
 import { pageSite } from "../../../lib/site.js";
-
-const capitalise = (s: string, lang: string) => s.charAt(0).toLocaleUpperCase(lang) + s.slice(1);
 
 /**
  * Links to the page being viewed in the site's other languages, only those the page is translated
@@ -13,6 +12,9 @@ const capitalise = (s: string, lang: string) => s.charAt(0).toLocaleUpperCase(la
  * It sits in the shared header, whose cached fragment is otherwise the same on every page, so its
  * cache key includes the main resource (`cache.mainResource`): each page gets its own links. The
  * main node is also a dependency: publishing a new translation of the page updates its switcher.
+ *
+ * Each link shows the language's own name ("English", "繁體中文", "简体中文"; lib/languageName.ts),
+ * which is also its accessible name, read in that language thanks to `lang` on the link.
  *
  * Site locale keys can be regional ("fr_CA"): BCP 47 tags (toLanguageTag, "fr-CA") are used for
  * hreflang, lang and case mapping, and the current page is matched on the full locale.
@@ -29,7 +31,7 @@ jahiaComponent(
     properties: { "cache.mainResource": "true" },
   },
   (_, { mainNode, currentResource, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     server.render.addCacheDependency({ node: mainNode }, renderContext);
     const current = currentResource.getLocale().toString();
     const invalid = new Set<string>(
@@ -44,16 +46,23 @@ jahiaComponent(
     const locales = renderContext.isLiveMode()
       ? site.getActiveLiveLanguagesAsLocales()
       : site.getLanguagesAsLocales();
-    const links = locales
-      .map((locale) => [locale.toString(), locale] as const)
-      .filter(([code, locale]) => !invalid.has(code) && mainNode.hasI18N(locale))
-      .map(([code, locale]) => ({
-        code,
+    const offered = locales.filter(
+      (locale) => !invalid.has(locale.toString()) && mainNode.hasI18N(locale),
+    );
+    const names = languageNames(
+      offered.map((locale) => ({
         tag: languageTag(locale),
-        current: locale.toString() === current,
-        name: capitalise(locale.getDisplayLanguage(locale), languageTag(locale)),
-        href: buildNodeUrl(mainNode, { language: code }),
-      }));
+        language: locale.getDisplayLanguage(locale),
+        country: locale.getDisplayCountry(locale),
+      })),
+    );
+    const links = offered.map((locale, index) => ({
+      code: locale.toString(),
+      tag: languageTag(locale),
+      current: locale.toString() === current,
+      name: names[index],
+      href: buildNodeUrl(mainNode, { language: locale.toString() }),
+    }));
     if (links.length < 2) return null;
 
     return (
@@ -68,10 +77,7 @@ jahiaComponent(
                 lang={tag}
                 aria-current={isCurrent ? "true" : undefined}
               >
-                {/* The accessible name starts with the visible code ("FR - Français"), so voice
-                    control finds it (RGAA 6.1.5 / WCAG 2.5.3); lang on the link reads it right. */}
-                {tag.toUpperCase()}
-                <span className="ctpl-visually-hidden"> - {name}</span>
+                {name}
               </a>
             </li>
           ))}

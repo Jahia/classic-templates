@@ -1,6 +1,6 @@
 import { RenderChildren, getChildNodes, jahiaComponent } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import type { Props } from "./types.js";
 import classes from "./network-bar.module.css";
 import { EditNote } from "../../../lib/EditNote.js";
@@ -18,7 +18,7 @@ import { EditNote } from "../../../lib/EditNote.js";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:networkBar", displayName: "Network bar" },
   ({ label }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const isEdit = renderContext.isEditMode();
     const empty =
       getChildNodes(currentNode, 1, 0, (n: JCRNodeWrapper) => n.isNodeType("ctpl:link")).length ===

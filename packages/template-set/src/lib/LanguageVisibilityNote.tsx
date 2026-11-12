@@ -1,6 +1,6 @@
 import { useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import { EditNote } from "./EditNote.js";
 import { pageSite } from "./site.js";
 import { languageVisibility } from "./visibility.js";
@@ -27,7 +27,7 @@ export const LanguageVisibilityNote = ({
   testId?: string;
 }) => {
   const { renderContext, currentNode, currentResource } = useServerContext();
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   if (!renderContext.isEditMode()) return null;
   const target = node ?? currentNode;
   if (!target.hasProperty(INVALID_LANGUAGES)) return null;

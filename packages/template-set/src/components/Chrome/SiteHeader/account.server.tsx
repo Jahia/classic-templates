@@ -106,6 +106,7 @@ jahiaComponent(
             signOutHref: urls.signOut,
             graphqlUrl: urls.graphql,
             registerHref: registerHref(renderContext, currentResource.getLocale(), landing),
+            language: currentResource.getLocale().toString(),
           }}
         />
       </div>

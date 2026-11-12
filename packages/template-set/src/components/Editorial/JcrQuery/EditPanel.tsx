@@ -1,6 +1,6 @@
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { ReactNode } from "react";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { readString } from "../../../lib/props.js";
 import type { ListResult } from "../../../lib/query.js";
 import classes from "./jcr-query.module.css";
@@ -35,7 +35,7 @@ export interface PanelInfo {
  * stays open), where the editor manages what the list shows.
  */
 export const EditPanel = ({ info }: { info: PanelInfo }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const r = info.result;
   // Dates read "newest / oldest first", the title "A to Z / Z to A".
   const alphabetical = info.criteria === "jcr:title";

@@ -1,5 +1,5 @@
 import { useServerContext } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../lib/pageLabels.js";
 import { EditNote } from "../lib/EditNote.js";
 import { LanguageVisibilityNote } from "../lib/LanguageVisibilityNote.js";
 import { fullTitle } from "../lib/share.js";
@@ -20,7 +20,7 @@ export const TITLE_SHOWN = 60;
  * Edit mode only (EditNote): nothing of it reaches preview, live or the live cache.
  */
 export const PageEditNotes = ({ title, description }: { title?: string; description?: string }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { renderContext, mainNode } = useServerContext();
   if (!renderContext.isEditMode()) return null;
   const site = pageSite(renderContext);

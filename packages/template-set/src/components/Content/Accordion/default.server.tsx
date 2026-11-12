@@ -6,7 +6,7 @@ import {
   jahiaComponent,
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { anchorOf } from "../../../lib/anchor.js";
 import { Cta } from "../../../lib/Cta.js";
 import { SectionHeading, headingTag, useItemHeadingLevel } from "../../../lib/Heading.js";
@@ -37,7 +37,7 @@ const hasItems = (node: JCRNodeWrapper) =>
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:accordion", displayName: "Accordion" },
   ({ "jcr:title": title, introText, ctplSurface }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const isEdit = renderContext.isEditMode();
     if (!isEdit && !hasItems(currentNode)) return null;
     const headingId = `ctpl-acc-${currentNode.getIdentifier()}`;
@@ -100,7 +100,7 @@ const Chevron = () => (
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:accordionItem", displayName: "Accordion entry" },
   ({ "jcr:title": title, body, openByDefault }: ItemProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const level = useItemHeadingLevel(currentNode);
     const Heading = headingTag(level);
     const isEdit = renderContext.isEditMode();

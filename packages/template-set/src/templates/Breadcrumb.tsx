@@ -1,7 +1,7 @@
 import { buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../lib/pageLabels.js";
 import { readString } from "../lib/props.js";
 import { chromeOwner, pageSite } from "../lib/site.js";
 import { titleOf } from "../lib/title.js";
@@ -81,7 +81,7 @@ export const breadcrumbOf = (
  * whose folders name no listing page says where to set one.
  */
 export const Breadcrumb = () => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { mainNode, renderContext } = useServerContext();
   const trail = breadcrumbOf(mainNode, renderContext, t("breadcrumb.home"));
   if (!trail) return null;

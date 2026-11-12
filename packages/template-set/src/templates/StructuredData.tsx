@@ -1,6 +1,6 @@
 import { buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../lib/pageLabels.js";
 import { originOf } from "../lib/absolute.js";
 import { languageTag } from "../lib/locale.js";
 import { readString } from "../lib/props.js";
@@ -46,7 +46,7 @@ const valuesOf = (node: JCRNodeWrapper, name: string): string[] =>
  * <, so no dangerouslySetInnerHTML is needed and no value can end the script.
  */
 export const StructuredData = ({ name, description }: { name?: string; description?: string }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { mainNode, renderContext, currentResource } = useServerContext();
   const origin = originOf(renderContext);
   const absolute = (url: string) => (/^https?:\/\//.test(url) ? url : `${origin}${url}`);

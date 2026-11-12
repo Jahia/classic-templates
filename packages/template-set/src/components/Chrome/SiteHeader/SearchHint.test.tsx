@@ -7,7 +7,10 @@ import { SearchHint } from "./SearchHint.js";
 
 let editMode = true;
 vi.mock("@jahia/javascript-modules-library", () => ({
-  useServerContext: () => ({ renderContext: { isEditMode: () => editMode } }),
+  useServerContext: () => ({
+    renderContext: { isEditMode: () => editMode },
+    currentResource: { getLocale: () => "en" },
+  }),
 }));
 
 await i18next.init({

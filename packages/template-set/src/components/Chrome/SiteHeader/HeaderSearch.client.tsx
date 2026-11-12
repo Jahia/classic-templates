@@ -157,6 +157,7 @@ export default function HeaderSearch({ action, endpoint, language, sites, id }: 
       id={id}
       action={action}
       value={value}
+      language={language}
       expanded={expanded}
       open={open}
       options={options}

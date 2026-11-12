@@ -20,6 +20,7 @@ const render = (props: Partial<SearchBoxProps> = {}) =>
         id="s"
         action="/sites/s/home/search.html"
         value=""
+        language="en"
         expanded={false}
         open={false}
         options={[]}

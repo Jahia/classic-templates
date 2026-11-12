@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import classes from "./members-badge.module.css";
 
 /**
@@ -7,7 +7,7 @@ import classes from "./members-badge.module.css";
  * to every visitor: it describes the item, not the visitor.
  */
 export const MembersBadge = () => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   return (
     <span className={classes.badge} data-testid="ctpl-members-badge">
       <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false">

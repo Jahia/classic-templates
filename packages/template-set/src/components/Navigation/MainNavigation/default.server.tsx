@@ -8,7 +8,7 @@ import {
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper, JCRSessionWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import {
   CUSTOM_MENU_QUERY,
   dependencyFor,
@@ -109,7 +109,7 @@ const NavigationMarkup = ({
   listId: string;
   renderContext: RenderContext;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   if (items.length === 0) {
     return null;
   }
@@ -223,7 +223,7 @@ const CustomMenuNavigation = ({
   jcrSession: JCRSessionWrapper;
   pageTree: () => NavItem[];
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { data, errors } = useGQLQuery({
     query: CUSTOM_MENU_QUERY,
     variables: {

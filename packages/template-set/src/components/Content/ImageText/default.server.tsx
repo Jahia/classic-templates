@@ -1,5 +1,5 @@
 import { jahiaComponent } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { Cta } from "../../../lib/Cta.js";
 import { Image } from "../../../lib/Image.js";
 import { RichText } from "../../../lib/RichText.js";
@@ -18,7 +18,7 @@ jahiaComponent(
     { "jcr:title": title, body, imagePosition, imageRatio, image, ctaLabel, ctplSurface }: Props,
     { currentNode, renderContext },
   ) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const headingId = `ctpl-it-${currentNode.getIdentifier()}`;
     const bodyLevel = useBodyHeadingLevel(currentNode, Boolean(title));
     return (
