@@ -35,7 +35,11 @@ publication without languages answers true and publishes nothing.
 
 `python3 scripts/export-prepackaged.py` rewrites `packages/prepackaged-site/src/main/classic-dev/`
 from the local `classic-dev` site (seeded and published first), and with `--site skylantern`
-`packages/prepackaged-skylantern/src/main/skylantern/` from the local `skylantern` site; `--check`
+`packages/prepackaged-skylantern/src/main/skylantern/` from the local `skylantern` site, and with
+`--site kestrel-bay` `packages/prepackaged-kestrel/src/main/kestrel-bay/` from the `kestrel-bay` site
+of the kestrel-demo stack (`JAHIA_URL=http://localhost:8087`; check its pages in `en`, `zh_HK` and
+`zh_CN`, the two home page blocks that differ by language and the unpublished article; the site key
+also names elements inside `j:members`, rename those too); `--check`
 exits 1 when the committed export is not up to date. The script refuses an export that carries a
 user: a user added to a site group travels with the site, profile included; remove them from the
 group first. After a change, import the built zip under another site key on a local instance (copy

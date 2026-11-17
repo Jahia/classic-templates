@@ -17,15 +17,16 @@ preview with an image when they are shared (Open Graph, Twitter card).
 
 The repository holds seven packages, built together and released at the same version.
 
-| Package                                                                     | Maven coordinates                                                                            | What it is                                                                                                                                                                                                                                  |
-| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`packages/template-set`](packages/template-set/)                           | `org.jahia.modules.javascript:classic-templates` (`.tgz`)                                    | The **classic-templates** template set: header, footer, breadcrumb, page templates, reusable sections, news and articles, ten themes in light and dark                                                                                      |
-| [`packages/travel`](packages/travel/)                                       | `org.jahia.modules.javascript:classic-travel` (`.tgz`)                                       | The **classic-travel** module: destinations, fare offers, fare lists, destination grids and travel tools, for sites built on the template set                                                                                               |
-| [`packages/prepackaged-site`](packages/prepackaged-site/)                   | `org.jahia.community:classic-templates-prepackaged-website` (`.jar`, and an `import` `.zip`) | The `classic-dev` demo site as a **pre-packaged project**: 19 pages in English and French using every section of the template set, ready to import from Administration                                                                      |
-| [`packages/media`](packages/media/)                                         | `org.jahia.modules.javascript:classic-media` (`.tgz`)                                        | The **classic-media** module: stories in seven formats, people, story feeds, event sessions with an agenda, a speaker gallery and key dates, and the briefs and submissions of a supplier portal, for media sites built on the template set |
-| [`packages/prepackaged-skylantern`](packages/prepackaged-skylantern/)       | `org.jahia.community:skylantern-prepackaged-website` (`.jar`, and an `import` `.zip`)        | The `skylantern` demo site (Skylantern Airways, a fictional airline) as a **pre-packaged project**: 36 pages in English and French with destinations and fares from classic-travel, ready to import from Administration                     |
-| [`packages/prepackaged-orvane-signal`](packages/prepackaged-orvane-signal/) | `org.jahia.community:orvane-signal-prepackaged-website` (`.jar`, and an `import` `.zip`)     | The `orvane-signal` demo site (the editorial hub of Orvane, a fictional media group) as a **pre-packaged project**: 45 pages in English and French with classic-media stories, people, videos and podcasts, and the add-on modules it shows |
-| [`packages/prepackaged-orvane-live`](packages/prepackaged-orvane-live/)     | `org.jahia.community:orvane-live-prepackaged-website` (`.jar`, and an `import` `.zip`)       | The `orvane-live` demo site (Orvane's annual convention) as a **pre-packaged project**: 27 pages in English and French with the classic-media agenda, speakers and key dates; import it with Orvane Signal                                  |
+| Package                                                                     | Maven coordinates                                                                            | What it is                                                                                                                                                                                                                                                                              |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`packages/template-set`](packages/template-set/)                           | `org.jahia.modules.javascript:classic-templates` (`.tgz`)                                    | The **classic-templates** template set: header, footer, breadcrumb, page templates, reusable sections, news and articles, ten themes in light and dark                                                                                                                                  |
+| [`packages/travel`](packages/travel/)                                       | `org.jahia.modules.javascript:classic-travel` (`.tgz`)                                       | The **classic-travel** module: destinations, fare offers, fare lists, destination grids and travel tools, for sites built on the template set                                                                                                                                           |
+| [`packages/prepackaged-site`](packages/prepackaged-site/)                   | `org.jahia.community:classic-templates-prepackaged-website` (`.jar`, and an `import` `.zip`) | The `classic-dev` demo site as a **pre-packaged project**: 19 pages in English and French using every section of the template set, ready to import from Administration                                                                                                                  |
+| [`packages/media`](packages/media/)                                         | `org.jahia.modules.javascript:classic-media` (`.tgz`)                                        | The **classic-media** module: stories in seven formats, people, story feeds, event sessions with an agenda, a speaker gallery and key dates, and the briefs and submissions of a supplier portal, for media sites built on the template set                                             |
+| [`packages/prepackaged-skylantern`](packages/prepackaged-skylantern/)       | `org.jahia.community:skylantern-prepackaged-website` (`.jar`, and an `import` `.zip`)        | The `skylantern` demo site (Skylantern Airways, a fictional airline) as a **pre-packaged project**: 36 pages in English and French with destinations and fares from classic-travel, ready to import from Administration                                                                 |
+| [`packages/prepackaged-orvane-signal`](packages/prepackaged-orvane-signal/) | `org.jahia.community:orvane-signal-prepackaged-website` (`.jar`, and an `import` `.zip`)     | The `orvane-signal` demo site (the editorial hub of Orvane, a fictional media group) as a **pre-packaged project**: 45 pages in English and French with classic-media stories, people, videos and podcasts, and the add-on modules it shows                                             |
+| [`packages/prepackaged-orvane-live`](packages/prepackaged-orvane-live/)     | `org.jahia.community:orvane-live-prepackaged-website` (`.jar`, and an `import` `.zip`)       | The `orvane-live` demo site (Orvane's annual convention) as a **pre-packaged project**: 27 pages in English and French with the classic-media agenda, speakers and key dates; import it with Orvane Signal                                                                              |
+| [`packages/prepackaged-kestrel`](packages/prepackaged-kestrel/)             | `org.jahia.community:kestrel-bay-prepackaged-website` (`.jar`, and an `import` `.zip`)       | The `kestrel-bay` demo site (Kestrel Bay Wealth, a fictional Hong Kong wealth manager) as a **pre-packaged project**: 12 pages in English, Traditional and Simplified Chinese with blocks that differ by language, rights by section and a publication workflow; the template set alone |
 
 Shared at the root: the documentation for editors and administrators ([`docs/`](docs/README.md)),
 the demo seeding scripts ([`scripts/`](scripts/)), the Cypress end-to-end tests ([`tests/`](tests/)),
@@ -59,6 +60,10 @@ Jahia 8.2.1.0 or later with `javascript-modules-engine` 1.3 or later.
 - **Pre-packaged media group sites.** With classic-media and the add-on modules jsfaq,
   js-media-gallery, js-store-locator and formidable-elements installed, import both Orvane sites
   (they link to each other). See the [Orvane Signal package README](packages/prepackaged-orvane-signal/README.md).
+- **Pre-packaged site in three languages.** With the template set alone and
+  `kestrel-bay-prepackaged-website-<version>.jar`: **Kestrel Bay Wealth demo site (kestrel-bay) -
+  pre-packaged**, a wealth manager in English, Traditional and Simplified Chinese with rights by
+  section. See the [Kestrel Bay package README](packages/prepackaged-kestrel/README.md).
 
 ## Demo sites
 
@@ -79,6 +84,7 @@ instance. They need Python 3 and Pillow, and read `JAHIA_URL` and `JAHIA_USER` (
 | `python3 scripts/export-prepackaged.py`                                          | Exports `classic-dev` into `packages/prepackaged-site/src/main/classic-dev/`, keeping the template set's content only (`--check` tells whether the committed export is up to date)                                                                                                                                     |
 | `python3 scripts/export-prepackaged.py --site orvane-signal` (and `orvane-live`) | Exports an Orvane site into `packages/prepackaged-orvane-<site>/src/main/<site>/`, keeping the content of the template set, classic-media and the add-on modules the site shows (the sites are seeded from their own demo repository)                                                                                  |
 | `python3 scripts/export-prepackaged.py --site skylantern`                        | Exports `skylantern` into `packages/prepackaged-skylantern/src/main/skylantern/`, keeping the content of the template set and classic-travel (the site itself is seeded from its own demo repository)                                                                                                                  |
+| `python3 scripts/export-prepackaged.py --site kestrel-bay`                       | Exports `kestrel-bay` into `packages/prepackaged-kestrel/src/main/kestrel-bay/`, keeping the content of the template set: users left out, the personalised hero as its default version (the site itself is seeded from its own demo repository)                                                                        |
 
 ## Documentation
 
@@ -93,7 +99,8 @@ The documentation for editors and site administrators is in [`docs/`](docs/READM
 - **Component reference:** [all components](docs/components/index.md).
 - **Packages:** [template set](packages/template-set/README.md),
   [classic-travel](packages/travel/README.md), [pre-packaged site](packages/prepackaged-site/README.md),
-  [Skylantern pre-packaged site](packages/prepackaged-skylantern/README.md).
+  [Skylantern pre-packaged site](packages/prepackaged-skylantern/README.md),
+  [Kestrel Bay pre-packaged site](packages/prepackaged-kestrel/README.md).
 
 ## Build and develop
 
@@ -115,6 +122,7 @@ mvn clean install   # the seven packages, as the CI builds them
 | `packages/media/target/classic-media-<version>.tgz`                                                                             | classic-media                       |
 | `packages/prepackaged-orvane-signal/target/orvane-signal-prepackaged-website-<version>.jar` and `prepackaged/orvane-signal.zip` | Orvane Signal site (module, import) |
 | `packages/prepackaged-orvane-live/target/orvane-live-prepackaged-website-<version>.jar` and `prepackaged/orvane-live.zip`       | Orvane Live site (module, import)   |
+| `packages/prepackaged-kestrel/target/kestrel-bay-prepackaged-website-<version>.jar` and `prepackaged/kestrel-bay.zip`           | Kestrel Bay site (module, import)   |
 
 Each JavaScript package is a standalone Yarn project: run Yarn from its folder.
 
@@ -139,6 +147,7 @@ packages/
   prepackaged-skylantern/  the skylantern export (src/main/skylantern/), its label, pom.xml
   media/              classic-media: src/, settings/, static/, its build checks (scripts/), pom.xml
   prepackaged-orvane-signal/, prepackaged-orvane-live/  the two Orvane exports, pom.xml
+  prepackaged-kestrel/  the kestrel-bay export (src/main/kestrel-bay/), its label, pom.xml
 scripts/              demo seeding and the pre-packaged site export
 docs/                 documentation for editors and administrators
 tests/                Cypress end-to-end tests (separate npm project)

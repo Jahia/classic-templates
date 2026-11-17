@@ -6,6 +6,7 @@
   - packages/media           the classic-media module (JavaScript module, .tgz)
   - packages/prepackaged-site the classic-dev demo site as a pre-packaged project (.jar)
   - packages/prepackaged-skylantern the skylantern demo site as a pre-packaged project (.jar)
+  - packages/prepackaged-kestrel the kestrel-bay demo site as a pre-packaged project (.jar)
   The JavaScript packages are standalone Yarn projects: their pom.xml installs Node and Yarn,
   runs `yarn build` in the package folder and attaches dist/package.tgz.
 -->
@@ -39,6 +40,7 @@
     <module>packages/prepackaged-orvane-signal</module>
     <module>packages/prepackaged-orvane-live</module>
     <module>packages/prepackaged-orvane-portal</module>
+    <module>packages/prepackaged-kestrel</module>
   </modules>
 
   <properties>
