@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Exports a demo site into its pre-packaged project (packages/prepackaged-site for classic-dev,
 packages/prepackaged-skylantern for skylantern, packages/prepackaged-orvane-signal,
-packages/prepackaged-orvane-live and packages/prepackaged-orvane-portal for the three Orvane sites).
+packages/prepackaged-orvane-live and packages/prepackaged-orvane-portal for the three Orvane sites,
+packages/prepackaged-kestrel for kestrel-bay).
 
-    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern|orvane-signal|orvane-live|orvane-portal] [--from-zip export.zip] [--check]
+    python3 scripts/export-prepackaged.py [--site classic-dev|skylantern|orvane-signal|orvane-live|orvane-portal|kestrel-bay] [--from-zip export.zip] [--check]
 
 A pre-packaged project installs on an instance that has the modules of this repository it depends
 on (plus the platform modules default, siteSettings and site-settings-seo) and, for a profile that
@@ -19,7 +20,8 @@ described in PROFILES below.
      (drop_global_principals) and Augmented Search's indexation timestamps on the site node
      (drop_search_state), which make the import fail where Augmented Search runs. Then rewrites
      the add-on content that has an equivalent in the template set (the profile's conversions: the
-     jsfaq questions of skylantern become accordions).
+     jsfaq questions of skylantern become accordions, the personalised hero of kestrel-bay becomes
+     the version every visitor gets by default).
   3. Removes, in repository.xml and live-repository.xml alike:
      - every node whose primary type or one of its mixins belongs to a namespace that neither the
        platform nor the profile's packages declare (the allow-list is read from their CND files:
@@ -253,6 +255,22 @@ PROFILES["orvane-portal"] = {
     "text_edits": [],
 }
 
+# Kestrel Bay Wealth, a fictional Hong Kong wealth manager in English, Traditional Chinese (zh_HK)
+# and Simplified Chinese (zh_CN): blocks per language, rights by section (the ACLs travel with the
+# export; the site groups they name come empty, the project creates the users). Its source site
+# personalises the home page hero with jExperience: the package keeps the default version, so it
+# installs with the template set alone.
+PROFILES["kestrel-bay"] = {
+    "package": "prepackaged-kestrel",
+    "sources": ["template-set"],
+    "installed": ["classic-templates"] + PLATFORM_MODULES,
+    # What content-governance writes when it runs on the source site: its settings node and the
+    # glossaries folder of its compliance scan
+    "only_for_addons": ["content-governance", "contents/compliance-glossaries"],
+    "conversions": {"home/hero/experience-welcome": "personalised_to_default"},
+    "text_edits": [],
+}
+
 # ---------------------------------------------------------------------------------------------
 # Export download (one session)
 
@@ -441,7 +459,38 @@ def jsfaq_to_accordions(zone):
     return accordions
 
 
-CONVERSIONS = {"jsfaq_to_accordions": jsfaq_to_accordions}
+PERSONALISATION_MIXINS = {"wemmix:editItem", "wemmix:parentContainer"}
+
+
+def without_personalisation(element):
+    """Removes what jExperience added to a node: its mixins and its wem: properties."""
+    mixins = [m for m in (element.get(JCR + "mixinTypes") or "").split() if m not in PERSONALISATION_MIXINS]
+    if mixins:
+        element.set(JCR + "mixinTypes", " ".join(mixins))
+    elif JCR + "mixinTypes" in element.attrib:
+        del element.attrib[JCR + "mixinTypes"]
+    for key in [k for k in element.attrib if qname(k).startswith("wem:")]:
+        del element.attrib[key]
+    return element
+
+
+def personalised_to_default(wrapper):
+    """A section personalised with jExperience (a wemnt:personalizedContent wrapping its variants)
+    becomes the variant every visitor gets when no condition matches (wem:controlVariant), in its
+    place and with its uuid: the page reads as it does for a first-time visitor."""
+    if wrapper.get(JCR + "primaryType") != "wemnt:personalizedContent":
+        sys.exit(f"{wrapper.tag} is not a personalised section")
+    control = (wrapper.get("{http://www.jahia.org/jahia/wem/1.0}controlVariant")
+               or next((v for k, v in wrapper.attrib.items() if qname(k) == "wem:controlVariant"), ""))
+    name = control.rsplit("/", 1)[-1]
+    variants = [c for c in wrapper if not is_translation(c)]
+    default = [c for c in variants if qname(c.tag) == name]
+    if len(default) != 1:
+        sys.exit(f"{wrapper.tag}: no single default variant ({name or 'wem:controlVariant missing'})")
+    return [without_personalisation(default[0])]
+
+
+CONVERSIONS = {"jsfaq_to_accordions": jsfaq_to_accordions, "personalised_to_default": personalised_to_default}
 
 
 def apply_conversions(root, site, conversions, done):
@@ -458,6 +507,8 @@ def apply_conversions(root, site, conversions, done):
             sys.exit(f"{rel}: converted nodes would replace {', '.join(clashes)}")
         index = list(parent).index(zone)
         parent.remove(zone)
+        if name == "personalised_to_default":
+            without_personalisation(parent)  # jExperience marks the list that holds a personalised section
         for offset, element in enumerate(replacement):
             parent.insert(index + offset, element)
         done.append(f"{rel}: {name} ({len(replacement)} nodes)")
