@@ -1,24 +1,87 @@
-.list {
-  display: flex;
-  gap: var(--ctpl-space-1);
-  margin: 0;
-  padding: 0;
-  list-style: none;
+/*
+ * The language drop-down: a quiet button in the header's tools (it inherits their size and muted
+ * colour), and a raised list under it, aligned to its end. Tokens only, so every theme and scheme
+ * draws it (yarn check:contrast covers the pairs used: text on surface-raised, text-on-action on
+ * action, accent on accent-subtle); the durations are 0 under prefers-reduced-motion (tokens.css).
+ */
+.menu {
+  position: relative;
 }
 
-.link {
-  display: inline-block;
-  padding: 0 var(--ctpl-space-2);
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-1);
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border: var(--ctpl-border-width) solid transparent;
   border-radius: var(--ctpl-radius-sm);
   color: inherit;
   font-weight: var(--ctpl-font-weight-medium);
+  white-space: nowrap;
+  list-style: none;
+  cursor: pointer;
+}
+/* Safari draws its own marker unless told not to. */
+.toggle::-webkit-details-marker {
+  display: none;
+}
+.toggle:hover,
+.menu[open] > .toggle {
+  border-color: var(--ctpl-color-border);
+  color: var(--ctpl-color-text);
+}
+.toggle:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+
+.globe {
+  flex: none;
+}
+.chevron {
+  flex: none;
+  transition: transform var(--ctpl-duration-fast) ease;
+}
+.menu[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.list {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-end: 0;
+  z-index: 40;
+  box-sizing: border-box;
+  min-width: 100%;
+  margin: var(--ctpl-space-1) 0 0;
+  padding: var(--ctpl-space-1);
+  list-style: none;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border-strong);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  box-shadow: var(--ctpl-shadow-md);
+  font-size: var(--ctpl-text-sm);
+}
+
+.link {
+  display: block;
+  padding: var(--ctpl-space-2) var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-sm);
+  color: var(--ctpl-color-text);
   text-decoration: none;
   white-space: nowrap;
 }
-.link:hover {
-  text-decoration: underline;
-}
 .link[aria-current="true"] {
-  background: var(--ctpl-color-accent);
-  color: var(--ctpl-color-text-on-accent);
+  background: var(--ctpl-color-accent-subtle);
+  color: var(--ctpl-color-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.link:hover,
+.link:focus-visible {
+  background: var(--ctpl-color-action);
+  color: var(--ctpl-color-text-on-action);
+}
+.link:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: calc(-1 * var(--ctpl-focus-offset));
 }

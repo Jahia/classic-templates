@@ -194,7 +194,11 @@ and the verified matrix: AIStartupKit `.agents/context/jahia-link-patterns.md`.
   each page gets its own links inside the shared header (verified per page, EN and FR). Each link
   shows the language's own name (`lib/languageName.ts`: "English", "Français", "繁體中文" for
   `zh_HK` / `zh_TW` / `zh_MO`, "简体中文" for `zh_CN`), with the country added when two languages
-  would read the same; `lang` and `hreflang` carry the BCP 47 tag.
+  would read the same; `lang` and `hreflang` carry the BCP 47 tag. A drop-down: native
+  `details` / `summary` (opens without JavaScript) showing the current language, its list of links
+  raised under it (`surface-raised`, `border-strong`, `shadow-md`, `radius-md`; current item on
+  `accent-subtle`, hover and focus on the action colours); `static/js/language-switcher.js` closes
+  it on Escape (focus back on the button), outside clicks and focus leaving (WCAG 1.4.13).
 - **Labels and Chinese scripts:** the engine (1.3.1) reads one locale file per language and ignores
   the region, on the server and in the islands: every Chinese page gets `zh.json`. That file holds
   the Simplified labels at its root and their Traditional copy under `zh-Hant`. Views never call

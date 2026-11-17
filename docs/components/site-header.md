@@ -47,7 +47,7 @@ A [Link list](links-and-link-lists.md) shown as a row in the utility bar. Its **
 
 ### Language switcher
 
-It has no fields. It shows a link to the current page in each other language of the site.
+It has no fields. It shows a drop-down list of the current page in each language of the site.
 
 ### Main navigation
 
@@ -69,7 +69,9 @@ The menu stores no links of its own. You shape it by creating, ordering, renamin
 
 ### Language switcher
 
-- It lists only the languages the current page is translated into, each with its short code on screen ("EN", "FR") and the full language name for screen readers. The current language is marked.
+- It is a button showing the current language with a globe; it opens a list of the languages the current page is translated into, each under its own name (English, Français, 繁體中文, 简体中文). The current language is highlighted in the list.
+- The list opens without JavaScript. With it, Escape, a click elsewhere or moving the keyboard focus out of the list closes it.
+- It takes the site's theme colours, corners and shadow, in light and dark mode.
 - On a site with one language, or on a page available in only one language, it is hidden.
 
 ### Main navigation
