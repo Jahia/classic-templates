@@ -139,7 +139,8 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
         cy.visit(page('services/consulting'))
         cy.get('[data-testid="ctpl-language-switcher"]').within(() => {
             cy.get('summary').should('contain.text', 'English')
-            cy.get('a[hreflang="fr"]').should('not.be.visible')
+            // Cypress counts the content of a closed details element as visible: read its state.
+            cy.get('details').should('not.have.attr', 'open')
             cy.get('summary').click()
             cy.get('details').should('have.attr', 'open')
             cy.get('a[hreflang="fr"]')
