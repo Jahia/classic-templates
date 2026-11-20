@@ -44,7 +44,10 @@ describe('Accordion - who sees and who edits', () => {
             .its('body')
             .should('contain', 'Draft entry')
             .and('contain', 'nodetypes="ctpl:accordionItem"')
-            .and('not.contain', '<details')
+            // The accordion only: the header's language switcher is a details element too.
+            .then((body: string) =>
+                expect(Cypress.$(body).find('[data-testid="ctpl-accordion"] details')).to.have.length(0),
+            )
         cy.logout()
     })
 

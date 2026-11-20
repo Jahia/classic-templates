@@ -1,5 +1,5 @@
 import { jahiaComponent } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { Cta } from "../../../lib/Cta.js";
 import { Image } from "../../../lib/Image.js";
 import { Section } from "../../../lib/Section.js";
@@ -19,7 +19,7 @@ jahiaComponent(
     { quote, author, authorRole, variant, image, ctplSurface }: Props,
     { currentNode, renderContext },
   ) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     if (!quote) {
       return renderContext.isEditMode() ? <EditNote container>{t("quote.empty")}</EditNote> : null;
     }

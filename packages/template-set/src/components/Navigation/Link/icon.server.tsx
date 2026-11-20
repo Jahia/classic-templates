@@ -1,5 +1,5 @@
 import { jahiaComponent } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { resolveLink } from "../../../lib/resolveLink.js";
 import { socialIconOf } from "../../../lib/socialIcons.js";
 import type { Props } from "./types.js";
@@ -15,7 +15,7 @@ import { EditNote } from "../../../lib/EditNote.js";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:link", name: "icon", displayName: "Link as an icon" },
   ({ "jcr:title": title, openInNewTab }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
     const icon = socialIconOf(link?.href);
     const newTab = Boolean(openInNewTab);

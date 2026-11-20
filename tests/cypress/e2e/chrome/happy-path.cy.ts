@@ -135,6 +135,29 @@ describe('Chrome - header, main navigation, language switcher, footer', () => {
             .contains('a', 'Académie')
     })
 
+    it('offers the languages in a drop-down that opens, closes on Escape and outside clicks', () => {
+        cy.visit(page('services/consulting'))
+        cy.get('[data-testid="ctpl-language-switcher"]').within(() => {
+            cy.get('summary').should('contain.text', 'English')
+            // Cypress counts the content of a closed details element as visible: read its state.
+            cy.get('details').should('not.have.attr', 'open')
+            cy.get('summary').click()
+            cy.get('details').should('have.attr', 'open')
+            cy.get('a[hreflang="fr"]')
+                .should('be.visible')
+                .and('have.attr', 'lang', 'fr')
+                .and('contain.text', 'Français')
+            cy.get('a[aria-current="true"]').should('have.attr', 'hreflang', 'en')
+            cy.get('a[hreflang="fr"]').focus()
+        })
+        cy.focused().type('{esc}')
+        cy.get('[data-testid="ctpl-language-switcher"] details').should('not.have.attr', 'open')
+        cy.focused().should('match', '[data-testid="ctpl-language-switcher"] summary')
+        cy.get('[data-testid="ctpl-language-switcher"] summary').click()
+        cy.get('main').click('topLeft')
+        cy.get('[data-testid="ctpl-language-switcher"] details').should('not.have.attr', 'open')
+    })
+
     it('renders the footer columns and a copyright with the current year', () => {
         cy.visit(page('contact'))
         cy.get('[data-testid="ctpl-site-footer"]').within(() => {

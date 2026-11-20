@@ -7,7 +7,7 @@ import {
   jahiaComponent,
 } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { carouselInterval } from "../../../lib/carousel.js";
 import { SectionHeading } from "../../../lib/Heading.js";
 import type { Props } from "./types.js";
@@ -57,7 +57,7 @@ const ToggleIcons = () => (
  * first thing reached (RGAA 13.8).
  */
 const Toggle = () => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   return (
     <div className={`ctpl-container ${classes.toolbar}`} hidden data-ctpl-carousel-controls>
       <button
@@ -82,7 +82,7 @@ const Toggle = () => {
  * follows what the visitor sees (WCAG 2.4.3, RGAA 12.8).
  */
 const Controls = ({ slideIds, trackId }: { slideIds: string[]; trackId: string }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const total = slideIds.length;
   return (
     <div className={classes.controls} hidden data-ctpl-carousel-controls>
@@ -152,7 +152,7 @@ const CarouselHeading = ({
 
 /** Edit mode: every slide stacked and editable, with the list's add button and a short hint. */
 const EditView = ({ node, title, hideTitle, total }: ViewProps & { total: number }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const headingId = `ctpl-carousel-${node.getIdentifier()}`;
   return (
     <section
@@ -190,7 +190,7 @@ const LiveView = ({
   autoplay,
   interval,
 }: ViewProps & { slides: JCRNodeWrapper[]; autoplay: boolean; interval?: number }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const id = node.getIdentifier();
   const headingId = `ctpl-carousel-${id}`;
   const trackId = `ctpl-carousel-track-${id}`;

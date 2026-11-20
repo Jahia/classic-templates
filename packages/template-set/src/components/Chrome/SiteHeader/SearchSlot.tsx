@@ -18,7 +18,15 @@ export const SearchSlot = () => {
   const id = `ctpl-header-search-${currentNode.getIdentifier()}`;
   if (isEdit) {
     return (
-      <SearchBox id={id} action={action} value="" expanded={false} open={false} options={[]} />
+      <SearchBox
+        id={id}
+        action={action}
+        value=""
+        language={locale.toString()}
+        expanded={false}
+        open={false}
+        options={[]}
+      />
     );
   }
   return (

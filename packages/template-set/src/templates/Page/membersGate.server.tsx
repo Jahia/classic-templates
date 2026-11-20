@@ -1,5 +1,5 @@
 import { buildNodeUrl, jahiaComponent } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../lib/pageLabels.js";
 import { MembersNotice } from "../../lib/MembersNotice.js";
 import { bodyViewOf } from "../../lib/bodyView.js";
 import { AreaList, type AreaName } from "../PageAreas.jsx";
@@ -33,7 +33,7 @@ jahiaComponent(
     { "jcr:title": title, ctplHideTitle }: PageProps,
     { currentNode, currentResource, renderContext },
   ) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const areas = areasOf(currentResource.getModuleParams().get("areas"));
     const body = bodyViewOf(currentResource.getModuleParams().get("body"));
     if (renderContext.isLoggedIn()) {

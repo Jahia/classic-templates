@@ -84,6 +84,11 @@ The language switcher in the header only offers the languages the current page e
 page is not translated into French, the French link does not appear on that page. On a site with
 a single language, the switcher is not shown.
 
+The switcher is a drop-down list under a globe button. Each language is listed under its own name: English, Français, 繁體中文 (Traditional Chinese: Hong
+Kong, Taiwan, Macao), 简体中文 (Simplified Chinese). The labels built into the pages (menu, search,
+reading time, breadcrumb...) follow: Traditional characters on a Traditional Chinese page,
+Simplified on a Simplified Chinese one.
+
 ## Edit-mode hints
 
 In Page Builder, components show a short hint for what the page cannot show you: something missing,

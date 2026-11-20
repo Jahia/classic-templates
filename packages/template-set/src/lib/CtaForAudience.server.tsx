@@ -1,5 +1,5 @@
 import { jahiaComponent, useServerContext } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import { audienceOf, showsTo } from "./audience.js";
 import { Cta } from "./Cta.js";
 import { readString } from "./props.js";
@@ -39,7 +39,7 @@ jahiaComponent(
     properties: { "cache.perUser": "true" },
   },
   (_props: Record<string, unknown>, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const variant = useVariant();
     const audience = audienceOf(readString(currentNode, "ctaAudience"));
     const button = (

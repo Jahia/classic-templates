@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import { SignInPanel } from "../components/Content/SignIn/SignInPanel.jsx";
 import classes from "./members-notice.module.css";
 
@@ -19,7 +19,7 @@ export const MembersNotice = ({
   fallback?: string;
   register?: string;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const id = useId();
   return (
     <section className={classes.notice} aria-labelledby={id} data-testid="ctpl-members-notice">

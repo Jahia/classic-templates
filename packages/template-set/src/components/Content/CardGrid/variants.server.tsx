@@ -1,5 +1,5 @@
 import { Render, jahiaComponent } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { headingTag, useItemHeadingLevel } from "../../../lib/Heading.js";
 import { Image } from "../../../lib/Image.js";
 import { readString } from "../../../lib/props.js";
@@ -23,7 +23,7 @@ import { EditNote } from "../../../lib/EditNote.js";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:card", name: "iconTiles", displayName: "Icon tile" },
   ({ "jcr:title": title, text, image }: CardProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const level = useItemHeadingLevel(currentNode);
     const isEdit = renderContext.isEditMode();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
@@ -56,7 +56,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:card", name: "logos", displayName: "Logo" },
   ({ "jcr:title": title, image, imageAlt }: CardProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const isEdit = renderContext.isEditMode();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
     if (!image) {
@@ -95,7 +95,7 @@ jahiaComponent(
     displayName: "Content tile",
   },
   (_props: ContentTeaserProps, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const level = useItemHeadingLevel(currentNode);
     const target = teaserTarget(currentNode);
     if (!target) {
@@ -117,7 +117,7 @@ jahiaComponent(
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:contentTeaser", name: "logos", displayName: "Logo" },
   (_props: ContentTeaserProps, { renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     return renderContext.isEditMode() ? (
       <li className={classes.logoItem}>
         <EditNote>{t("cards.teaserNotInLogos")}</EditNote>

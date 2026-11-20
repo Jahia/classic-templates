@@ -5,7 +5,7 @@ import {
   useServerContext,
 } from "@jahia/javascript-modules-library";
 import type { ReactNode } from "react";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../lib/pageLabels.js";
 import { readString as read } from "../lib/props.js";
 import { fullTitle } from "../lib/share.js";
 import { pageSite, readSiteLook, robotsDirective } from "../lib/site.js";
@@ -48,7 +48,7 @@ export const Layout = ({
   children: ReactNode;
 }) => {
   const { renderContext, currentResource } = useServerContext();
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const site = pageSite(renderContext);
   server.render.addCacheDependency({ node: site }, renderContext);
   const siteName = site.getTitle() || site.getName();

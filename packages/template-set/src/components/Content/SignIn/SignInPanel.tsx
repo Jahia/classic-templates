@@ -28,7 +28,7 @@ export const SignInPanel = ({
   preview?: boolean;
   signedInAs?: string;
 }) => {
-  const { renderContext, currentNode } = useServerContext();
+  const { renderContext, currentNode, currentResource } = useServerContext();
   const site = pageSite(renderContext);
   const contextPath = renderContext.getRequest().getContextPath();
   const urls = accountUrls(contextPath, undefined, buildNodeUrl(chromeOwner(site)));
@@ -45,6 +45,7 @@ export const SignInPanel = ({
           stay,
           preview,
           signedInAs,
+          language: currentResource.getLocale().toString(),
         }}
       />
     </div>

@@ -1,6 +1,6 @@
 import type { FocusEvent, KeyboardEvent, Ref } from "react";
-import { useTranslation } from "react-i18next";
 import { searchUrl, type Suggestion } from "../../../lib/headerSearch.js";
+import { useLabels } from "../../../lib/labels.js";
 import classes from "./header-search.module.css";
 
 /** The suggestions: the matching items, then "Search for <words>". */
@@ -13,6 +13,8 @@ export interface SearchBoxProps {
   /** The search page: the form's action. */
   action: string;
   value: string;
+  /** The page's locale ("zh_HK"): Traditional Chinese pages get the Traditional labels. */
+  language: string;
   /** The panel is open (small screens, with the script). */
   expanded: boolean;
   /** The list of suggestions is shown. */
@@ -49,7 +51,7 @@ const hrefOf = (option: Option, action: string) =>
  * has run. Native elements only: a link opens with Enter or a click, the form submits the words.
  */
 export const SearchBox = (props: SearchBoxProps) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = useLabels(props.language);
   const { id, open } = props;
   const listId = `${id}-list`;
   const panelId = `${id}-panel`;

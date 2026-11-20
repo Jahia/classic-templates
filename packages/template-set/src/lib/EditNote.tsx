@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useServerContext } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 
 /**
  * What a note tells the editor: `info` explains something the frame cannot show (what a list does,
@@ -38,7 +38,7 @@ export const EditNote = ({
   children: ReactNode;
 }) => {
   const { renderContext } = useServerContext();
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   if (!renderContext.isEditMode()) return null;
   const Tag = inline ? "span" : "p";
   const note = (

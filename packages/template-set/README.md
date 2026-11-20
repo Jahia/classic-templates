@@ -216,7 +216,7 @@ src/
 settings/
   definitions.cnd                 namespaces (ctpl, ctplmix), base and shared mixins
   import.xml                      pages and folders seeded when a site is created
-  locales/                        visitor-facing strings (en.json, fr.json, pt.json)
+  locales/                        visitor-facing strings (en, fr, pt, ja, zh; zh.json also holds Traditional Chinese under zh-Hant)
   resources/                      editor labels and tooltips (.properties, EN and FR)
   content-editor-forms/           Content Editor form overrides
   content-types-icons/            one icon per content type

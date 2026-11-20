@@ -1,5 +1,5 @@
 import { jahiaComponent } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { resolveLink } from "../../../lib/resolveLink.js";
 import type { Props } from "./types.js";
 import classes from "./link.module.css";
@@ -15,7 +15,7 @@ import { EditNote } from "../../../lib/EditNote.js";
 jahiaComponent(
   { componentType: "view", nodeType: "ctpl:link", displayName: "Link" },
   ({ "jcr:title": title, openInNewTab }: Props, { currentNode, renderContext }) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const { link, missingTarget } = resolveLink(currentNode, renderContext);
     const label = title || link?.targetTitle;
     const isEdit = renderContext.isEditMode();

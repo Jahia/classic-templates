@@ -1,5 +1,5 @@
 import { useServerContext } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import { sanitizeRichTextWithReport } from "./sanitize.js";
 import { EditNote } from "./EditNote.js";
 
@@ -29,7 +29,7 @@ export const RichText = ({
   className?: string;
   headingLevel?: number;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { renderContext, currentNode } = useServerContext();
   if (!html) return null;
   const {

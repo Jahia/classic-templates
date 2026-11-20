@@ -1,6 +1,6 @@
 import { useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "./pageLabels.js";
 import { jcontentUrl } from "./jcontent.js";
 
 /**
@@ -17,7 +17,7 @@ export const JContentLink = ({
   className?: string;
   testId?: string;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { renderContext, currentResource } = useServerContext();
   if (!node || !renderContext.isEditMode()) return null;
   const href = jcontentUrl(

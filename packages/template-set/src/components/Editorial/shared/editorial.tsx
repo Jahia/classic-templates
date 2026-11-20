@@ -1,7 +1,7 @@
 import { buildNodeUrl, server, useServerContext } from "@jahia/javascript-modules-library";
 import type { JCRNodeWrapper } from "org.jahia.services.content";
 import type { RenderContext } from "org.jahia.services.render";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { formatDate, isoDay } from "../../../lib/dates.js";
 import { type ItemLabelMode, chooseItemLabel, itemLabelMode } from "../../../lib/itemLabel.js";
 import { Image } from "../../../lib/Image.js";
@@ -139,7 +139,7 @@ const Meta = ({
   node: JCRNodeWrapper;
   props: EditorialProps;
 }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { currentResource, renderContext } = useServerContext();
   const mode = useItemLabelMode();
   const lang = languageTag(currentResource.getLocale());
@@ -168,7 +168,7 @@ const Meta = ({
 
 /** Shown in edit mode instead of an item that has no title in this language. */
 const Untitled = () => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { renderContext } = useServerContext();
   return renderContext.isEditMode() ? <EditNote>{t("editorial.noTitle")}</EditNote> : null;
 };
@@ -210,7 +210,7 @@ export const FullPage = ({
  * sign-in form. Both bring the visitor back to the item.
  */
 export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { currentNode, currentResource, renderContext } = useServerContext();
   const title = props["jcr:title"];
   const here = buildNodeUrl(currentNode);
@@ -250,7 +250,7 @@ export const RestrictedPage = ({ kind, props }: { kind: Kind; props: EditorialPr
  * otherwise.
  */
 const ItemBody = ({ kind, props }: { kind: Kind; props: EditorialProps }) => {
-  const { t } = useTranslation("classic-templates");
+  const { t } = usePageLabels();
   const { currentNode, currentResource, renderContext } = useServerContext();
   const topics = categoryTitlesOf(currentNode, renderContext, true);
   const tags = tagsOf(currentNode);

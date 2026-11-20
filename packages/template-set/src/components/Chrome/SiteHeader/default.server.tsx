@@ -7,7 +7,7 @@ import {
   jahiaComponent,
   server,
 } from "@jahia/javascript-modules-library";
-import { useTranslation } from "react-i18next";
+import { usePageLabels } from "../../../lib/pageLabels.js";
 import { readPositive } from "../../../lib/props.js";
 import { chromeOwner, pageSite } from "../../../lib/site.js";
 import { SearchSlot } from "./SearchSlot.js";
@@ -54,7 +54,7 @@ jahiaComponent(
     }: Props,
     { currentNode, renderContext },
   ) => {
-    const { t } = useTranslation("classic-templates");
+    const { t } = usePageLabels();
     const site = pageSite(renderContext);
     server.render.addCacheDependency({ node: site }, renderContext); // brand falls back to the site title
     const home = chromeOwner(site);

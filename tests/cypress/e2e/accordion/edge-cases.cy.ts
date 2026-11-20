@@ -60,9 +60,13 @@ describe('Accordion - untitled section, untranslated entries, empty accordion, n
     it('serves native details and summary, usable before any script runs', () => {
         cy.request(live)
             .its('body')
-            .should('contain', '<details')
-            .and('contain', '<summary')
-            .and('contain', 'data-ctpl-accordion-all')
+            .should('contain', 'data-ctpl-accordion-all')
             .and('not.contain', 'data-ctpl-ready')
+            // The accordion only: the header's language switcher is a details element too.
+            .then((body: string) => {
+                const accordion = Cypress.$(body).find('[data-testid="ctpl-accordion"]')
+                expect(accordion.find('details')).to.have.length.greaterThan(0)
+                expect(accordion.find('summary')).to.have.length.greaterThan(0)
+            })
     })
 })
