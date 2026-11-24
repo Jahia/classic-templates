@@ -1,0 +1,55 @@
+{
+  "editNote": {
+    "a11y": "Accessibility:"
+  },
+  "item": {
+    "noTitle": "No title in this language: this item is left out of lists and has no heading."
+  },
+  "image": {
+    "noTitle": "This image has no title in the media library, so it has no alternative text."
+  },
+  "richText": {
+    "headingsRenumbered": "This text's headings use level 1, or skip a level: they are shown renumbered so the page outline stays whole. Start the text's main parts at Heading 2 and go down one level at a time.",
+    "imageWithoutAlt": "An image in this text has no alternative text: it is ignored by screen readers.",
+    "table": "Table",
+    "tableNumbered": "Table {{number}}",
+    "tableWithoutCaption": "A table in this text has no caption: give it one so that it can be found and understood."
+  },
+  "cta": {
+    "noTarget": "No link target in this language",
+    "noLabel": "Button label missing",
+    "noLink": "This button has a label but no link: choose a page or a web address, or clear the label."
+  },
+  "price": {
+    "from": "From",
+    "fromSpoken": "From {{price}}"
+  },
+  "list": {
+    "empty": "No product to show yet."
+  },
+  "track": {
+    "label": "Products",
+    "scroll": "{{title}}, scroll sideways"
+  },
+  "carousel": {
+    "summary": {
+      "picked": "Shows the {{shown}} picked products, in their order.",
+      "shop": "Shows {{shown}} of the {{found}} products of the shop folder, with the Shopify tag “{{tag}}” when one is set.",
+      "shopMissing": "The shop folder is set but cannot be found (deleted, or the connector is not configured): nothing shows on the live site.",
+      "none": "Pick products, or choose a shop folder to read them from."
+    }
+  },
+  "brand": {
+    "noTitle": "This brand spotlight has no brand name in this language: it is not shown."
+  },
+  "gift": {
+    "noTitle": "This gift offer has no name in this language: it is not shown.",
+    "spend": "When you spend",
+    "until": "Until {{date}}",
+    "ended": "This offer has ended: visitors no longer see it. Change its last day or remove it."
+  },
+  "look": {
+    "noTitle": "This look has no name in this language: it is not shown.",
+    "products": "Products in this look"
+  }
+}

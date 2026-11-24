@@ -1,0 +1,33 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<j = 'http://www.jahia.org/jahia/1.0'>
+<jcr = 'http://www.jcp.org/jcr/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
+<shopynt = 'http://modules.se.jahia.org/provider/shopify/nt/1.0'>
+<ctcm = 'http://www.jahia.org/classic-commerce/nt/1.0'>
+<ctcmmix = 'http://www.jahia.org/classic-commerce/mix/1.0'>
+
+// Namespaces, base mixins and the mixins shared by several types. Each content type lives next to
+// its views in src/components/<Category>/<Name>/definition.cnd, with exactly this header: the
+// engine merges every CND of the module at install time, and a prefix bound to two URIs fails the
+// install. The ctplmix mixins come from classic-templates and shopynt:product from shopify-edp,
+// both declared module dependencies (package.json jahia.module-dependencies). The shopynt URI is
+// the one shopify-edp declares: never another spelling.
+
+// ---- Component tiers ----------------------------------------------------------------------------
+
+// Groups every classic-commerce type in the content type selector, with the classic-templates ones.
+[ctcmmix:component] > ctplmix:component mixin
+
+// A page section: accepted in the main area of classic-templates pages and in their columns and
+// free zones (ctplmix:pageComponent).
+[ctcmmix:pageComponent] > ctcmmix:component, ctplmix:pageComponent mixin
+
+// ---- Shared property groups ---------------------------------------------------------------------
+
+// Products picked by hand, in the order the editor gives: products of the shopify-edp connector,
+// read live from the shop (never copied). Used by the carousel, the brand spotlight and the "shop
+// the look" section.
+[ctcmmix:pickedProducts] mixin
+ - products (weakreference, picker[type='editorial']) multiple < 'shopynt:product'

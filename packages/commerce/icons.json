@@ -1,0 +1,11 @@
+{
+  "ink": "#1F2A44",
+  "out": "settings/content-types-icons",
+  "icons": {
+    "ctcmmix:component": "shopping-bag",
+    "ctcm:productCarousel": "gallery-horizontal",
+    "ctcm:brandSpotlight": "sparkles",
+    "ctcm:giftOffer": "gift",
+    "ctcm:shopTheLook": "shirt"
+  }
+}

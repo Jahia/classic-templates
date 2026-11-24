@@ -1,0 +1,140 @@
+/* Cards and compact rows of destinations and fare offers, and the grid of the travel lists. They
+   follow the classic-templates editorial cards, with the theme's tokens only. */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: var(--ctpl-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.grid > li {
+  display: flex;
+}
+.grid > li > * {
+  flex: 1;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  box-shadow: var(--ctpl-shadow-sm);
+  transition: box-shadow var(--ctpl-duration-base) var(--ctpl-ease);
+}
+.card:hover {
+  box-shadow: var(--ctpl-shadow-md);
+}
+.card:focus-within {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--ctpl-space-2);
+  padding: var(--ctpl-space-5);
+}
+.body > * {
+  margin: 0;
+}
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-1) var(--ctpl-space-3);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.kind {
+  color: var(--ctpl-color-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.title {
+  font-size: var(--ctpl-text-xl);
+  overflow-wrap: anywhere;
+}
+.title a {
+  color: var(--ctpl-color-text);
+  text-decoration: none;
+}
+.card:hover .title a {
+  color: var(--ctpl-color-link-hover);
+  text-decoration: underline;
+}
+/* The title link covers the whole card; its own focus ring is drawn by the card. */
+.stretched::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.stretched:focus-visible {
+  outline: none;
+}
+/* Never clamped: a truncated text hides content, worse with larger text spacing (RGAA 10.12). */
+.teaser {
+  color: var(--ctpl-color-text-muted);
+}
+.facts {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  margin-top: auto;
+  padding-top: var(--ctpl-space-3);
+  border-top: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  font-size: var(--ctpl-text-sm);
+}
+.facts > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--ctpl-space-2);
+}
+.facts dt {
+  color: var(--ctpl-color-text-muted);
+}
+.facts dd {
+  margin: 0;
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.ended {
+  color: var(--ctpl-color-danger);
+}
+
+/* ---- Compact row ---------------------------------------------------------------------------- */
+.compact {
+  display: grid;
+  gap: var(--ctpl-space-1);
+  padding-block: var(--ctpl-space-4);
+  border-bottom: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.compact > * {
+  margin: 0;
+}
+.compactTitle {
+  font-size: var(--ctpl-text-lg);
+}
+
+/* ---- Section of a travel list --------------------------------------------------------------- */
+.empty {
+  color: var(--ctpl-color-text-muted);
+}
+.panel {
+  margin: 0 0 var(--ctpl-space-5);
+  padding: var(--ctpl-space-3) var(--ctpl-space-4);
+  border-inline-start: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+  background: var(--ctpl-color-surface-sunken);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}

@@ -1,0 +1,50 @@
+/* Gift offer: the gift's picture beside the offer, as a framed panel. */
+.offer {
+  display: grid;
+  gap: var(--ctpl-space-5);
+  align-items: center;
+}
+@media (min-width: 48rem) {
+  .withMedia {
+    grid-template-columns: 2fr 3fr;
+  }
+}
+.media img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--ctpl-radius-lg);
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ctpl-space-3);
+  padding: var(--ctpl-space-5);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-lg);
+  background: var(--ctpl-color-surface-page);
+}
+.title {
+  margin: 0;
+}
+.gift {
+  margin: 0;
+  font-size: var(--ctpl-text-lg);
+}
+.spend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  align-items: baseline;
+}
+.spendLabel {
+  color: var(--ctpl-color-text-muted);
+}
+.until {
+  margin: 0;
+  font-weight: var(--ctpl-font-weight-medium);
+}
+.conditions {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}

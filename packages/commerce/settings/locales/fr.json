@@ -1,0 +1,55 @@
+{
+  "editNote": {
+    "a11y": "Accessibilité :"
+  },
+  "item": {
+    "noTitle": "Pas de titre dans cette langue : cet élément est exclu des listes et n’a pas de titre."
+  },
+  "image": {
+    "noTitle": "Cette image n’a pas de titre dans la médiathèque, elle n’a donc pas de texte alternatif."
+  },
+  "richText": {
+    "headingsRenumbered": "Les titres de ce texte utilisent le niveau 1 ou sautent un niveau : ils sont renumérotés pour que le plan de la page reste complet. Commencez les parties principales au Titre 2 et descendez d’un niveau à la fois.",
+    "imageWithoutAlt": "Une image de ce texte n’a pas de texte alternatif : les lecteurs d’écran l’ignorent.",
+    "table": "Tableau",
+    "tableNumbered": "Tableau {{number}}",
+    "tableWithoutCaption": "Un tableau de ce texte n’a pas de titre : donnez-lui en un pour qu’il soit trouvé et compris."
+  },
+  "cta": {
+    "noTarget": "Pas de cible de lien dans cette langue",
+    "noLabel": "Libellé du bouton manquant",
+    "noLink": "Ce bouton a un libellé mais pas de lien : choisissez une page ou une adresse web, ou effacez le libellé."
+  },
+  "price": {
+    "from": "À partir de",
+    "fromSpoken": "À partir de {{price}}"
+  },
+  "list": {
+    "empty": "Aucun produit à afficher pour l’instant."
+  },
+  "track": {
+    "label": "Produits",
+    "scroll": "{{title}}, défiler sur le côté"
+  },
+  "carousel": {
+    "summary": {
+      "picked": "Affiche les {{shown}} produits choisis, dans leur ordre.",
+      "shop": "Affiche {{shown}} des {{found}} produits du dossier de la boutique, avec le tag Shopify « {{tag}} » s’il est renseigné.",
+      "shopMissing": "Le dossier de la boutique est renseigné mais introuvable (supprimé, ou connecteur non configuré) : rien ne s’affiche sur le site en ligne.",
+      "none": "Choisissez des produits, ou un dossier de boutique où les lire."
+    }
+  },
+  "brand": {
+    "noTitle": "Cette marque à la une n’a pas de nom dans cette langue : elle n’est pas affichée."
+  },
+  "gift": {
+    "noTitle": "Cette offre cadeau n’a pas de nom dans cette langue : elle n’est pas affichée.",
+    "spend": "Pour un achat de",
+    "until": "Jusqu’au {{date}}",
+    "ended": "Cette offre est terminée : les visiteurs ne la voient plus. Changez son dernier jour ou retirez-la."
+  },
+  "look": {
+    "noTitle": "Ce look n’a pas de nom dans cette langue : il n’est pas affiché.",
+    "products": "Produits de ce look"
+  }
+}

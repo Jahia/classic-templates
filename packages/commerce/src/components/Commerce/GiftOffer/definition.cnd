@@ -1,0 +1,11 @@
+// A gift with purchase: the offer's name (jcr:title, an h2), the gift itself, the spend that earns
+// it (amount and currency, ISO 4217: each market site sets its own), the conditions, a picture of
+// the gift (ctplmix:media) and a call to action (ctplmix:cta). The offer leaves the live site the
+// day after its end date; without an end date it stays until an editor removes it.
+[ctcm:giftOffer] > jnt:content, mix:title, ctcmmix:pageComponent, ctplmix:sectionStyle, ctplmix:media, ctplmix:cta
+ - gift (string, textarea) i18n
+ - threshold (double) < '[0,)'
+ // cnd-check-ignore(missingI18n): a code among fixed values, labelled in the resource bundles
+ - currency (string, choicelist[resourceBundle]) = 'AED' autocreated < 'AED', 'SAR', 'EGP', 'KWD', 'QAR', 'BHD', 'OMR', 'USD', 'EUR', 'GBP'
+ - conditions (string, textarea) i18n
+ - endsOn (date)

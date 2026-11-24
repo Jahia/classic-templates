@@ -34,6 +34,7 @@
     <module>packages/template-set</module>
     <module>packages/travel</module>
     <module>packages/media</module>
+    <module>packages/commerce</module>
     <module>packages/prepackaged-site</module>
     <module>packages/prepackaged-skylantern</module>
     <module>packages/prepackaged-orvane-signal</module>

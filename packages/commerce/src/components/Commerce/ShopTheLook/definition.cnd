@@ -1,0 +1,6 @@
+// "Shop the look": a section for an article or a campaign page. A picture of the look
+// (ctplmix:media), its name (jcr:title, an h2), a short introduction, and the products used in it,
+// picked by the editor in the order they are applied (ctcmmix:pickedProducts), as a numbered list
+// of compact product rows.
+[ctcm:shopTheLook] > jnt:content, mix:title, ctcmmix:pageComponent, ctplmix:sectionStyle, ctplmix:media, ctcmmix:pickedProducts
+ - intro (string, textarea) i18n
