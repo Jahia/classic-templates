@@ -16,13 +16,17 @@ describe("displayPrice", () => {
 });
 
 describe("productImageUrl", () => {
-  it("keeps https addresses only", () => {
+  it("keeps https addresses and paths on this site only", () => {
+    expect(productImageUrl("/files/live/sites/demo/files/a.jpg")).toBe(
+      "/files/live/sites/demo/files/a.jpg",
+    );
+    expect(productImageUrl("//evil.example/a.jpg")).toBeUndefined();
+    expect(productImageUrl(String.raw`/\evil.example/a.jpg`)).toBeUndefined();
     expect(productImageUrl(" https://cdn.shopify.com/a.jpg ")).toBe(
       "https://cdn.shopify.com/a.jpg",
     );
     expect(productImageUrl("http://cdn.shopify.com/a.jpg")).toBeUndefined();
     expect(productImageUrl("javascript:alert(1)")).toBeUndefined();
-    expect(productImageUrl("/files/a.jpg")).toBeUndefined();
     expect(productImageUrl(undefined)).toBeUndefined();
   });
 });

@@ -162,9 +162,8 @@ describe('classic-commerce - product views and shopping sections', () => {
             .first()
             .within(() => {
                 cy.get('h2').should('have.text', 'Bestsellers')
-                cy.get('[role="region"]')
-                    .should('have.attr', 'tabindex', '0')
-                    .and('have.attr', 'aria-label', 'Bestsellers, scroll sideways')
+                // Every card is reachable with Tab (its link), so the scrolling row needs no focus.
+                cy.get('[data-testid="ctcm-product-card"] a').should('have.length', 2)
                 cy.get('[data-testid="ctcm-product-card"] h3').then((titles) =>
                     expect([...titles].map((t) => t.textContent)).to.deep.eq([
                         'Silk Lipstick',

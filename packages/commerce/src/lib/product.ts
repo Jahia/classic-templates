@@ -17,17 +17,21 @@ export const displayPrice = (
 };
 
 /**
- * The product image URL to put in an <img src>: an https address only. The value comes from
- * another system (the shop), so anything else (http, javascript:, a relative path) is dropped.
+ * The product image URL to put in an <img src>: an https address (a shop's CDN), or a path on this
+ * site ("/files/...", demo products whose pictures live in Jahia). The value comes from another
+ * system, so anything else (http, javascript:, "//host", a relative path) is dropped.
  */
 export const productImageUrl = (url: string | undefined): string | undefined => {
   const value = url?.trim();
   // A pattern, not `new URL()`: server views run in GraalJS, which has no URL class.
-  return value && HTTPS_URL.test(value) ? value : undefined;
+  return value && (HTTPS_URL.test(value) || SITE_PATH.test(value)) ? value : undefined;
 };
 
 /** An absolute https address with a host and no space, quote or angle bracket. */
 const HTTPS_URL = /^https:\/\/[^\s/"'<>]+(?:\/[^\s"'<>]*)?$/i;
+
+/** A path on this site: one leading slash (never "//", another host), no space or quote. */
+const SITE_PATH = /^\/(?!\/)[^\s"'<>\\]*$/;
 
 /** Whether a product carries a Shopify tag, compared case-insensitively and trimmed. */
 export const hasTag = (tags: readonly string[] | undefined, tag: string | undefined): boolean => {

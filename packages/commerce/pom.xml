@@ -23,7 +23,11 @@
     <!-- Helpers copied from the template set on purpose (separate bundle, no TypeScript import
          across modules, see .agents/context/travel.md): left out of the duplication count -->
     <sonar.cpd.exclusions>**/lib/sanitize.ts,**/lib/sanitize.test.ts,**/lib/resolveLink.ts,**/lib/urls.ts,**/lib/urls.test.ts,**/lib/locale.ts,**/lib/EditNote.tsx,**/lib/Cta.tsx,**/lib/Image.tsx,**/lib/RichText.tsx,**/lib/format.ts,**/lib/format.test.ts,**/lib/Price.tsx</sonar.cpd.exclusions>
-    <sonar.tests />
+    <!-- Unit tests are test code: they hold the hostile inputs a sanitizer test needs (javascript:,
+         http:), which security hotspot rules only check in main code. -->
+    <sonar.tests>src</sonar.tests>
+    <sonar.test.inclusions>**/*.test.ts</sonar.test.inclusions>
+    <sonar.exclusions>**/*.test.ts</sonar.exclusions>
   </properties>
 
   <build>

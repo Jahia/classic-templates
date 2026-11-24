@@ -49,7 +49,7 @@ jahiaComponent(
             </div>
           </div>
           {products.length > 0 && (
-            <ProductTrack items={products} label={title} headingLevel={innerLevel(level, true)} />
+            <ProductTrack items={products} headingLevel={innerLevel(level, true)} />
           )}
         </div>
       </Section>

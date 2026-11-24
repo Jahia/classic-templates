@@ -27,10 +27,6 @@
   "list": {
     "empty": "No product to show yet."
   },
-  "track": {
-    "label": "Products",
-    "scroll": "{{title}}, scroll sideways"
-  },
   "carousel": {
     "summary": {
       "picked": "Shows the {{shown}} picked products, in their order.",

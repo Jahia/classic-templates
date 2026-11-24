@@ -27,10 +27,6 @@
   "list": {
     "empty": "Aucun produit à afficher pour l’instant."
   },
-  "track": {
-    "label": "Produits",
-    "scroll": "{{title}}, défiler sur le côté"
-  },
   "carousel": {
     "summary": {
       "picked": "Affiche les {{shown}} produits choisis, dans leur ordre.",

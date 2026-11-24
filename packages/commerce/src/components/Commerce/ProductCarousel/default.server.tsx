@@ -74,11 +74,7 @@ jahiaComponent(
             </p>
           )}
           {items.length > 0 ? (
-            <ProductTrack
-              items={items}
-              label={title ?? ""}
-              headingLevel={innerLevel(level, Boolean(title))}
-            />
+            <ProductTrack items={items} headingLevel={innerLevel(level, Boolean(title))} />
           ) : (
             <p className={cards.empty}>{props.noResultText || t("list.empty")}</p>
           )}
