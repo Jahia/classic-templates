@@ -69,7 +69,7 @@ describe.each([
     () => {
       const categories = pluralRules.resolvedOptions().pluralCategories;
       const extra = all
-        .map(([key]) => key.match(EXTRA_PLURAL)?.[1])
+        .map(([key]) => EXTRA_PLURAL.exec(key)?.[1])
         .filter((form): form is string => form !== undefined);
       expect(extra.every((form) => (categories as string[]).includes(form))).toBe(true);
       const bases = reference
