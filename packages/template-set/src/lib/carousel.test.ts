@@ -4,7 +4,7 @@ import { CAROUSEL_DEFAULT_INTERVAL, carouselInterval } from "./carousel.js";
 
 interface CarouselScript {
   wrapIndex(i: number, count: number): number;
-  keyTarget(key: string, current: number, count: number): number;
+  keyTarget(key: string, current: number, count: number, rtl?: boolean): number;
   delayOf(value: unknown): number;
 }
 
@@ -59,6 +59,12 @@ describe("carousel script: slide index math", () => {
     expect(script.keyTarget("End", 0, 3)).toBe(2);
     expect(script.keyTarget("Enter", 1, 3)).toBe(-1);
     expect(script.keyTarget("a", 1, 3)).toBe(-1);
+  });
+
+  it("swaps the arrow keys on a right-to-left page", () => {
+    expect(script.keyTarget("ArrowLeft", 0, 3, true)).toBe(1);
+    expect(script.keyTarget("ArrowRight", 0, 3, true)).toBe(2);
+    expect(script.keyTarget("Home", 2, 3, true)).toBe(0);
   });
 
   it("never advances faster than every 5 seconds", () => {

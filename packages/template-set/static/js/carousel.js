@@ -23,10 +23,14 @@
     return ((i % count) + count) % count;
   }
 
-  /** The slide button a key moves to from button `current` of `count`, or -1 for other keys. */
-  function keyTarget(key, current, count) {
-    if (key === "ArrowRight") return wrapIndex(current + 1, count);
-    if (key === "ArrowLeft") return wrapIndex(current - 1, count);
+  /**
+   * The slide button a key moves to from button `current` of `count`, or -1 for other keys. In a
+   * right-to-left page (`rtl`) the buttons run from right to left, so the arrows swap.
+   */
+  function keyTarget(key, current, count, rtl) {
+    var step = rtl ? -1 : 1;
+    if (key === "ArrowRight") return wrapIndex(current + step, count);
+    if (key === "ArrowLeft") return wrapIndex(current - step, count);
     if (key === "Home") return 0;
     if (key === "End") return count - 1;
     return -1;
@@ -159,7 +163,8 @@
         go(i);
       });
       button.addEventListener("keydown", function (event) {
-        var target = keyTarget(event.key, i, pickers.length);
+        var rtl = window.getComputedStyle(button).direction === "rtl";
+        var target = keyTarget(event.key, i, pickers.length, rtl);
         if (target < 0) return;
         event.preventDefault();
         pickers[target].focus();

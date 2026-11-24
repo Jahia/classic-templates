@@ -2,8 +2,8 @@
 .quote {
   max-width: var(--ctpl-measure);
   margin: 0;
-  padding-left: var(--ctpl-space-5);
-  border-left: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
+  padding-inline-start: var(--ctpl-space-5);
+  border-inline-start: var(--ctpl-border-width-accent) solid var(--ctpl-color-accent);
 }
 .text {
   margin: 0 0 var(--ctpl-space-4);
@@ -28,8 +28,8 @@
 
 .large {
   max-width: none;
-  padding-left: 0;
-  border-left: 0;
+  padding-inline-start: 0;
+  border-inline-start: 0;
   text-align: center;
 }
 .large .text p {
@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   gap: var(--ctpl-space-3);
-  text-align: left;
+  text-align: start;
 }
 .portrait img {
   width: 3.5rem;
