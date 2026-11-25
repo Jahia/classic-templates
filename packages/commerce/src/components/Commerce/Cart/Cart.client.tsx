@@ -99,7 +99,7 @@ const subscribe = (onChange: () => void) => {
  * anywhere on the page (product cards and pages, rendered hidden by the server) are revealed and
  * wired here, so that a page without a bag shows none.
  */
-export default function Cart({ siteKey, label, idBase, editMode }: Props) {
+export default function Cart({ siteKey, label, idBase, editMode }: Readonly<Props>) {
   const { t } = useTranslation("classic-commerce");
   const [announce, setAnnounce] = useState("");
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -113,6 +113,18 @@ export default function Cart({ siteKey, label, idBase, editMode }: Props) {
   const language = typeof document === "undefined" ? "en" : document.documentElement.lang || "en";
 
   const update = useCallback((next: CartItem[]) => write(siteKey, next), [siteKey]);
+
+  // A click on the backdrop (the dialog element itself, outside its panel) closes the drawer;
+  // Escape closes it natively.
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const onBackdrop = (event: MouseEvent) => {
+      if (event.target === dialog) dialog.close();
+    };
+    dialog.addEventListener("click", onBackdrop);
+    return () => dialog.removeEventListener("click", onBackdrop);
+  }, []);
 
   // "Add to bag" buttons: shown and wired once the bag is on the page.
   useEffect(() => {
@@ -196,10 +208,6 @@ export default function Cart({ siteKey, label, idBase, editMode }: Props) {
         className={classes.drawer}
         aria-labelledby={`${idBase}-title`}
         data-testid="ctcm-cart-drawer"
-        onClick={(event) => {
-          // A click on the backdrop (the dialog itself, outside its panel) closes it.
-          if (event.target === dialogRef.current) dialogRef.current.close();
-        }}
       >
         <div className={classes.panel}>
           <div className={classes.head}>
@@ -240,11 +248,10 @@ export default function Cart({ siteKey, label, idBase, editMode }: Props) {
                           </span>
                         )}
                       </div>
-                      <div
-                        className={classes.quantity}
-                        role="group"
-                        aria-label={t("cart.quantityOf", { title: item.title, ...RAW })}
-                      >
+                      <fieldset className={classes.quantity}>
+                        <legend className={shared.visuallyHidden}>
+                          {t("cart.quantityOf", { title: item.title, ...RAW })}
+                        </legend>
                         <button
                           type="button"
                           aria-label={t("cart.less")}
@@ -261,7 +268,7 @@ export default function Cart({ siteKey, label, idBase, editMode }: Props) {
                         >
                           +
                         </button>
-                      </div>
+                      </fieldset>
                       <button
                         type="button"
                         className={classes.remove}

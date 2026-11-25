@@ -143,6 +143,10 @@
   font-weight: var(--ctpl-font-weight-bold);
 }
 .quantity {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
   display: inline-flex;
   align-items: center;
   gap: var(--ctpl-space-2);
