@@ -5,6 +5,7 @@ import { RichText } from "../../../lib/RichText.js";
 import { Styles } from "../../../lib/Styles.js";
 import { displayPrice, productImageUrl } from "../../../lib/product.js";
 import cards from "../shared/cards.module.css";
+import { AddToBag } from "../../../lib/AddToBag.js";
 import { Untitled } from "../shared/Untitled.js";
 import classes from "./product.module.css";
 import type { Props } from "./types.js";
@@ -53,6 +54,7 @@ export const ProductCard = ({ props }: { props: Props }) => {
           </a>
         </Heading>
         <ProductPrice props={props} />
+        <AddToBag props={props} />
       </div>
     </article>
   );
@@ -99,9 +101,14 @@ export const ProductFull = ({ props }: { props: Props }) => {
         <Kicker props={props} className={classes.fullKicker} />
         {title ? <h1 className={classes.fullTitle}>{title}</h1> : <Untitled />}
         <ProductPrice props={props} large />
+        <AddToBag props={props} all />
         {/* The page language's description, else the shop's original (a connector without
             translations, a product the shop has not translated). Sanitised by RichText. */}
-        <RichText html={props.description ?? props.bodyHtml} className={classes.description} headingLevel={2} />
+        <RichText
+          html={props.description ?? props.bodyHtml}
+          className={classes.description}
+          headingLevel={2}
+        />
       </div>
     </article>
   );

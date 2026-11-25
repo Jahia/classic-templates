@@ -47,5 +47,21 @@
   "look": {
     "noTitle": "Ce look n’a pas de nom dans cette langue : il n’est pas affiché.",
     "products": "Produits de ce look"
+  },
+  "cart": {
+    "title": "Panier",
+    "count": "Articles dans votre panier : {{count}}",
+    "add": "Ajouter au panier",
+    "addOption": "Ajouter {{option}}, {{price}}",
+    "added": "Ajouté à votre panier : {{title}}",
+    "close": "Fermer",
+    "empty": "Votre panier est vide.",
+    "quantityOf": "Quantité de {{title}}",
+    "less": "Un de moins",
+    "more": "Un de plus",
+    "remove": "Retirer",
+    "subtotal": "Sous-total",
+    "checkoutNote": "Vous finalisez votre commande dans notre boutique, livraison et paiement compris.",
+    "checkout": "Commander"
   }
 }

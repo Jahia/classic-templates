@@ -23,4 +23,8 @@ export interface Props {
   "shopyTags"?: string[];
   /** Shopify GraphQL ids of the variants, used by add to cart. */
   "variantGqlIds"?: string[];
+  /** The variants' names ("Travel size"), in the order of the prices; empty without options. */
+  "variantTitles"?: string[];
+  /** The shop's address, where a bag is completed (shopify-edp 1.1+). */
+  "storeUrl"?: string;
 }

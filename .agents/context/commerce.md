@@ -23,10 +23,23 @@ it: read [`travel.md`](travel.md) and [`architecture.md`](architecture.md) too.
 | `ctcm:brandSpotlight` | `mix:title`, `ctcmmix:pageComponent`, `ctplmix:sectionStyle`, `ctplmix:media`, `ctplmix:cta`, `ctcmmix:pickedProducts` | default |
 | `ctcm:giftOffer` | `mix:title`, `ctcmmix:pageComponent`, `ctplmix:sectionStyle`, `ctplmix:media`, `ctplmix:cta` | default |
 | `ctcm:shopTheLook` | `mix:title`, `ctcmmix:pageComponent`, `ctplmix:sectionStyle`, `ctplmix:media`, `ctcmmix:pickedProducts` | default |
+| `ctcm:cartButton` | `ctpl:link`, `ctcmmix:component` | default (an `<li>` holding the Cart island) |
 | `shopynt:product` (shopify-edp) | - | default and card, compact, fullPage |
 
 `ctcm:productCarousel.shopifyTag` is a query criterion on the shop's own tags, not a tag of the
 content (CLAUDE.md rule 21, listing exception, asked for by the user on 2026-11-24).
+
+## The bag
+
+`ctcm:cartButton` extends `ctpl:link` so that the header's utility links (`+ * (ctpl:link)`) accept
+it: no change to the template set's header. Its inherited link fields are hidden by
+`settings/content-editor-forms/forms/ctcm_cartButton.json`. One island (`Cart.client.tsx`) draws
+the button and the drawer (a modal `<dialog>`), reads the bag from `localStorage`
+(`ctcm-bag:<siteKey>`, through `useSyncExternalStore`), and reveals and wires the "Add to bag"
+buttons the product views render hidden (`src/lib/AddToBag.tsx`, data in `data-ctcm-add`). Every
+value read from a button or from storage goes through `validEntry` (`src/lib/cart.ts`): https store
+origin, digits-only variant, site path or https image. Checkout is a Shopify cart permalink per
+store. A line keeps the name in the language it was added in.
 
 ## Gates
 

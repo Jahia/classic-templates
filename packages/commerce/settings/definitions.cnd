@@ -3,6 +3,7 @@
 <j = 'http://www.jahia.org/jahia/1.0'>
 <jcr = 'http://www.jcp.org/jcr/1.0'>
 <mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<ctpl = 'http://www.jahia.org/classic-templates/nt/1.0'>
 <ctplmix = 'http://www.jahia.org/classic-templates/mix/1.0'>
 <shopynt = 'http://modules.se.jahia.org/provider/shopify/nt/1.0'>
 <ctcm = 'http://www.jahia.org/classic-commerce/nt/1.0'>
@@ -11,7 +12,7 @@
 // Namespaces, base mixins and the mixins shared by several types. Each content type lives next to
 // its views in src/components/<Category>/<Name>/definition.cnd, with exactly this header: the
 // engine merges every CND of the module at install time, and a prefix bound to two URIs fails the
-// install. The ctplmix mixins come from classic-templates and shopynt:product from shopify-edp,
+// install. The ctpl types and ctplmix mixins come from classic-templates and shopynt:product from shopify-edp,
 // both declared module dependencies (package.json jahia.module-dependencies). The shopynt URI is
 // the one shopify-edp declares: never another spelling.
 

@@ -1,0 +1,31 @@
+/* "Add to bag" buttons. On a card the button sits above the card's stretched link, so that it takes
+   the click instead of the card. */
+.single,
+.options {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ctpl-space-2);
+  margin-block-start: auto;
+}
+.button {
+  padding: var(--ctpl-space-2) var(--ctpl-space-4);
+  border: 0;
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+  font: inherit;
+  font-weight: var(--ctpl-font-weight-bold);
+  cursor: pointer;
+}
+.button:hover {
+  background: var(--ctpl-color-accent-hover);
+}
+.button:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.button[hidden] {
+  display: none;
+}

@@ -47,5 +47,21 @@
   "look": {
     "noTitle": "This look has no name in this language: it is not shown.",
     "products": "Products in this look"
+  },
+  "cart": {
+    "title": "Bag",
+    "count": "Items in your bag: {{count}}",
+    "add": "Add to bag",
+    "addOption": "Add {{option}}, {{price}}",
+    "added": "Added to your bag: {{title}}",
+    "close": "Close",
+    "empty": "Your bag is empty.",
+    "quantityOf": "Quantity of {{title}}",
+    "less": "One less",
+    "more": "One more",
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "checkoutNote": "You complete your order in our shop, with delivery and payment there.",
+    "checkout": "Checkout"
   }
 }

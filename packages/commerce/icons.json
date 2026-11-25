@@ -6,6 +6,7 @@
     "ctcm:productCarousel": "gallery-horizontal",
     "ctcm:brandSpotlight": "sparkles",
     "ctcm:giftOffer": "gift",
-    "ctcm:shopTheLook": "shirt"
+    "ctcm:shopTheLook": "shirt",
+    "ctcm:cartButton": "shopping-bag"
   }
 }
