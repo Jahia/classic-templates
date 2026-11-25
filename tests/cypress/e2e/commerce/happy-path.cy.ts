@@ -79,6 +79,18 @@ describe('classic-commerce - product views and shopping sections', () => {
             primaryNodeType: 'jnt:contentFolder',
         })
         PRODUCTS.forEach(addProduct)
+        // A product of a mounted shop has no translation at all (no per-language field): its page
+        // must still offer every language.
+        addNode({
+            parentPathOrId: folder,
+            name: 'shared-only',
+            primaryNodeType: 'shopynt:product',
+            properties: [
+                { name: 'vendor', value: 'Maison Test' },
+                { name: 'currency', value: 'AED' },
+                { name: 'prices', type: 'DOUBLE', values: ['60'] },
+            ],
+        })
         addNode({
             parentPathOrId: home,
             name: 'shop',
@@ -228,6 +240,18 @@ describe('classic-commerce - product views and shopping sections', () => {
         cy.get('h1').should('have.length', 1).and('have.text', 'Silk Lipstick')
         cy.get('[data-testid="ctcm-product-full"] script').should('not.exist')
         cy.window().its('hacked').should('be.undefined')
+    })
+
+    it('offers every language on a product page that has no translation (a mounted shop product)', () => {
+        cy.request(`/sites/${siteKey}/contents/products/shared-only.html`)
+            .its('body')
+            .then((body: string) => {
+                const tags = Cypress.$(body)
+                    .find('[data-testid="ctpl-language-switcher"] a')
+                    .toArray()
+                    .map((a) => a.getAttribute('hreflang'))
+                expect(tags).to.have.members(languages)
+            })
     })
 
     it('mirrors the shop page in Arabic, with Arabic labels', () => {

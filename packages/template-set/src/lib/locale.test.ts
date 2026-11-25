@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { textDirection } from "./locale.js";
+import { shownLanguages, textDirection } from "./locale.js";
 
 describe("textDirection", () => {
   it("is right to left for Arabic, Hebrew, Persian and Urdu, regional or not", () => {
@@ -12,5 +12,19 @@ describe("textDirection", () => {
     for (const tag of ["en", "fr-CA", "pt", "ja", "zh-Hant", "arn", ""]) {
       expect(textDirection(tag)).toBe("ltr");
     }
+  });
+});
+
+describe("shownLanguages", () => {
+  it("keeps the languages the node is translated into", () => {
+    expect(shownLanguages(["en", "fr", "ar"], (l) => l !== "fr")).toEqual(["en", "ar"]);
+  });
+
+  it("offers every language for a node translated into none (shared fields, external data)", () => {
+    expect(shownLanguages(["en", "ar"], () => false)).toEqual(["en", "ar"]);
+  });
+
+  it("is empty only when the site has no language", () => {
+    expect(shownLanguages([], () => false)).toEqual([]);
   });
 });
