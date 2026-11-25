@@ -22,7 +22,7 @@
     <sonar.sources>src,package.json,pom.xml</sonar.sources>
     <!-- Helpers copied from the template set on purpose (separate bundle, no TypeScript import
          across modules, see .agents/context/travel.md): left out of the duplication count -->
-    <sonar.cpd.exclusions>**/lib/sanitize.ts,**/lib/sanitize.test.ts,**/lib/resolveLink.ts,**/lib/urls.ts,**/lib/urls.test.ts,**/lib/locale.ts,**/lib/EditNote.tsx,**/lib/Cta.tsx,**/lib/Image.tsx,**/lib/RichText.tsx,**/lib/format.ts,**/lib/format.test.ts,**/lib/Price.tsx</sonar.cpd.exclusions>
+    <sonar.cpd.exclusions>**/lib/sanitize.ts,**/lib/sanitize.test.ts,**/lib/resolveLink.ts,**/lib/urls.ts,**/lib/urls.test.ts,**/lib/locale.ts,**/lib/EditNote.tsx,**/lib/Cta.tsx,**/lib/Heading.tsx,**/lib/Image.tsx,**/lib/RichText.tsx,**/lib/Section.tsx,**/lib/Styles.tsx,**/lib/level.ts,**/lib/level.test.ts,**/lib/props.ts,**/lib/i18n.ts,**/lib/locales.test.ts,**/lib/format.ts,**/lib/format.test.ts,**/lib/Price.tsx,**/lib/*.module.css,**/components/Commerce/shared/cards.module.css,**/components/Commerce/shared/track.module.css,**/components/Commerce/shared/Untitled.tsx,**/scripts/check-tokens.mjs,**/eslint.config.js</sonar.cpd.exclusions>
     <!-- Unit tests are test code: they hold the hostile inputs a sanitizer test needs (javascript:,
          http:), which security hotspot rules only check in main code. -->
     <sonar.tests>src</sonar.tests>

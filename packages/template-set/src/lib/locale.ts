@@ -37,7 +37,10 @@ export const textDirection = (tag: string): "rtl" | "ltr" =>
  * has no translation nodes at all. Filtering it like a translatable node left its page with no
  * language at all (classic-commerce product pages on shopify-edp, 2026-11-25).
  */
-export const shownLanguages = <T>(locales: readonly T[], isTranslated: (locale: T) => boolean): T[] => {
+export const shownLanguages = <T>(
+  locales: readonly T[],
+  isTranslated: (locale: T) => boolean,
+): T[] => {
   const translated = locales.filter((locale) => isTranslated(locale));
   return translated.length > 0 ? translated : [...locales];
 };
