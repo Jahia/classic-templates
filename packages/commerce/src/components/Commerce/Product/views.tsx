@@ -99,7 +99,9 @@ export const ProductFull = ({ props }: { props: Props }) => {
         <Kicker props={props} className={classes.fullKicker} />
         {title ? <h1 className={classes.fullTitle}>{title}</h1> : <Untitled />}
         <ProductPrice props={props} large />
-        <RichText html={props.bodyHtml} className={classes.description} headingLevel={2} />
+        {/* The page language's description, else the shop's original (a connector without
+            translations, a product the shop has not translated). Sanitised by RichText. */}
+        <RichText html={props.description ?? props.bodyHtml} className={classes.description} headingLevel={2} />
       </div>
     </article>
   );

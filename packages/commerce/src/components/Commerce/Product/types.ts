@@ -5,8 +5,10 @@
 export interface Props {
   /** The product name, as the shop writes it. */
   "jcr:title"?: string;
-  /** The product description: HTML written in Shopify, sanitised before rendering. */
+  /** The product description: HTML written in Shopify, in the shop's primary language. */
   "bodyHtml"?: string;
+  /** The description in the page language, from the shop's translations (shopify-edp 1.1+). */
+  "description"?: string;
   /** Shopify product type ("Eau de parfum", "Serum"). */
   "productType"?: string;
   /** The brand (Shopify vendor). */
