@@ -32,7 +32,7 @@ cards then show "Add to bag" (the cheapest variant) and product pages one button
 ("Add Travel size, AED 295"). The bag lives in the visitor's browser, one per site; nothing about
 the visitor is stored in Jahia. **Checkout** opens the shop's own cart with the items (a Shopify
 cart permalink, `https://<shop>.myshopify.com/cart/<variant>:<quantity>,...`): the order, delivery
-and payment happen in the shop. The buttons need shopify-edp 1.1 or later (the store address and
+and payment happen in the shop. The buttons need shopify-edp 1.0.0 or later (the store address and
 the variant names); a product that does not come from a shop has none, and a page without a bag
 shows none. Where the site runs jExperience and the visitor is tracked, adding and checking out send
 standard `click` events (target types `addToCart` and `checkout`) for segments and goals.

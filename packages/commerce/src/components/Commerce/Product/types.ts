@@ -7,7 +7,7 @@ export interface Props {
   "jcr:title"?: string;
   /** The product description: HTML written in Shopify, in the shop's primary language. */
   "bodyHtml"?: string;
-  /** The description in the page language, from the shop's translations (shopify-edp 1.1+). */
+  /** The description in the page language, from the shop's translations (shopify-edp 1.0.0+). */
   "description"?: string;
   /** Shopify product type ("Eau de parfum", "Serum"). */
   "productType"?: string;
@@ -25,6 +25,6 @@ export interface Props {
   "variantGqlIds"?: string[];
   /** The variants' names ("Travel size"), in the order of the prices; empty without options. */
   "variantTitles"?: string[];
-  /** The shop's address, where a bag is completed (shopify-edp 1.1+). */
+  /** The shop's address, where a bag is completed (shopify-edp 1.0.0+). */
   "storeUrl"?: string;
 }
