@@ -278,9 +278,12 @@ Types modelled by `/jahia-cnd-author` from a structured spec, then reviewed.
   title link; the link label is a visual cue with `aria-hidden` (the title is the accessible
   name); an untitled card with an internal link takes the target page's title. Nothing live
   without a card.
-- **Card grid displays** (`display`: `cards`, `iconTiles`, `logos`): the grid renders its children
-  with `RenderChildren view={display}` (none for cards), so each display is a named view of
-  `ctpl:card` and `ctpl:contentTeaser` (`variants.server.tsx`); a teaser tile renders the item's
+- **Card grid views** (one rendering, one view, one file; `j:view` from `jmix:renderable`): the
+  default view draws cards, `iconTiles.server.tsx` and `logos.server.tsx` register the grid's views
+  of those names and the views of `ctpl:card` and `ctpl:contentTeaser` it renders its children with
+  (`RenderChildren view=...`, none for cards); the section itself is `CardGridSection.tsx`. The
+  released `display` field is hidden since 0.13.0 and read by the default view only, for grids not
+  moved to `j:view` by `scripts/migrate-views.groovy` (and live until their next publication); a teaser tile renders the item's
   own `tile` view, never its properties inline. Tiles (`lib/Tile.tsx`) are squares drawn by a
   `padding-top: 100%` pseudo-element in the content's grid cell: `aspect-ratio` widened a tile
   stretched to a taller neighbour (59 px of page overflow at 320 px). Logos sit on

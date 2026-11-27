@@ -11,5 +11,6 @@
 // small screens); imageRatio crops it to a landscape, square or portrait frame.
 [ctpl:imageText] > jnt:content, mix:title, ctplmix:pageComponent, ctplmix:media, ctplmix:cta, ctplmix:sectionStyle
  - body (string, richtext) i18n
+ // cnd-check-ignore(viewSwitch): which side the image takes, one order modifier of the same markup
  - imagePosition (string, choicelist[resourceBundle]) = 'left' autocreated < 'left', 'right'
  - imageRatio (string, choicelist[resourceBundle]) = 'landscape' autocreated < 'landscape', 'square', 'portrait'

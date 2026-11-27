@@ -6,7 +6,7 @@ export interface Props {
   "columns"?: "2" | "3" | "4";
   "introText"?: string;
   "ctplSurface"?: "default" | "sunken" | "accent";
-  /** How the cards are drawn: cards, outlined icon tiles or a logo strip. */
+  /** Legacy (hidden since 0.13.0): the renderings are views (j:view), "iconTiles" and "logos". */
   "display"?: "cards" | "iconTiles" | "logos";
 }
 

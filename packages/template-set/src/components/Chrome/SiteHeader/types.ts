@@ -6,6 +6,7 @@ export interface Props {
   brandName?: string;
   showBrandName?: boolean;
   brandCaption?: string;
+  /** Legacy (hidden since 0.13.0): the two-rows rendering is the "twoRows" view (j:view). */
   headerLayout?: "oneRow" | "twoRows";
   showAccount?: boolean;
   showSearch?: boolean;

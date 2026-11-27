@@ -73,7 +73,8 @@ jahiaComponent(
     nodeType: "ctpl:siteHeader",
     name: "account",
     displayName: "Account entry",
-    properties: { "cache.mainResource": "true" },
+    // visible=false: a part of the header, never offered in Layout > Select a view.
+    properties: { "cache.mainResource": "true", "visible": "false" },
   },
   (_: Props, { currentNode, currentResource, mainNode, renderContext }) => {
     const site: JCRSiteNode = pageSite(renderContext);

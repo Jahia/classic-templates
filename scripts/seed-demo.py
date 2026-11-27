@@ -708,7 +708,7 @@ def seed_help_centre(site):
         i18n("jcr:title", {"en": "Ways to get help", "fr": "Obtenir de l'aide"})
         + i18n("introText", {"en": "Pick the channel that suits your question.",
                              "fr": "Choisissez le canal qui convient à votre question."})
-        + [{"name": "display", "value": "iconTiles"}, {"name": "columns", "value": "3"},
+        + [{"name": "j:view", "value": "iconTiles"}, {"name": "columns", "value": "3"},
            {"name": "ctplSurface", "value": "sunken"}])
     for name, glyph, colour, page, title, text in (
         ("guides", "book", (11, 58, 102, 255), "services/training",
@@ -733,7 +733,7 @@ def seed_help_centre(site):
     # Logo strip: partners, the logo's name as its text alternative (the card title).
     strip = add_content(main, "partners", "ctpl:cardGrid",
         i18n("jcr:title", {"en": "They work with us", "fr": "Ils travaillent avec nous"})
-        + [{"name": "display", "value": "logos"}])
+        + [{"name": "j:view", "value": "logos"}])
     for name, label, shape, colour in (
         ("northwind", "Northwind Studio", "circle", (14, 110, 140, 255)),
         ("bluepeak", "Bluepeak", "triangle", (11, 58, 102, 255)),
@@ -795,7 +795,7 @@ def seed_help_centre(site):
     ):
         add_content(questions, name, "ctpl:accordionItem", i18n("jcr:title", question) + i18n("body", answer))
     month = add_content(tabs, "first-month", "ctpl:tab", i18n("jcr:title", {"en": "First month", "fr": "Premier mois"}))
-    more = add_content(month, "next-steps", "ctpl:cardGrid", [{"name": "display", "value": "iconTiles"}])
+    more = add_content(month, "next-steps", "ctpl:cardGrid", [{"name": "j:view", "value": "iconTiles"}])
     for name, glyph, colour, page, title, text in (
         ("workshop", "cap", (14, 110, 140, 255), "services/training/workshops",
          {"en": "Book a workshop", "fr": "Réserver un atelier"}, {"en": "Half a day with your team.", "fr": "Une demi-journée avec votre équipe."}),

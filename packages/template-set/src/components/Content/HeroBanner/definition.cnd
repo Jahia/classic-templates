@@ -14,5 +14,6 @@
  - eyebrow (string) i18n
  - subtitle (string, textarea) i18n
  - variant (string, choicelist[resourceBundle]) = 'image' autocreated < 'image', 'split', 'plain'
+ // cnd-check-ignore(viewSwitch): the strength of the dark overlay over the photo, one tone token of the same markup
  - overlay (string, choicelist[resourceBundle]) = 'medium' autocreated < 'medium', 'strong'
  - height (string, choicelist[resourceBundle]) = 'medium' autocreated < 'compact', 'medium', 'tall'

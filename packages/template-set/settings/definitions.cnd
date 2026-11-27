@@ -142,6 +142,7 @@
  - promoTitle (string) i18n
  - promoText (string, textarea) i18n
  - promoLink (weakreference, picker[type='editoriallink']) i18n < 'jmix:droppableContent', 'jnt:page'
+ // cnd-check-ignore(rawStringLink): the web address of the "Link" choice (ctplmix:cta) on a page, which cannot take jmix:externalLink (it extends jnt:content only)
  - promoUrl (string) i18n
 
 // Optional setting of a content folder (news, articles, any folder of items with their own page):

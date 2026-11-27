@@ -24,7 +24,7 @@ describe("main navigation menu style", () => {
 describe("menu promotion of a page", () => {
   it("is a page option built on the shared media and call-to-action mixins", () => {
     expect(shared).toMatch(
-      /\[ctplmix:navPromo\] > ctplmix:media, ctplmix:cta mixin\s+extends = jnt:page\s+- promoTitle \(string\) i18n\s+- promoText \(string, textarea\) i18n\s+- promoLink \(weakreference, picker\[type='editoriallink'\]\) i18n < 'jmix:droppableContent', 'jnt:page'\s+- promoUrl \(string\) i18n/,
+      /\[ctplmix:navPromo\] > ctplmix:media, ctplmix:cta mixin\s+extends = jnt:page\s+- promoTitle \(string\) i18n\s+- promoText \(string, textarea\) i18n\s+- promoLink \(weakreference, picker\[type='editoriallink'\]\) i18n < 'jmix:droppableContent', 'jnt:page'\s+(?:\/\/ cnd-check-ignore\(rawStringLink\): [^\n]+\s+)?- promoUrl \(string\) i18n/,
     );
   });
 

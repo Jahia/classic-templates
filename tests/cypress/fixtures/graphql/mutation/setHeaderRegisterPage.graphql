@@ -2,7 +2,7 @@ mutation setHeaderRegisterPage($headerPath: String!, $register: String!) {
     jcr {
         mutateNode(pathOrId: $headerPath) {
             setPropertiesBatch(
-                properties: [{ name: "showAccount", value: "true" }, { name: "headerLayout", value: "twoRows" }]
+                properties: [{ name: "showAccount", value: "true" }, { name: "j:view", value: "twoRows" }]
             ) {
                 path
             }
