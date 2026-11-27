@@ -130,6 +130,9 @@ const PAIRS = [
   ["focus", "surface-page", 3, "focus ring (non-text)"],
   ["focus", "accent-subtle", 3, "focus ring on accent-tint sections and the notice bar"],
   ["text-on-overlay", "overlay", 4.5, "hero text, overlay composited over a white photo"],
+  ["surface-page", "success", 4.5, "number of a done form step (Formidable)"],
+  ["text", "warning-surface", 4.5, "form warnings and edit-mode notices"],
+  ["text", "danger-surface", 4.5, "form error message"],
 ];
 
 const base = blockVars(":root");
