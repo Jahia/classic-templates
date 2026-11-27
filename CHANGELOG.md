@@ -1,5 +1,25 @@
 # classic-templates Changelog
 
+## 0.13.0
+
+### New Features
+
+* The bag: a new **Bag** (`ctcm:cartButton`) for the header's utility links. Product cards get an "Add to bag" button and product pages one per variant; the bag opens as a drawer with quantities and the subtotal, and **Checkout** completes the order in the shop (a Shopify cart permalink). The bag is kept in the visitor's browser, one per site, in English, French and Arabic (right to left). With jExperience, adding and checking out send events for segments and goals. Needs shopify-edp 1.0.0 or later.
+
+* Reused content: a new section, **Reused content** (`ctpl:reusedContent`), shows an item kept elsewhere, on the same site or another one (a brand site's campaign banner on every market site, for example), in the hero and main areas and in columns and free zones. Editing the item changes every page that reuses it, once published. The platform's content reference, which "Paste as reference" creates, is refused by these areas; this type is that reference made a page and hero section, rendered by the same view and Page Builder note ("Reused content: … It is edited where it comes from").
+
+* Arabic and the other right-to-left languages: a page in Arabic, Hebrew, Persian or Urdu sets `dir="rtl"` on `<html>` and the whole page mirrors (header, navigation and its submenus, breadcrumb, quotes, lists, footer). The styles use logical properties only, the carousel arrows and the breadcrumb chevrons turn round, and the Left and Right arrow keys of the carousel and the tabs swap. An Arabic page uses an Arabic font stack and no letter-spacing, and the template set ships its labels in Arabic (`ar.json`, with the six Arabic plural forms). classic-media's search filters mirror too.
+
+### Bug Fixes
+
+* The language switcher lists the languages of the page's own site. In live, Jahia takes the site named after the request host as the request's site, so where several sites are served under one host (Jahia Cloud) a page could list another site's languages, and lose its switcher when it had fewer translations in common.
+
+* Language switcher: a page whose content has no translation at all (only fields shared by every language, or a product read from a commerce platform through an External Data Provider such as shopify-edp) now links to every language of the site. It showed no switcher, as if the page existed in no language.
+
+* The nightly integration tests install classic-media too: without it the editorial-types spec, which checks `ctmd:keyDate`, failed every night against the release and snapshot Jahia images.
+
+* Product page: the description shows in the page language when the connector provides one (shopify-edp `description`, read from the shop's translations), and falls back to the shop's original description otherwise.
+
 ## 0.12.0
 
 * In Page Builder, a section, a news ticker, reused content or a page switched off in some of the site's languages (**Visibility > Content visibility by language**) says so on its first line: "Shown in Chinese only: hidden in English, Japanese (Visibility)". The frame shows such a block in every language, visitors of the other languages never get it; the note is amber in a language that hides it. Edit mode only: preview and the live site are unchanged.
