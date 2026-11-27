@@ -31,3 +31,4 @@ pages.json
 # Python
 __pycache__/
 *.pyc
+scripts/skylantern/build/

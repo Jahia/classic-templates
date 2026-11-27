@@ -1,0 +1,109 @@
+key,en,fr,zh,domain
+brand_airline,Skylantern Airways,Skylantern Airways,Skylantern Airways,brand
+brand_short,Skylantern,Skylantern,Skylantern,brand
+brand_lounge,Lantern Room,Lantern Room,Lantern Room,brand
+brand_loyalty,Lumen Card,Lumen Card,Lumen Card,brand
+fare_lite,Lite,Lite,Lite,fare
+fare_classic,Classic,Classic,Classic,fare
+fare_flex,Flex,Flex,Flex,fare
+partner_hotels,Harbourline Hotels,Harbourline Hotels,Harbourline Hotels,brand
+partner_cars,Tidewater Car Rental,Tidewater Car Rental,Tidewater Car Rental,brand
+partner_insurance,Northgate Travel Insurance,Northgate Travel Insurance,Northgate Travel Insurance,brand
+partner_lounges,Kitefield Lounges,Kitefield Lounges,Kitefield Lounges,brand
+aircraft_a321neo,Airbus A321neo,Airbus A321neo,Airbus A321neo,fleet
+aircraft_a330,Airbus A330-300,Airbus A330-300,Airbus A330-300,fleet
+fleet,fleet,flotte,機隊,fleet
+fleet_ours,Our fleet,Notre flotte,我們的機隊,fleet
+iata_hkg,HKG,HKG,HKG,airport
+iata_nrt,NRT,NRT,NRT,airport
+iata_kix,KIX,KIX,KIX,airport
+iata_cts,CTS,CTS,CTS,airport
+iata_fuk,FUK,FUK,FUK,airport
+iata_icn,ICN,ICN,ICN,airport
+iata_tpe,TPE,TPE,TPE,airport
+iata_bkk,BKK,BKK,BKK,airport
+iata_sin,SIN,SIN,SIN,airport
+iata_mnl,MNL,MNL,MNL,airport
+iata_dad,DAD,DAD,DAD,airport
+airport_hkia,Hong Kong International Airport,aéroport international de Hong Kong,香港國際機場,airport
+airport_t1,Terminal 1,Terminal 1,一號客運大樓,airport
+city_hong_kong,Hong Kong,Hong Kong,香港,destination
+city_tokyo,Tokyo,Tokyo,東京,destination
+city_osaka,Osaka,Osaka,大阪,destination
+city_sapporo,Sapporo,Sapporo,札幌,destination
+city_fukuoka,Fukuoka,Fukuoka,福岡,destination
+city_seoul,Seoul,Séoul,首爾,destination
+city_taipei,Taipei,Taipei,台北,destination
+city_bangkok,Bangkok,Bangkok,曼谷,destination
+city_singapore,Singapore,Singapour,新加坡,destination
+city_manila,Manila,Manille,馬尼拉,destination
+city_da_nang,Da Nang,Da Nang,峴港,destination
+cabin_economy,Economy class,classe Économie,經濟艙,cabin
+cabin_business,Business class,classe Business,商務艙,cabin
+book,Book,Réserver,預訂,booking
+book_flight,Book a flight,Réserver un vol,預訂航班,booking
+booking_reference,booking reference,référence de réservation,預訂參考編號,booking
+booking_manage,manage booking,gérer ma réservation,管理預訂,booking
+booking_manage_title,Manage booking,Gérer ma réservation,管理預訂,booking
+fare,fare,tarif,票價,fare
+fare_rules,fare rules,règles tarifaires,票價規則,fare
+fare_taxes,taxes and charges,taxes et frais,稅項及附加費,fare
+fare_fuel,fuel surcharge,surcharge carburant,燃油附加費,fare
+fare_refund,refund,remboursement,退款,fare
+fare_refund_title,Refund,Remboursement,退款,fare
+checkin,check-in,enregistrement,辦理登機手續,check-in
+checkin_title,Check-in,Enregistrement,辦理登機手續,check-in
+checkin_online,online check-in,enregistrement en ligne,網上辦理登機手續,check-in
+checkin_online_title,Online check-in,Enregistrement en ligne,網上辦理登機手續,check-in
+checkin_counter,check-in counter,comptoir d'enregistrement,登機櫃檯,check-in
+boarding_pass,boarding pass,carte d'embarquement,登機證,check-in
+boarding_gate,boarding gate,porte d'embarquement,登機閘口,check-in
+travel_documents,travel documents,documents de voyage,旅遊證件,check-in
+travel_documents_title,Travel documents,Documents de voyage,旅遊證件,check-in
+baggage_allowance,baggage allowance,franchise bagages,行李限額,baggage
+baggage_allowance_title,Baggage allowance,Franchise bagages,行李限額,baggage
+baggage_checked,checked baggage,bagage en soute,寄艙行李,baggage
+baggage_checked_title,Checked baggage,Bagage en soute,寄艙行李,baggage
+baggage_cabin,cabin baggage,bagage cabine,手提行李,baggage
+baggage_carry_on,carry-on baggage,bagage à main,手提行李,baggage
+baggage_excess,excess baggage,excédent de bagages,超額行李,baggage
+baggage_excess_title,Excess baggage,Excédent de bagages,超額行李,baggage
+baggage_claim,baggage claim,retrait des bagages,行李提取,baggage
+dangerous_goods,dangerous goods,marchandises dangereuses,危險品,baggage
+dangerous_goods_title,Dangerous goods,Marchandises dangereuses,危險品,baggage
+power_bank,power bank,batterie externe,充電寶,baggage
+power_bank_title,Power banks,Batteries externes,充電寶,baggage
+flight_status,flight status,état des vols,航班狀態,operations
+flight_status_title,Flight status,État des vols,航班狀態,operations
+flight_departures,departures,départs,離港,operations
+flight_arrivals,arrivals,arrivées,抵港,operations
+flight_direct,direct flight,vol direct,直航航班,operations
+flight_connecting,connecting flight,vol de correspondance,轉機航班,operations
+flight_transit,transit,transit,轉機,operations
+flight_transit_title,Transit,Transit,轉機,operations
+schedule_change,schedule change,changement d'horaire,航班時間更改,operations
+schedule_winter,winter schedule,programme d'hiver,冬季航班時間表,operations
+travel_advisory,travel advisory,avis aux voyageurs,旅遊通告,operations
+weather_cyclone,tropical cyclone,cyclone tropical,熱帶氣旋,operations
+weather_signal_8,tropical cyclone warning signal no. 8,signal d'alerte de cyclone tropical n° 8,八號烈風或暴風信號,operations
+media_room,Media room,Espace presse,媒體中心,company
+crew_cabin,cabin crew,personnel de cabine,機艙服務員,crew
+crew_cabin_title,Cabin crew,Personnel de cabine,機艙服務員,crew
+crew_captain,captain,commandant de bord,機長,crew
+crew_first_officer,first officer,copilote,副機長,crew
+lounge,lounge,salon,貴賓室,service
+lounge_title,Lounge,Salon,貴賓室,service
+extras_title,Extras,Options,附加服務,service
+seat_selection,seat selection,choix du siège,座位選擇,service
+seat_selection_title,Seat selection,Choix du siège,座位選擇,service
+seat_exit_row,exit row,rang d'issue de secours,緊急出口座位,service
+seat_exit_row_title,Exit rows,Rangs des issues de secours,緊急出口座位,service
+meal_special,special meal,repas spécial,特別餐膳,service
+entertainment,inflight entertainment,divertissement à bord,機上娛樂,service
+assistance_special,special assistance,assistance spéciale,特別協助,service
+assistance_special_title,Special assistance,Assistance spéciale,特別協助,service
+assistance_mobility,reduced mobility,mobilité réduite,行動不便,service
+assistance_mobility_title,Reduced mobility,Mobilité réduite,行動不便,service
+assistance_wheelchair,wheelchair,fauteuil roulant,輪椅,service
+child_unaccompanied,unaccompanied minor,mineur non accompagné,無成人陪伴兒童,service
+child_infant,infant,bébé,嬰兒,service
