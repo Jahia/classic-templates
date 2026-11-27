@@ -87,7 +87,8 @@ The site export is committed unzipped under [`src/main/skylantern/`](src/main/sk
 (`site.properties`, `repository.xml`, `live-repository.xml`, `live-content/`), so a content change
 reads as a diff. It is written by
 [`scripts/export-prepackaged.py`](../../scripts/export-prepackaged.py) from the `skylantern` site of
-a running Jahia, after the site has been seeded and published:
+a running Jahia, after the site has been seeded by
+[`scripts/skylantern/seed-airline.py`](../../scripts/skylantern/README.md) and published:
 
 ```bash
 python3 scripts/export-prepackaged.py --site skylantern           # export, convert, strip, write
