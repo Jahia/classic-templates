@@ -9,13 +9,13 @@ preview with an image when they are shared (Open Graph, Twitter card).
 
 ![The demo home page in the Classic theme](docs/images/home.png)
 
-> **Latest release:** [0.12.0](https://github.com/Jahia/classic-templates/releases/tag/0_12_0) (November 2026).
+> **Latest release:** [0.13.0](https://github.com/Jahia/classic-templates/releases/tag/0_13_0) (November 2026).
 > Every version is described in the [changelog](CHANGELOG.md); `main` holds the next version in
 > development.
 
 ## What is in this repository
 
-The repository holds seven packages, built together and released at the same version.
+The repository holds nine packages, built together and released at the same version.
 
 | Package                                                                     | Maven coordinates                                                                            | What it is                                                                                                                                                                                                                                  |
 | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -26,6 +26,8 @@ The repository holds seven packages, built together and released at the same ver
 | [`packages/prepackaged-skylantern`](packages/prepackaged-skylantern/)       | `org.jahia.community:skylantern-prepackaged-website` (`.jar`, and an `import` `.zip`)        | The `skylantern` demo site (Skylantern Airways, a fictional airline) as a **pre-packaged project**: 36 pages in English and French with destinations and fares from classic-travel, ready to import from Administration                     |
 | [`packages/prepackaged-orvane-signal`](packages/prepackaged-orvane-signal/) | `org.jahia.community:orvane-signal-prepackaged-website` (`.jar`, and an `import` `.zip`)     | The `orvane-signal` demo site (the editorial hub of Orvane, a fictional media group) as a **pre-packaged project**: 45 pages in English and French with classic-media stories, people, videos and podcasts, and the add-on modules it shows |
 | [`packages/prepackaged-orvane-live`](packages/prepackaged-orvane-live/)     | `org.jahia.community:orvane-live-prepackaged-website` (`.jar`, and an `import` `.zip`)       | The `orvane-live` demo site (Orvane's annual convention) as a **pre-packaged project**: 27 pages in English and French with the classic-media agenda, speakers and key dates; import it with Orvane Signal                                  |
+| [`packages/prepackaged-orvane-portal`](packages/prepackaged-orvane-portal/) | `org.jahia.community:orvane-portal-prepackaged-website` (`.jar`, and an `import` `.zip`)     | The `orvane-portal` demo site (the gated portal of Orvane's photo and video suppliers) as a **pre-packaged project**, with the classic-media briefs and submissions                                                                         |
+| [`packages/commerce`](packages/commerce/)                                   | `org.jahia.modules.javascript:classic-commerce` (`.tgz`)                                     | The **classic-commerce** module: product views, product carousels, brand spotlight, gift offer, shop the look and the bag (checkout in the shop), on products from the shopify-edp connector, for sites built on the template set           |
 
 Shared at the root: the documentation for editors and administrators ([`docs/`](docs/README.md)),
 the demo seeding scripts ([`scripts/`](scripts/)), the Cypress end-to-end tests ([`tests/`](tests/)),
@@ -101,7 +103,7 @@ To build: Node.js 22 and Yarn 4 (pinned in `.yarn/releases`; enable it with `cor
 and for the Maven build Java 17 and Maven 3.9.
 
 ```bash
-mvn clean install   # the seven packages, as the CI builds them
+mvn clean install   # the nine packages, as the CI builds them
 ```
 
 | Artifact                                                                                                                        | Package                             |
@@ -192,7 +194,7 @@ branch's build, which Jahia then refuses to start again.
 
 ## Releases
 
-The seven packages share one version, set in the root `pom.xml`; a release publishes all seven.
+The nine packages share one version, set in the root `pom.xml`; a release publishes all nine.
 The changelog is written with chachalog: every change
 adds a fragment under `.chachalog/` (see `.github/instructions/changelog.instructions.md`), and the
 release turns the fragments into a section of [CHANGELOG.md](CHANGELOG.md). classic-travel's history

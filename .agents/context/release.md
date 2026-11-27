@@ -1,6 +1,6 @@
 # Releasing classic-templates
 
-The eight packages (template set, classic-travel, classic-media, the five pre-packaged sites) share one version and
+The nine packages (template set, classic-travel, classic-media, classic-commerce, the five pre-packaged sites) share one version and
 are released together. The org CI account cannot push releases to this repository yet, so a release
 follows the manual path of the AIStartupKit harness (`$AISTARTUPKIT/.agents/context/jahia-release-and-ci.md`,
 "Manual release when the release workflow cannot run"). This page is the checklist for this
@@ -12,14 +12,14 @@ repository; a release is done when every step is.
    `docs/` and `.agents/` lines). The chachalog bot keeps a "chore: release classic-templates @ vX.Y.Z"
    PR open on branch `release`: check it lists every fragment, then squash-merge it.
 2. Commit `chore: release classic-templates X.Y.Z` on `main`: `X.Y.Z-SNAPSHOT` becomes `X.Y.Z` in the
-   twelve files: the root `pom.xml`, the eight `packages/*/pom.xml` and the three `package.json`
-   (template set, travel, media). `grep -rl X.Y.Z-SNAPSHOT --include=pom.xml --include=package.json .`
+   fourteen files: the root `pom.xml`, the nine `packages/*/pom.xml` and the four `package.json`
+   (template set, travel, media, commerce). `grep -rl X.Y.Z-SNAPSHOT --include=pom.xml --include=package.json .`
    (outside `node_modules`) lists them. Nothing else.
 3. Wait until that commit's `On merge to main` run is **in progress** (`gh run view <id> --json status`),
    then commit `chore: next development version X.(Y+1).0-SNAPSHOT; README for the X.Y.Z release`
    (the next minor, as after every release so far; the release PR sets the real number from the
    fragments):
-   the SNAPSHOT version back in the same twelve files, and the README's "Latest release" line pointing
+   the SNAPSHOT version back in the same fourteen files, and the README's "Latest release" line pointing
    to the new tag. Pushed while the release run is still waiting, it replaces that run (one waiting
    run per concurrency group); `gh run rerun <id>` brings it back.
 
@@ -34,10 +34,11 @@ newer push cancels the older `main` run, release included once it is past waitin
 ## 2. GitHub release
 
 1. When `Build Module` has finished, download `build-artifacts`
-   (`gh api repos/Jahia/classic-templates/actions/artifacts/<id>/zip`) and take the thirteen assets:
+   (`gh api repos/Jahia/classic-templates/actions/artifacts/<id>/zip`) and take the fourteen assets:
    - `packages/template-set/target/classic-templates-X.Y.Z.tgz`
    - `packages/travel/target/classic-travel-X.Y.Z.tgz`
    - `packages/media/target/classic-media-X.Y.Z.tgz`
+   - `packages/commerce/target/classic-commerce-X.Y.Z.tgz` (it needs shopify-edp 1.0.0 or later, on Jahia's Nexus)
    - `packages/prepackaged-site/target/classic-templates-prepackaged-website-X.Y.Z.jar`, and
      `prepackaged/classic-dev.zip` renamed `classic-templates-prepackaged-website-X.Y.Z-import.zip`
    - `packages/prepackaged-skylantern/target/skylantern-prepackaged-website-X.Y.Z.jar`, and
@@ -48,7 +49,7 @@ newer push cancels the older `main` run, release included once it is past waitin
    licence and a LICENSE file in each `.tgz`, the expected `jahia.module-dependencies` and
    `Jahia-Depends`, the site zip inside each jar, and no `/Users/` anywhere.
 3. `gh release create X_Y_Z --target <release commit> --title "classic-templates_X.Y.Z"
---notes-file <the X.Y.Z section of CHANGELOG.md>` with the thirteen assets.
+--notes-file <the X.Y.Z section of CHANGELOG.md>` with the fourteen assets.
 
 ## 3. Deliverables that copy the release
 

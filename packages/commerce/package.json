@@ -1,6 +1,6 @@
 {
   "name": "classic-commerce",
-  "version": "0.13.0",
+  "version": "0.14.0-SNAPSHOT",
   "description": "Beauty and retail commerce sections (product views, product carousel, brand spotlight, gift offer, shop the look) for sites built on the classic-templates template set, with products from the shopify-edp connector",
   "license": "MIT",
   "type": "module",
