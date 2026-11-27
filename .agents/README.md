@@ -8,6 +8,7 @@ How to work on this repository with an AI agent. It holds seven packages, built 
 | `packages/template-set`                                                  | The classic-templates template set (`ctpl`, `ctplmix`)                                            | `packages/template-set`                                              |
 | `packages/travel`                                                        | classic-travel (`ctrv`, `ctrvmix`), a module depending on the template set                        | `packages/travel`                                                    |
 | `packages/media`                                                         | classic-media (`ctmd`, `ctmdmix`), a module depending on the template set                         | `packages/media`                                                     |
+| `packages/commerce` | classic-commerce (`ctcm`, `ctcmmix`), a module depending on the template set and shopify-edp | `packages/commerce` |
 | `packages/prepackaged-site`                                              | The `classic-dev` demo site as a pre-packaged project                                             | `scripts/export-prepackaged.py`                                      |
 | `packages/prepackaged-orvane-signal`, `packages/prepackaged-orvane-live` | The two Orvane demo sites (a fictional media group) as pre-packaged projects, add-on content kept | `scripts/export-prepackaged.py --site orvane-signal` / `orvane-live` |
 | `packages/prepackaged-skylantern`                                        | The `skylantern` demo site (a fictional airline) as a pre-packaged project                        | `scripts/export-prepackaged.py --site skylantern`                    |
@@ -28,6 +29,7 @@ use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` an
 | [`context/architecture.md`](context/architecture.md)                       | Decisions, type inventory, layout, theming, heading policy, open questions                                   |
 | [`context/travel.md`](context/travel.md)                                   | classic-travel: types, contract with the template set, rules and gates                                       |
 | [`context/media.md`](context/media.md)                                     | classic-media: types, decisions, rules and gates (shares the travel contract)                                |
+| [`context/commerce.md`](context/commerce.md) | classic-commerce: types, rules and gates (shares the travel contract) |
 | [`context/gates.md`](context/gates.md)                                     | The checks a change must pass before it is done, with the exact commands                                     |
 | [`context/sonar-rules.md`](context/sonar-rules.md)                         | The SonarQube rules: which `yarn lint` checks, which to write by hand                                        |
 | [`context/release.md`](context/release.md)                                 | Releasing: changelog and version, the GitHub release, then the replication kit and the Store submission pack |
@@ -47,7 +49,7 @@ use the harness or the Jahia security scan read two variables: `AISTARTUPKIT` an
 | Review after a deploy                        | `/jahia-review` (code + site: axe + Lighthouse)                 |
 | Build or deploy error                        | `/jahia-dev-debug`                                              |
 
-## Non-negotiables for the template set (classic-travel: see `context/travel.md`; classic-media: `context/media.md`)
+## Non-negotiables for the template set (classic-travel: see `context/travel.md`; classic-media: `context/media.md`; classic-commerce: `context/commerce.md`)
 
 1. Namespaces are `ctpl` (types) and `ctplmix` (mixins). Never rename them once content exists.
 2. Every visible string is contributed content or a locale key, in EN and FR.

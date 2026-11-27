@@ -1,0 +1,30 @@
+/* A "from" price. The amount is emphasised with the theme's highlight role (classic-templates
+   --ctpl-color-highlight, added after 0.1.2); themes without it fall back to the accent. */
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--ctpl-space-2);
+  margin: 0;
+}
+.label {
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.amount {
+  color: var(--ctpl-color-highlight, var(--ctpl-color-accent));
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-xl);
+  font-weight: var(--ctpl-font-weight-bold);
+  line-height: var(--ctpl-leading-tight);
+  overflow-wrap: anywhere;
+}
+.large .amount {
+  font-size: var(--ctpl-text-3xl);
+}
+.note {
+  flex-basis: 100%;
+  margin-top: var(--ctpl-space-1);
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}

@@ -1,0 +1,7 @@
+// "Brand of the week": a page section presenting one brand, with its picture (ctplmix:media), a
+// short eyebrow above the brand name (jcr:title, an h2), a text, a call to action to the brand's
+// page (ctplmix:cta) and a few of its products picked by the editor (ctcmmix:pickedProducts),
+// rendered with their card view.
+[ctcm:brandSpotlight] > jnt:content, mix:title, ctcmmix:pageComponent, ctplmix:sectionStyle, ctplmix:media, ctplmix:cta, ctcmmix:pickedProducts
+ - eyebrow (string) i18n
+ - text (string, textarea) i18n

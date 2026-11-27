@@ -166,7 +166,8 @@ JAHIA_URL=http://localhost:8080 SUPER_USER_PASSWORD=root1234 yarn e2e:ci
 Each suite (smoke, foundations, chrome, content, sections, editorial) creates its own site on the
 template set, covers the happy path, authorization and edge cases, and deletes the site afterwards.
 In CI the suites run through the shared Jahia integration-test workflow, which installs every
-SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`), on every change to the
+SNAPSHOT package the build produced (`tests/provisioning-manifest-build.yml`, which also installs the
+shopify-edp release that classic-commerce and its specs need), on every change to the
 code, and nightly against the release and snapshot Jahia images with the latest published snapshots
 of the template set, classic-travel and classic-media (`tests/provisioning-manifest-snapshot.yml`; a
 package the specs use and the manifest leaves out fails every night).

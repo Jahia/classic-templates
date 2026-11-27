@@ -1,0 +1,213 @@
+/* The bag button (in a row of header links) and its drawer, a modal dialog sliding in from the
+   inline end (the right in English, the left in Arabic). Theme tokens only. */
+.item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border: 0;
+  border-radius: var(--ctpl-radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.toggle:hover {
+  color: var(--ctpl-color-accent);
+}
+.toggle:focus-visible,
+.drawer button:focus-visible,
+.drawer a:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: var(--ctpl-focus-offset);
+}
+.icon {
+  width: 1.25em;
+  height: 1.25em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+.badge {
+  min-width: 1.5em;
+  padding: 0 var(--ctpl-space-1);
+  border-radius: 999px;
+  background: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+  font-size: var(--ctpl-text-sm);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-align: center;
+}
+
+.drawer {
+  inset-block: 0;
+  inset-inline: auto 0;
+  width: min(100%, 26rem);
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--ctpl-color-surface-raised);
+  color: var(--ctpl-color-text);
+  box-shadow: var(--ctpl-shadow-md);
+}
+.drawer::backdrop {
+  background: var(--ctpl-color-overlay);
+}
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ctpl-space-4);
+  height: 100%;
+  padding: var(--ctpl-space-5);
+  overflow-y: auto;
+}
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ctpl-space-3);
+}
+.title {
+  margin: 0;
+  font-family: var(--ctpl-font-heading);
+  font-size: var(--ctpl-text-xl);
+}
+.close,
+.remove {
+  padding: var(--ctpl-space-1) var(--ctpl-space-2);
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--ctpl-text-sm);
+  cursor: pointer;
+}
+.empty,
+.note {
+  margin: 0;
+  color: var(--ctpl-color-text-muted);
+}
+.note {
+  font-size: var(--ctpl-text-sm);
+}
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ctpl-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.line {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: var(--ctpl-space-2) var(--ctpl-space-3);
+  align-items: start;
+  padding-block-end: var(--ctpl-space-4);
+  border-block-end: var(--ctpl-border-width) solid var(--ctpl-color-border);
+}
+.thumb {
+  grid-row: span 3;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--ctpl-radius-md);
+  object-fit: cover;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ctpl-space-1);
+  min-width: 0;
+}
+.name {
+  color: inherit;
+  font-weight: var(--ctpl-font-weight-medium);
+  overflow-wrap: anywhere;
+}
+.option {
+  color: var(--ctpl-color-text-muted);
+  font-size: var(--ctpl-text-sm);
+}
+.price {
+  color: var(--ctpl-color-highlight, var(--ctpl-color-accent));
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.quantity {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ctpl-space-2);
+}
+.quantity button {
+  width: 2rem;
+  height: 2rem;
+  border: var(--ctpl-border-width) solid var(--ctpl-color-border);
+  border-radius: var(--ctpl-radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.quantity button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.remove {
+  justify-self: start;
+}
+.total {
+  margin: 0;
+}
+.total div {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--ctpl-text-lg);
+  font-weight: var(--ctpl-font-weight-bold);
+}
+.total dd {
+  margin: 0;
+}
+.checkout {
+  display: block;
+  padding: var(--ctpl-space-3) var(--ctpl-space-4);
+  border-radius: var(--ctpl-radius-md);
+  background: var(--ctpl-color-accent);
+  color: var(--ctpl-color-text-on-accent);
+  font-weight: var(--ctpl-font-weight-bold);
+  text-align: center;
+  text-decoration: none;
+}
+.checkout:hover {
+  background: var(--ctpl-color-accent-hover);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .drawer[open] {
+    animation: ctcm-slide var(--ctpl-duration-base) var(--ctpl-ease);
+  }
+}
+@keyframes ctcm-slide {
+  from {
+    transform: translateX(100%);
+  }
+}
+.drawer[open]:dir(rtl) {
+  animation-name: ctcm-slide-rtl;
+}
+@keyframes ctcm-slide-rtl {
+  from {
+    transform: translateX(-100%);
+  }
+}

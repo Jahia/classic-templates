@@ -238,6 +238,10 @@
     "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman",
     serif;
   --ctpl-stack-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  /* Arabic script (Arabic, Persian, Urdu): the system's Arabic face first; a Latin serif has no
+     Arabic glyphs, so headings use it too. */
+  --ctpl-stack-arabic:
+    system-ui, -apple-system, "Segoe UI", "Noto Sans Arabic", "Geeza Pro", Tahoma, sans-serif;
 
   /* ---- Tier 2: colour roles --------------------------------------------------------------- */
   --ctpl-color-surface-page: light-dark(var(--ctpl-white), var(--ctpl-slate-950));
@@ -594,4 +598,13 @@
     --ctpl-duration-fast: 0ms;
     --ctpl-duration-base: 0ms;
   }
+}
+
+/* Pages in an Arabic-script language: one Arabic face for body and headings, in every theme
+   (this block comes after the theme blocks and has the same specificity), and no negative
+   tracking, which breaks the joins between Arabic letters. */
+:root:is(:lang(ar), :lang(fa), :lang(ur)) {
+  --ctpl-font-body: var(--ctpl-stack-arabic);
+  --ctpl-font-heading: var(--ctpl-stack-arabic);
+  --ctpl-heading-tracking: 0;
 }

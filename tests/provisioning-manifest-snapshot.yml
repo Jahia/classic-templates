@@ -3,6 +3,12 @@
   autoStart: true
   uninstallPreviousVersion: true
 
+# classic-commerce depends on shopify-edp (shopynt:product, used by the commerce specs).
+- installBundle:
+      - 'mvn:org.jahia.se.modules/shopify-edp/1.0.0'
+  autoStart: true
+  uninstallPreviousVersion: true
+
 - installBundle:
       - 'js:mvn:org.jahia.modules.javascript/classic-templates/LATEST/tgz'
   autoStart: true

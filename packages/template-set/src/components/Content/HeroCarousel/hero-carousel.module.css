@@ -110,6 +110,10 @@
   font-weight: var(--ctpl-font-weight-medium);
   cursor: pointer;
 }
+/* Right to left: "previous" sits on the right and points right, "next" points left. */
+.control:dir(rtl) > svg {
+  transform: scaleX(-1);
+}
 .control:hover {
   background: var(--ctpl-color-accent-subtle);
 }

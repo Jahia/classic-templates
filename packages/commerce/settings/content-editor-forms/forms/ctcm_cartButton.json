@@ -1,0 +1,13 @@
+{
+  "nodeType": "ctcm:cartButton",
+  "priority": 2.0,
+  "sections": [
+    {
+      "name": "content",
+      "fieldSets": [
+        { "name": "ctplmix:linkTo", "hide": true },
+        { "name": "ctpl:link", "fields": [{ "name": "openInNewTab", "hide": true }] }
+      ]
+    }
+  ]
+}

@@ -15,13 +15,14 @@ import "modern-normalize/modern-normalize.css";
 import "./tokens.css";
 import "./global.css";
 import "./addons.css";
-import { languageTag } from "../lib/locale.js";
+import { languageTag, textDirection } from "../lib/locale.js";
 
 /**
  * The HTML document around every page: the SEO and accessibility baseline lives here so no
  * template can forget it.
  *
- * - `<html lang>` from the rendering locale, never a literal.
+ * - `<html lang>` from the rendering locale, never a literal, and `<html dir>` from it: an Arabic
+ *   (or other right-to-left) page is mirrored, the CSS using logical properties only.
  * - `data-ctpl-theme` / `data-ctpl-scheme` from the site settings: switching theme or light/dark
  *   is an attribute change, set by an administrator in jContent with no deploy. A theme supplied
  *   by another module (readSiteLook) also loads that module's stylesheet, after this one.
@@ -56,13 +57,10 @@ export const Layout = ({
   const robots = robotsDirective(site);
   const metaDescription = description || read(site, "j:description");
   const pageTitle = fullTitle(title, siteName);
+  const lang = languageTag(currentResource.getLocale());
 
   return (
-    <html
-      lang={languageTag(currentResource.getLocale())}
-      data-ctpl-theme={theme}
-      data-ctpl-scheme={scheme}
-    >
+    <html lang={lang} dir={textDirection(lang)} data-ctpl-theme={theme} data-ctpl-scheme={scheme}>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

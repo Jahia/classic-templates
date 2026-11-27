@@ -1,14 +1,15 @@
 import { buildNodeUrl, jahiaComponent, server } from "@jahia/javascript-modules-library";
 import { useTranslation } from "react-i18next";
 import classes from "./language-switcher.module.css";
-import { languageTag } from "../../../lib/locale.js";
+import { languageTag, shownLanguages } from "../../../lib/locale.js";
 import { pageSite } from "../../../lib/site.js";
 
 const capitalise = (s: string, lang: string) => s.charAt(0).toLocaleUpperCase(lang) + s.slice(1);
 
 /**
  * Links to the page being viewed in the site's other languages, only those the page is translated
- * into. Renders nothing on a one-language site.
+ * into; a page translated into none (shared fields only, or an External Data Provider node such as a
+ * Shopify product) links to every language. Renders nothing on a one-language site.
  *
  * It sits in the shared header, whose cached fragment is otherwise the same on every page, so its
  * cache key includes the main resource (`cache.mainResource`): each page gets its own links. The
@@ -44,9 +45,9 @@ jahiaComponent(
     const locales = renderContext.isLiveMode()
       ? site.getActiveLiveLanguagesAsLocales()
       : site.getLanguagesAsLocales();
-    const links = locales
+    const links = shownLanguages(locales, (locale) => mainNode.hasI18N(locale))
       .map((locale) => [locale.toString(), locale] as const)
-      .filter(([code, locale]) => !invalid.has(code) && mainNode.hasI18N(locale))
+      .filter(([code]) => !invalid.has(code))
       .map(([code, locale]) => ({
         code,
         tag: languageTag(locale),

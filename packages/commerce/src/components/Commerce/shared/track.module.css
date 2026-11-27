@@ -1,0 +1,23 @@
+/* A row of cards that scrolls sideways with scroll snapping, in the page's direction. */
+.region {
+  overflow-x: auto;
+  scroll-snap-type: inline mandatory;
+  scroll-padding-inline: var(--ctpl-space-1);
+  padding-block-end: var(--ctpl-space-3);
+  border-radius: var(--ctpl-radius-md);
+}
+.region:focus-visible {
+  outline: var(--ctpl-focus-ring);
+  outline-offset: 2px;
+}
+.track {
+  display: flex;
+  gap: var(--ctpl-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  flex: 0 0 min(16rem, 75%);
+  scroll-snap-align: start;
+}

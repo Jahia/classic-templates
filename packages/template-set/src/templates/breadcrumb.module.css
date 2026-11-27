@@ -27,8 +27,13 @@
   width: 0.4em;
   height: 0.4em;
   border-top: var(--ctpl-border-width) solid currentColor;
-  border-right: var(--ctpl-border-width) solid currentColor;
+  border-inline-end: var(--ctpl-border-width) solid currentColor;
   transform: rotate(45deg);
+}
+/* Right to left (Arabic, Hebrew...): the border sits on the left, so the turn is mirrored and the
+   chevron points to the next crumb, on its left. */
+.crumb + .crumb:dir(rtl)::before {
+  transform: rotate(-45deg);
 }
 .crumb a {
   color: var(--ctpl-breadcrumb-link);

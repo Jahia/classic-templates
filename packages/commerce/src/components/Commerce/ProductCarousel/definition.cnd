@@ -1,0 +1,13 @@
+// A page section showing products in a row that scrolls sideways (Bestsellers, New in). The editor
+// either picks the products (ctcmmix:pickedProducts, in that order) or names a shop folder of the
+// shopify-edp mount and, optionally, a Shopify product tag to keep ("bestseller", "new"): the
+// products are then read live from the shop. Picked products win when both are set. The tag is a
+// query criterion on the shop's own tags, not a tag of this content (CLAUDE.md rule 21, listing
+// exception, asked for by the user). Its heading is the optional jcr:title (an h2); the cta is the
+// "see all" link. Each product renders with its card view.
+[ctcm:productCarousel] > jnt:content, mix:title, ctcmmix:pageComponent, ctplmix:sectionStyle, ctplmix:cta, ctcmmix:pickedProducts, jmix:list, jmix:renderableList, jmix:cache
+ // cnd-check-ignore(weakrefNoConstraint): a shop folder of the external shopify-edp mount, which has no type of its own to constrain on
+ - shop (weakreference)
+ - shopifyTag (string) < '[A-Za-z0-9 _-]{0,64}'
+ - maxItems (long) = 8 autocreated < '[1,24]'
+ - noResultText (string) i18n

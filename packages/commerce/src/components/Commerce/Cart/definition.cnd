@@ -1,0 +1,6 @@
+// The visitor's bag: a button with the number of items, opening a drawer that lists them and sends
+// the visitor to the shop to complete the order. A ctpl:link so that it goes where links go: the
+// header's utility links (and any link list). Its label is jcr:title ("Bag"); the link fields it
+// inherits are hidden from its form (settings/content-editor-forms). The items live in the
+// visitor's browser, one bag per site: nothing about the visitor is stored in Jahia.
+[ctcm:cartButton] > ctpl:link, ctcmmix:component

@@ -5,7 +5,7 @@
  * - a tablist of buttons built from the tab labels (role="tab", aria-selected, aria-controls),
  *   panels with role="tabpanel" labelled by their tab, the panels not selected hidden;
  * - roving tabindex: Tab reaches the selected tab only; Left and Right arrows move to the previous
- *   or next tab (wrapping), Home and End to the first and last, and select it;
+ *   or next tab (wrapping; swapped on a right-to-left page), Home and End to the first and last, and select it;
  * - the first tab is selected, unless the address points at a tab (#tab-<name>) or at something
  *   inside one (an accordion entry, a heading): that tab is selected, on load and whenever the
  *   address changes;
@@ -69,7 +69,9 @@
       const current = tabs.indexOf(document.activeElement);
       if (current < 0) return;
       let next;
-      if (event.key in KEYS) next = (current + KEYS[event.key] + tabs.length) % tabs.length;
+      // Right to left, the tabs run from right to left: the arrows swap.
+      const step = getComputedStyle(list).direction === "rtl" ? -1 : 1;
+      if (event.key in KEYS) next = (current + step * KEYS[event.key] + tabs.length) % tabs.length;
       else if (event.key === "Home") next = 0;
       else if (event.key === "End") next = tabs.length - 1;
       else return;

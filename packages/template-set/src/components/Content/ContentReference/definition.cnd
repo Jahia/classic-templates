@@ -1,0 +1,10 @@
+// Reused content: a section that shows an item kept elsewhere, on this site or another one (a
+// campaign banner of a brand site shown on every market site, for example). It is the platform's
+// content reference (jnt:contentReference, rendered by this folder's view: the item in the
+// reference's context, with a note in Page Builder naming where it comes from) made a page and a
+// hero component, so the page areas of the template set accept it. The platform type itself is
+// neither, and its "Paste as reference" is refused in these areas. Editors add it from "Add
+// content" and pick the item; editing the item changes every page that reuses it.
+[ctpl:reusedContent] > jnt:contentReference, ctplmix:pageComponent, ctplmix:heroComponent
+ // cnd-check-ignore(weakrefNoConstraint): any content item can be reused; the view renders it with its own views
+ - j:node (weakreference, picker[type='editorial'])
